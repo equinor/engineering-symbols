@@ -4,7 +4,6 @@ import { ReactElement } from 'react';
 import { GlobalStylingOptions } from './ThemedApp';
 import * as externalStyles from './external.styles';
 
-
 export type GlobalStylingProps = {
 	options?: GlobalStylingOptions;
 };
@@ -22,12 +21,5 @@ const defaultStyling = (): SerializedStyles => {
 export const GlobalStyling = ({ options }: GlobalStylingProps): ReactElement => {
 	const { includeDefaultStyling = true, includeNormalize = true } = options || {};
 
-	return (
-		<Global
-			styles={[
-				includeNormalize && externalStyles.modernNormalize,
-				includeDefaultStyling && defaultStyling(),
-			]}
-		/>
-	);
+	return <Global styles={[includeNormalize && externalStyles.modernNormalize, includeDefaultStyling && defaultStyling()]} />;
 };

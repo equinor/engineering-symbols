@@ -30,7 +30,7 @@ Story.args = {
 Story.storyName = 'Icon';
 
 // Icon maps
-const Square = ({ children,}: { children: ReactNode }): ReactElement => {
+const Square = ({ children }: { children: ReactNode }): ReactElement => {
 	const style = css`
 		width: 12rem;
 		height: 12rem;
@@ -61,14 +61,14 @@ const ThemedComponent = (): ReactElement => {
 					return (
 						<Square key={name}>
 							{/* @ts-ignore */}
-							<Icon size='l' name={name} />
+							<Icon size="l" name={name} />
 							<p>{el[0]}</p>
 						</Square>
-				)})}
+					);
+				})}
 		</div>
 	);
 };
-
 
 const TemplateMap: ComponentStory<typeof Icon> = () => {
 	return <ThemedComponent />;

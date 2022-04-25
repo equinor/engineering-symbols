@@ -8,12 +8,7 @@ import { Icon } from '@equinor/engineering-symbols';
 export const Page = (): ReactElement => {
 	return (
 		<>
-			<Icon
-				appearance="main"
-				rotate={40}
-				name="arrow-right"
-				size="s"
-			/>
+			<Icon appearance="main" rotate={40} name="arrow-right" size="s" />
 		</>
 	);
 };
@@ -23,13 +18,12 @@ export const Page = (): ReactElement => {
 
 **Required props are marked with `*`.**
 
-| Name              | Type                                                | Default    | Description                                |
-| ----------------- | --------------------------------------------------- | ---------- | ------------------------------------------ |
-| `appearance` | `IconAppearance`                         |     `main`       | Provides icon styling                      |
-| `name`\* | `IconName`                           |            | Provides icon illustration                    |
-| `size`   | `SvgSizeName`                                           | `m`    | Renders a icon with pre-declaration size                                |
-| `rotate`     | `number`              | `0` | Renders a icon with pre-declaration rotate                          |
-
+| Name         | Type             | Default | Description                                |
+| ------------ | ---------------- | ------- | ------------------------------------------ |
+| `appearance` | `IconAppearance` | `main`  | Provides icon styling                      |
+| `name`\*     | `IconName`       |         | Provides icon illustration                 |
+| `size`       | `SvgSizeName`    | `m`     | Renders a icon with pre-declaration size   |
+| `rotate`     | `number`         | `0`     | Renders a icon with pre-declaration rotate |
 
 ## Dependabot
 

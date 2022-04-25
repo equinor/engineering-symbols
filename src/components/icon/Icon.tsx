@@ -16,5 +16,9 @@ export const components: Record<IconName, ComponentType<SvgBaseProps>> = {
 export const Icon = ({ name, size = 'm', appearance, rotate = 0, ...rest }: IconProps): ReactElement | null => {
 	const Component = components[name];
 
-	return Component ? <ThemedApp><Component css={styles.icon(size, appearance, rotate)} {...rest} /></ThemedApp> : null;
+	return Component ? (
+		<ThemedApp>
+			<Component css={styles.icon(size, appearance, rotate)} {...rest} />
+		</ThemedApp>
+	) : null;
 };
