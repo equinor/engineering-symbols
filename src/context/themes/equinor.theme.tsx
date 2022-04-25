@@ -12,7 +12,7 @@ const theme: Theme = {
 		s: 3.2,
 		m: 4.0,
 		l: 4.8,
-	}
+	},
 };
 
 export default theme;

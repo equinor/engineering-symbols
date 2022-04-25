@@ -8,4 +8,3 @@ export type SvgSizes = Record<SvgSizeName, number>;
 
 export type ThemeName = 'equinor';
 export type ThemeProp = ThemeName | Theme;
-

@@ -3,7 +3,6 @@ import { render } from '@testing-library/react';
 
 import { Icon } from './Icon';
 
-
 describe('Test Icon component', () => {
 	test('Icon show icon', () => {
 		const { container } = render(
