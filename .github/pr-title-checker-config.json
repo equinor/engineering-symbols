@@ -4,7 +4,21 @@
 		"color": "7000ff"
 	},
 	"CHECKS": {
-		"prefixes": ["fix: ", "feat: ", "chore: ", "patch: ", "fixes: ", "major: ", "CI: ", "Bump: ", "Bump ", "bump ", "bump: "],
+		"prefixes": [
+			"fix: ",
+			"feat: ",
+			"chore: ",
+			"patch: ",
+			"fixes: ",
+			"major: ",
+			"CI: ",
+			"Bump: ",
+			"Bump ",
+			"bump ",
+			"bump: ",
+			"chore(deps-dev): ",
+			"chore(deps): "
+		],
 		"regexp": "docs\\(v[0-9]\\): ",
 		"ignoreLabels": ["dont-check-PRs-with-this-label", "meta"]
 	}
