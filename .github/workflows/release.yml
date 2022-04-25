@@ -1,0 +1,37 @@
+name: Release
+
+on:
+    push:
+        branches: ['master']
+
+jobs:
+    code-quality:
+        name: 'Code Quality'
+        uses: equinor/sparql-graph/.github/workflows/code-quality.yml@master
+        secrets:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+    bump-version:
+        name: '🦆 Bump version'
+        needs: [code-quality]
+        runs-on: ubuntu-latest
+        environment: BUMP
+        permissions: write-all
+
+        steps:
+            - name: 'Checkout source code'
+              uses: 'actions/checkout@v3'
+              with:
+                  ref: ${{ github.ref }}
+            - name: 'cat package.json'
+              run: cat ./package.json
+            - name: 'Automated Version Bump'
+              id: version-bump
+              uses: 'phips28/gh-action-bump-version@v9.0.16'
+              with:
+                  patch-wording: 'patch: ,fixes: ,fix: ,chore: '
+                  minor-wording: 'feat: '
+                  major-wording: 'major: '
+                  commit-message: 'CI: bumps version to {{version}} [skip ci]'
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
