@@ -19,7 +19,7 @@ jobs:
         name: 🍒 Check PR title
         runs-on: ubuntu-latest
         steps:
-            - uses: thehanimo/pr-title-checker@v1.3.1
+            - uses: thehanimo/pr-title-checker@v1.3.4
               env:
                   GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
               with:
