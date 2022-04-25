@@ -1,0 +1,20 @@
+version: 2
+updates:
+    # Maintain dependencies for GitHub Actions
+    - package-ecosystem: 'github-actions'
+      directory: '/'
+      schedule:
+          interval: 'weekly'
+
+    # Maintain dependencies for npm
+    - package-ecosystem: 'npm'
+      directory: '/'
+      schedule:
+          interval: 'weekly'
+      ignore:
+          - dependency-name: '@storybook/preset-create-react-app'
+            update-types: ['version-update:semver-major']
+          - dependency-name: 'react-scripts'
+            update-types: ['version-update:semver-major']
+          - dependency-name: 'chalk'
+            update-types: ['version-update:semver-major']

@@ -1,0 +1,108 @@
+name: Code quality
+
+on:
+    push:
+        branches: [master]
+    pull_request:
+        # The branches below must be a subset of the branches above
+        branches: [master]
+    workflow_dispatch:
+    workflow_call:
+        secrets:
+            SNYK_TOKEN:
+                required: true
+    schedule:
+        - cron: '0 6 * * 1'
+
+env:
+    NODE_VERSION: ${{ github.event.inputs.node-version  || '16' }}
+
+jobs:
+    code_issues:
+        name: 👮‍♂️ Code issues
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: 'npm'
+            - name: Install dependencies
+              run: npm ci
+            - name: Build library
+              run: npm run build:lib
+    code_style_issues:
+        name: 💅 Code style issues
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: 'npm'
+            - name: Install dependencies
+              run: npm ci
+            - name: Find code style issues
+              run: npm run checkcode
+    unit_tests:
+        name: 🧪 Unit tests
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: 'npm'
+            - name: Install dependencies
+              run: npm ci
+            - name: Run unit tests
+              run: npm run test
+    security_vulnerabilities:
+        name: 🐩 Snyk (Security vulnerabilities)
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: 'npm'
+            - uses: snyk/actions/setup@master
+            - name: Install dependencies
+              run: npm ci
+            - name: Authenticator
+              run: snyk auth ${{ secrets.SNYK_TOKEN }}
+            - name: Test dependencies for known issues
+              run: snyk test --fail-on=all --severity-threshold=high
+              env:
+                  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+            - name: Continuously monitor new vulnerabilities
+              if: inputs.snyk-monitor
+              run: snyk monitor
+              env:
+                  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    code_ql:
+        name: 🛡️ CodeQL
+        runs-on: ubuntu-latest
+        permissions:
+            actions: read
+            contents: read
+            security-events: write
+
+        strategy:
+            fail-fast: false
+            matrix:
+                language: ['javascript']
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v2
+
+            - name: Initialize CodeQL
+              uses: github/codeql-action/init@v1
+              with:
+                  languages: ${{ matrix.language }}
+            - name: Autobuild
+              uses: github/codeql-action/autobuild@v1
+
+            - name: Perform CodeQL Analysis
+              uses: github/codeql-action/analyze@v1
