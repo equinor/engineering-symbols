@@ -40,3 +40,15 @@ jobs:
             - run: npm publish --access=public
               env:
                   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+    heroku-deploy:
+        name: '🫐 Heroku deploy'
+        needs: [build]
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: akhileshns/heroku-deploy@v3.12.12
+              with:
+                  heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+                  heroku_app_name: 'engineering-symbols'
+                  heroku_email: 'dzm@equinor.no'
