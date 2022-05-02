@@ -22,7 +22,7 @@ jobs:
         name: 👮‍♂️ Code issues
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
             - uses: actions/setup-node@v2
               with:
                   node-version: ${{ env.NODE_VERSION }}
@@ -35,7 +35,7 @@ jobs:
         name: 💅 Code style issues
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
             - uses: actions/setup-node@v2
               with:
                   node-version: ${{ env.NODE_VERSION }}
@@ -48,7 +48,7 @@ jobs:
         name: 🧪 Unit tests
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
             - uses: actions/setup-node@v2
               with:
                   node-version: ${{ env.NODE_VERSION }}
@@ -61,7 +61,7 @@ jobs:
         name: 🐩 Snyk (Security vulnerabilities)
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
             - uses: actions/setup-node@v2
               with:
                   node-version: ${{ env.NODE_VERSION }}
@@ -95,7 +95,7 @@ jobs:
 
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Initialize CodeQL
               uses: github/codeql-action/init@v1
