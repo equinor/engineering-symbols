@@ -12,6 +12,7 @@ spec:
               from: master
     components:
         - name: frontend
+          publicPort: http
           src: src
           ports:
               - name: http
