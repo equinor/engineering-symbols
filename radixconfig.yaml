@@ -12,6 +12,7 @@ spec:
               from: master
     components:
         - name: frontend
+          src: src
           ports:
               - name: http
                 port: 3000
@@ -21,4 +22,4 @@ spec:
     dnsExternalAlias:
         - alias: engineering-symbols.equinor.com
           environment: prod
-          component: oauth-proxy
+          component: frontend
