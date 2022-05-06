@@ -1,5 +1,6 @@
 {
 	"extends": "./tsconfig.json",
+	"exclude": ["src/svg/*.svg"],
 	"compilerOptions": {
 		"rootDirs": ["src/components"],
 		"baseUrl": ".",

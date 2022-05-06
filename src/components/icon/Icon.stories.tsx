@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
+import React, { ReactElement, ReactNode } from 'react';
 import { css } from '@emotion/react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import React, { ReactElement, ReactNode } from 'react';
 
 import { components, Icon } from './Icon';
 
@@ -12,24 +12,24 @@ export default {
 	argTypes: {
 		name: { control: { type: 'select' } },
 		appearance: { control: { type: 'select' } },
-		size: { control: { type: 'inline-radio' } },
 	},
 } as ComponentMeta<typeof Icon>;
 
 const Template: ComponentStory<typeof Icon> = (args) => {
-	return <Icon {...args} />;
+	return <Icon {...args} getPosition={(el) => console.log(el)} />;
 };
 
 export const Story = Template.bind({});
 
 Story.args = {
 	name: 'arrow-right',
-	size: 's',
+	width: 50,
+	height: 50,
+	rotate: 0,
 };
 
 Story.storyName = 'Icon';
 
-// Icon maps
 const Square = ({ children }: { children: ReactNode }): ReactElement => {
 	const style = css`
 		width: 12rem;
@@ -39,7 +39,7 @@ const Square = ({ children }: { children: ReactNode }): ReactElement => {
 		align-items: center;
 		justify-content: center;
 		text-align: center;
-		padding: 2rem;
+		padding: 1rem;
 	`;
 	return <div css={style}>{children}</div>;
 };
@@ -60,9 +60,8 @@ const ThemedComponent = (): ReactElement => {
 
 					return (
 						<Square key={name}>
-							{/* @ts-ignore */}
-							<Icon size="l" name={name} />
-							<p>{el[0]}</p>
+							<Icon width={50} height={50} name={name} getPosition={(el) => el} />
+							<p>{name}</p>
 						</Square>
 					);
 				})}
@@ -77,3 +76,4 @@ const TemplateMap: ComponentStory<typeof Icon> = () => {
 export const StoryMap = TemplateMap.bind({});
 
 StoryMap.storyName = 'All icons';
+StoryMap.parameters = { controls: { disable: true } };
