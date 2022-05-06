@@ -11,3 +11,6 @@ COPY . .
 EXPOSE 3000
 
 CMD ["npm", "start"]
+
+USER 101
+EXPOSE 3000
