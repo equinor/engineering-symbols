@@ -1,4 +1,4 @@
-apiVersion: wellx.equinor.com/v1
+apiVersion: radix.equinor.com/v1
 kind: RadixApplication
 metadata:
     name: engineering-symbols
