@@ -4,8 +4,7 @@ metadata:
     name: engineering-symbols
 spec:
     build:
-        secrets:
-            - GH_TOKEN
+        from: master
     environments:
         - name: prod
           build:
