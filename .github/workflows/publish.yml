@@ -20,6 +20,19 @@ jobs:
               env:
                   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
+    radix:
+        runs-on: ubuntu-latest
+        needs: [build]
+        name: '🛸 Deploy on Radix'
+        uses: equinor/radix-github-actions@master
+        with:
+            args: >
+                create job
+                deploy
+                -a engineering-symbols
+                -e ${{ steps.getEnvironment.outputs.result }}
+                -f
+
     publish:
         name: '📦 Publish'
         needs: [build]

@@ -26,7 +26,8 @@
 		"prettier:write": "prettier --write .",
 		"prepublishOnly": "npm run build:lib",
 		"checkcode": "npm run lint && npm run ts:testcompile && npm run prettier:check",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"svgr": "npx @svgr/cli --typescript --no-dimensions --svgo-config ./svgo.config.js --out-dir src/components/icon/icons -- src/svg"
 	},
 	"engines": {
 		"npm": ">= 8.3.1",
@@ -105,10 +106,12 @@
 		"@storybook/node-logger": "^6.4.21",
 		"@storybook/preset-create-react-app": "^3.2.0",
 		"@storybook/react": "^6.4.21",
+		"@svgr/cli": "^6.2.1",
 		"@testing-library/dom": "^8.11.4",
 		"@testing-library/jest-dom": "^5.14.1",
 		"@testing-library/react": "^12.1.2",
 		"babel-loader": "^8.2.5",
+		"css-select": "^5.1.0",
 		"husky": "^7.0.0",
 		"prettier": "^2.6.2",
 		"react": "^17.0.2",
@@ -116,7 +119,6 @@
 		"react-scripts": "4.0.3",
 		"rollup-plugin-cleaner": "^1.0.0",
 		"rollup-plugin-peer-deps-external": "^2.2.4",
-		"storybook-addon-state": "^1.0.3",
 		"storybook-addon-theme-playground": "^2.1.0"
 	}
 }

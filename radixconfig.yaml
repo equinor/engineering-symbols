@@ -1,0 +1,24 @@
+apiVersion: wellx.equinor.com/v1
+kind: RadixApplication
+metadata:
+    name: engineering-symbols
+spec:
+    build:
+        secrets:
+            - GH_TOKEN
+    environments:
+        - name: prod
+          build:
+              from: master
+    components:
+        - name: frontend
+          ports:
+              - name: http
+                port: 3000
+    dnsAppAlias:
+        environment: prod
+        component: oauth-proxy
+    dnsExternalAlias:
+        - alias: engineering-symbols.equinor.com
+          environment: prod
+          component: oauth-proxy

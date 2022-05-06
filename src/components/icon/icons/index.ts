@@ -1,3 +1,3 @@
-export { ArrowRight } from './ArrowRight';
-export { ArrowDown } from './ArrowDown';
-export { ArrowUp } from './ArrowUp';
+export { default as ArrowDown } from './ArrowDown';
+export { default as ArrowRight } from './ArrowRight';
+export { default as ArrowUp } from './ArrowUp';
