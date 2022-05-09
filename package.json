@@ -111,7 +111,6 @@
 		"@testing-library/jest-dom": "^5.14.1",
 		"@testing-library/react": "^12.1.2",
 		"babel-loader": "^8.2.5",
-		"css-select": "^5.1.0",
 		"husky": "^7.0.0",
 		"prettier": "^2.6.2",
 		"react": "^17.0.2",
