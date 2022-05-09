@@ -7,7 +7,7 @@ module.exports = {
 		{
 			name: 'prefixIds',
 			params: {
-				delim: '_we_',
+				delim: '_',
 			},
 		},
 		{

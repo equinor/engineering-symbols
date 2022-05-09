@@ -8,7 +8,7 @@ import * as Icons from './icons';
 import * as styles from './Icon.styles';
 
 const iconsKeys = Object.keys(Icons) as Array<keyof typeof Icons>; // exmpl: ArrowRight
-const iconsName = iconsKeys.map((name) =>
+export const iconsName = iconsKeys.map((name) =>
 	name
 		.split(/(?=[A-Z])/)
 		.join('-')
@@ -27,6 +27,10 @@ export const Icon = ({ name, width = 70, height = 70, appearance, rotate = 0, ge
 	const Component: any = components[name];
 	const points: Point[] = [];
 
+	// Filter all RECT points
+	// If singile element -> no points
+	const { children } = Component().props;
+
 	const convertPoint = ({ x, y }: Point, xRng: number, yRng: number) => {
 		if (rotate > 0) {
 			const theta = (rotate * Math.PI) / 180;
@@ -38,10 +42,6 @@ export const Icon = ({ name, width = 70, height = 70, appearance, rotate = 0, ge
 		return new Point(-xRng / 2 + x, -yRng / 2 + y);
 	};
 
-	// Filter all RECT points
-	// If singile element -> no points
-	const { children } = Component().props;
-
 	if (children.length) {
 		const filteredPoints = children.filter(({ type }: any) => type === 'rect');
 
@@ -49,6 +49,8 @@ export const Icon = ({ name, width = 70, height = 70, appearance, rotate = 0, ge
 	}
 
 	useEffect(() => getPosition(points), points);
+
+	console.log('👉 Callback:', points);
 
 	return Component ? (
 		<ThemedApp>

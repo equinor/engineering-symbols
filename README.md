@@ -1,6 +1,10 @@
 # @equinor/engineering-symbols
 
-### Example
+# Preview 🧸
+
+[Engineering symbols](https://frontend-engineering-symbols-prod.radix.equinor.com)
+
+# Example 🪴
 
 ```jsx
 import { Icon } from '@equinor/engineering-symbols';
@@ -8,31 +12,57 @@ import { Icon } from '@equinor/engineering-symbols';
 export const Page = (): ReactElement => {
 	return (
 		<>
-			<Icon appearance="main" rotate={40} name="arrow-right" size="s" />
+			<Icon appearance="main" name="arrow-right" height={50} width={50} getPosition={(el) => el} />
 		</>
 	);
 };
 ```
 
-# Props
+# Props 📦
 
 **Required props are marked with `*`.**
 
-| Name         | Type             | Default | Description                                |
-| ------------ | ---------------- | ------- | ------------------------------------------ |
-| `appearance` | `IconAppearance` | `main`  | Provides icon styling                      |
-| `name`\*     | `IconName`       |         | Provides icon illustration                 |
-| `size`       | `SvgSizeName`    | `m`     | Renders a icon with pre-declaration size   |
-| `rotate`     | `number`         | `0`     | Renders a icon with pre-declaration rotate |
+| Name            | Type             | Default | Description                                                      |
+| --------------- | ---------------- | ------- | ---------------------------------------------------------------- |
+| `getPosition`\* | `Point[]`        | ``      | Callback with icon position props _exmpl:_ `x` & `y` coordinates |
+| `appearance`    | `IconAppearance` | `main`  | Provides icon styling                                            |
+| `rotate`        | `number`         | `0`     | Renders a icon with pre-declaration rotate                       |
+| `height`        | `number`         | `70`    | Renders a icon with pre-declaration height                       |
+| `width`         | `number`         | `70`    | Renders a icon with pre-declaration width                        |
+| `name`\*        | `IconName`       |         | Provides icon illustration                                       |
 
-## Dependabot
+# Svg convertor 🪚
+
+SVG-convertor allow to unify every `.svg` files to one standard` .tsx`. For conversation svg used [svgr](https://github.com/gregberge/svgr) library.
+
+Current settings for converting:
+
+-   `Remove title`
+-   `Remove empty attributes`
+-   `Remove description`
+-   `Remove stroke form elements`
+-   `Implementation ID names for existing elements with ID -> ${svgName}_${originalID}`
+-   `Minify svg`
+
+_Folders structure_:
+
+-   Svg's files _(input)_: `src/svg`
+-   Tsx's files _(output)_: `src/components/icon/icons`
+
+_Run svgr_:
+
+```sh
+$ npm run svgr
+```
+
+## Dependabot 🩺
 
 ### DON'T UPDATT MAJOR VERSION:
 
 -   `@storybook/preset-create-react-app`
 -   `react-scripts`
 
-## PR's & releases version
+## PR's & releases version 🦆
 
 Consistent title names help maintainers organise their projects better 📚
 
@@ -42,9 +72,9 @@ Consistent title names help maintainers organise their projects better 📚
 -   `minor: feat`
 -   `major: major`
 
-Example: `chore: Update README.md`, | `fix: Colors for head`
+Example: `chore: Update README.md` | `fix: Colors for head`
 
-## For development at the library
+## For development at the library 🥷
 
 <details>
   <summary>Click to expand!</summary>

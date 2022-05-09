@@ -3,20 +3,20 @@ import React, { ReactElement, ReactNode } from 'react';
 import { css } from '@emotion/react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import { components, Icon } from './Icon';
+import { components, Icon, iconsName } from './Icon';
 
 export default {
 	title: 'Components/Icon',
 	component: Icon,
 	decorators: [(Story) => <>{Story()}</>],
 	argTypes: {
-		name: { control: { type: 'select' } },
+		name: { control: { type: 'select' }, options: iconsName },
 		appearance: { control: { type: 'select' } },
 	},
 } as ComponentMeta<typeof Icon>;
 
 const Template: ComponentStory<typeof Icon> = (args) => {
-	return <Icon {...args} getPosition={(el) => console.log(el)} />;
+	return <Icon {...args} getPosition={(el) => el} />;
 };
 
 export const Story = Template.bind({});
@@ -28,7 +28,7 @@ Story.args = {
 	rotate: 0,
 };
 
-Story.storyName = 'Icon';
+Story.storyName = 'Single icon';
 
 const Square = ({ children }: { children: ReactNode }): ReactElement => {
 	const style = css`
@@ -40,6 +40,14 @@ const Square = ({ children }: { children: ReactNode }): ReactElement => {
 		justify-content: center;
 		text-align: center;
 		padding: 1rem;
+		border-radius: 1rem;
+		transition: all 0.3s ease-in-out;
+		background: #fff;
+
+		&:hover {
+			box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+			transform: scale(1.1);
+		}
 	`;
 	return <div css={style}>{children}</div>;
 };
