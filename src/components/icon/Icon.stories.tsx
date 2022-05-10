@@ -15,9 +15,7 @@ export default {
 	},
 } as ComponentMeta<typeof Icon>;
 
-const Template: ComponentStory<typeof Icon> = (args) => {
-	return <Icon {...args} getPosition={(el) => el} />;
-};
+const Template: ComponentStory<typeof Icon> = (args) => <Icon {...args} getPosition={(el) => el} />;
 
 export const Story = Template.bind({});
 
@@ -59,27 +57,23 @@ const style = css`
 	flex-wrap: wrap;
 `;
 
-const ThemedComponent = (): ReactElement => {
-	return (
-		<div css={style}>
-			{components &&
-				Object.entries(components).map((el) => {
-					const name = el[0];
+const ThemedComponent = (): ReactElement => (
+	<div css={style}>
+		{components &&
+			Object.entries(components).map((el) => {
+				const name = el[0];
 
-					return (
-						<Square key={name}>
-							<Icon width={50} height={50} name={name} getPosition={(el) => el} />
-							<p>{name}</p>
-						</Square>
-					);
-				})}
-		</div>
-	);
-};
+				return (
+					<Square key={name}>
+						<Icon width={50} height={50} name={name} getPosition={(elem) => elem} />
+						<p>{name}</p>
+					</Square>
+				);
+			})}
+	</div>
+);
 
-const TemplateMap: ComponentStory<typeof Icon> = () => {
-	return <ThemedComponent />;
-};
+const TemplateMap: ComponentStory<typeof Icon> = () => <ThemedComponent />;
 
 export const StoryMap = TemplateMap.bind({});
 

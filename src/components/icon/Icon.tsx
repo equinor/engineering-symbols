@@ -36,7 +36,7 @@ export const Icon = ({ name, width = 70, height = 70, appearance, rotate = 0, ge
 			return new Point(x * Math.cos(theta) - y * Math.sin(theta), y * Math.cos(theta) + x * Math.sin(theta));
 		}
 
-		/** Converts a Point with origo TopLeft to a point with origo CenterCenter */
+		// Converts a Point with origo TopLeft to a point with origo CenterCenter
 		return new Point(-xRng / 2 + x, -yRng / 2 + y);
 	};
 

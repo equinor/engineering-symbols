@@ -3,8 +3,8 @@ import { SVGProps } from 'react';
 
 const SvgArrowRight = (props: SVGProps<SVGSVGElement>) => (
 	<svg viewBox="0 0 48 48" fill="none" {...props}>
-		<rect id="ArrowRight_svg_we_hello" x={10} y={10} fill="red" width={5} height={5} />
-		<rect id="ArrowRight_svg_we_hello2" x={20} y={20} fill="red" width={5} height={5} />
+		<rect id="ArrowRight_svg_hello" x={10} y={10} fill="red" width={5} height={5} />
+		<rect id="ArrowRight_svg_hello2" x={20} y={20} fill="red" width={5} height={5} />
 		<path
 			fillRule="evenodd"
 			clipRule="evenodd"
