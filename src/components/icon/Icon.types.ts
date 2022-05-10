@@ -18,6 +18,7 @@ export type PositionProps = {
 		id?: string;
 		fill?: string;
 	};
+	type: string;
 };
 
 export interface IconProps extends SvgBaseProps {

@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { ComponentType, ReactElement, useEffect } from 'react';
+import React, { ComponentType, ReactElement } from 'react';
 
 import { ThemedApp } from '../../common';
 import { IconProps, Point, SvgBaseProps, PositionProps } from './Icon.types';
@@ -27,8 +27,6 @@ export const Icon = ({ name, width = 70, height = 70, appearance, rotate = 0, ge
 	const Component: any = components[name];
 	const points: Point[] = [];
 
-	// Filter all RECT points
-	// If singile element -> no points
 	const { children } = Component().props;
 
 	const convertPoint = ({ x, y }: Point, xRng: number, yRng: number) => {
@@ -42,13 +40,10 @@ export const Icon = ({ name, width = 70, height = 70, appearance, rotate = 0, ge
 		return new Point(-xRng / 2 + x, -yRng / 2 + y);
 	};
 
-	if (children.length) {
-		const filteredPoints = children.filter(({ type }: any) => type === 'rect');
+	// Filter all RECT points
+	children.length && children.filter(({ props, type }: PositionProps) => type === 'rect' && points.push(convertPoint(props, width, height)));
 
-		if (filteredPoints) filteredPoints.map(({ props }: PositionProps) => points.push(convertPoint(props, width, height)));
-	}
-
-	useEffect(() => getPosition(points), points);
+	getPosition(points);
 
 	console.log('👉 Callback:', points);
 
