@@ -27,7 +27,7 @@ jobs:
               run: cat ./package.json
             - name: 'Automated Version Bump'
               id: version-bump
-              uses: 'phips28/gh-action-bump-version@v9.0.16'
+              uses: 'phips28/gh-action-bump-version@v9.0.27'
               with:
                   patch-wording: 'patch: ,fixes: ,fix: ,chore: '
                   minor-wording: 'feat: '
