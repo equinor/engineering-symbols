@@ -2,7 +2,7 @@ import * as React from 'react';
 import { SVGProps } from 'react';
 
 const SvgArrowRight = (props: SVGProps<SVGSVGElement>) => (
-	<svg viewBox="0 0 48 48" fill="none" {...props}>
+	<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" fill="none" stroke="#000" {...props}>
 		<rect id="ArrowRight_svg_hello" x={10} y={10} fill="red" width={5} height={5} />
 		<rect id="ArrowRight_svg_hello2" x={20} y={20} fill="red" width={5} height={5} />
 		<path

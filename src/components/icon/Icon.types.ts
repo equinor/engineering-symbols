@@ -6,7 +6,8 @@ import { IconName } from './Icon';
 export type SvgBaseProps = SVGAttributes<SVGElement>;
 
 export class Point {
-	constructor(readonly x: number, readonly y: number) {}
+	// constructor(readonly x: number, readonly y: number, readonly id: string, readonly drtc?: 'northwest' | 'southwest' | 'northeast' | 'southeast' | 'none') {}
+	constructor(readonly x: number, readonly y: number, readonly id: string, readonly drtc?: string) {}
 }
 
 export type PositionProps = {
@@ -15,7 +16,7 @@ export type PositionProps = {
 		y: number;
 		width?: number;
 		height?: number;
-		id?: string;
+		id: string;
 		fill?: string;
 	};
 	type: string;

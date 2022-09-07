@@ -78,4 +78,7 @@ const TemplateMap: ComponentStory<typeof Icon> = () => <ThemedComponent />;
 export const StoryMap = TemplateMap.bind({});
 
 StoryMap.storyName = 'All icons';
-StoryMap.parameters = { controls: { disable: true } };
+// TODO: fix console warning
+// StoryMap.parameters = { controls: { disable: true } };
+StoryMap.parameters = { name: { control: { disable: true } } };
+// StoryMap.parameters = { controls: { exclude: ['name', 'width'] } };
