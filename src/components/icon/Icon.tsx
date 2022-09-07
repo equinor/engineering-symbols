@@ -29,15 +29,32 @@ export const Icon = ({ name, width = 70, height = 70, appearance, rotate = 0, ge
 
 	const { children } = Component().props;
 
-	const convertPoint = ({ x, y }: Point, xRng: number, yRng: number) => {
+	console.log(9, 'children:', Component().props.viewBox);
+
+	const convertPoint = ({ x, y, id }: Point, xRng: number, yRng: number) => {
+		let drtc = 'none';
+
+		if (y >= 0 && x >= 0) {
+			// drtc = 'southwest'
+			drtc = 'south';
+		} else if (y >= 0 && x <= 0) {
+			// drtc = 'southeast'
+			drtc = 'east';
+		} else if (y <= 0 && x <= 0) {
+			// drtc = 'northwest'
+			drtc = 'north';
+		} else if (y <= 0 && x >= 0) {
+			drtc = 'east';
+		}
+
 		if (rotate > 0) {
 			const theta = (rotate * Math.PI) / 180;
 
-			return new Point(x * Math.cos(theta) - y * Math.sin(theta), y * Math.cos(theta) + x * Math.sin(theta));
+			return new Point(x * Math.cos(theta) - y * Math.sin(theta), y * Math.cos(theta) + x * Math.sin(theta), id, drtc);
 		}
 
 		// Converts a Point with origo TopLeft to a point with origo CenterCenter
-		return new Point(-xRng / 2 + x, -yRng / 2 + y);
+		return new Point(-xRng / 2 + x, -yRng / 2 + y, id, drtc);
 	};
 
 	// Filter all RECT points
