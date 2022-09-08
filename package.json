@@ -27,7 +27,8 @@
 		"prepublishOnly": "npm run build:lib",
 		"checkcode": "npm run lint && npm run ts:testcompile && npm run prettier:check",
 		"prepare": "husky install",
-		"svgr": "npx @svgr/cli --typescript --no-dimensions --svgo-config ./svgo.config.js --out-dir src/components/icon/icons -- src/svg"
+		"svgr": "npx @svgr/cli --typescript --no-dimensions --svgo-config ./svgo.config.js --out-dir src/components/icon/icons -- src/svg",
+		"semantic-release": "semantic-release --branches master"
 	},
 	"engines": {
 		"npm": ">= 8.3.1",

@@ -2,7 +2,7 @@
   "branches": ["master"],
   "plugins": [
     ["@semantic-release/commit-analyzer", {
-      "preset": "eslint",
+      "preset": "angular",
       "releaseRules": [
         {"type": "docs", "scope": "README", "release": "patch"},
         {"type": "refactor", "release": "patch"},
