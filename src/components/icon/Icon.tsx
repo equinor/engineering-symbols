@@ -63,6 +63,7 @@ export const Icon = ({ name, width = 70, height = 70, appearance, rotate = 0, ge
 	getPosition(points);
 
 	console.log('👉 Callback:', points);
+	console.log('👉 ');
 
 	return Component ? (
 		<ThemedApp>
