@@ -10,7 +10,8 @@
 		"email": "dzm@equinor.com"
 	},
 	"publishConfig": {
-		"registry": "https://registry.npmjs.org"
+		"registry": "https://registry.npmjs.org",
+		"access": "public"
 	},
 	"license": "MIT",
 	"scripts": {
@@ -105,6 +106,7 @@
 		"@semantic-release/changelog": "^6.0.1",
 		"@semantic-release/commit-analyzer": "^9.0.2",
 		"@semantic-release/git": "^10.0.1",
+		"@semantic-release/npm": "^9.0.1",
 		"@storybook/addon-actions": "^6.4.21",
 		"@storybook/addon-essentials": "^6.4.9",
 		"@storybook/addon-links": "^6.4.21",
