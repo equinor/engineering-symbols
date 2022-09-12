@@ -30,15 +30,11 @@ jobs:
         needs: [build]
         runs-on: ubuntu-latest
         if: ${{ github.ref == 'refs/heads/master' }}
-        steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: 16
-                  registry-url: https://registry.npmjs.org
-                  scope: '@equinor'
-            - run: npm ci
-            - run: npm run semantic-release
-              env:
-                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-                  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        uses: cycjimmy/semantic-release-action@v3
+        with:
+            extra_plugins: |
+                @semantic-release/git
+                @semantic-release/changelog
+        env:
+            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+            GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
