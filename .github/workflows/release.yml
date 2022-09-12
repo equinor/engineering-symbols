@@ -29,7 +29,6 @@ jobs:
         name: '🧇 Semantic release'
         needs: [build]
         runs-on: ubuntu-latest
-        if: ${{ github.ref == 'refs/heads/master' }}
         steps:
             - uses: actions/checkout@v3
             - uses: actions/setup-node@v3
