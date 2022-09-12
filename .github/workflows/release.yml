@@ -31,11 +31,11 @@ jobs:
         runs-on: ubuntu-latest
         if: ${{ github.ref == 'refs/heads/master' }}
         steps:
-            uses: cycjimmy/semantic-release-action@v3
-            with:
-                extra_plugins: |
-                    @semantic-release/git
-                    @semantic-release/changelog
-            env:
-                NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-                GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+            - uses: cycjimmy/semantic-release-action@v3
+              with:
+                  extra_plugins: |
+                      @semantic-release/git
+                      @semantic-release/changelog
+              env:
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
