@@ -2,7 +2,7 @@ name: PR checker
 
 on:
     pull_request:
-        branches: [master, 'develop']
+        branches: ['develop']
         types:
             - opened
             - edited
