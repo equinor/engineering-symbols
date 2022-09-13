@@ -3,24 +3,48 @@ kind: RadixApplication
 metadata:
     name: engineering-symbols
 spec:
-    build:
-        from: master
     environments:
+        - name: dev
+          build:
+              from: develop
+          environments:
+              - name: dev
+                runAsNonRoot: true
+                build:
+                    from: develop
+          components:
+              - name: development
+                publicPort: http
+                src: .
+                ports:
+                    - name: http
+                      port: 3000
+          dnsAppAlias:
+              environment: dev
+              component: development
+          dnsExternalAlias:
+              - alias: engineering-symbols.equinor.com
+                environment: prod
+                component: development
         - name: prod
-          runAsNonRoot: true
           build:
               from: master
-    components:
-        - name: frontend
-          publicPort: http
-          src: .
-          ports:
-              - name: http
-                port: 3000
-    dnsAppAlias:
-        environment: prod
-        component: frontend
-    dnsExternalAlias:
-        - alias: engineering-symbols.equinor.com
-          environment: prod
-          component: frontend
+          environments:
+              - name: prod
+                runAsNonRoot: true
+                build:
+                    from: master
+          components:
+              - name: production
+                publicPort: http
+                src: .
+                ports:
+                    - name: http
+                      port: 3000
+          dnsAppAlias:
+              environment: prod
+              component: production
+          dnsExternalAlias:
+              - alias: engineering-symbols.equinor.com
+                environment: prod
+                component: production
