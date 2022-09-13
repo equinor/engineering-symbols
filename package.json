@@ -111,7 +111,7 @@
 		"@storybook/addon-actions": "^6.4.21",
 		"@storybook/addon-essentials": "^6.4.9",
 		"@storybook/addon-links": "^6.4.21",
-		"@storybook/node-logger": "^6.4.21",
+		"@storybook/node-logger": "^6.5.11",
 		"@storybook/preset-create-react-app": "^3.2.0",
 		"@storybook/react": "^6.4.21",
 		"@svgr/cli": "^6.2.1",
