@@ -7,6 +7,7 @@
         {"type": "docs", "scope": "README", "release": "patch"},
         {"type": "refactor", "release": "patch"},
         {"type": "chore", "release": "patch"},
+        {"type": "patch", "release": "patch"},
         {"scope": "no-release", "release": false}
       ]
     }],
