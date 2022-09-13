@@ -13,17 +13,26 @@
       ]
     }],
     ["@semantic-release/release-notes-generator", {
-      "preset": "angular",
+      "preset": "conventionalCommits",
       "presetConfig": {
           "types": [
+            {"type": "feat", "section": "Features", "hidden": false},
+            {"type": "fix", "section": "Bug Fixes", "hidden": false},
             {"type": "docs", "section": "Documentation", "hidden": false},
-            {"type": "chore", "section": "Chore", "hidden": false},
+            {"type": "chore", "section": "Internal", "hidden": false},
             {"type": "patch", "section": "Patch", "hidden": false},
             {"type": "build", "section": "Bump", "hidden": false},
             {"type": "bump", "section": "Bump", "hidden": false}
           ]
         }
-    }],
+      },
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "docs/CHANGELOG.md"
+        }
+      ]
+    ],
     "@semantic-release/npm",
     "@semantic-release/git",
     "@semantic-release/github"
