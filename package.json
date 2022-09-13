@@ -121,7 +121,7 @@
 		"babel-loader": "^8.2.5",
 		"conventional-changelog-conventionalcommits": "^5.0.0",
 		"husky": "^7.0.0",
-		"prettier": "^2.6.2",
+		"prettier": "^2.7.1",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-scripts": "4.0.3",
