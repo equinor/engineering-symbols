@@ -4,6 +4,8 @@
     ["@semantic-release/commit-analyzer", {
       "preset": "conventionalcommits",
       "releaseRules": [
+        {"type": "major", "release": "major"},
+        {"type": "feat", "release": "minor"},
         {"type": "docs", "release": "patch"},
         {"type": "chore", "release": "patch"},
         {"type": "patch", "release": "patch"},
@@ -13,7 +15,7 @@
       ]
     }],
     ["@semantic-release/release-notes-generator", {
-      "preset": "conventionalCommits",
+      "preset": "conventionalcommits",
       "presetConfig": {
           "types": [
             {"type": "feat", "section": "Features", "hidden": false},
