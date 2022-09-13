@@ -4,6 +4,8 @@ updates:
     - package-ecosystem: 'github-actions'
       directory: '/'
       target-branch: 'develop'
+      commit-message:
+          prefix: 'bump: '
       schedule:
           interval: 'weekly'
 

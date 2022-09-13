@@ -4,16 +4,23 @@
 		"color": "7000ff"
 	},
 	"CHECKS": {
-		"prefixes": ["major: "],
-		"regexp": [
-			"docs\\(v[0-9]\\): ",
-			"chore\\(v[0-9]\\): ",
-			"build\\(v[0-9]\\): ",
-			"fix\\(v[0-9]\\): ",
-			"patch\\(v[0-9]\\): ",
-			"feat\\(v[0-9]\\): ",
-			"bump\\(v[0-9]\\): "
+		"prefixes": [
+			"fix: ",
+			"feat: ",
+			"chore: ",
+			"patch: ",
+			"fixes: ",
+			"major: ",
+			"CI: ",
+			"Bump: ",
+			"Bump ",
+			"bump ",
+			"bump: ",
+			"chore(deps-dev): ",
+			"chore(deps): ",
+			"no-release: "
 		],
+		"regexp": "bump\\(v[0-9]\\): ",
 		"ignoreLabels": ["dont-check-PRs-with-this-label", "meta"]
 	}
 }
