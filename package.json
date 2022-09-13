@@ -114,7 +114,7 @@
 		"@storybook/node-logger": "^6.5.11",
 		"@storybook/preset-create-react-app": "^3.2.0",
 		"@storybook/react": "^6.4.21",
-		"@svgr/cli": "^6.2.1",
+		"@svgr/cli": "^6.3.1",
 		"@testing-library/dom": "^8.11.4",
 		"@testing-library/jest-dom": "^5.14.1",
 		"@testing-library/react": "^12.1.2",
