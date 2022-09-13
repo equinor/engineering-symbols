@@ -4,14 +4,26 @@
     ["@semantic-release/commit-analyzer", {
       "preset": "angular",
       "releaseRules": [
-        {"type": "docs", "release": "patch", "section": "Documentation"},
-        {"type": "refactor", "release": "patch", "section": "Refactor"},
-        {"type": "chore", "release": "patch", "section": "Chore"},
-        {"type": "patch", "release": "patch", "section": "Patch"},
+        {"type": "docs", "release": "patch"},
+        {"type": "chore", "release": "patch"},
+        {"type": "patch", "release": "patch"},
+        {"type": "build", "release": "patch"},
+        {"type": "bump", "release": "patch"},
         {"scope": "no-release", "release": false}
       ]
     }],
-    "@semantic-release/release-notes-generator",
+    ["@semantic-release/release-notes-generator", {
+      "preset": "conventionalcommits",
+      "presetConfig": {
+          "types": [
+            {"type": "docs", "section": "Documentation", "hidden": false},
+            {"type": "chore", "section": "Chore", "hidden": false},
+            {"type": "patch", "section": "Patch", "hidden": false},
+            {"type": "build", "section": "Bump", "hidden": false},
+            {"type": "bump", "section": "Bump", "hidden": false}
+          ]
+        }
+    }],
     "@semantic-release/npm",
     "@semantic-release/git",
     "@semantic-release/github"
