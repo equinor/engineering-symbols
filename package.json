@@ -108,7 +108,7 @@
 		"@semantic-release/git": "^10.0.1",
 		"@semantic-release/github": "^8.0.6",
 		"@semantic-release/npm": "^9.0.1",
-		"@storybook/addon-actions": "^6.4.21",
+		"@storybook/addon-actions": "^6.5.11",
 		"@storybook/addon-essentials": "^6.4.9",
 		"@storybook/addon-links": "^6.4.21",
 		"@storybook/node-logger": "^6.5.11",
