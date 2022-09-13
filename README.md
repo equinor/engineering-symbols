@@ -4,6 +4,8 @@
 
 [Engineering symbols](https://frontend-engineering-symbols-prod.radix.equinor.com)
 
+[Engineering symbols (dev)](https://frontend-engineering-symbols-prod.radix.equinor.com)
+
 # Example 🪴
 
 ```jsx
