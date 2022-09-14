@@ -5,9 +5,11 @@ metadata:
 spec:
     environments:
         - name: prod
+          runAsNonRoot: true
           build:
               from: master
         - name: dev
+          runAsNonRoot: true
           build:
               from: develop
     # build:
