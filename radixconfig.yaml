@@ -4,47 +4,39 @@ metadata:
     name: engineering-symbols
 spec:
     environments:
-        - name: dev
-          build:
-              from: develop
-          environments:
-              - name: dev
-                runAsNonRoot: true
-                build:
-                    from: develop
-          components:
-              - name: development
-                publicPort: http
-                src: .
-                ports:
-                    - name: http
-                      port: 3000
-          dnsAppAlias:
-              environment: dev
-              component: development
-          dnsExternalAlias:
-              - alias: engineering-symbols.equinor.com
-                environment: prod
-                component: development
         - name: prod
           build:
               from: master
-          environments:
-              - name: prod
-                runAsNonRoot: true
-                build:
-                    from: master
-          components:
-              - name: production
-                publicPort: http
-                src: .
-                ports:
-                    - name: http
-                      port: 3000
-          dnsAppAlias:
-              environment: prod
-              component: production
-          dnsExternalAlias:
-              - alias: engineering-symbols.equinor.com
-                environment: prod
-                component: production
+        - name: dev
+          build:
+              from: develop
+    # build:
+    #     from: master
+    # environments:
+    #     - name: prod
+    #       runAsNonRoot: true
+    #       build:
+    #           from: master
+    components:
+        - name: prod
+          publicPort: http
+          src: prod
+          ports:
+              - name: http
+                port: 3000
+        - name: dev
+          publicPort: http
+          src: dev
+          ports:
+              - name: http
+                port: 3000
+    dnsAppAlias:
+        environment: prod
+        component: frontend
+    dnsExternalAlias:
+        - alias: engineering-symbols.equinor.com
+          environment: prod
+          component: prod
+        - alias: dev-engineering-symbols.equinor.com
+          environment: dev
+          component: dev
