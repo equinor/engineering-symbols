@@ -18,15 +18,9 @@ spec:
     #       build:
     #           from: master
     components:
-        - name: prod
+        - name: frontend
           publicPort: http
-          src: prod
-          ports:
-              - name: http
-                port: 3000
-        - name: dev
-          publicPort: http
-          src: dev
+          src: src
           ports:
               - name: http
                 port: 3000
@@ -36,7 +30,4 @@ spec:
     dnsExternalAlias:
         - alias: engineering-symbols.equinor.com
           environment: prod
-          component: prod
-        - alias: dev-engineering-symbols.equinor.com
-          environment: dev
-          component: dev
+          component: frontend
