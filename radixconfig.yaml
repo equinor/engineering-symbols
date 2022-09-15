@@ -33,3 +33,6 @@ spec:
         - alias: engineering-symbols.equinor.com
           environment: prod
           component: frontend
+        - alias: engineering-symbols.equinor.com
+          environment: dev
+          component: frontend
