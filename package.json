@@ -83,8 +83,8 @@
 		]
 	},
 	"peerDependencies": {
-		"react": "^16.14.0 || ^17.0.0",
-		"react-dom": "^16.14.0 || ^17.0.0"
+		"react": "^16.14.0 || ^17.0.0 || ^18.0.0",
+		"react-dom": "^16.14.0 || ^17.0.0 || ^18.0.0"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.10.4",
@@ -115,7 +115,7 @@
 		"@storybook/preset-create-react-app": "^3.2.0",
 		"@storybook/react": "^6.4.21",
 		"@svgr/cli": "^6.2.1",
-		"@testing-library/dom": "^8.11.4",
+		"@testing-library/dom": "^8.18.1",
 		"@testing-library/jest-dom": "^5.14.1",
 		"@testing-library/react": "^12.1.2",
 		"babel-loader": "^8.2.5",
