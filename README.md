@@ -42,6 +42,8 @@ Current settings for converting:
 -   `Remove title`
 -   `Remove empty attributes`
 -   `Remove description`
+-   `Merge paths`
+-   `Convert shape to path`
 -   `Remove stroke form elements`
 -   `Implementation ID names for existing elements with ID -> ${svgName}_${originalID}`
 -   `Minify svg`

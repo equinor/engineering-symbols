@@ -2,18 +2,17 @@ import * as React from 'react';
 import { SVGProps } from 'react';
 
 const SvgArrowRight = (props: SVGProps<SVGSVGElement>) => (
-	<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" fill="none" stroke="#000" {...props}>
-		<rect id="ArrowRight_svg_hello" x={10} y={10} fill="red" width={5} height={5} />
-		<rect id="ArrowRight_svg_hello2" x={20} y={20} fill="red" width={5} height={5} />
-		<path
-			fillRule="evenodd"
-			clipRule="evenodd"
-			d="M2 24C2 18.1652 4.31785 12.5695 8.44365 8.44365C12.5695 4.31785 18.1652 2 24 2C29.8348 2 35.4305 4.31785 39.5563 8.44365C43.6821 12.5695 46 18.1652 46 24C46 29.8348 43.6821 35.4305 39.5563 39.5563C35.4305 43.6821 29.8348 46 24 46C18.1652 46 12.5695 43.6821 8.44365 39.5563C4.31785 35.4305 2 29.8348 2 24H2Z"
-			strokeMiterlimit={3}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		/>
-		<path d="M2 24.0001H46" strokeMiterlimit={3} strokeLinecap="round" strokeLinejoin="round" />
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" {...props}>
+		<g id="PP001A">
+			<g id="Symbol">
+				<path d="M52 40.5C52 42.7091 50.2091 44.5 48 44.5C45.7909 44.5 44 42.7091 44 40.5C44 38.2909 45.7909 36.5 48 36.5C50.2091 36.5 52 38.2909 52 40.5ZM51 40.5C51 38.8431 49.6569 37.5 48 37.5C46.3431 37.5 45 38.8431 45 40.5C45 42.1569 46.3431 43.5 48 43.5C49.6569 43.5 51 42.1569 51 40.5Z" />
+				<path d="M83 40.5C83 21.17 67.33 5.5 48 5.5C28.67 5.5 13 21.17 13 40.5C13 50.9622 17.5904 60.3522 24.8671 66.7659L13 90.5H83L71.1329 66.7659C78.4096 60.3522 83 50.9622 83 40.5ZM48 74.5C29.2223 74.5 14 59.2777 14 40.5C14 21.7223 29.2223 6.5 48 6.5C66.7777 6.5 82 21.7223 82 40.5C82 59.2777 66.7777 74.5 48 74.5ZM48 75.5C56.4973 75.5 64.2874 72.4719 70.3499 67.4359L81.382 89.5H14.618L25.6501 67.4359C31.7126 72.4719 39.5027 75.5 48 75.5Z" />
+			</g>
+			<g id="Annotations">
+				<circle id="annotation-connector-2-270" cx={13.5} cy={40.5} r={0.5} />
+				<circle id="annotation-connector-1-0" cx={48} cy={6} r={0.5} />
+			</g>
+		</g>
 	</svg>
 );
 

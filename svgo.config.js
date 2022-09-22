@@ -3,13 +3,15 @@ module.exports = {
 	plugins: [
 		'removeTitle',
 		'removeEmptyAttrs',
+		'mergePaths',
+		'convertShapeToPath',
 		'removeDesc',
-		{
-			name: 'prefixIds',
-			params: {
-				delim: '_',
-			},
-		},
+		// {
+		// 	name: 'prefixIds',
+		// 	params: {
+		// 		delim: '_',
+		// 	},
+		// },
 		{
 			name: 'removeAttrs',
 			params: {

@@ -1,6 +1,5 @@
 import { SVGAttributes } from 'react';
 
-import { IconAppearance } from '../../context';
 import { IconName } from './Icon';
 
 export type SvgBaseProps = SVGAttributes<SVGElement>;
@@ -24,7 +23,7 @@ export type PositionProps = {
 
 export interface IconProps extends SvgBaseProps {
 	getPosition: (props: Point[]) => void;
-	appearance?: IconAppearance;
+	appearance?: any;
 	rotate?: number;
 	height?: number;
 	width?: number;

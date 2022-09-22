@@ -1,9 +1,9 @@
-/** @jsxImportSource @emotion/react */
 import React, { ReactElement, ReactNode } from 'react';
-import { css } from '@emotion/react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { components, Icon, iconsName } from './Icon';
+
+import './IconStories.css';
 
 export default {
 	title: 'Components/Icon',
@@ -29,36 +29,11 @@ Story.args = {
 Story.storyName = 'Single icon';
 
 const Square = ({ children }: { children: ReactNode }): ReactElement => {
-	const style = css`
-		width: 12rem;
-		height: 12rem;
-		display: inline-flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		text-align: center;
-		padding: 1rem;
-		border-radius: 1rem;
-		transition: all 0.3s ease-in-out;
-		background: #fff;
-
-		&:hover {
-			box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-			transform: scale(1.1);
-		}
-	`;
-	return <div css={style}>{children}</div>;
+	return <div className="square">{children}</div>;
 };
 
-const style = css`
-	align-items: center;
-	justify: flex-start;
-	direction: row;
-	flex-wrap: wrap;
-`;
-
 const ThemedComponent = (): ReactElement => (
-	<div css={style}>
+	<div className="container">
 		{components &&
 			Object.entries(components).map((el) => {
 				const name = el[0];
