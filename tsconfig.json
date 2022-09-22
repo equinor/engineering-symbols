@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"sourceMap": true,
 		"declarationDir": "types",
 		"declaration": true,
 		"target": "ES6",

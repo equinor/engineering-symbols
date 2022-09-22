@@ -2,7 +2,7 @@ import * as React from 'react';
 import { SVGProps } from 'react';
 
 const SvgArrowDown = (props: SVGProps<SVGSVGElement>) => (
-	<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 96 96" stroke="#000" fill="none" {...props}>
+	<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 96 96" {...props}>
 		<path d="M4 80H92" strokeMiterlimit={10} strokeLinecap="square" strokeLinejoin="round" />
 		<path d="M17.7342 78.9753V60.0199" strokeMiterlimit={10} strokeLinecap="square" strokeLinejoin="round" />
 		<path d="M74.2658 78.9753V60.0199" strokeMiterlimit={10} strokeLinecap="square" strokeLinejoin="round" />
