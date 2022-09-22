@@ -10,7 +10,7 @@ type IconWrapperStyledProps = {
 
 const IconWrapper = styled.div<IconWrapperStyledProps>`
 	.eq_icon {
-		transform: rotate(${props => `${props.rotate}deg`});
+		transform: rotate(${(props) => `${props.rotate}deg`});
 	}
 `;
 
@@ -76,7 +76,7 @@ export const Icon = ({ name, width = 70, height = 70, appearance = 'black', rota
 
 	return Component ? (
 		<IconWrapper rotate={rotate}>
-			<Component className="eq_icon" width={width} height={height} fill={appearance}/>
+			<Component className="eq_icon" width={width} height={height} fill={appearance} />
 		</IconWrapper>
 	) : null;
 };
