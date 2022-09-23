@@ -26,6 +26,12 @@ spec:
           ports:
               - name: http
                 port: 3000
+        - name: web
+          publicPort: http
+          src: web
+          ports:
+              - name: http
+                port: 3000
     dnsAppAlias:
         environment: prod
         component: frontend
@@ -33,6 +39,12 @@ spec:
         - alias: engineering-symbols.equinor.com
           environment: prod
           component: frontend
+        - alias: engineering-symbols-web.equinor.com
+          environment: prod
+          component: web
         - alias: symbols.equinor.com
           environment: dev
           component: frontend
+        - alias: symbols-web.equinor.com
+          environment: dev
+          component: web
