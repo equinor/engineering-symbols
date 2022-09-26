@@ -19,6 +19,6 @@
 		"noEmit": true,
 		"jsx": "react-jsx"
 	},
-	"include": ["packagepackage/.storybook/preview.jseview.js"],
+	"include": ["src", ".storybook/preview.jseview.js"],
 	"exclude": ["**/*.stories.tsx"]
 }
