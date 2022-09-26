@@ -45,7 +45,11 @@
 						}
 					],
 					"react-hooks/rules-of-hooks": "off",
-					"react-hooks/exhaustive-deps": "off"
+					"react-hooks/exhaustive-deps": "off",
+					"@next/next/no-html-link-for-pages": [
+						"error",
+						"web/pages"
+					]
 				}
 			}
 		]
