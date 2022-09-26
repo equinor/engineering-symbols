@@ -17,7 +17,6 @@
 	"scripts": {
 		"test": "react-scripts test",
 		"lint": "eslint --ext .ts --ext .tsx src",
-		"ts:testcompile": "tsc --noEmit",
 		"start": "npm run storybook",
 		"dev": "npm run storybook",
 		"storybook": "start-storybook -p 3000",
