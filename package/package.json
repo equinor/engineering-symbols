@@ -38,17 +38,8 @@
 	],
 	"eslintConfig": {
 		"extends": [
-			"eslint:recommended",
-			"plugin:react/recommended",
-			"plugin:jsx-a11y/recommended",
-			"plugin:react-hooks/recommended",
-			"plugin:jest/recommended",
-			"plugin:@typescript-eslint/recommended"
-		],
-		"plugins": [
-			"react",
-			"import",
-			"react-hooks"
+			"react-app",
+			"react-app/jest"
 		],
 		"settings": {
 			"react": {
@@ -78,6 +69,8 @@
 						}
 					],
 					"react-hooks/rules-of-hooks": "off",
+					"testing-library/no-container": "off",
+					"testing-library/no-node-access": "off",
 					"react-hooks/exhaustive-deps": "off"
 				}
 			}
@@ -134,16 +127,9 @@
 		"@testing-library/jest-dom": "^5.14.1",
 		"@testing-library/react": "^12.1.2",
 		"@types/styled-components": "^5.1.26",
-		"@typescript-eslint/eslint-plugin": "^5.38.0",
 		"babel-loader": "^8.2.5",
 		"conventional-changelog-conventionalcommits": "^5.0.0",
-		"eslint-plugin-jest": "^27.0.4",
-		"eslint-plugin-jsx-a11y": "^6.6.1",
-		"eslint-plugin-react": "^7.31.8",
-		"eslint-plugin-react-hooks": "^4.6.0",
-		"eslint-plugin-testing-library": "^5.7.0",
-		"i": "^0.3.7",
-		"npm": "^8.19.2",
+		"eslint-config-react-app": "^7.0.1",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-scripts": "4.0.3",
