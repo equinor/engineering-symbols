@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import axios from 'axios';
 import Head from 'next/head';
 import remarkGfm from 'remark-gfm';
 
@@ -8,6 +7,7 @@ import ReactMarkdown from 'react-markdown';
 import styles from './styles.module.css';
 import { useEffect, useState } from 'react';
 import { Card, Chip } from '@equinor/eds-core-react';
+import { getGitHubReposResponse } from '../../helpers';
 
 interface ChangelogProps {
 	body: string;
@@ -19,26 +19,14 @@ const Changelog: NextPage = () => {
 	const [data, setData] = useState<any>([]);
 
 	useEffect(() => {
-		const getResponse = async () => {
-			try {
-				return await axios.get('https://api.github.com/repos/equinor/engineering-symbols/releases');
-			} catch (error) {
-				console.log(error);
-			}
-		};
-
 		const getData = async () => {
-			const res = await getResponse();
+			const res = await getGitHubReposResponse();
 
-			if (!res) return;
-
-			setData(res.data);
+			setData(res);
 		};
 
 		getData();
 	}, []);
-
-	console.log('DATA:', data);
 
 	return (
 		<div className={styles.container}>

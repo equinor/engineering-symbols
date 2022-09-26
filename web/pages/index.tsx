@@ -11,7 +11,7 @@ import { useDebouncedCallback } from 'use-debounce';
 
 import styles from '../styles/Home.module.css';
 import { DialogComponent } from '../components';
-import { capitalizeWords } from '../helpers';
+import { capitalizeWords, getGitHubReposResponse } from '../helpers';
 import { IconProps } from '../types';
 
 const icons = [
@@ -50,20 +50,10 @@ const Home: NextPage = () => {
 	const debounceValue = useDebouncedCallback((value) => setSearchValue(value), 1000);
 
 	useEffect(() => {
-		const getResponse = async () => {
-			try {
-				return await axios.get('https://api.github.com/repos/equinor/engineering-symbols/releases');
-			} catch (error) {
-				console.log(error);
-			}
-		};
-
 		const getData = async () => {
-			const res = await getResponse();
+			const res = await getGitHubReposResponse();
 
-			if (!res) return;
-
-			setData(res.data);
+			setData(res);
 		};
 
 		getData();
