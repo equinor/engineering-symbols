@@ -1,4 +1,4 @@
-name: Code quality
+name: Package
 
 on:
     push:
@@ -21,7 +21,7 @@ env:
 
 jobs:
     code_issues:
-        name: 👮‍♂️ Code issues (Package)
+        name: 👮‍♂️ Code issues
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
@@ -31,10 +31,10 @@ jobs:
                   cache: 'npm'
             - name: Install dependencies
               run: npm ci
-              working-directory: ./package
+              working-directory: package
             - name: Build library
               run: npm run build:lib
-              working-directory: ./package
+              working-directory: package
     unit_tests:
         name: 🧪 Unit tests
         runs-on: ubuntu-latest
@@ -46,12 +46,12 @@ jobs:
                   cache: 'npm'
             - name: Install dependencies
               run: npm ci
-              working-directory: ./package
+              working-directory: package
             - name: Run unit tests
               run: npm run test
-              working-directory: ./package
+              working-directory: package
     security_vulnerabilities:
-        name: 🐩 Snyk (Security vulnerabilities Package)
+        name: 🐩 Snyk (Security vulnerabilities)
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
@@ -62,18 +62,18 @@ jobs:
             - uses: snyk/actions/setup@master
             - name: Install dependencies
               run: npm ci
-              working-directory: ./package
+              working-directory: package
             - name: Authenticator
               run: snyk auth ${{ secrets.SNYK_TOKEN }}
-              working-directory: ./package
+              working-directory: package
             - name: Test dependencies for known issues
               run: snyk test --fail-on=all --severity-threshold=high
-              working-directory: ./package
+              working-directory: package
               env:
                   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
             - name: Continuously monitor new vulnerabilities
               if: inputs.snyk-monitor
               run: snyk monitor
-              working-directory: ./package
+              working-directory: package
               env:
                   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
