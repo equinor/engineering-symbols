@@ -31,8 +31,13 @@ export const components: Record<IconName, ComponentType<SvgBaseProps>> = Object.
 	{},
 	...iconsName.map((el, id: number) => ({ [el]: Icons[iconsKeys[id] as IconNameKeys] }))
 );
-
+{
+	/* eslint-disable @typescript-eslint/no-unused-vars */
+}
 export const Icon = ({ name, width = 70, height = 70, appearance = 'black', rotate = 0, getPosition }: IconProps): ReactElement | null => {
+	{
+		/* eslint-disable @typescript-eslint/no-explicit-any */
+	}
 	const Component: any = components[name];
 	// const points: Point[] = [];
 

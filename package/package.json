@@ -50,6 +50,11 @@
 			"import",
 			"react-hooks"
 		],
+		"settings": {
+			"react": {
+				"version": "detect"
+			}
+		},
 		"overrides": [
 			{
 				"files": [
