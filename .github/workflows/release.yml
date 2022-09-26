@@ -3,6 +3,7 @@ name: Release
 on:
     push:
         branches: ['master']
+        paths: ['package/**']
 
 jobs:
     code-quality:
@@ -11,9 +12,15 @@ jobs:
         secrets:
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
+    package:
+        name: 'Package'
+        uses: equinor/sparql-graph/.github/workflows/package.yml@master
+        secrets:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
     build:
         runs-on: ubuntu-latest
-        needs: [code-quality]
+        needs: [code-quality, package]
         name: '🤹‍♀️ Build'
         steps:
             - uses: actions/checkout@v3
@@ -22,6 +29,7 @@ jobs:
                   node-version: 16
                   registry-url: https://registry.npmjs.org
             - run: npm install --frozen-lockfile
+              working-directory: ./package
               env:
                   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
@@ -37,8 +45,10 @@ jobs:
                   cache: 'npm'
             - name: Install dependencies
               run: npm ci
+              working-directory: ./package
             - name: Semantic release
               run: npm run semantic-release
+              working-directory: ./package
               env:
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
                   GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

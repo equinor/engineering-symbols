@@ -14,6 +14,24 @@ updates:
       directory: '/'
       schedule:
           interval: 'weekly'
+      commit-message:
+          prefix: 'bump(iconor): '
+
+    # Maintain dependencies for npm
+    - package-ecosystem: 'npm'
+      directory: '/web'
+      schedule:
+          interval: 'weekly'
+      commit-message:
+          prefix: 'bump(web): '
+
+    # Maintain dependencies for npm
+    - package-ecosystem: 'npm'
+      directory: '/package'
+      schedule:
+          interval: 'weekly'
+      commit-message:
+          prefix: 'bump(package): '
       ignore:
           - dependency-name: '@storybook/preset-create-react-app'
             update-types: ['version-update:semver-major']

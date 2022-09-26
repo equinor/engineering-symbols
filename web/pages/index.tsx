@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -44,7 +45,29 @@ const Home: NextPage = () => {
 	const [selectedCategory, setSelectedCategory] = useState<string>('');
 	const [searchValue, setSearchValue] = useState<string>('');
 
+	const [data, setData] = useState<any>([]);
+
 	const debounceValue = useDebouncedCallback((value) => setSearchValue(value), 1000);
+
+	useEffect(() => {
+		const getResponse = async () => {
+			try {
+				return await axios.get('https://api.github.com/repos/equinor/engineering-symbols/releases');
+			} catch (error) {
+				console.log(error);
+			}
+		};
+
+		const getData = async () => {
+			const res = await getResponse();
+
+			if (!res) return;
+
+			setData(res.data);
+		};
+
+		getData();
+	}, []);
 
 	useEffect(() => {
 		if (searchValue) {
@@ -85,6 +108,7 @@ const Home: NextPage = () => {
 		acc[str] = (acc[str] || 0) + 1;
 		return acc;
 	}, {});
+	console.log(89, data);
 
 	return (
 		<div className={styles.container}>
@@ -102,9 +126,7 @@ const Home: NextPage = () => {
 						</a>
 					</Link>
 					<Link href="/changelog">
-						<a>
-							<Chip variant="active">v.2.0.1</Chip>
-						</a>
+						<a>{data.length > 0 && <Chip variant="active">{data[0].name}</Chip>}</a>
 					</Link>
 				</div>
 
@@ -166,19 +188,19 @@ const Home: NextPage = () => {
 							<p>Available for:</p>
 						</li>
 						<li className={styles.availableListReact}>
-							<Image src="/image/react.png" layout="fill" />
+							<Image src="/image/react.png" layout="fill" alt="hello" />
 						</li>
 						<li className={styles.availableListFigma}>
-							<Image src="/image/figma.png" layout="fill" />
+							<Image src="/image/figma.png" layout="fill" alt="hello" />
 						</li>
 						<li className={styles.availableListCode}>
-							<Image src="/image/html-coding.png" layout="fill" />
+							<Image src="/image/html-coding.png" layout="fill" alt="hello" />
 						</li>
 						<li className={styles.availableListFlutter}>
-							<Image src="/image/flutter.png" layout="fill" />
+							<Image src="/image/flutter.png" layout="fill" alt="hello" />
 						</li>
 						<li className={styles.availableListAdobe}>
-							<Image src="/image/adobe-illustrator.png" layout="fill" />
+							<Image src="/image/adobe-illustrator.png" layout="fill" alt="hello" />
 						</li>
 					</ul>
 				</div>

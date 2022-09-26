@@ -7,10 +7,15 @@ import ReactMarkdown from 'react-markdown';
 
 import styles from './styles.module.css';
 import { useEffect, useState } from 'react';
-import { Card, Chip, Paper } from '@equinor/eds-core-react';
+import { Card, Chip } from '@equinor/eds-core-react';
+
+interface ChangelogProps {
+	body: string;
+	tag_name: string;
+	id: number;
+}
 
 const Changelog: NextPage = () => {
-	// console.log(18, getStaticProps())
 	const [data, setData] = useState<any>([]);
 
 	useEffect(() => {
@@ -28,58 +33,9 @@ const Changelog: NextPage = () => {
 			if (!res) return;
 
 			setData(res.data);
-
-			// const entryData = res.data;
-			// const entries: any[] = [];
-
-			// for (const entry of entryData) {
-			//   entries.push({
-			//     body: entry.body
-			//     // body: await serialize(entry.body, {
-			//     //   mdxOptions: {
-			//     //     remarkPlugins: [require('remark-prism'), remarkGfm],
-			//     //   },
-			//     // }),
-			//   });
-			// }
-
-			// console.log(898, entries)
 		};
 
 		getData();
-
-		const getStaticProps = async () => {
-			const apiResult = await axios.get(`https://api.github.com/repos/equinor/engineering-symbols/releases`);
-			const entryData = apiResult || [];
-			const entries: any[] = [];
-			// console.log(28, await apiResult)
-
-			// for (const entry of entryData) {
-			//   entries.push({
-			//     ...entry,
-			//     body: await serialize(entry.body, {
-			//       mdxOptions: {
-			//         remarkPlugins: [require('remark-prism'), remarkGfm],
-			//       },
-			//     }),
-			//   });
-			// }
-			// console.log(28, entries)
-			// const items = getDocumentationStructure();
-			// setData(apiResult)
-			return await apiResult;
-			// return {
-			// 	props: {
-			// 		entries,
-			// 		// ...getHeaderProps(),
-			// 		// documentationProps: { documentationItems: items },
-			// 	},
-			// };
-		};
-
-		// const result = getStaticProps().catch(console.error);;
-
-		// console.log('result =>', result);
 	}, []);
 
 	console.log('DATA:', data);
@@ -97,13 +53,14 @@ const Changelog: NextPage = () => {
 
 				<div className={styles.changelog}>
 					{data &&
-						data.map(({ body, tag_name }) => (
-							<div className={styles.changelogEl}>
+						data.map(({ id, body, tag_name }: ChangelogProps) => (
+							<div key={id} className={styles.changelogEl}>
 								<p className={styles.changelogVer}>
 									<Chip>{tag_name}</Chip>
 								</p>
 								<div className={styles.changelogDesc}>
 									<Card>
+										{/* eslint-disable react/no-children-prop */}
 										<ReactMarkdown children={body} remarkPlugins={[remarkGfm]} />
 									</Card>
 								</div>

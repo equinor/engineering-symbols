@@ -22,7 +22,7 @@ spec:
     components:
         - name: frontend
           publicPort: http
-          src: .
+          src: package
           ports:
               - name: http
                 port: 3000

@@ -3,6 +3,7 @@ name: PR checker
 on:
     pull_request:
         branches: ['develop']
+        paths: ['package/**']
         types:
             - opened
             - edited
@@ -16,6 +17,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: thehanimo/pr-title-checker@v1.3.1
+              working-directory: ./package
               env:
                   GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
               with:

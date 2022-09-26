@@ -6,7 +6,7 @@ import cleaner from 'rollup-plugin-cleaner';
 import css from 'rollup-plugin-import-css';
 import svg from 'rollup-plugin-svg';
 
-import packageJson from './package.json';
+import packageJson from '../package.json';
 
 export default {
 	input: './src/index.ts',
