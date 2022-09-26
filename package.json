@@ -21,6 +21,39 @@
 	"browser": {
 		"fs": false
 	},
+	"eslintConfig": {
+		"extends": [
+			"react-app",
+			"react-app/jest"
+		],
+		"overrides": [
+			{
+				"files": [
+					"**/*.stories.*"
+				],
+				"rules": {
+					"import/no-anonymous-default-export": "off"
+				}
+			},
+			{
+				"files": [
+					"**/*/*.*"
+				],
+				"rules": {
+					"react/no-unknown-property": [
+						"error",
+						{
+							"ignore": [
+								"css"
+							]
+						}
+					],
+					"react-hooks/rules-of-hooks": "off",
+					"react-hooks/exhaustive-deps": "off"
+				}
+			}
+		]
+	},
 	"browserslist": {
 		"production": [
 			">0.2%",
@@ -41,6 +74,7 @@
 		"lint-staged": "^12.4.0"
 	},
 	"devDependencies": {
+		"eslint": "^8.24.0",
 		"husky": "^7.0.0",
 		"prettier": "^2.6.2"
 	}
