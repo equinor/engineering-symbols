@@ -18,7 +18,7 @@ spec:
     #       build:
     #           from: master
     components:
-        - name: frontend
+        - name: storybook
           publicPort: http
           src: ./package
           ports:
@@ -32,4 +32,4 @@ spec:
                 port: 3000
     dnsAppAlias:
         environment: prod
-        component: frontend
+        component: storybook
