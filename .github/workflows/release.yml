@@ -8,13 +8,13 @@ on:
 jobs:
     code-quality:
         name: 'Code Quality'
-        uses: equinor/sparql-graph/.github/workflows/code-quality.yml@master
+        uses: equinor/engineering-symbols/.github/workflows/code-quality.yml@master
         secrets:
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
     package:
         name: 'Package'
-        uses: equinor/sparql-graph/.github/workflows/package.yml@master
+        uses: equinor/engineering-symbols/.github/workflows/package.yml@master
         secrets:
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
