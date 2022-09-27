@@ -15,7 +15,7 @@ export default {
 	},
 } as ComponentMeta<typeof Icon>;
 
-const Template: ComponentStory<typeof Icon> = (args) => <Icon {...args} getPosition={(el) => el} />;
+const Template: ComponentStory<typeof Icon> = (args) => <Icon {...args} />;
 
 export const Story = Template.bind({});
 
@@ -40,7 +40,7 @@ const ThemedComponent = (): ReactElement => (
 
 				return (
 					<Square key={name}>
-						<Icon width={50} height={50} name={name} getPosition={(elem) => elem} />
+						<Icon width={50} height={50} name={name} />
 						<p>{name}</p>
 					</Square>
 				);

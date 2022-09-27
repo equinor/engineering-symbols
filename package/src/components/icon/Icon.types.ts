@@ -22,8 +22,6 @@ export type PositionProps = {
 };
 
 export interface IconProps extends SvgBaseProps {
-	getPosition: (props: Point[]) => void;
-	/* eslint-disable @typescript-eslint/no-explicit-any */
 	appearance?: any;
 	rotate?: number;
 	height?: number;
