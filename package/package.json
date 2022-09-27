@@ -16,7 +16,6 @@
 	"license": "MIT",
 	"scripts": {
 		"test": "react-scripts test",
-		"lint": "eslint --ext .ts --ext .tsx src",
 		"start": "npm run storybook",
 		"dev": "npm run storybook",
 		"storybook": "start-storybook -p 3000",
@@ -92,8 +91,8 @@
 		]
 	},
 	"peerDependencies": {
-		"react": "^16.14.0 || ^17.0.0",
-		"react-dom": "^16.14.0 || ^17.0.0"
+		"react": "^16.14.0 || ^17.0.0 || ^18.0.0",
+		"react-dom": "^16.14.0 || ^17.0.0 || ^18.0.0"
 	},
 	"dependencies": {
 		"@rollup/plugin-json": "^4.1.0",
