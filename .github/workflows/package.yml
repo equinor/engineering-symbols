@@ -52,6 +52,7 @@ jobs:
               working-directory: package
     security_vulnerabilities:
         name: 🐩 Snyk (Security vulnerabilities)
+        if: ${{ github.actor != 'dependabot[bot]' }}
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
