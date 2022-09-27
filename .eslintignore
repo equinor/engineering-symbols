@@ -1,1 +1,5 @@
-src/lib
+package/src/lib
+package/src/build
+package/src/node_modules
+web/.next
+web/build

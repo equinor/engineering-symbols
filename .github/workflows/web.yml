@@ -1,0 +1,64 @@
+name: Web
+
+on:
+    push:
+        branches: [master]
+        paths: ['web/**']
+    pull_request:
+        branches: ['develop']
+        paths: ['web/**']
+    workflow_dispatch:
+    workflow_call:
+        secrets:
+            SNYK_TOKEN:
+                required: true
+    schedule:
+        - cron: '0 6 * * 1'
+
+env:
+    NODE_VERSION: ${{ github.event.inputs.node-version  || '16' }}
+
+jobs:
+    code_issues:
+        runs-on: ubuntu-latest
+        name: 👮‍♂️ Code issues
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  registry-url: https://registry.npmjs.org
+            - run: npm install --frozen-lockfile
+              working-directory: web
+              env:
+                  NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+            - run: npm run build
+              working-directory: web
+    security_vulnerabilities:
+        name: 🐩 Snyk (Security vulnerabilities)
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: 'npm'
+            - uses: snyk/actions/setup@master
+            - name: Install dependencies
+              run: npm ci
+              working-directory: web
+            - name: Authenticator
+              run: snyk auth ${{ secrets.SNYK_TOKEN }}
+              working-directory: web
+            - name: Test dependencies for known issues
+              run: snyk test --fail-on=all --severity-threshold=high
+              working-directory: web
+              env:
+                  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+            - name: Continuously monitor new vulnerabilities
+              if: inputs.snyk-monitor
+              run: snyk monitor
+              working-directory: web
+              env:
+                  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}

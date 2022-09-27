@@ -1,25 +1,14 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-web/.next
-web/node_modules
-web/coverage
-web/build
-web/npm-debug.log*
-web/yarn-error.log*
-web/.idea
-
-package/node_modules
-package/coverage
-package/build
-package/npm-debug.log*
-package/yarn-debug.log*
-package/storybook-static/
-package/.idea
-
+# dependencies
 /node_modules
 /.pnp
 .pnp.js
+
+# testing
 /coverage
+
+# production
 /build
 
 # misc
@@ -30,5 +19,7 @@ package/.idea
 .env.production.local
 
 npm-debug.log*
-
+yarn-debug.log*
+yarn-error.log*
+/storybook-static/
 .idea

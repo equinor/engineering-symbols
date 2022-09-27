@@ -22,7 +22,6 @@ export type PositionProps = {
 };
 
 export interface IconProps extends SvgBaseProps {
-	getPosition: (props: Point[]) => void;
 	appearance?: any;
 	rotate?: number;
 	height?: number;
