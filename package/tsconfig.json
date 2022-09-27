@@ -20,7 +20,6 @@
 		"noEmit": true,
 		"jsx": "react-jsx"
 	},
-	"include": ["web/src", "package"],
-	// "exclude": ["**/*.stories.tsx", "**/*.test.tsx", "web/.next/*"]
-	"exclude": ["**/*.stories.tsx", "web/.next/*"]
+	"include": ["src"],
+	"exclude": ["**/*.stories.tsx"]
 }
