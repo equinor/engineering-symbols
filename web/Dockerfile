@@ -15,4 +15,5 @@ RUN chown -R 1001 /app/node_modules && chown -R 1001:0 "/.npm"
 USER 1001
 EXPOSE 3000
 
-CMD ["npm", "run", "build", "&", "npm", "start"]
+RUN npm run build
+CMD ["npm", "start"]
