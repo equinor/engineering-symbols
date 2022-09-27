@@ -14,7 +14,7 @@ import { Icon } from '@equinor/engineering-symbols';
 export const Page = (): ReactElement => {
 	return (
 		<>
-			<Icon appearance="main" name="arrow-right" height={50} width={50} getPosition={(el) => el} />
+			<Icon appearance="main" name="arrow-right" height={50} width={50} />
 		</>
 	);
 };
@@ -24,14 +24,13 @@ export const Page = (): ReactElement => {
 
 **Required props are marked with `*`.**
 
-| Name            | Type             | Default | Description                                                      |
-| --------------- | ---------------- | ------- | ---------------------------------------------------------------- |
-| `getPosition`\* | `Point[]`        | ``      | Callback with icon position props _exmpl:_ `x` & `y` coordinates |
-| `appearance`    | `IconAppearance` | `main`  | Provides icon styling                                            |
-| `rotate`        | `number`         | `0`     | Renders a icon with pre-declaration rotate                       |
-| `height`        | `number`         | `70`    | Renders a icon with pre-declaration height                       |
-| `width`         | `number`         | `70`    | Renders a icon with pre-declaration width                        |
-| `name`\*        | `IconName`       |         | Provides icon illustration                                       |
+| Name         | Type             | Default | Description                                |
+| ------------ | ---------------- | ------- | ------------------------------------------ |
+| `appearance` | `IconAppearance` | `main`  | Provides icon styling                      |
+| `rotate`     | `number`         | `0`     | Renders a icon with pre-declaration rotate |
+| `height`     | `number`         | `70`    | Renders a icon with pre-declaration height |
+| `width`      | `number`         | `70`    | Renders a icon with pre-declaration width  |
+| `name`\*     | `IconName`       |         | Provides icon illustration                 |
 
 # Svg convertor 🪚
 
