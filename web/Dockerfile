@@ -10,6 +10,7 @@ RUN npm ci
 COPY . .
 
 RUN mkdir /.npm
+RUN mkdir node_modules/.cache && chmod -R 777 node_modules/.cache
 RUN chown -R 1001 /app/node_modules && chown -R 1001:0 "/.npm"
 
 USER 1001
