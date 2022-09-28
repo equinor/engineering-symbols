@@ -19,6 +19,7 @@
 		"start": "npm run storybook",
 		"dev": "npm run storybook",
 		"storybook": "start-storybook -p 3000",
+		"build:svgs": "npx ts-node ./src/symbol-lib/build.ts",
 		"build:storybook": "build-storybook",
 		"build:lib": "rollup -c --environment NODE_ENV:production",
 		"prepublishOnly": "npm run build:lib",
@@ -96,7 +97,6 @@
 	},
 	"dependencies": {
 		"@rollup/plugin-json": "^4.1.0",
-		"@types/node": "^17.0.26",
 		"@types/react": "^18.0.6",
 		"@types/react-dom": "^18.0.0",
 		"rollup": "^2.60.2",
@@ -124,6 +124,7 @@
 		"@testing-library/dom": "^8.11.4",
 		"@testing-library/jest-dom": "^5.14.1",
 		"@testing-library/react": "^12.1.2",
+		"@types/node": "^18.7.23",
 		"@types/styled-components": "^5.1.26",
 		"babel-loader": "^8.2.5",
 		"conventional-changelog-conventionalcommits": "^5.0.0",
@@ -135,6 +136,7 @@
 		"rollup-plugin-import-css": "^3.0.3",
 		"rollup-plugin-peer-deps-external": "^2.2.4",
 		"semantic-release": "^19.0.5",
-		"storybook-addon-theme-playground": "^2.1.0"
+		"storybook-addon-theme-playground": "^2.1.0",
+		"ts-node": "^10.9.1"
 	}
 }

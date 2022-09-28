@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"types": ["@types/jest"],
+		"types": ["@types/jest", "node"],
 		"sourceMap": true,
 		"declarationDir": "types",
 		"declaration": true,
@@ -21,5 +21,9 @@
 		"jsx": "react-jsx"
 	},
 	"include": ["src"],
-	"exclude": ["**/*.stories.tsx"]
+	"exclude": ["**/*.stories.tsx"],
+	"ts-node": {
+		"esm": true,
+		"experimentalSpecifierResolution": "node"
+	}
 }
