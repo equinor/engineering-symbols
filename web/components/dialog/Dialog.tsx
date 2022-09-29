@@ -80,7 +80,7 @@ export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({
 									const left = x * (iconWidth / width);
 
 									return (
-										<div className={`ant ${styles.annotationWrap}`} style={{ top, left }}>
+										<div key={title} className={`ant ${styles.annotationWrap}`} style={{ top, left }}>
 											<div className={styles.annotation}></div>
 											<span className={styles.annotationTooltip}>{title}</span>
 										</div>
