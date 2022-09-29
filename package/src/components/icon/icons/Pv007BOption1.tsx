@@ -1,0 +1,15 @@
+import * as React from 'react';
+import { SVGProps } from 'react';
+
+const SvgPv007BOption1 = (props: SVGProps<SVGSVGElement>) => (
+	<svg viewBox="0 0 48 24" xmlns="http://www.w3.org/2000/svg" fill="#231f20" {...props}>
+		<g id="PV007B_Option1">
+			<path
+				id="Symbol"
+				d="M21.5465 10.2732C22.0895 9.50307 22.986 9 24 9C25.014 9 25.9105 9.50307 26.4535 10.2732L43 2V22L26.4535 13.7268C25.9105 14.4969 25.014 15 24 15C22.986 15 22.0895 14.4969 21.5465 13.7268L5 22V2L21.5465 10.2732Z"
+			/>
+		</g>
+	</svg>
+);
+
+export default SvgPv007BOption1;

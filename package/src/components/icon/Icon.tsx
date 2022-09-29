@@ -18,10 +18,10 @@ const iconsKeys = Object.keys(Icons) as Array<keyof typeof Icons>; // exmpl: Arr
 
 export const iconsName = iconsKeys.map((name) =>
 	name
-		.split(/(?=[A-Z])/)
-		.join('-')
-		.toLocaleLowerCase()
-); // exmpl: arrow-right
+		// .split(/(?=[A-Z])/)
+		// .join('-')
+		.toUpperCase()
+);
 
 type IconNameKeys = typeof iconsKeys[number];
 
