@@ -30,9 +30,23 @@ a {
 	width: auto !important;
 }
 
-.dialogImage #Annotations circle {
+.dialogImage {
+	position: relative;
+}
+
+/* .__react_component_tooltip {
+	visibility: visible !important;
+	opacity: 1 !important;
+} */
+
+.dialogImage--with-connectors #Annotations circle {
 	stroke: red;
 	animation: pulse 2s infinite;
+}
+
+.dialogImage--with-connectors .ant {
+	visibility: visible;
+	opacity: 1;
 }
 
 @keyframes pulse {
