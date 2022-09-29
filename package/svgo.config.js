@@ -15,7 +15,7 @@ module.exports = {
 		{
 			name: 'removeAttrs',
 			params: {
-				attrs: '(stroke)',
+				attrs: ['(stroke)', '(fill)'],
 			},
 		},
 	],
