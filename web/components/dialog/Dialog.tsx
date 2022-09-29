@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useRef } from 'react';
+import { ChangeEvent, useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import FileSaver from 'file-saver';
 
@@ -12,12 +12,36 @@ import { DialogComponentProps } from './Dialog.types';
 
 import styles from './styles.module.css';
 
+const connectors = [
+	{
+		id: 1,
+		x: 13.5,
+		y: 40.5,
+		width: 96,
+		height: 96,
+		title: 'oillllllllll',
+	},
+	{
+		id: 2,
+		x: 48,
+		y: 6,
+		width: 96,
+		height: 96,
+		title: 'gas',
+	},
+];
+
 export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({ onHandleClose, selectedName, icons }): JSX.Element => {
 	const [presentConnectors, setPresentConnectors] = useState<boolean>(false);
 	const [isSnackbarOpen, setSnackbarOpen] = useState<boolean>(false);
+
 	const { name, description } = icons.filter(({ name }) => name === selectedName)[0];
 
 	const svgRef = useRef(null);
+
+	useEffect(() => {
+		console.log(18, icons);
+	}, []);
 
 	const onDownloadSvg = () => {
 		if (!svgRef || !svgRef.current) return;
@@ -35,17 +59,34 @@ export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({
 		FileSaver.saveAs(url, `${name}.svg`);
 	};
 
-	// useEffect(() => (
-	//   console.log(svgRef.current)
-	// ), [])
+	const iconWidth = 170;
+	const iconHeight = 170;
 
 	return (
 		<Dialog open isDismissable onClose={onHandleClose}>
 			<Dialog.CustomContent>
 				<div className={styles.dialogWrap}>
 					<div className={styles.dialogImageWrap}>
-						<div className={presentConnectors ? 'dialogImage' : ''} ref={svgRef}>
-							<EngineeringIcon name={name} width="170" height="170" getPosition={(el: any) => console.log('ops:', el)} />
+						<div className={`dialogImage${presentConnectors ? ' dialogImage--with-connectors' : ''}`} ref={svgRef}>
+							<>
+								<EngineeringIcon
+									name={name}
+									width={iconWidth}
+									height={iconHeight}
+									getPosition={(el: any) => console.log('ops:', el)}
+								/>
+								{connectors.map(({ x, y, width, height, title }) => {
+									const top = y * (iconHeight / height) - 40;
+									const left = x * (iconWidth / width);
+
+									return (
+										<div key={title} className={`ant ${styles.annotationWrap}`} style={{ top, left }}>
+											<div className={styles.annotation}></div>
+											<span className={styles.annotationTooltip}>{title}</span>
+										</div>
+									);
+								})}
+							</>
 						</div>
 					</div>
 
