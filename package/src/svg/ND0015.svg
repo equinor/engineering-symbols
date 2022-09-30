@@ -13,6 +13,9 @@
       <path d="M11.75 82L11.75 86H12.25V82H11.75Z" />
       <path d="M20 4V92H4V4H20ZM12.25 5V6H11.75V5H5V91H11.75V90H12.25V91H19V5H12.25Z" />
     </g>
+    <g id="Annotations">
+      <circle id="annotation-connector-2-270" cx="2" cy="12" r="0.5" />
+    </g>
   </g>
   <defs>
     <clipPath id="clip0_439_51872">
