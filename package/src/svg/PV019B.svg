@@ -5,5 +5,9 @@
       <path d="M9 18V6H10L10 18H9Z" />
       <path d="M39 6H38V18H39V6Z" />
     </g>
+    <g id="Annotations">
+      <circle id="annotation-connector-1-90" cx="38.5" cy="12" r="0.5" />
+      <circle id="annotation-connector-2-270" cx="9.5" cy="12" r="0.5" />
+    </g>
   </g>
 </svg>
