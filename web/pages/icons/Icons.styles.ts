@@ -6,7 +6,7 @@ interface IconWrapperProps {
 }
 
 export const IconsHeaderStyled = styled.div`
-	padding: 2rem 0 3rem;
+	padding: 1rem 0 4rem;
 	width: 100%;
 `;
 
@@ -20,6 +20,15 @@ export const CategoriesStyled = styled.ul`
 	padding: 0 3rem 0 0;
 	list-style: none;
 	margin: 0;
+
+	button {
+		width: 100%;
+
+		& > span {
+			display: flex;
+			justify-content: space-between;
+		}
+	}
 
 	li span {
 		white-space: nowrap;

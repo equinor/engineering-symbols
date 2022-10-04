@@ -33,12 +33,12 @@ const fixtureCategories = [
 	'Disco',
 	'Coachella',
 	'Superheroes',
-	'Game Of Thrones',
+	'Isolation',
 	'Pool Party',
 	'Rainbow',
 	'Duck',
 	'K-Pop Party',
-	'Rainbow',
+	'Circulation',
 ];
 // Only for list of the names
 const iconNames = Object.entries(lib).map(([name]) => ({ name }));
@@ -55,7 +55,7 @@ const Icons: NextPage = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [rotate, setRotate] = useState<number>(0);
 	const [appearance, setAppearance] = useState<string>('#000');
-	const [selectedIcon, setSelectedIcon] = useState<IconProps | []>([]);
+	const [selectedIcon, setSelectedIcon] = useState<IconProps>();
 
 	// type IconProps
 	const [icns, seIcns] = useState<IconProps[] | []>(icons);
@@ -125,7 +125,8 @@ const Icons: NextPage = () => {
 						<li>
 							{/* @ts-ignore: next-line */}
 							<Button onClick={() => onSelectedCategory('All')} variant={selectedCategory === 'All' ? '' : 'ghost'}>
-								All <Chip>{icons.length}</Chip>
+								<span>All</span>
+								<Chip>{icons.length}</Chip>
 							</Button>
 						</li>
 						{Object.keys(counts).map((key) => {
@@ -139,7 +140,8 @@ const Icons: NextPage = () => {
 										/* @ts-ignore: next-line */
 										variant={selectedCategory === name ? '' : 'ghost'}
 										onClick={() => onSelectedCategory(name)}>
-										{name} <Chip>{counts[key]}</Chip>
+										<span>{name}</span>
+										<Chip>{counts[key]}</Chip>
 									</Button>
 								</li>
 							);
