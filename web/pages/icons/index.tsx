@@ -55,7 +55,7 @@ const Icons: NextPage = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [rotate, setRotate] = useState<number>(0);
 	const [appearance, setAppearance] = useState<string>('#000');
-	const [selectedIcon, setSelectedIcon] = useState<IconProps>();
+	const [selectedIcon, setSelectedIcon] = useState<IconProps | null>();
 
 	// type IconProps
 	const [icns, seIcns] = useState<IconProps[] | []>(icons);
@@ -101,7 +101,7 @@ const Icons: NextPage = () => {
 
 	const handleClose = () => {
 		setIsOpen(false);
-		setSelectedIcon([]);
+		setSelectedIcon(null);
 	};
 
 	const counts = icons.reduce((acc: any, curr) => {
