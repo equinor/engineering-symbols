@@ -26,18 +26,18 @@ a {
 	}
 }
 
-.huuUT {
-	width: auto !important;
-}
-
-.dialogImage {
+/* .dialogImage {
 	position: relative;
-}
+} */
 
 /* .__react_component_tooltip {
 	visibility: visible !important;
 	opacity: 1 !important;
 } */
+
+/* .dialogImage #Annotations circle {
+	stroke: transparent;
+}
 
 .dialogImage--with-connectors #Annotations circle {
 	stroke: red;
@@ -60,4 +60,4 @@ a {
 		stroke-width: 0.8rem;
 		opacity: 0;
 	}
-}
+} */

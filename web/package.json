@@ -9,7 +9,6 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
-		"@equinor/engineering-symbols": "^1.0.29",
 		"file-saver": "^2.0.5",
 		"next": "12.3.0",
 		"react": "18.2.0",
@@ -17,7 +16,8 @@
 		"react-copy-to-clipboard": "^5.1.0",
 		"react-dom": "18.2.0",
 		"react-markdown": "^8.0.3",
-		"remark-gfm": "^3.0.1"
+		"remark-gfm": "^3.0.1",
+		"styled-components": "^5.3.6"
 	},
 	"devDependencies": {
 		"@equinor/eds-core-react": "^0.21.0",
@@ -27,13 +27,13 @@
 		"@types/react": "18.0.20",
 		"@types/react-copy-to-clipboard": "^5.0.4",
 		"@types/react-dom": "18.0.6",
+		"@types/styled-components": "^5.1.26",
 		"axios": "^0.27.2",
 		"eslint": "8.23.1",
 		"eslint-config-next": "12.3.0",
 		"net": "^1.0.2",
 		"next-mdx-remote": "^4.1.0",
 		"next-transpile-modules": "^9.0.0",
-		"tls": "^0.0.1",
 		"typescript": "4.8.3",
 		"use-debounce": "^8.0.4"
 	},

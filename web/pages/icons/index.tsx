@@ -1,94 +1,107 @@
 import type { NextPage } from 'next';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import Head from 'next/head';
 import { Typography, Chip, Button, Card, Search, Slider, Label } from '@equinor/eds-core-react';
-import { Icon as EngineeringIcon } from '@equinor/engineering-symbols';
 import { HexColorPicker } from 'react-colorful';
 
 import { DialogComponent } from '../../components';
-import { capitalizeWords, getGitHubReposResponse } from '../../helpers';
+import { capitalizeWords } from '../../helpers';
 
 import { IconProps } from '../../types';
 
-import styles from './styles.module.css';
+import lib from '../../__FIXTURE__/symbol-library.json';
 
-const icons = [
-	{
-		name: 'arrow-down',
-		category: 'shapes',
-		connectors: [],
-		description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
-	},
-	{
-		name: 'arrow-up',
-		category: 'awesome',
-		connectors: [],
-		description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
-	},
-	{
-		name: 'arrow-right',
-		category: 'awesome',
-		connectors: [],
-		description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
-	},
+import {
+	CategoriesStyled,
+	CustomizeColorStyled,
+	CustomizeElementStyled,
+	CustomizeResetStyled,
+	CustomizeStyled,
+	IconsContainerStyled,
+	IconsHeaderStyled,
+	IconsListStyled,
+	IconsListWrapStyled,
+	IconWrapperStyled,
+} from './Icons.styles';
+
+// From object to array
+const arrayIcons = Object.entries(lib).map(([name, obj]) => ({ name, ...obj }));
+// Categories
+// ALL WORDS ARE UPPERCASE (temp.)
+const fixtureCategories = [
+	'Pop Art',
+	'Disco',
+	'Coachella',
+	'Superheroes',
+	'Game Of Thrones',
+	'Pool Party',
+	'Rainbow',
+	'Duck',
+	'K-Pop Party',
+	'Rainbow',
 ];
+// Only for list of the names
+const iconNames = Object.entries(lib).map(([name]) => ({ name }));
+const iconNamesWithCategories = iconNames.map(({ name }) => ({
+	name,
+	category: fixtureCategories[Math.floor(Math.random() * (9 - 1))],
+	description:
+		'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+}));
+// Merge arrays based on same name key to have category value inside
+const icons = arrayIcons.map((v) => ({ ...v, ...iconNamesWithCategories.find((sp) => sp.name === v.name) }));
 
 const Icons: NextPage = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [rotate, setRotate] = useState<number>(0);
 	const [appearance, setAppearance] = useState<string>('#000');
-	const [selectedIconName, setSelectedIconName] = useState<string>('');
+	const [selectedIcon, setSelectedIcon] = useState<IconProps | []>([]);
 
-	const [icns, seIcns] = useState<IconProps[]>(icons);
-	const [selectedCategory, setSelectedCategory] = useState<string>('');
-	const [searchValue, setSearchValue] = useState<string>('');
+	// type IconProps
+	const [icns, seIcns] = useState<IconProps[] | []>(icons);
+	const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
-	const [data, setData] = useState<any>([]);
+	console.log('icons ==>', icons);
 
-	const debounceValue = useDebouncedCallback((value) => setSearchValue(value), 1000);
+	const debounceSearchValue = useDebouncedCallback((value) => onSearch(value), 1000);
+	const debounceRotateValue = useDebouncedCallback((value) => setRotate(value), 1);
 
-	useEffect(() => {
-		const getData = async () => {
-			const res = await getGitHubReposResponse();
+	const onSearch = (val: string) => {
+		if (val) {
+			const searchedValue = icons.filter(({ name }) => name.includes(val));
 
-			setData(res);
-		};
-
-		getData();
-	}, []);
-
-	useEffect(() => {
-		if (searchValue) {
-			const searchedValue = icons.filter(({ name }) => name.includes(searchValue));
 			seIcns(searchedValue);
 		} else {
 			seIcns(icons);
 		}
-	}, [searchValue]);
+	};
 
-	useEffect(() => {
-		if (!selectedCategory || selectedCategory === 'All') {
+	const onSelectedCategory = (val: string) => {
+		console.log(7, val);
+		if (!val || val === 'All') {
 			seIcns(icons);
 		} else {
-			const searchedValue = icons.filter(({ category }) => category === selectedCategory.toLocaleLowerCase());
+			const searchedValue = icons.filter(({ category }) => category === val);
+			setSelectedCategory(val);
 			seIcns(searchedValue);
 		}
-	}, [selectedCategory]);
+	};
 
 	const onRestCustomize = () => {
 		setRotate(0);
 		setAppearance('#000');
 	};
 
-	const handleOpen = (name: string) => {
+	const handleOpen = (selectedName: string) => {
+		const selected = icons.filter(({ name }) => name === selectedName)[0];
+
 		setIsOpen(true);
-		setSelectedIconName(name);
+		setSelectedIcon(selected);
 	};
 
 	const handleClose = () => {
 		setIsOpen(false);
-		setSelectedIconName('');
+		setSelectedIcon([]);
 	};
 
 	const counts = icons.reduce((acc: any, curr) => {
@@ -97,87 +110,73 @@ const Icons: NextPage = () => {
 		acc[str] = (acc[str] || 0) + 1;
 		return acc;
 	}, {});
-	console.log(89, data);
 
 	return (
-		<div className={styles.container}>
-			<Head>
-				<title>1Create Next App</title>
-				<meta name="description" content="Generated by create next app" />
-				<link rel="icon" href="/favicon.ico" />
-				<meta name="robots" content="noindex,nofollow" />
-			</Head>
+		<>
+			<main>
+				<IconsHeaderStyled>
+					<Typography variant="h1_bold" style={{ textAlign: 'center' }}>
+						Crazy fast workflow
+					</Typography>
+				</IconsHeaderStyled>
+				<Search aria-label="sitewide" id="search-normal" placeholder="Search" onChange={({ target }) => debounceSearchValue(target.value)} />
+				<IconsContainerStyled>
+					<CategoriesStyled>
+						<li>
+							{/* @ts-ignore: next-line */}
+							<Button onClick={() => onSelectedCategory('All')} variant={selectedCategory === 'All' ? '' : 'ghost'}>
+								All <Chip>{icons.length}</Chip>
+							</Button>
+						</li>
+						{Object.keys(counts).map((key) => {
+							const name = capitalizeWords(key.slice(1, -1)).join(' ');
 
-			<main className={styles.main}>
-				<div id="icon" className={styles.iconsContainer}>
-					<div className={styles.categories}>
-						<ul>
-							<li>
-								{/* @ts-ignore: next-line */}
-								<Button onClick={() => setSelectedCategory('All')} variant={selectedCategory === 'All' ? '' : 'ghost'}>
-									All <Chip>{icons.length}</Chip>
-								</Button>
-							</li>
-							{Object.keys(counts).map((key) => {
-								const name = capitalizeWords(key.slice(1, -1));
+							// console.log(89, name);
 
-								return (
-									<li key={key}>
-										<Button
-											/* @ts-ignore: next-line */
-											variant={selectedCategory === name[0] ? '' : 'ghost'}
-											onClick={() => setSelectedCategory(name[0])}>
-											{name} <Chip>{counts[key]}</Chip>
-										</Button>
-									</li>
-								);
-							})}
-						</ul>
-					</div>
-					<div className={styles.iconsList}>
-						<ul>
-							{icns.map(({ name }) => (
-								<li key={name}>
-									<button onClick={() => handleOpen(name)}>
-										<Card>
-											<div className={styles.iconsListWrap}>
-												<div className={styles.iconsListIcon}>
-													<EngineeringIcon
-														name={name}
-														getPosition={(el: any) => console.log('ops:', el)}
-														rotate={rotate}
-														appearance={appearance}
-													/>
-												</div>
-												<div className={styles.iconsListContent}>
-													<Typography variant="body_short">{name}</Typography>
-												</div>
-											</div>
-										</Card>
-									</button>
+							return (
+								<li key={key}>
+									<Button
+										/* @ts-ignore: next-line */
+										variant={selectedCategory === name ? '' : 'ghost'}
+										onClick={() => onSelectedCategory(name)}>
+										{name} <Chip>{counts[key]}</Chip>
+									</Button>
 								</li>
-							))}
-						</ul>
-					</div>
-					<div className={styles.customize}>
-						<Search
-							aria-label="sitewide"
-							id="search-normal"
-							placeholder="Search"
-							onChange={({ target }) => debounceValue(target.value)}
-						/>
-						<div className={styles.customizeElement}>
-							<div className={styles.customizeReset}>
+							);
+						})}
+					</CategoriesStyled>
+
+					<IconsListStyled>
+						{icns.map(({ name, svgString }) => (
+							<li key={name}>
+								<button onClick={() => handleOpen(name)}>
+									<Card>
+										<IconsListWrapStyled>
+											<IconWrapperStyled fill={appearance} rotate={rotate}>
+												<div dangerouslySetInnerHTML={{ __html: svgString }} />
+											</IconWrapperStyled>
+											<>
+												<Typography variant="body_short">{name}</Typography>
+											</>
+										</IconsListWrapStyled>
+									</Card>
+								</button>
+							</li>
+						))}
+					</IconsListStyled>
+					<CustomizeStyled>
+						<CustomizeElementStyled>
+							<CustomizeResetStyled>
 								<Typography variant="body_short" bold>
 									Customize
 								</Typography>
 								<Button color="secondary" onClick={() => onRestCustomize()}>
 									Reset
 								</Button>
-							</div>
-						</div>
+							</CustomizeResetStyled>
+						</CustomizeElementStyled>
 
-						<div className={styles.customizeElement}>
+						<CustomizeElementStyled>
 							<Label label="Rotation" id="even-simpler-slider" />
 							<Slider
 								aria-labelledby="even-simpler-slider"
@@ -188,26 +187,24 @@ const Icons: NextPage = () => {
 								minMaxDots={false}
 								minMaxValues={false}
 								// @ts-ignore: next-line
-								onChange={(el, val) => setRotate(val[0])}
+								onChange={(el, val) => debounceRotateValue(val[0])}
 							/>
-						</div>
+						</CustomizeElementStyled>
 
-						<div className={styles.customizeElement}>
-							<div className={styles.customizeColor}>
+						<CustomizeElementStyled>
+							<CustomizeColorStyled>
 								<Typography variant="body_short" bold>
 									Color
 								</Typography>
 								<HexColorPicker color={appearance} onChange={setAppearance} />
-							</div>
-						</div>
-					</div>
-				</div>
+							</CustomizeColorStyled>
+						</CustomizeElementStyled>
+					</CustomizeStyled>
+				</IconsContainerStyled>
 			</main>
 
-			<footer className={styles.footer}>Footer 2</footer>
-
-			{isOpen && selectedIconName && <DialogComponent onHandleClose={handleClose} selectedName={selectedIconName} icons={icons} />}
-		</div>
+			{isOpen && selectedIcon && <DialogComponent onHandleClose={handleClose} selected={selectedIcon} />}
+		</>
 	);
 };
 
