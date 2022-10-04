@@ -16,7 +16,7 @@ import {
 	DialogImageWrapStyled,
 	DialogSvgImageStyled,
 	DialogWrapStyled,
-} from './Dialog.styles';
+} from './styles';
 
 import { DialogComponentProps } from './Dialog.types';
 import { capitalizeWords } from '../../helpers';

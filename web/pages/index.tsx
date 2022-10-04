@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import Image from 'next/image';
 import { Typography } from '@equinor/eds-core-react';
 
-import { MainStyled, HeroStyled, HeroDescriptionStyled, InfoBoxesStyled, AvailableListStyled } from '../styles/Home.styles';
+import { MainStyled, HeroStyled, HeroDescriptionStyled, InfoBoxesStyled, AvailableListStyled } from '../styles/styles';
 
 const Home: NextPage = () => {
 	return (

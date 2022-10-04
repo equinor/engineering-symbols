@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useState } from 'react';
 
-import { HeaderStyled, LogoWrapStyled, HeaderLogoStyled, NavStyled, BurgerWrapStyled, HeaderNoteStyled } from './Header.styles';
+import { HeaderStyled, LogoWrapStyled, HeaderLogoStyled, NavStyled, BurgerWrapStyled, HeaderNoteStyled } from './styles';
 
 export const HeaderComponent: NextPage = () => {
 	const [isMobileBurgerOpen, setMobileBurgerOpen] = useState<boolean>(false);

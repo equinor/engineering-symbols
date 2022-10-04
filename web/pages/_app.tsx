@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import type { AppProps } from 'next/app';
 import { HeaderComponent } from '../components';
-import { ContainerStyled } from '../styles/Home.styles';
+import { ContainerStyled } from '../styles/styles';
 
 import '../styles/globals.css';
 

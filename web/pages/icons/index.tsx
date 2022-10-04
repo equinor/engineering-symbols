@@ -22,7 +22,7 @@ import {
 	IconsListStyled,
 	IconsListWrapStyled,
 	IconWrapperStyled,
-} from './Icons.styles';
+} from './styles';
 
 // From object to array
 const arrayIcons = Object.entries(lib).map(([name, obj]) => ({ name, ...obj }));
