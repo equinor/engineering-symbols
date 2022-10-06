@@ -16,11 +16,13 @@ import {
 	DialogImageWrapStyled,
 	DialogSvgImageStyled,
 	DialogWrapStyled,
+	AnnotationTooltipDotStyled,
 } from './styles';
 
 import { DialogComponentProps } from './Dialog.types';
-import { capitalizeWords } from '../../helpers';
 import { ConnectorsProps } from '../../types';
+
+import { capitalizeWords } from '../../helpers';
 
 export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({ onHandleClose, selected }): JSX.Element => {
 	const [presentConnectors, setPresentConnectors] = useState<boolean>(false);
@@ -39,9 +41,9 @@ export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({
 
 		console.log(18, presentConnectors);
 
-		const getAnnotations = clone.getElementById('Annotations');
+		const getCloneAnnotations = clone.getElementById('Annotations');
 
-		if (!presentConnectors && getAnnotations !== null) getAnnotations.remove();
+		if (!presentConnectors && getCloneAnnotations !== null) getCloneAnnotations.remove();
 
 		const svgData = new XMLSerializer().serializeToString(clone);
 
@@ -55,7 +57,7 @@ export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({
 	const hasConnectors = connectors.length > 0;
 
 	return (
-		<Dialog open isDismissable onClose={onHandleClose} style={{ width: 'auto' }}>
+		<Dialog open isDismissable onClose={onHandleClose} style={{ width: 'auto' }} className="eq_dialog">
 			<Dialog.CustomContent>
 				<DialogWrapStyled>
 					<DialogImageWrapStyled>
@@ -77,7 +79,8 @@ export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({
 													presentConnectors={presentConnectors}
 													top={top}
 													left={left}>
-													<AnnotationTooltipStyled presentConnectors={presentConnectors}>Oil</AnnotationTooltipStyled>
+													<AnnotationTooltipStyled>Oil</AnnotationTooltipStyled>
+													<AnnotationTooltipDotStyled />
 												</AnnotationWrapStyled>
 											);
 										})}

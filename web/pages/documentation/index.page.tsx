@@ -13,7 +13,7 @@ import { IconsHeaderStyled } from '../icons/styles';
 
 const Documentation: NextPage = () => {
 	return (
-		<main>
+		<>
 			<IconsHeaderStyled>
 				<Typography variant="h1_bold" style={{ textAlign: 'center' }}>
 					Documentation
@@ -26,7 +26,7 @@ const Documentation: NextPage = () => {
 					<DOC />
 				</MDXProvider>
 			</div>
-		</main>
+		</>
 	);
 };
 

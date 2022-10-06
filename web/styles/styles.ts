@@ -1,11 +1,83 @@
 import styled from 'styled-components';
 
-export const ContainerStyled = styled.div`
-	padding: 0 3.5rem;
+export const DarkModeSwitcherStyled = styled.div`
+	margin: 1rem auto 0 0;
+	position: absolute;
+	right: 3rem;
+	top: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	justify-content: center;
+
+	label {
+		width: 50px;
+		height: 20px;
+		position: relative;
+		display: block;
+		background: #ebebeb;
+		border-radius: 20px;
+		box-shadow: inset 0px 5px 15px rgba(0, 0, 0, 0.4), inset 0px -5px 15px rgba(255, 255, 255, 0.4);
+		cursor: pointer;
+		transition: 0.3s;
+		&:after {
+			content: '';
+			width: 18px;
+			height: 18px;
+			position: absolute;
+			top: 1px;
+			left: 1px;
+			background: linear-gradient(180deg, #ffcc89, #d8860b);
+			border-radius: 18px;
+			box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+			transition: 0.3s;
+		}
+		svg {
+			position: absolute;
+			width: 12px;
+			top: 4px;
+			z-index: 100;
+			&.sun_svg__sun {
+				left: 4px;
+				fill: #fff;
+				transition: 0.3s;
+			}
+			&.moon_svg__moon {
+				left: 34px;
+				fill: #7e7e7e;
+				transition: 0.3s;
+			}
+		}
+	}
+
+	input {
+		width: 0;
+		height: 0;
+		visibility: hidden;
+		&:checked + label {
+			background: #242424;
+			&:after {
+				left: 49px;
+				transform: translateX(-100%);
+				background: linear-gradient(180deg, #777, #3a3a3a);
+			}
+			svg {
+				&.sun_svg__sun {
+					fill: #7e7e7e;
+				}
+				&.moon_svg__moon {
+					fill: #fff;
+				}
+			}
+		}
+		&:active:after {
+			width: 26px;
+		}
+	}
 `;
 
-export const MainStyled = styled.main`
-	// padding: 3rem 0;
+export const ContainerStyled = styled.div`
+	padding: 0 3.5rem;
 `;
 
 export const HeroStyled = styled.div`

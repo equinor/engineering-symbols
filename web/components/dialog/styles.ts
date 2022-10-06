@@ -1,9 +1,5 @@
 import styled from 'styled-components';
 
-interface AnnotationTooltipProps {
-	presentConnectors: boolean;
-}
-
 interface AnnotationWrapProps {
 	presentConnectors: boolean;
 	top: number;
@@ -16,6 +12,8 @@ interface DialogSvgImageProps {
 }
 
 export const DialogWrapStyled = styled.div`
+	background: ${({ theme }) => theme.body} !important;
+	// color: ${({ theme }) => theme.text} !important;
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;
@@ -40,24 +38,65 @@ export const DialogImageWrapStyled = styled.div`
 
 export const AnnotationStyled = styled.div``;
 
+export const AnnotationTooltipDotStyled = styled.div`
+	position: relative;
+	left: -1px;
+	bottom: -7px;
+	width: 0.15rem;
+	height: 0.15rem;
+	background: red;
+	border-radius: 50%;
+	z-index: 8;
+
+	&:after {
+		content: '';
+		bottom: -7px;
+		left: calc(50% - 0.5rem);
+		transform: scale(0) translateX(-50%);
+		position: absolute;
+		background: red;
+		width: 1rem;
+		height: 1rem;
+		border-radius: 50%;
+		animation: pulse 1.8s infinite;
+		opacity: 1;
+	}
+
+	@keyframes pulse {
+		0% {
+			transform: scale(0.2);
+		}
+		70% {
+			opacity: 0.5;
+		}
+		100% {
+			transform: scale(0.9);
+			opacity: 0;
+		}
+	}
+`;
+
 export const AnnotationWrapStyled = styled.div<AnnotationWrapProps>`
 	position: absolute;
 	visibility: ${(props) => (props.presentConnectors ? 'visible' : 'hidden')};
 	opacity: ${(props) => (props.presentConnectors ? '1' : '0')};
-	transition: all 0.3s ease;
 	top: ${(props) => `${props.top}px`};
 	left: ${(props) => `${props.left}px`};
 	z-index: 10;
+	transition: all 0.3s ease;
 
 	&:hover {
-		transform: scale(1.2);
-		z-index: 11;
+		span {
+			transform: scale(1.2);
+			z-index: 11;
+		}
 
 		span:before {
 			opacity: 0;
 		}
 
 		span:after {
+			transform: scale(0.8);
 			// content: none
 		}
 	}
@@ -70,7 +109,7 @@ export const DialogSvgImageStyled = styled.div<DialogSvgImageProps>`
 	}
 `;
 
-export const AnnotationTooltipStyled = styled.span<AnnotationTooltipProps>`
+export const AnnotationTooltipStyled = styled.span`
 	position: relative;
 	left: -50%;
 	background-color: rgba(0, 0, 0, 0.9);
@@ -81,6 +120,7 @@ export const AnnotationTooltipStyled = styled.span<AnnotationTooltipProps>`
 	line-height: 1;
 	font-size: 14px;
 	box-shadow: rgba(255, 255, 255, 0.05) 0 6px 24px 0, rgba(255, 255, 255, 0.08) 0 0 0 1px;
+	transition: all 0.3s ease;
 
 	&:before {
 		content: '';
@@ -97,34 +137,6 @@ export const AnnotationTooltipStyled = styled.span<AnnotationTooltipProps>`
 		border-style: solid;
 		border-width: 7px 7px 0 7px;
 		border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
-	}
-
-	&:after {
-		content: '';
-		bottom: -15px;
-		left: calc(50% - 0.5rem);
-		transform: scale(0) translateX(-50%);
-		position: absolute;
-		background: red;
-		width: 1rem;
-		height: 1rem;
-		border-radius: 50%;
-		stroke: ${(props) => (props.presentConnectors ? 'red' : 'transparent')};
-		animation: pulse 1.8s infinite;
-		opacity: 1;
-	}
-
-	@keyframes pulse {
-		0% {
-			transform: scale(0.2);
-		}
-		70% {
-			opacity: 0.5;
-		}
-		100% {
-			transform: scale(0.9);
-			opacity: 0;
-		}
 	}
 `;
 

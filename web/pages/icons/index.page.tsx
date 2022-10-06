@@ -22,6 +22,7 @@ import {
 	IconsListStyled,
 	IconsListWrapStyled,
 	IconWrapperStyled,
+	IconsSearchStyled,
 } from './styles';
 
 // From object to array
@@ -113,97 +114,97 @@ const Icons: NextPage = () => {
 
 	return (
 		<>
-			<main>
-				<IconsHeaderStyled>
-					<Typography variant="h1_bold" style={{ textAlign: 'center' }}>
-						Crazy fast workflow
-					</Typography>
-				</IconsHeaderStyled>
+			<IconsHeaderStyled>
+				<Typography variant="h1_bold" style={{ textAlign: 'center' }}>
+					Crazy fast workflow
+				</Typography>
+			</IconsHeaderStyled>
+			<IconsSearchStyled>
 				<Search aria-label="sitewide" id="search-normal" placeholder="Search" onChange={({ target }) => debounceSearchValue(target.value)} />
-				<IconsContainerStyled>
-					<CategoriesStyled>
-						<li>
-							{/* @ts-ignore: next-line */}
-							<Button onClick={() => onSelectedCategory('All')} variant={selectedCategory === 'All' ? '' : 'ghost'}>
-								<span>All</span>
-								<Chip>{icons.length}</Chip>
-							</Button>
-						</li>
-						{Object.keys(counts).map((key) => {
-							const name = capitalizeWords(key.slice(1, -1)).join(' ');
+			</IconsSearchStyled>
+			<IconsContainerStyled>
+				<CategoriesStyled>
+					<li>
+						{/* @ts-ignore: next-line */}
+						<Button onClick={() => onSelectedCategory('All')} variant={selectedCategory === 'All' ? '' : 'ghost'}>
+							<span>All</span>
+							<Chip>{icons.length}</Chip>
+						</Button>
+					</li>
+					{Object.keys(counts).map((key) => {
+						const name = capitalizeWords(key.slice(1, -1)).join(' ');
 
-							// console.log(89, name);
+						// console.log(89, name);
 
-							return (
-								<li key={key}>
-									<Button
-										/* @ts-ignore: next-line */
-										variant={selectedCategory === name ? '' : 'ghost'}
-										onClick={() => onSelectedCategory(name)}>
-										<span>{name}</span>
-										<Chip>{counts[key]}</Chip>
-									</Button>
-								</li>
-							);
-						})}
-					</CategoriesStyled>
-
-					<IconsListStyled>
-						{icns.map(({ name, svgString }) => (
-							<li key={name}>
-								<button onClick={() => handleOpen(name)}>
-									<Card>
-										<IconsListWrapStyled>
-											<IconWrapperStyled fill={appearance} rotate={rotate}>
-												<div dangerouslySetInnerHTML={{ __html: svgString }} />
-											</IconWrapperStyled>
-											<>
-												<Typography variant="body_short">{name}</Typography>
-											</>
-										</IconsListWrapStyled>
-									</Card>
-								</button>
-							</li>
-						))}
-					</IconsListStyled>
-					<CustomizeStyled>
-						<CustomizeElementStyled>
-							<CustomizeResetStyled>
-								<Typography variant="body_short" bold>
-									Customize
-								</Typography>
-								<Button color="secondary" onClick={() => onRestCustomize()}>
-									Reset
+						return (
+							<li key={key}>
+								<Button
+									/* @ts-ignore: next-line */
+									variant={selectedCategory === name ? '' : 'ghost'}
+									onClick={() => onSelectedCategory(name)}>
+									<span>{name}</span>
+									<Chip>{counts[key]}</Chip>
 								</Button>
-							</CustomizeResetStyled>
-						</CustomizeElementStyled>
+							</li>
+						);
+					})}
+				</CategoriesStyled>
 
-						<CustomizeElementStyled>
-							<Label label="Rotation" id="even-simpler-slider" />
-							<Slider
-								aria-labelledby="even-simpler-slider"
-								value={rotate}
-								step={1}
-								max={359}
-								min={0}
-								minMaxDots={false}
-								minMaxValues={false}
-								// @ts-ignore: next-line
-								onChange={(el, val) => debounceRotateValue(val[0])}
-							/>
-						</CustomizeElementStyled>
+				<IconsListStyled>
+					{icns.map(({ name, svgString }) => (
+						<li key={name}>
+							<button onClick={() => handleOpen(name)}>
+								<Card>
+									<IconsListWrapStyled>
+										<IconWrapperStyled fill={appearance} rotate={rotate}>
+											<div dangerouslySetInnerHTML={{ __html: svgString }} />
+										</IconWrapperStyled>
+										<>
+											<Typography variant="body_short">{name}</Typography>
+										</>
+									</IconsListWrapStyled>
+								</Card>
+							</button>
+						</li>
+					))}
+				</IconsListStyled>
+				<CustomizeStyled>
+					<CustomizeElementStyled>
+						<CustomizeResetStyled>
+							<Typography variant="body_short" bold>
+								Customize
+							</Typography>
+							<Button color="secondary" onClick={() => onRestCustomize()}>
+								Reset
+							</Button>
+						</CustomizeResetStyled>
+					</CustomizeElementStyled>
 
-						<CustomizeElementStyled>
-							<CustomizeColorStyled>
-								<Typography variant="body_short" bold>
-									Color
-								</Typography>
-								<HexColorPicker color={appearance} onChange={setAppearance} />
-							</CustomizeColorStyled>
-						</CustomizeElementStyled>
-					</CustomizeStyled>
-				</IconsContainerStyled>
-			</main>
+					<CustomizeElementStyled>
+						<Label label="Rotation" id="even-simpler-slider" />
+						<Slider
+							aria-labelledby="even-simpler-slider"
+							value={rotate}
+							step={1}
+							max={359}
+							min={0}
+							minMaxDots={false}
+							minMaxValues={false}
+							// @ts-ignore: next-line
+							onChange={(el, val) => debounceRotateValue(val[0])}
+						/>
+					</CustomizeElementStyled>
+
+					<CustomizeElementStyled>
+						<CustomizeColorStyled>
+							<Typography variant="body_short" bold>
+								Color
+							</Typography>
+							<HexColorPicker color={appearance} onChange={setAppearance} />
+						</CustomizeColorStyled>
+					</CustomizeElementStyled>
+				</CustomizeStyled>
+			</IconsContainerStyled>
 
 			{isOpen && selectedIcon && <DialogComponent onHandleClose={handleClose} selected={selectedIcon} />}
 		</>

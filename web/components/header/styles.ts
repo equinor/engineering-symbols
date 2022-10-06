@@ -35,7 +35,7 @@ export const NavStyled = styled.nav<MenuStateProps>`
 	@media screen and (max-width: 1024px) {
 		opacity: ${(props) => `${props.isOpen ? 1 : 0}`};
 		z-index: ${(props) => `${props.isOpen ? 1 : -1}`};
-		background: white;
+		background: ${({ theme }) => theme.body};
 		margin: 0;
 		padding: 16rem 2rem;
 		width: 100%;
@@ -56,8 +56,8 @@ export const NavStyled = styled.nav<MenuStateProps>`
 	}
 
 	li {
-		color: black;
-		background-color: white;
+		color: ${({ theme }) => theme.text};
+		background: ${({ theme }) => theme.body};
 		transition: background-color 0.4s ease, color 0.4s ease;
 		cursor: pointer;
 
@@ -66,8 +66,8 @@ export const NavStyled = styled.nav<MenuStateProps>`
 		}
 
 		&:hover {
-			background-color: black;
-			color: white;
+			color: ${({ theme }) => theme.hover.text};
+			background: ${({ theme }) => theme.hover.body};
 		}
 
 		a {

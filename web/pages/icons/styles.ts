@@ -10,6 +10,21 @@ export const IconsHeaderStyled = styled.div`
 	width: 100%;
 `;
 
+export const IconsSearchStyled = styled.div`
+	span {
+		background: ${({ theme }) => theme.body};
+		border: 1px solid ${({ theme }) => theme.hover.body};
+	}
+
+	input::placeholder {
+		color: ${({ theme }) => theme.text} !important;
+	}
+
+	svg {
+		fill: ${({ theme }) => theme.text};
+	}
+`;
+
 export const IconsContainerStyled = styled.div`
 	padding: 2rem 0;
 	display: flex;
@@ -62,6 +77,8 @@ export const IconsListStyled = styled.ul`
 		cursor: pointer;
 		height: 100%;
 		width: 100%;
+		background: ${({ theme }) => theme.body};
+		box-shadow: ${({ theme }) => theme.boxShadow};
 
 		&:hover svg {
 			transform: scale(1.1);
@@ -143,7 +160,8 @@ export const IconWrapperStyled = styled.div<IconWrapperProps>`
 	padding: 0 0 0.5rem;
 
 	svg {
-		fill: ${(props) => props.fill};
+		fill: ${({ theme }) => theme.fill};
+		// fill: ${(props) => props.fill};
 		transform: ${(props) => `rotate(${props.rotate}deg)`};
 		transition: all 0.3s easy;
 		width: 70px;

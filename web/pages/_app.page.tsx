@@ -1,11 +1,24 @@
 import Head from 'next/head';
 import type { AppProps } from 'next/app';
-import { HeaderComponent } from '../components';
-import { ContainerStyled } from '../styles/styles';
+import { ThemeProvider } from 'styled-components';
+import { useState } from 'react';
 
+// import 'https://eds-static.equinor.com/font/equinor-font.css';
+import { GlobalStyles } from '../styles/globalStyles';
+import { lightTheme, darkTheme } from '../styles/Themes';
+import { ContainerStyled, DarkModeSwitcherStyled } from '../styles/styles';
 import '../styles/globals.css';
 
+import { HeaderComponent } from '../components';
+
+import Sun from './svg/sun.svg';
+import Moon from './svg/moon.svg';
+
 function MyApp({ Component, pageProps }: AppProps) {
+	const [theme, setTheme] = useState('light');
+
+	const themeToggler = () => (theme === 'light' ? setTheme('dark') : setTheme('light'));
+
 	return (
 		<ContainerStyled>
 			<Head>
@@ -15,9 +28,23 @@ function MyApp({ Component, pageProps }: AppProps) {
 				<meta name="robots" content="noindex,nofollow" />
 			</Head>
 
-			<HeaderComponent />
-			<Component {...pageProps} />
-			<footer>License</footer>
+			<ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+				<GlobalStyles />
+				<DarkModeSwitcherStyled>
+					<input type="checkbox" id="darkmode-toggle" onClick={themeToggler} />
+					<label htmlFor="darkmode-toggle">
+						<Sun />
+						<Moon />
+					</label>
+				</DarkModeSwitcherStyled>
+
+				<HeaderComponent />
+				<main>
+					<Component {...pageProps} />
+				</main>
+
+				<footer>License</footer>
+			</ThemeProvider>
 		</ContainerStyled>
 	);
 }
