@@ -17,7 +17,7 @@ export const DarkModeSwitcherStyled = styled.div`
 		display: block;
 		background: #ebebeb;
 		border-radius: 20px;
-		box-shadow: inset 0px 5px 15px rgba(0, 0, 0, 0.4), inset 0px -5px 15px rgba(255, 255, 255, 0.4);
+		// box-shadow: inset 0px 5px 15px rgba(0, 0, 0, 0.4), inset 0px -5px 15px rgba(255, 255, 255, 0.4);
 		cursor: pointer;
 		transition: 0.3s;
 		&:after {
