@@ -74,6 +74,7 @@ export const IconsListStyled = styled.ul`
 
 	li p {
 		text-align: center;
+		word-wrap: break-word;
 	}
 `;
 

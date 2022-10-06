@@ -25,7 +25,7 @@ export const HeaderLogoStyled = styled.a`
 
 export const NavStyled = styled.nav<MenuStateProps>`
 	position: absolute;
-	top: 0;
+	top: 0.4rem;
 	left: 0;
 	right: 0;
 	margin: 3rem auto 0;
@@ -56,7 +56,6 @@ export const NavStyled = styled.nav<MenuStateProps>`
 	}
 
 	li {
-		padding: 1rem 1.5rem;
 		color: black;
 		background-color: white;
 		transition: background-color 0.4s ease, color 0.4s ease;
@@ -69,6 +68,11 @@ export const NavStyled = styled.nav<MenuStateProps>`
 		&:hover {
 			background-color: black;
 			color: white;
+		}
+
+		a {
+			display: block;
+			padding: 1rem 1.5rem;
 		}
 	}
 `;
