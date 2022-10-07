@@ -9,6 +9,24 @@ export type ConnectorsProps = {
 	direction: number;
 };
 
+export type ColorThemeProps = {
+	theme: {
+		body: string;
+		text: string;
+		fill: string;
+		toggleBorder: string;
+		boxShadow: string;
+		background: string;
+		hover: {
+			body: string;
+			text: string;
+			fill: string;
+			toggleBorder: string;
+			background: string;
+		};
+	};
+};
+
 export type IconProps = {
 	name: string;
 	category?: string;

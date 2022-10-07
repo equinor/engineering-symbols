@@ -28,9 +28,10 @@ export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({
 	const [presentConnectors, setPresentConnectors] = useState<boolean>(false);
 	const [isSnackbarOpen, setSnackbarOpen] = useState<boolean>(false);
 
-	const { name, description, connectors, width, height, svgString } = selected;
+	const { name, description, connectors, width, height, svgString, geometryString } = selected;
 
 	const svgRef = useRef(null);
+	console.log('👉', 'selected:', selected);
 
 	const onDownloadSvg = () => {
 		if (!svgRef || !svgRef.current) return;
@@ -109,6 +110,11 @@ export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({
 									<Icon data={download}></Icon>
 									{presentConnectors ? 'Download with connectors' : 'Download without connectors'}
 								</Button>
+								<CopyToClipboard text={geometryString}>
+									<Button fullWidth variant="outlined" onClick={() => setSnackbarOpen(true)}>
+										<Icon data={copy}></Icon>Copy geometry string
+									</Button>
+								</CopyToClipboard>
 								<CopyToClipboard text={name}>
 									<Button fullWidth variant="outlined" onClick={() => setSnackbarOpen(true)}>
 										<Icon data={copy}></Icon>Copy icon name

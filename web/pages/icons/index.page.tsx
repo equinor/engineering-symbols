@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { Typography, Chip, Button, Card, Search, Slider, Label } from '@equinor/eds-core-react';
 import { HexColorPicker } from 'react-colorful';
@@ -7,7 +7,7 @@ import { HexColorPicker } from 'react-colorful';
 import { DialogComponent } from '../../components';
 import { capitalizeWords } from '../../helpers';
 
-import { IconProps } from '../../types';
+import { ColorThemeProps, IconProps } from '../../types';
 
 import lib from '../../__FIXTURE__/symbol-library.json';
 
@@ -52,20 +52,23 @@ const iconNamesWithCategories = iconNames.map(({ name }) => ({
 // Merge arrays based on same name key to have category value inside
 const icons = arrayIcons.map((v) => ({ ...v, ...iconNamesWithCategories.find((sp) => sp.name === v.name) }));
 
-const Icons: NextPage = () => {
+const Icons = ({ theme }: ColorThemeProps) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [isColorPicked, setColorPicked] = useState<boolean>(false);
 	const [rotate, setRotate] = useState<number>(0);
-	const [appearance, setAppearance] = useState<string>('#000');
+	const [appearance, setAppearance] = useState<string>(theme.fill);
 	const [selectedIcon, setSelectedIcon] = useState<IconProps | null>();
 
 	// type IconProps
 	const [icns, seIcns] = useState<IconProps[] | []>(icons);
 	const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
-	console.log('icons ==>', icons);
-
 	const debounceSearchValue = useDebouncedCallback((value) => onSearch(value), 1000);
 	const debounceRotateValue = useDebouncedCallback((value) => setRotate(value), 1);
+
+	useEffect(() => {
+		!isColorPicked && setAppearance(theme.fill);
+	}, [theme.fill]);
 
 	const onSearch = (val: string) => {
 		if (val) {
@@ -90,7 +93,13 @@ const Icons: NextPage = () => {
 
 	const onRestCustomize = () => {
 		setRotate(0);
-		setAppearance('#000');
+		setColorPicked(false);
+		setAppearance(theme.fill);
+	};
+
+	const onColorPicker = (color: string) => {
+		setAppearance(color);
+		setColorPicked(true);
 	};
 
 	const handleOpen = (selectedName: string) => {
@@ -200,7 +209,7 @@ const Icons: NextPage = () => {
 							<Typography variant="body_short" bold>
 								Color
 							</Typography>
-							<HexColorPicker color={appearance} onChange={setAppearance} />
+							<HexColorPicker color={appearance} onChange={onColorPicker} />
 						</CustomizeColorStyled>
 					</CustomizeElementStyled>
 				</CustomizeStyled>

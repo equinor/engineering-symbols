@@ -160,8 +160,7 @@ export const IconWrapperStyled = styled.div<IconWrapperProps>`
 	padding: 0 0 0.5rem;
 
 	svg {
-		fill: ${({ theme }) => theme.fill};
-		// fill: ${(props) => props.fill};
+		fill: ${(props) => props.fill};
 		transform: ${(props) => `rotate(${props.rotate}deg)`};
 		transition: all 0.3s easy;
 		width: 70px;

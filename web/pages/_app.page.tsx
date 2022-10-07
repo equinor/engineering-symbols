@@ -15,9 +15,10 @@ import Sun from './svg/sun.svg';
 import Moon from './svg/moon.svg';
 
 function MyApp({ Component, pageProps }: AppProps) {
-	const [theme, setTheme] = useState('light');
+	const [themeName, setThemeName] = useState('light');
 
-	const themeToggler = () => (theme === 'light' ? setTheme('dark') : setTheme('light'));
+	const themeToggler = () => (themeName === 'light' ? setThemeName('dark') : setThemeName('light'));
+	const theme = themeName === 'light' ? lightTheme : darkTheme;
 
 	return (
 		<ContainerStyled>
@@ -28,7 +29,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 				<meta name="robots" content="noindex,nofollow" />
 			</Head>
 
-			<ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+			<ThemeProvider theme={theme}>
 				<GlobalStyles />
 				<DarkModeSwitcherStyled>
 					<input type="checkbox" id="darkmode-toggle" onClick={themeToggler} />
@@ -40,7 +41,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 				<HeaderComponent />
 				<main>
-					<Component {...pageProps} />
+					<Component {...pageProps} theme={theme} />
 				</main>
 
 				<footer>License</footer>
