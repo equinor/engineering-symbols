@@ -53,8 +53,8 @@ export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({
 		FileSaver.saveAs(url, `${name}.svg`);
 	};
 
-	const iconWidth = 170;
-	const iconHeight = 170;
+	const iconFrameWidth = 170;
+	const iconFrameHeight = 170;
 	const hasConnectors = connectors.length > 0;
 
 	return (
@@ -64,15 +64,15 @@ export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({
 					<DialogImageWrapStyled>
 						<DialogImageStyled ref={svgRef}>
 							<>
-								<DialogSvgImageStyled width={iconWidth} height={iconHeight}>
+								<DialogSvgImageStyled width={iconFrameWidth} height={iconFrameHeight}>
 									<div dangerouslySetInnerHTML={{ __html: svgString }} />
 									{hasConnectors &&
 										connectors.map(({ relativePosition }: ConnectorsProps, id: number) => {
 											if (!relativePosition) return;
-											const scaleRate = height > width ? iconHeight / height : iconWidth / width;
+											const scaleRate = height > width ? iconFrameHeight / height : iconFrameWidth / width;
 
-											const top = relativePosition.y * scaleRate + (iconHeight - height * scaleRate) / 2 - 30;
-											const left = relativePosition.x * scaleRate + (iconWidth - width * scaleRate) / 2;
+											const top = relativePosition.y * scaleRate + (iconFrameHeight - height * scaleRate) / 2 - 30;
+											const left = relativePosition.x * scaleRate + (iconFrameWidth - width * scaleRate) / 2;
 
 											return (
 												<AnnotationWrapStyled
