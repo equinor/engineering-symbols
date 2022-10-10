@@ -29,18 +29,7 @@ import lib from '../../__FIXTURE__/symbol-library.json';
 const arrayIcons = Object.entries(lib).map(([name, obj]) => ({ name, ...obj }));
 // Categories
 // ALL WORDS ARE UPPERCASE (temp.)
-const fixtureCategories = [
-	'K-Pop Party',
-	'Superheroes',
-	'Circulation',
-	'Pool Party',
-	'Coachella',
-	'Isolation',
-	'Rainbow',
-	'Pop Art',
-	'Disco',
-	'Duck',
-];
+const fixtureCategories = ['Party', 'Superheroes', 'Circulation', 'Pool Party', 'Coachella', 'Isolation', 'Rainbow', 'Pop Art', 'Disco', 'Duck'];
 // Only for list of the names
 const iconNames = Object.entries(lib).map(([name]) => ({ name }));
 const iconNamesWithCategories = iconNames.map(({ name }) => ({
@@ -121,8 +110,6 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 		acc[str] = (acc[str] || 0) + 1;
 		return acc;
 	}, {});
-
-	console.log(9999, selectedCategory);
 
 	return (
 		<>
