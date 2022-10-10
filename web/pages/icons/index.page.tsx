@@ -9,37 +9,37 @@ import { capitalizeWords } from '../../helpers';
 
 import { ColorThemeProps, IconProps } from '../../types';
 
-import lib from '../../__FIXTURE__/symbol-library.json';
-
 import {
-	CategoriesStyled,
-	CustomizeColorStyled,
 	CustomizeElementStyled,
+	CustomizeColorStyled,
 	CustomizeResetStyled,
-	CustomizeStyled,
 	IconsContainerStyled,
-	IconsHeaderStyled,
-	IconsListStyled,
 	IconsListWrapStyled,
+	IconsHeaderStyled,
 	IconWrapperStyled,
 	IconsSearchStyled,
+	CategoriesStyled,
+	CustomizeStyled,
+	IconsListStyled,
 } from './styles';
+
+import lib from '../../__FIXTURE__/symbol-library.json';
 
 // From object to array
 const arrayIcons = Object.entries(lib).map(([name, obj]) => ({ name, ...obj }));
 // Categories
 // ALL WORDS ARE UPPERCASE (temp.)
 const fixtureCategories = [
+	'K-Pop Party',
+	'Superheroes',
+	'Circulation',
+	'Pool Party',
+	'Coachella',
+	'Isolation',
+	'Rainbow',
 	'Pop Art',
 	'Disco',
-	'Coachella',
-	'Superheroes',
-	'Isolation',
-	'Pool Party',
-	'Rainbow',
 	'Duck',
-	'K-Pop Party',
-	'Circulation',
 ];
 // Only for list of the names
 const iconNames = Object.entries(lib).map(([name]) => ({ name }));
@@ -52,7 +52,7 @@ const iconNamesWithCategories = iconNames.map(({ name }) => ({
 // Merge arrays based on same name key to have category value inside
 const icons = arrayIcons.map((v) => ({ ...v, ...iconNamesWithCategories.find((sp) => sp.name === v.name) }));
 
-const Icons = ({ theme }: ColorThemeProps) => {
+const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [isColorPicked, setColorPicked] = useState<boolean>(false);
 	const [rotate, setRotate] = useState<number>(0);
@@ -81,11 +81,12 @@ const Icons = ({ theme }: ColorThemeProps) => {
 	};
 
 	const onSelectedCategory = (val: string) => {
-		console.log(7, val);
 		if (!val || val === 'All') {
 			seIcns(icons);
+			setSelectedCategory('All');
 		} else {
 			const searchedValue = icons.filter(({ category }) => category === val);
+
 			setSelectedCategory(val);
 			seIcns(searchedValue);
 		}
@@ -121,6 +122,8 @@ const Icons = ({ theme }: ColorThemeProps) => {
 		return acc;
 	}, {});
 
+	console.log(9999, selectedCategory);
+
 	return (
 		<>
 			<IconsHeaderStyled>
@@ -142,8 +145,6 @@ const Icons = ({ theme }: ColorThemeProps) => {
 					</li>
 					{Object.keys(counts).map((key) => {
 						const name = capitalizeWords(key.slice(1, -1)).join(' ');
-
-						// console.log(89, name);
 
 						return (
 							<li key={key}>

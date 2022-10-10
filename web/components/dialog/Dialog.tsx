@@ -6,17 +6,17 @@ import { Typography, Button, Dialog, Switch, Icon, Snackbar } from '@equinor/eds
 import { download, copy } from '@equinor/eds-icons';
 
 import {
-	AnnotationTooltipStyled,
-	AnnotationWrapStyled,
+	AnnotationTooltipDotStyled,
 	DialogContenButtonsStyled,
-	DialogContentDescStyled,
-	DialogContentStyled,
 	DialogContentTitleStyled,
-	DialogImageStyled,
+	DialogContentDescStyled,
+	AnnotationTooltipStyled,
 	DialogImageWrapStyled,
 	DialogSvgImageStyled,
+	AnnotationWrapStyled,
+	DialogContentStyled,
+	DialogImageStyled,
 	DialogWrapStyled,
-	AnnotationTooltipDotStyled,
 } from './styles';
 
 import { DialogComponentProps } from './Dialog.types';
@@ -31,6 +31,7 @@ export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({
 	const { name, description, connectors, width, height, svgString, geometryString } = selected;
 
 	const svgRef = useRef(null);
+
 	console.log('👉', 'selected:', selected);
 
 	const onDownloadSvg = () => {
@@ -39,9 +40,6 @@ export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({
 		const ref: HTMLDivElement = svgRef.current;
 		const svg = ref.getElementsByTagName('svg')[0];
 		const clone = svg.cloneNode(true) as SVGSVGElement;
-
-		console.log(18, presentConnectors);
-
 		const getCloneAnnotations = clone.getElementById('Annotations');
 
 		if (!presentConnectors && getCloneAnnotations !== null) getCloneAnnotations.remove();

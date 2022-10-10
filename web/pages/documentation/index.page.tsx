@@ -2,7 +2,6 @@ import { Typography } from '@equinor/eds-core-react';
 import type { NextPage } from 'next';
 import remarkGfm from 'remark-gfm';
 import ReactMarkdown from 'react-markdown';
-import { useEffect, useState } from 'react';
 import { MDXProvider } from '@mdx-js/react';
 
 import DOC from './documentation.md';
