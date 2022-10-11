@@ -44,7 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 					<Component {...pageProps} theme={theme} />
 				</main>
 
-				<footer>License</footer>
+				<footer style={{ padding: '3rem 0' }}>I'm License</footer>
 			</ThemeProvider>
 		</ContainerStyled>
 	);
