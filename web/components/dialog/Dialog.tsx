@@ -1,47 +1,38 @@
-import { ChangeEvent, useState, useRef, useEffect, useLayoutEffect } from 'react';
+import { ChangeEvent, useState, useRef } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import FileSaver from 'file-saver';
 
 import { Typography, Button, Dialog, Switch, Icon, Snackbar } from '@equinor/eds-core-react';
-import { Icon as EngineeringIcon } from '@equinor/engineering-symbols';
 import { download, copy } from '@equinor/eds-icons';
+
+import {
+	AnnotationTooltipDotStyled,
+	DialogContenButtonsStyled,
+	DialogContentTitleStyled,
+	DialogContentDescStyled,
+	AnnotationTooltipStyled,
+	DialogImageWrapStyled,
+	DialogSvgImageStyled,
+	AnnotationWrapStyled,
+	DialogContentStyled,
+	DialogImageStyled,
+	DialogWrapStyled,
+} from './styles';
+
+import { DialogComponentProps } from './Dialog.types';
+import { ConnectorsProps } from '../../types';
 
 import { capitalizeWords } from '../../helpers';
 
-import { DialogComponentProps } from './Dialog.types';
-
-import styles from './styles.module.css';
-
-const connectors = [
-	{
-		id: 1,
-		x: 13.5,
-		y: 40.5,
-		width: 96,
-		height: 96,
-		title: 'oillllllllll',
-	},
-	{
-		id: 2,
-		x: 48,
-		y: 6,
-		width: 96,
-		height: 96,
-		title: 'gas',
-	},
-];
-
-export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({ onHandleClose, selectedName, icons }): JSX.Element => {
+export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({ onHandleClose, selected }): JSX.Element => {
 	const [presentConnectors, setPresentConnectors] = useState<boolean>(false);
 	const [isSnackbarOpen, setSnackbarOpen] = useState<boolean>(false);
 
-	const { name, description } = icons.filter(({ name }) => name === selectedName)[0];
+	const { name, description, connectors, width, height, svgString, geometryString } = selected;
 
 	const svgRef = useRef(null);
 
-	useEffect(() => {
-		console.log(18, icons);
-	}, []);
+	console.log('👉', 'selected:', selected);
 
 	const onDownloadSvg = () => {
 		if (!svgRef || !svgRef.current) return;
@@ -49,8 +40,9 @@ export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({
 		const ref: HTMLDivElement = svgRef.current;
 		const svg = ref.getElementsByTagName('svg')[0];
 		const clone = svg.cloneNode(true) as SVGSVGElement;
+		const getCloneAnnotations = clone.getElementById('Annotations');
 
-		if (!presentConnectors) clone.getElementById('Annotations').remove();
+		if (!presentConnectors && getCloneAnnotations !== null) getCloneAnnotations.remove();
 
 		const svgData = new XMLSerializer().serializeToString(clone);
 
@@ -59,56 +51,68 @@ export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({
 		FileSaver.saveAs(url, `${name}.svg`);
 	};
 
-	const iconWidth = 170;
-	const iconHeight = 170;
+	const iconFrameWidth = 170;
+	const iconFrameHeight = 170;
+	const hasConnectors = connectors.length > 0;
 
 	return (
-		<Dialog open isDismissable onClose={onHandleClose}>
+		<Dialog open isDismissable onClose={onHandleClose} style={{ width: 'auto' }} className="eq_dialog">
 			<Dialog.CustomContent>
-				<div className={styles.dialogWrap}>
-					<div className={styles.dialogImageWrap}>
-						<div className={`dialogImage${presentConnectors ? ' dialogImage--with-connectors' : ''}`} ref={svgRef}>
+				<DialogWrapStyled>
+					<DialogImageWrapStyled>
+						<DialogImageStyled ref={svgRef}>
 							<>
-								<EngineeringIcon
-									name={name}
-									width={iconWidth}
-									height={iconHeight}
-									getPosition={(el: any) => console.log('ops:', el)}
-								/>
-								{connectors.map(({ x, y, width, height, title }) => {
-									const top = y * (iconHeight / height) - 40;
-									const left = x * (iconWidth / width);
+								<DialogSvgImageStyled width={iconFrameWidth} height={iconFrameHeight}>
+									<div dangerouslySetInnerHTML={{ __html: svgString }} />
+									{hasConnectors &&
+										connectors.map(({ relativePosition }: ConnectorsProps, id: number) => {
+											if (!relativePosition) return;
+											const scaleRate = height > width ? iconFrameHeight / height : iconFrameWidth / width;
 
-									return (
-										<div key={title} className={`ant ${styles.annotationWrap}`} style={{ top, left }}>
-											<div className={styles.annotation}></div>
-											<span className={styles.annotationTooltip}>{title}</span>
-										</div>
-									);
-								})}
+											const top = relativePosition.y * scaleRate + (iconFrameHeight - height * scaleRate) / 2 - 30;
+											const left = relativePosition.x * scaleRate + (iconFrameWidth - width * scaleRate) / 2;
+
+											return (
+												<AnnotationWrapStyled
+													key={`annnotaion-${id}`}
+													presentConnectors={presentConnectors}
+													top={top}
+													left={left}>
+													<AnnotationTooltipStyled>Oil</AnnotationTooltipStyled>
+													<AnnotationTooltipDotStyled />
+												</AnnotationWrapStyled>
+											);
+										})}
+								</DialogSvgImageStyled>
 							</>
-						</div>
-					</div>
+						</DialogImageStyled>
+					</DialogImageWrapStyled>
 
-					<div className={styles.dialogContent}>
-						<div className={styles.dialogContentTitle}>
+					<DialogContentStyled>
+						<DialogContentTitleStyled>
 							<Typography variant="h2">{capitalizeWords(name.replace('-', ' '))}</Typography>
-						</div>
+						</DialogContentTitleStyled>
 
-						<div className={styles.dialogContentDesc}>
+						<DialogContentDescStyled>
 							<Typography variant="body_short">{description}</Typography>
+							{hasConnectors && (
+								<Switch
+									onChange={({ target }: ChangeEvent<HTMLInputElement>) => setPresentConnectors(target.checked)}
+									checked={presentConnectors}
+									label={`${presentConnectors ? ' Hide' : 'Show'} connectors`}
+								/>
+							)}
 
-							<Switch
-								onChange={({ target }: ChangeEvent<HTMLInputElement>) => setPresentConnectors(target.checked)}
-								checked={presentConnectors}
-								label={`${presentConnectors ? ' Hide' : 'Show'} connectors`}
-							/>
-
-							<div className={styles.dialogContenButtons}>
+							<DialogContenButtonsStyled>
 								<Button fullWidth variant="outlined" onClick={() => onDownloadSvg()}>
 									<Icon data={download}></Icon>
 									{presentConnectors ? 'Download with connectors' : 'Download without connectors'}
 								</Button>
+								<CopyToClipboard text={geometryString}>
+									<Button fullWidth variant="outlined" onClick={() => setSnackbarOpen(true)}>
+										<Icon data={copy}></Icon>Copy geometry string
+									</Button>
+								</CopyToClipboard>
 								<CopyToClipboard text={name}>
 									<Button fullWidth variant="outlined" onClick={() => setSnackbarOpen(true)}>
 										<Icon data={copy}></Icon>Copy icon name
@@ -117,10 +121,10 @@ export const DialogComponent: React.FunctionComponent<DialogComponentProps> = ({
 								<Snackbar open={isSnackbarOpen} onClose={() => setSnackbarOpen(false)} autoHideDuration={3000}>
 									Copied!
 								</Snackbar>
-							</div>
-						</div>
-					</div>
-				</div>
+							</DialogContenButtonsStyled>
+						</DialogContentDescStyled>
+					</DialogContentStyled>
+				</DialogWrapStyled>
 			</Dialog.CustomContent>
 		</Dialog>
 	);
