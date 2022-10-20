@@ -1,1 +1,0 @@
-export { DialogComponent } from './Dialog';

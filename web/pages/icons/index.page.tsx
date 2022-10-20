@@ -1,25 +1,20 @@
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { Typography, Chip, Button, Card, Search, Slider, Label } from '@equinor/eds-core-react';
-import { HexColorPicker } from 'react-colorful';
+import { Typography, Chip, Button, Card, Search } from '@equinor/eds-core-react';
 
-import { DialogComponent } from '../../components';
+import { PreviewComponent, SvgComponent } from '../../components';
 import { capitalizeWords } from '../../helpers';
 
 import { ColorThemeProps, IconProps } from '../../types';
 
 import {
-	CustomizeElementStyled,
-	CustomizeColorStyled,
-	CustomizeResetStyled,
 	IconsContainerStyled,
 	IconsListWrapStyled,
 	IconsHeaderStyled,
 	IconWrapperStyled,
 	IconsSearchStyled,
 	CategoriesStyled,
-	CustomizeStyled,
 	IconsListStyled,
 } from './styles';
 
@@ -42,18 +37,15 @@ const iconNamesWithCategories = iconNames.map(({ name }) => ({
 const icons = arrayIcons.map((v) => ({ ...v, ...iconNamesWithCategories.find((sp) => sp.name === v.name) }));
 
 const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
-	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [isColorPicked, setColorPicked] = useState<boolean>(false);
-	const [rotate, setRotate] = useState<number>(0);
 	const [appearance, setAppearance] = useState<string>(theme.fill);
-	const [selectedIcon, setSelectedIcon] = useState<IconProps | null>();
+	const [selectedIcon, setSelectedIcon] = useState<IconProps>(icons[0]);
 
 	// type IconProps
 	const [icns, seIcns] = useState<IconProps[] | []>(icons);
 	const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
 	const debounceSearchValue = useDebouncedCallback((value) => onSearch(value), 1000);
-	const debounceRotateValue = useDebouncedCallback((value) => setRotate(value), 1);
 
 	useEffect(() => {
 		!isColorPicked && setAppearance(theme.fill);
@@ -81,27 +73,10 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 		}
 	};
 
-	const onRestCustomize = () => {
-		setRotate(0);
-		setColorPicked(false);
-		setAppearance(theme.fill);
-	};
-
-	const onColorPicker = (color: string) => {
-		setAppearance(color);
-		setColorPicked(true);
-	};
-
-	const handleOpen = (selectedName: string) => {
+	const onSelectIcon = (selectedName: string) => {
 		const selected = icons.filter(({ name }) => name === selectedName)[0];
 
-		setIsOpen(true);
 		setSelectedIcon(selected);
-	};
-
-	const handleClose = () => {
-		setIsOpen(false);
-		setSelectedIcon(null);
 	};
 
 	const counts = icons.reduce((acc: any, curr) => {
@@ -147,63 +122,43 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 					})}
 				</CategoriesStyled>
 
-				<IconsListStyled>
-					{icns.map(({ name, svgString }) => (
-						<li key={name}>
-							<button onClick={() => handleOpen(name)}>
-								<Card>
-									<IconsListWrapStyled>
-										<IconWrapperStyled fill={appearance} rotate={rotate}>
-											<div dangerouslySetInnerHTML={{ __html: svgString }} />
-										</IconWrapperStyled>
-										<>
-											<Typography variant="body_short">{name}</Typography>
-										</>
-									</IconsListWrapStyled>
-								</Card>
-							</button>
-						</li>
-					))}
-				</IconsListStyled>
-				<CustomizeStyled>
-					<CustomizeElementStyled>
-						<CustomizeResetStyled>
-							<Typography variant="body_short" bold>
-								Customize
-							</Typography>
-							<Button color="secondary" onClick={() => onRestCustomize()}>
-								Reset
-							</Button>
-						</CustomizeResetStyled>
-					</CustomizeElementStyled>
+				<div>
+					<IconsListStyled>
+						{icns.map(({ name, width, height, geometryString }) => (
+							<li key={name}>
+								<button onClick={() => onSelectIcon(name)}>
+									<Card>
+										<IconsListWrapStyled>
+											<IconWrapperStyled>
+												<SvgComponent
+													viewBoxHeight={height}
+													viewBoxWidth={width}
+													height={70}
+													width={70}
+													fill={appearance}
+													path={geometryString}
+												/>
+											</IconWrapperStyled>
+											<>
+												<Typography variant="body_short">{name}</Typography>
+											</>
+										</IconsListWrapStyled>
+									</Card>
+								</button>
+							</li>
+						))}
+					</IconsListStyled>
+				</div>
 
-					<CustomizeElementStyled>
-						<Label label="Rotation" id="even-simpler-slider" />
-						<Slider
-							aria-labelledby="even-simpler-slider"
-							value={rotate}
-							step={1}
-							max={359}
-							min={0}
-							minMaxDots={false}
-							minMaxValues={false}
-							// @ts-ignore: next-line
-							onChange={(el, val) => debounceRotateValue(val[0])}
-						/>
-					</CustomizeElementStyled>
-
-					<CustomizeElementStyled>
-						<CustomizeColorStyled>
-							<Typography variant="body_short" bold>
-								Color
-							</Typography>
-							<HexColorPicker color={appearance} onChange={onColorPicker} />
-						</CustomizeColorStyled>
-					</CustomizeElementStyled>
-				</CustomizeStyled>
+				{/* Preview */}
+				<PreviewComponent
+					selected={selectedIcon}
+					setPreviewAppearance={setAppearance}
+					setPreviewColorPicked={setColorPicked}
+					theme={theme}
+					appearance={appearance}
+				/>
 			</IconsContainerStyled>
-
-			{isOpen && selectedIcon && <DialogComponent onHandleClose={handleClose} selected={selectedIcon} />}
 		</>
 	);
 };

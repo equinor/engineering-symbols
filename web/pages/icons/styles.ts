@@ -1,10 +1,5 @@
 import styled from 'styled-components';
 
-interface IconWrapperProps {
-	fill: string;
-	rotate: number;
-}
-
 export const IconsHeaderStyled = styled.div`
 	padding: 1rem 0 4rem;
 	width: 100%;
@@ -27,12 +22,17 @@ export const IconsSearchStyled = styled.div`
 
 export const IconsContainerStyled = styled.div`
 	padding: 2rem 0;
-	display: flex;
+	// justify-content: space-between;
+	// display: flex;
+	display: grid;
+	// grid-template-rows: 1fr 1fr 1fr;
+	grid-template-columns: 15% 60% 25%;
+	// gap: 1rem;
 `;
 
 export const CategoriesStyled = styled.ul`
-	width: 20%;
-	padding: 0 3rem 0 0;
+	// width: 20%;
+	padding: 0 1rem 0 0;
 	list-style: none;
 	margin: 0;
 
@@ -51,16 +51,18 @@ export const CategoriesStyled = styled.ul`
 `;
 
 export const IconsListStyled = styled.ul`
-	width: 60%;
+	// width: 55%;
 	list-style: none;
 	display: grid;
 	padding-left: 0;
 	margin: 0;
-	grid-template-rows: 1fr 1fr 1fr;
-	// grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+	// grid-template-rows: repeat(auto-fill, 175px);
+	// grid-template-rows: max-content 175px;
+	grid-template-rows: repeat(fit-content(175px));
+	// grid-template-columns: repeat(auto-fill, minmax(130px, auto));
+	grid-template-columns: repeat(4, minmax(130px, 1fr));
 	gap: 1rem;
-	height: 100%;
+	// height: 100%;
 
 	button {
 		appearance: none;
@@ -71,6 +73,11 @@ export const IconsListStyled = styled.ul`
 		background: none;
 		height: 100%;
 		width: 100%;
+	}
+
+	li {
+		// align-items: center;
+		// height: auto;
 	}
 
 	button > div {
@@ -95,11 +102,6 @@ export const IconsListStyled = styled.ul`
 	}
 `;
 
-export const CustomizeStyled = styled.div`
-	width: 20%;
-	padding: 0 0 0 3rem;
-`;
-
 export const IconsListWrapStyled = styled.div`
 	padding: 1rem;
 	display: flex;
@@ -113,34 +115,6 @@ export const IconsListWrapStyled = styled.div`
 	}
 `;
 
-export const CustomizeElementStyled = styled.div`
-	padding: 2rem 0 0;
-`;
-
-export const CustomizeResetStyled = styled.div`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-`;
-
-export const CustomizeColorStyled = styled.div`
-	position: relative;
-	padding: 1.5rem 0 0;
-
-	input {
-		position: absolute;
-		right: -1rem;
-		top: -1rem;
-		width: 5rem;
-		height: 4rem;
-		border: none;
-	}
-
-	.react-colorful {
-		width: 100%;
-	}
-`;
-
 export const CustomizeColorWrapStyled = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -151,7 +125,7 @@ export const CustomizeColorWrapStyled = styled.div`
 	}
 `;
 
-export const IconWrapperStyled = styled.div<IconWrapperProps>`
+export const IconWrapperStyled = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -160,10 +134,6 @@ export const IconWrapperStyled = styled.div<IconWrapperProps>`
 	padding: 0 0 0.5rem;
 
 	svg {
-		fill: ${(props) => props.fill};
-		transform: ${(props) => `rotate(${props.rotate}deg)`};
 		transition: all 0.3s easy;
-		width: 70px;
-		height: 70px;
 	}
 `;
