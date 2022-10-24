@@ -1,11 +1,11 @@
 import { ChangeEvent, useState, useEffect, useRef } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { HexColorPicker } from 'react-colorful';
-import FileSaver from 'file-saver';
+import { saveAs } from 'file-saver';
 import SVGPathCommander from 'svg-path-commander';
 import copyToClipboard from 'copy-to-clipboard';
 
-import { Typography, Button, Switch, Icon, Snackbar, Label, Slider, Input, Popover } from '@equinor/eds-core-react';
+import { Typography, Button, Switch, Icon, Snackbar, Label, Input, Popover, Search } from '@equinor/eds-core-react';
 import { download, copy } from '@equinor/eds-icons';
 
 import {
@@ -23,19 +23,22 @@ import {
 	PreviewImageStyled,
 	PopoverWrapStyled,
 	PreviewWrapStyled,
+	IconsSearchStyled,
 	CustomizeStyled,
+	PreviewStyled,
 } from './styles';
 
 import { PreviewComponentProps } from './Preview.types';
+import { SymbolConnector } from '../svg/Svg.types';
 import { ConnectorsProps } from '../../types';
 
 import { capitalizeWords, rotatePoint, useOnClickOutside } from '../../helpers';
 import { SvgComponent } from '../svg';
-import { SymbolConnector } from '../svg/Svg.types';
 
 export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = ({
 	setPreviewAppearance,
 	setPreviewColorPicked,
+	onSearchValue,
 	appearance,
 	selected,
 	theme,
@@ -53,8 +56,6 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	const [rotatedConnectors, setRotatedConnectors] = useState<SymbolConnector[]>(connectors);
 
 	const [containerWidth, setContainerWidth] = useState<number>(0);
-
-	const [svgDataString, setSvgDataString] = useState<string>('');
 
 	const [path, setPath] = useState<string>(geometryString);
 
@@ -77,24 +78,32 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 
 	useOnClickOutside(customizeColorRef, () => setShowCustomizeColor(false));
 
-	const getSvgString = () => {
+	const getSvg = () => {
 		if (!svgRef || !svgRef.current) return '';
 
 		const ref: HTMLDivElement = svgRef.current;
 		const svg = ref.getElementsByTagName('svg')[0];
 		const clone = svg.cloneNode(true) as SVGSVGElement;
-		const svgData = new XMLSerializer().serializeToString(clone);
+
+		return clone;
+	};
+
+	const getSvgString = () => {
+		const svg = getSvg();
+
+		if (!svg) return '';
+
+		const svgData = new XMLSerializer().serializeToString(svg);
 
 		return svgData;
 	};
 
 	const getSvgPathString = () => {
-		if (!svgRef || !svgRef.current) return '';
+		const svg = getSvg();
 
-		const ref: HTMLDivElement = svgRef.current;
-		const svg = ref.getElementsByTagName('svg')[0];
-		const clone = svg.cloneNode(true) as SVGSVGElement;
-		const path = clone.getElementsByTagName('path');
+		if (!svg) return '';
+
+		const path = svg.getElementsByTagName('path');
 		const d = path[0].getAttribute('d');
 
 		return d;
@@ -103,7 +112,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	const onDownloadSvg = () => {
 		const url = new Blob([getSvgString()], { type: 'image/svg+xml' });
 
-		FileSaver.saveAs(url, `${name}.svg`);
+		saveAs(url, `${name}.svg`);
 	};
 
 	const onColorPicker = (color: string) => {
@@ -118,7 +127,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	};
 
 	const handleScroll = () => {
-		const isStick = window.pageYOffset >= 310;
+		const isStick = window.pageYOffset >= 270;
 
 		setStickPosition(isStick);
 	};
@@ -134,15 +143,15 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 		const SIZE_OF_PREVIEW = 0.25; // 25%
 
 		const { innerWidth } = window;
-		const right = (innerWidth - 1400) / 2 / REM + 3.65;
-
 		const previewWidth = (innerWidth - SIDE_PADDING * 2) * SIZE_OF_PREVIEW - REM;
 
 		setContainerWidth(previewWidth);
 
 		if (!isStickyPosition) return;
 
+		const right = (innerWidth - 1400) / 2 / REM + 3.65 + 1;
 		const position = right > 0 ? right : SIDE_PADDING / REM;
+
 		setResizePosition(position);
 	};
 
@@ -165,14 +174,12 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 
 	useEffect(() => {
 		window.addEventListener('scroll', handleScroll, { passive: true });
-
-		return () => window.removeEventListener('scroll', handleScroll);
-	}, []);
-
-	useEffect(() => {
 		window.addEventListener('resize', handleResize, true);
 
-		return () => window.removeEventListener('resize', handleResize);
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+			window.removeEventListener('resize', handleResize);
+		};
 	}, []);
 
 	useEffect(() => (isStickyPosition ? handleResize() : setResizePosition(0)), [isStickyPosition]);
@@ -198,8 +205,12 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	}, [rotate, selected]);
 
 	return (
-		<>
-			<CustomizeStyled isFixed={isStickyPosition} right={resizePosition} width={containerWidth}>
+		<PreviewStyled isFixed={isStickyPosition} right={resizePosition} width={containerWidth}>
+			<IconsSearchStyled>
+				<Search aria-label="sitewide" id="search-normal" placeholder="Search" onChange={({ target }) => onSearchValue(target.value)} />
+			</IconsSearchStyled>
+
+			<CustomizeStyled>
 				<PreviewWrapStyled>
 					<PreviewImageWrapStyled>
 						<PreviewImageStyled ref={svgRef}>
@@ -217,11 +228,14 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 								rotatedConnectors.map(({ relativePosition }: ConnectorsProps, id: number) => {
 									if (!relativePosition) return;
 									const scaleRate = height > width ? ICON_FRAME_HEIGHT / height : ICON_FRAME_WIDTH / width;
-									const distanceForTriangle = 30;
-									const padding = 32;
+									const DISTANCE_FOR_TRIANGLE = 30;
+									const PADDING = 32;
 
 									const top =
-										relativePosition.y * scaleRate + (ICON_FRAME_HEIGHT - height * scaleRate) / 2 - distanceForTriangle + padding;
+										relativePosition.y * scaleRate +
+										(ICON_FRAME_HEIGHT - height * scaleRate) / 2 -
+										DISTANCE_FOR_TRIANGLE +
+										PADDING;
 									const left = relativePosition.x * scaleRate + (ICON_FRAME_WIDTH - width * scaleRate) / 2;
 
 									return (
@@ -302,28 +316,20 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 					<Button aria-controls="popover" aria-haspopup ref={popoverRef} onClick={() => setPopoverIsOpen(true)}>
 						<Icon data={copy}></Icon>
 						Copy ...
-						{/* <Icon data={more_vertical} /> */}
 					</Button>
 
 					<Popover anchorEl={popoverRef.current} open={isPopoverOpen} id="popover" placement="top" onClose={() => setPopoverIsOpen(false)}>
 						<Popover.Content>
 							<PopoverWrapStyled>
-								{/* PATH - edited one */}
-								<>
-									<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(getSvgPathString())}>
-										<Icon data={copy}></Icon>Copy geometry string
-									</Button>
-								</>
-								<>
-									<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(name)}>
-										<Icon data={copy}></Icon>Copy icon name
-									</Button>
-								</>
-								<>
-									<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(getSvgString())}>
-										<Icon data={copy}></Icon>Copy SVG
-									</Button>
-								</>
+								<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(getSvgPathString() as string)}>
+									<Icon data={copy}></Icon>Copy geometry string
+								</Button>
+								<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(name)}>
+									<Icon data={copy}></Icon>Copy icon name
+								</Button>
+								<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(getSvgString())}>
+									<Icon data={copy}></Icon>Copy SVG
+								</Button>
 							</PopoverWrapStyled>
 						</Popover.Content>
 					</Popover>
@@ -332,6 +338,6 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 					</Snackbar>
 				</PreviewContenButtonsStyled>
 			</CustomizeStyled>
-		</>
+		</PreviewStyled>
 	);
 };

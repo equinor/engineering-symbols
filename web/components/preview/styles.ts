@@ -6,7 +6,7 @@ interface AnnotationWrapProps {
 	left: number;
 }
 
-interface CustomizeStyledProps {
+interface PreviewStyledProps {
 	isFixed: boolean;
 	right: number;
 	width: number;
@@ -16,6 +16,52 @@ interface CustomizeColorProps {
 	color: string;
 	show: boolean;
 }
+
+export const PreviewStyled = styled.div<PreviewStyledProps>`
+	width: ${({ width }) => (width > 0 ? `${width}px` : 'auto')};
+	max-width: 304px;
+	min-width: 270px;
+	position: ${({ isFixed }) => (isFixed ? 'fixed' : 'relative')};
+	right: ${({ right }) => `${right}rem`};
+	top: ${({ isFixed }) => (isFixed ? '2rem' : '0')};
+`;
+
+export const CustomizeStyled = styled.div`
+	padding: 0 1rem 2rem;
+	border-radius: 12px;
+	align-self: start;
+	margin: 0 0 0 1rem;
+	box-shadow: ${({ theme }) => theme.boxShadow};
+	// transition: all 0.3s ease;
+
+	border: 1px solid #f2f2f2;
+	// box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+	// box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+	// box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+	// box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+`;
+
+export const IconsSearchStyled = styled.div`
+	margin: 0 0 1rem 1rem;
+	padding: 1rem;
+	border-radius: 12px;
+	border: 1px solid #f2f2f2;
+	margin-bottom: 1rem;
+
+	span {
+		background: ${({ theme }) => theme.body};
+		// border-bottom: 1px solid ${({ theme }) => theme.hover.body};
+		// border: none;
+	}
+
+	input::placeholder {
+		color: ${({ theme }) => theme.text} !important;
+	}
+
+	svg {
+		fill: ${({ theme }) => theme.text};
+	}
+`;
 
 export const PreviewWrapStyled = styled.div`
 	// background: ${({ theme }) => theme.body} !important;
@@ -87,10 +133,10 @@ export const AnnotationTooltipDotStyled = styled.div`
 
 export const AnnotationWrapStyled = styled.div<AnnotationWrapProps>`
 	position: absolute;
-	visibility: ${(props) => (props.presentConnectors ? 'visible' : 'hidden')};
-	opacity: ${(props) => (props.presentConnectors ? '1' : '0')};
-	top: ${(props) => `${props.top}px`};
-	left: ${(props) => `${props.left}px`};
+	visibility: ${({ presentConnectors }) => (presentConnectors ? 'visible' : 'hidden')};
+	opacity: ${({ presentConnectors }) => (presentConnectors ? '1' : '0')};
+	top: ${({ top }) => `${top}px`};
+	left: ${({ left }) => `${left}px`};
 	z-index: 10;
 	transition: all 0.3s ease;
 
@@ -186,27 +232,6 @@ export const PreviewImageStyled = styled.div`
 	}
 `;
 
-export const CustomizeStyled = styled.div<CustomizeStyledProps>`
-	width: ${(props) => (props.width > 0 ? `${props.width}px` : 'auto')};
-	max-width: 304px;
-	min-width: 270px;
-	position: ${(props) => (props.isFixed ? 'fixed' : 'relative')};
-	right: ${(props) => `${props.right}rem`};
-	padding: 0 1rem 2rem;
-	border-radius: 7px;
-	align-self: start;
-	margin: 0 0 0 1rem;
-	box-shadow: ${({ theme }) => theme.boxShadow};
-	top: ${(props) => (props.isFixed ? '2rem' : '0')};
-	// transition: all 0.3s ease;
-
-	// border: 1px solid red;
-	// box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
-	box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-	// box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-	// box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
-`;
-
 export const CustomizeElementStyled = styled.div`
 	padding: 2rem 0 0;
 `;
@@ -234,7 +259,7 @@ export const CustomizeColorStyled = styled.div<CustomizeColorProps>`
 	}
 
 	.react-colorful {
-		display: ${(props) => (props.show ? 'flex' : 'none')};
+		display: ${({ show }) => (show ? 'flex' : 'none')};
 		width: 100%;
 		position: absolute;
 		bottom: 0;
@@ -244,10 +269,10 @@ export const CustomizeColorStyled = styled.div<CustomizeColorProps>`
 
 	button {
 		width: 4rem;
-		background: ${(props) => `${props.color}`};
+		background: ${({ color }) => `${color}`};
 
 		&:hover {
-			background: ${(props) => `${props.color}`};
+			background: ${({ color }) => `${color}`};
 		}
 	}
 `;

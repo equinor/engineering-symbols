@@ -27,14 +27,21 @@ export type ColorThemeProps = {
 	};
 };
 
-export type IconProps = {
+export type IconDefaultProps = {
 	name: string;
-	category?: string;
-	description?: string;
 	id: string;
 	svgString: string;
 	geometryString: string;
 	width: number;
 	height: number;
 	connectors: ConnectorsProps[];
+};
+
+export interface IconProps extends IconDefaultProps {
+	category?: string;
+}
+
+export type IconByCategoryProps = {
+	category: string;
+	icons: IconDefaultProps[];
 };

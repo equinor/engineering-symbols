@@ -1,12 +1,14 @@
 import { Chip, Typography } from '@equinor/eds-core-react';
 import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useState } from 'react';
 
-import { HeaderStyled, LogoWrapStyled, HeaderLogoStyled, NavStyled, BurgerWrapStyled, HeaderNoteStyled } from './styles';
+import { HeaderStyled, LogoWrapStyled, HeaderLogoStyled, NavStyled, BurgerWrapStyled, HeaderNoteStyled, NavStyledListItem } from './styles';
 
 export const HeaderComponent: NextPage = () => {
 	const [isMobileBurgerOpen, setMobileBurgerOpen] = useState<boolean>(false);
+	const { pathname } = useRouter();
 
 	return (
 		<HeaderStyled>
@@ -24,16 +26,16 @@ export const HeaderComponent: NextPage = () => {
 
 			<NavStyled isOpen={isMobileBurgerOpen}>
 				<ul>
-					<li>
+					<NavStyledListItem isActive={pathname === '/icons'}>
 						<Link href="/icons">
 							<a>Icon</a>
 						</Link>
-					</li>
-					<li>
+					</NavStyledListItem>
+					<NavStyledListItem isActive={pathname === '/documentation'}>
 						<Link href="/documentation">
 							<a>Documentation</a>
 						</Link>
-					</li>
+					</NavStyledListItem>
 				</ul>
 			</NavStyled>
 

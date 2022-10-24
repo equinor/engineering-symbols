@@ -5,28 +5,13 @@ export const IconsHeaderStyled = styled.div`
 	width: 100%;
 `;
 
-export const IconsSearchStyled = styled.div`
-	span {
-		background: ${({ theme }) => theme.body};
-		border: 1px solid ${({ theme }) => theme.hover.body};
-	}
-
-	input::placeholder {
-		color: ${({ theme }) => theme.text} !important;
-	}
-
-	svg {
-		fill: ${({ theme }) => theme.text};
-	}
-`;
-
 export const IconsContainerStyled = styled.div`
 	padding: 2rem 0;
 	// justify-content: space-between;
 	// display: flex;
 	display: grid;
-	// grid-template-rows: 1fr 1fr 1fr;
-	grid-template-columns: 15% 60% 25%;
+	// grid-template-rows: 1fr 1fr;
+	grid-template-columns: 75% 25%;
 	// gap: 1rem;
 `;
 
@@ -50,19 +35,26 @@ export const CategoriesStyled = styled.ul`
 	}
 `;
 
-export const IconsListStyled = styled.ul`
+export const IconsListStyled = styled.div`
 	// width: 55%;
-	list-style: none;
-	display: grid;
-	padding-left: 0;
-	margin: 0;
-	// grid-template-rows: repeat(auto-fill, 175px);
-	// grid-template-rows: max-content 175px;
-	grid-template-rows: repeat(fit-content(175px));
-	// grid-template-columns: repeat(auto-fill, minmax(130px, auto));
-	grid-template-columns: repeat(4, minmax(130px, 1fr));
-	gap: 1rem;
-	// height: 100%;
+
+	ul {
+		list-style: none;
+		display: grid;
+		padding-left: 0;
+		margin: 0;
+		// grid-template-rows: repeat(auto-fill, 175px);
+		// grid-template-rows: max-content 175px;
+		grid-template-rows: repeat(fit-content(125px));
+		// grid-template-columns: repeat(auto-fill, minmax(130px, auto));
+		grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+		gap: 1rem;
+		// height: 100%;
+	}
+
+	ul + p {
+		margin-top: 3rem;
+	}
 
 	button {
 		appearance: none;
@@ -82,10 +74,13 @@ export const IconsListStyled = styled.ul`
 
 	button > div {
 		cursor: pointer;
-		height: 100%;
+		// height: 100%;
+		height: 140px;
 		width: 100%;
 		background: ${({ theme }) => theme.body};
-		box-shadow: ${({ theme }) => theme.boxShadow};
+		border: 1px solid #f2f2f2;
+		border-radius: 12px;
+		// box-shadow: ${({ theme }) => theme.boxShadow};
 
 		&:hover svg {
 			transform: scale(1.1);
@@ -99,6 +94,21 @@ export const IconsListStyled = styled.ul`
 	li p {
 		text-align: center;
 		word-wrap: break-word;
+	}
+`;
+
+export const IconCategoryName = styled.p`
+	display: flex;
+	align-items: center;
+	padding-bottom: 0.5rem;
+
+	&:after {
+		margin-left: 1rem;
+		content: '';
+		height: 1px;
+		flex: 1 1 0%;
+		background: #f2f2f2;
+		width: 100%;
 	}
 `;
 
