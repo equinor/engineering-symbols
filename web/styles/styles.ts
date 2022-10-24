@@ -78,6 +78,8 @@ export const DarkModeSwitcherStyled = styled.div`
 
 export const ContainerStyled = styled.div`
 	padding: 0 3.5rem;
+	max-width: 1400px;
+	margin: 0 auto;
 `;
 
 export const HeroStyled = styled.div`

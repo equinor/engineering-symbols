@@ -1,0 +1,1 @@
+export { SvgComponent } from './Svg';

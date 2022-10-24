@@ -4,6 +4,10 @@ interface MenuStateProps {
 	isOpen: boolean;
 }
 
+interface NavStyledListItemProps {
+	isActive: boolean;
+}
+
 export const HeaderStyled = styled.header`
 	position: relative;
 	display: flex;
@@ -33,8 +37,8 @@ export const NavStyled = styled.nav<MenuStateProps>`
 	z-index: 0;
 
 	@media screen and (max-width: 1024px) {
-		opacity: ${(props) => `${props.isOpen ? 1 : 0}`};
-		z-index: ${(props) => `${props.isOpen ? 1 : -1}`};
+		opacity: ${({ isOpen }) => `${isOpen ? 1 : 0}`};
+		z-index: ${({ isOpen }) => `${isOpen ? 1 : -1}`};
 		background: ${({ theme }) => theme.body};
 		margin: 0;
 		padding: 16rem 2rem;
@@ -56,24 +60,27 @@ export const NavStyled = styled.nav<MenuStateProps>`
 	}
 
 	li {
-		color: ${({ theme }) => theme.text};
-		background: ${({ theme }) => theme.body};
-		transition: background-color 0.4s ease, color 0.4s ease;
-		cursor: pointer;
+	}
+`;
 
-		@media screen and (max-width: 1024px) {
-			margin: 0 0 2rem;
-		}
+export const NavStyledListItem = styled.li<NavStyledListItemProps>`
+	color: ${({ theme, isActive }) => (isActive ? theme.hover.text : theme.text)};
+	background: ${({ theme, isActive }) => (isActive ? theme.hover.body : theme.body)};
+	transition: background-color 0.4s ease, color 0.4s ease;
+	cursor: pointer;
 
-		&:hover {
-			color: ${({ theme }) => theme.hover.text};
-			background: ${({ theme }) => theme.hover.body};
-		}
+	@media screen and (max-width: 1024px) {
+		margin: 0 0 2rem;
+	}
 
-		a {
-			display: block;
-			padding: 1rem 1.5rem;
-		}
+	&:hover {
+		color: ${({ theme }) => theme.hover.text};
+		background: ${({ theme }) => theme.hover.body};
+	}
+
+	a {
+		display: block;
+		padding: 1rem 1.5rem;
 	}
 `;
 
@@ -113,8 +120,8 @@ export const BurgerWrapStyled = styled.div<MenuStateProps>`
 		transition: stroke-dasharray 500ms 200ms, stroke-dashoffset 500ms 200ms, transform 500ms 200ms;
 	}
 
-	${(props) =>
-		props.isOpen &&
+	${({ isOpen }) =>
+		isOpen &&
 		`
     .line {
       transition: transform 400ms;
