@@ -20,8 +20,7 @@
 		"react-dom": "18.2.0",
 		"react-markdown": "^8.0.3",
 		"remark-gfm": "^3.0.1",
-		"styled-components": "^5.3.6",
-		"svg-path-commander": "^1.0.5"
+		"styled-components": "^5.3.6"
 	},
 	"devDependencies": {
 		"@equinor/eds-core-react": "^0.21.0",

@@ -1,13 +1,24 @@
 import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { Typography, Card } from '@equinor/eds-core-react';
+import { Typography, Card, Search, Icon, Autocomplete } from '@equinor/eds-core-react';
+import { change_history } from '@equinor/eds-icons';
 
-import { PreviewComponent, SvgComponent } from '../../components';
+import { NoResultComponent, PreviewComponent, SvgComponent } from '../../components';
 
 import { ColorThemeProps, IconProps, IconByCategoryProps } from '../../types';
 
-import { IconsContainerStyled, IconsListWrapStyled, IconsHeaderStyled, IconWrapperStyled, IconCategoryName, IconsListStyled } from './styles';
+import {
+	IconsContainerStyled,
+	IconsListWrapStyled,
+	IconsHeaderStyled,
+	IconWrapperStyled,
+	IconCategoryName,
+	IconsListStyled,
+	IconSelectWrapperStyled,
+	IconInputsWrapperStyled,
+} from './styles';
 
 import lib from '../../__FIXTURE__/symbol-library.json';
 
@@ -28,8 +39,11 @@ const icons = arrayIcons.map((v) => ({ ...v, ...iconNamesWithCategories.find((sp
 
 const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 	const [isColorPicked, setColorPicked] = useState<boolean>(false);
+	const [searchingValue, setSearchingValue] = useState<string>('');
 	const [appearance, setAppearance] = useState<string>(theme.fill);
 	const [selectedIcon, setSelectedIcon] = useState<IconProps>(icons[0]);
+
+	const router = useRouter();
 
 	// type IconProps
 	const [icns, seIcns] = useState<IconProps[] | []>(icons);
@@ -43,17 +57,21 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 	}, [theme.fill]);
 
 	const onSearch = (val: string) => {
+		setSearchingValue(val);
 		if (val) {
 			const searchedValue = icons.filter(({ name }) => name.includes(val));
 
 			seIcns(searchedValue);
+
+			window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 		} else {
 			seIcns(icons);
 		}
 	};
 
 	useEffect(() => {
-		if (icns.length <= 0) return;
+		// if (icns.length <= 0) return;
+		if (icns.length <= 0) seIcnsByCategory([]);
 
 		const res = Object.values(
 			// @ts-ignore
@@ -82,6 +100,15 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 	// 	}
 	// };
 
+	const onSelectedCategory = (val: string) => {
+		if (val) {
+			router.push(`#${val}`);
+		} else {
+			router.push('');
+			window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+		}
+	};
+
 	const onSelectIcon = (selectedName: string) => {
 		const selected = icons.filter(({ name }) => name === selectedName)[0];
 
@@ -102,6 +129,7 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 					Crazy fast workflow
 				</Typography>
 			</IconsHeaderStyled>
+
 			<IconsContainerStyled>
 				{/* <CategoriesStyled>
 					<li>
@@ -128,9 +156,30 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 				</CategoriesStyled> */}
 
 				<div>
+					<IconSelectWrapperStyled>
+						<IconInputsWrapperStyled>
+							<Search
+								aria-label="sitewide"
+								id="search-normal"
+								placeholder="Search"
+								onChange={({ target }) => debounceSearchValue(target.value)}
+							/>
+						</IconInputsWrapperStyled>
+						<IconInputsWrapperStyled>
+							<Icon data={change_history}></Icon>
+							<Autocomplete
+								label=""
+								options={FIXTURE_CATEGORIES}
+								placeholder="Category"
+								onOptionsChange={({ selectedItems }) => onSelectedCategory(selectedItems[0])}
+							/>
+						</IconInputsWrapperStyled>
+					</IconSelectWrapperStyled>
+
 					<IconsListStyled>
+						{icnsByCategory.length <= 0 && <NoResultComponent value={searchingValue} />}
 						{icnsByCategory.map(({ category, icons }) => {
-							if (icons.length <= 0) return '';
+							if (icons.length <= 0) return;
 
 							return (
 								<>
@@ -145,8 +194,8 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 																<SvgComponent
 																	viewBoxHeight={height}
 																	viewBoxWidth={width}
-																	height={60}
-																	width={60}
+																	height={75}
+																	width={75}
 																	fill={appearance}
 																	path={geometryString}
 																/>
@@ -206,7 +255,6 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 					selected={selectedIcon}
 					setPreviewAppearance={setAppearance}
 					setPreviewColorPicked={setColorPicked}
-					onSearchValue={debounceSearchValue}
 					theme={theme}
 					appearance={appearance}
 				/>

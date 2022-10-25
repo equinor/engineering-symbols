@@ -1,6 +1,16 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
+  html {
+    scroll-behavior: smooth;
+  }
+
+  #eds-autocomplete-container {
+    & > div {
+      z-index: 10;
+    }
+  }
+
   body {
     background: ${({ theme }) => theme.body};
     color: ${({ theme }) => theme.text};

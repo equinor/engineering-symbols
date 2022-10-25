@@ -1,4 +1,4 @@
-export const rotatePoint = (point: { x: number; y: number }, rotation: number, width: number, height: number, scale: number) => {
+export const rotatePoint = (point: { x: number; y: number }, rotation: number, width: number, height: number, scale: number = 1) => {
 	// Rotate position
 	const ax = width / 2;
 	const ay = height / 2;

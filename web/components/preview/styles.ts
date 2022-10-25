@@ -16,17 +16,25 @@ interface CustomizeColorProps {
 	color: string;
 	show: boolean;
 }
+interface PreviewImageStyledProps {
+	rotate: number;
+}
 
 export const PreviewStyled = styled.div<PreviewStyledProps>`
-	width: ${({ width }) => (width > 0 ? `${width}px` : 'auto')};
+	// width: ${({ width }) => (width > 0 ? `${width}px` : 'auto')};
 	max-width: 304px;
 	min-width: 270px;
-	position: ${({ isFixed }) => (isFixed ? 'fixed' : 'relative')};
-	right: ${({ right }) => `${right}rem`};
-	top: ${({ isFixed }) => (isFixed ? '2rem' : '0')};
+	// position: ${({ isFixed }) => (isFixed ? 'fixed' : 'relative')};
+	position sticky;
+	// right: ${({ right }) => `${right}rem`};
+	// top: ${({ isFixed }) => (isFixed ? '2rem' : '0')};
+	background: ${({ theme }) => theme.body};
 `;
 
 export const CustomizeStyled = styled.div`
+	position sticky;
+	top: 1rem;
+
 	padding: 0 1rem 2rem;
 	border-radius: 12px;
 	align-self: start;
@@ -39,28 +47,6 @@ export const CustomizeStyled = styled.div`
 	// box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 	// box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 	// box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
-`;
-
-export const IconsSearchStyled = styled.div`
-	margin: 0 0 1rem 1rem;
-	padding: 1rem;
-	border-radius: 12px;
-	border: 1px solid #f2f2f2;
-	margin-bottom: 1rem;
-
-	span {
-		background: ${({ theme }) => theme.body};
-		// border-bottom: 1px solid ${({ theme }) => theme.hover.body};
-		// border: none;
-	}
-
-	input::placeholder {
-		color: ${({ theme }) => theme.text} !important;
-	}
-
-	svg {
-		fill: ${({ theme }) => theme.text};
-	}
 `;
 
 export const PreviewWrapStyled = styled.div`
@@ -223,9 +209,13 @@ export const PreviewContenButtonsStyled = styled.div`
 	}
 `;
 
-export const PreviewImageStyled = styled.div`
+export const PreviewImageStyled = styled.div<PreviewImageStyledProps>`
 	position: relative;
 	padding: 2rem 0;
+
+	svg {
+		transform: ${({ rotate }) => `rotate(${rotate}deg)`};
+	}
 
 	img {
 		width: 100%;
@@ -233,7 +223,7 @@ export const PreviewImageStyled = styled.div`
 `;
 
 export const CustomizeElementStyled = styled.div`
-	padding: 2rem 0 0;
+	padding: 1rem 0 0;
 `;
 
 export const CustomizeResetStyled = styled.div`
@@ -242,9 +232,22 @@ export const CustomizeResetStyled = styled.div`
 	align-items: center;
 `;
 
+export const CustomizeSwitchStyled = styled.div`
+	label {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		flex-direction: row-reverse;
+	}
+
+	span {
+		margin-left: 0;
+	}
+`;
+
 export const CustomizeColorStyled = styled.div<CustomizeColorProps>`
 	position: relative;
-	padding: 1.5rem 0 0;
+	// padding: 1.5rem 0 0;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -268,7 +271,7 @@ export const CustomizeColorStyled = styled.div<CustomizeColorProps>`
 	}
 
 	button {
-		width: 4rem;
+		width: 4.3rem;
 		background: ${({ color }) => `${color}`};
 
 		&:hover {
