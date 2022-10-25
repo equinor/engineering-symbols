@@ -2,10 +2,9 @@ import { ChangeEvent, useState, useEffect, useRef } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { HexColorPicker } from 'react-colorful';
 import { saveAs } from 'file-saver';
-import SVGPathCommander from 'svg-path-commander';
 import copyToClipboard from 'copy-to-clipboard';
 
-import { Typography, Button, Switch, Icon, Snackbar, Label, Input, Popover, Search } from '@equinor/eds-core-react';
+import { Typography, Button, Switch, Icon, Snackbar, Label, Popover, Slider } from '@equinor/eds-core-react';
 import { download, copy } from '@equinor/eds-icons';
 
 import {
@@ -16,6 +15,7 @@ import {
 	AnnotationTooltipStyled,
 	PreviewImageWrapStyled,
 	CustomizeElementStyled,
+	CustomizeSwitchStyled,
 	AnnotationWrapStyled,
 	PreviewContentStyled,
 	CustomizeColorStyled,
@@ -23,7 +23,6 @@ import {
 	PreviewImageStyled,
 	PopoverWrapStyled,
 	PreviewWrapStyled,
-	IconsSearchStyled,
 	CustomizeStyled,
 	PreviewStyled,
 } from './styles';
@@ -36,8 +35,8 @@ import { capitalizeWords, rotatePoint, useOnClickOutside } from '../../helpers';
 import { SvgComponent } from '../svg';
 
 export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = ({
-	setPreviewAppearance,
 	setPreviewColorPicked,
+	setPreviewAppearance,
 	onSearchValue,
 	appearance,
 	selected,
@@ -48,16 +47,14 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	const [presentConnectors, setPresentConnectors] = useState<boolean>(false);
 	const [isSnackbarOpen, setSnackbarOpen] = useState<boolean>(false);
 
-	const [isPopoverOpen, setPopoverIsOpen] = useState<boolean>(false);
+	const [isPopoverOpen, setPopoverOpen] = useState<boolean>(false);
 
 	const [showCustomizeColor, setShowCustomizeColor] = useState<boolean>(false);
-
-	const [rotate, setRotate] = useState<number>(0);
 	const [rotatedConnectors, setRotatedConnectors] = useState<SymbolConnector[]>(connectors);
 
-	const [containerWidth, setContainerWidth] = useState<number>(0);
+	const [rotate, setRotate] = useState<number>(0);
 
-	const [path, setPath] = useState<string>(geometryString);
+	const [containerWidth, setContainerWidth] = useState<number>(0);
 
 	const [isStickyPosition, setStickPosition] = useState<boolean>(false);
 	const [resizePosition, setResizePosition] = useState<number>(0);
@@ -68,7 +65,6 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	const popoverRef = useRef<HTMLButtonElement>(null);
 	const customizeColorRef = useRef(null);
 
-	const SVG_SCALE = 0.8;
 	const ICON_FRAME_WIDTH = 140;
 	const ICON_FRAME_HEIGHT = 140;
 
@@ -155,23 +151,6 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 		setResizePosition(position);
 	};
 
-	const isNumber = (n: any) => {
-		return /^-?[\d.]+(?:e-?\d+)?$/.test(n);
-	};
-
-	const onRotate = (val: number | string) => {
-		if (val === '') {
-			debounceRotateValue(0);
-
-			return;
-		}
-
-		// Not allow to enter numbers that are not fixed
-		if (!isNumber(val) || val >= 370 || val < 0) return;
-
-		debounceRotateValue(val as number);
-	};
-
 	useEffect(() => {
 		window.addEventListener('scroll', handleScroll, { passive: true });
 		window.addEventListener('resize', handleResize, true);
@@ -182,14 +161,12 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 		};
 	}, []);
 
-	useEffect(() => (isStickyPosition ? handleResize() : setResizePosition(0)), [isStickyPosition]);
-
 	useEffect(() => {
 		if (!hasConnectors) return;
 
 		const updtConnectors = connectors.map((connector) => {
 			const { relativePosition } = connector;
-			const updtRelativePosition = rotatePoint(relativePosition, rotate, width, height, SVG_SCALE);
+			const updtRelativePosition = rotatePoint(relativePosition, rotate, width, height);
 			// Avoid mutation
 			const cloneConnector = { ...connector };
 
@@ -198,17 +175,37 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 			return cloneConnector;
 		});
 
-		const formatedPath = new SVGPathCommander(geometryString).transform({ rotate, scale: SVG_SCALE }).optimize().toString();
-
-		setPath(formatedPath);
 		setRotatedConnectors(updtConnectors);
 	}, [rotate, selected]);
 
+	useEffect(() => (isStickyPosition ? handleResize() : setResizePosition(0)), [isStickyPosition]);
+
 	return (
 		<PreviewStyled isFixed={isStickyPosition} right={resizePosition} width={containerWidth}>
-			<IconsSearchStyled>
+			{/* <IconInputsWrapperStyled>
 				<Search aria-label="sitewide" id="search-normal" placeholder="Search" onChange={({ target }) => onSearchValue(target.value)} />
-			</IconsSearchStyled>
+			</IconInputsWrapperStyled>
+
+			<IconSelectWrapperStyled>
+				<IconInputsWrapperStyled>
+					<Icon data={category}></Icon>
+				</IconInputsWrapperStyled>
+				<IconInputsWrapperStyled>
+					<SingleSelect items={[
+						'Oslo',
+						'Rogaland',
+						'Møre og Romsdal',
+						'Nordland',
+						'Viken',
+						'Innlandet',
+						'Vestfold og Telemark',
+						'Agder',
+						'Vestland',
+						'Trøndelag',
+						'Troms og Finnmark'
+					]}/>
+				</IconInputsWrapperStyled>
+			</IconSelectWrapperStyled> */}
 
 			<CustomizeStyled>
 				<PreviewWrapStyled>
@@ -218,11 +215,12 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 								renderConnectors={presentConnectors}
 								viewBoxHeight={height}
 								viewBoxWidth={width}
-								connectors={rotatedConnectors}
+								connectors={connectors}
+								rotate={rotate}
 								height={ICON_FRAME_HEIGHT}
 								width={ICON_FRAME_WIDTH}
 								fill={appearance}
-								path={path}
+								path={geometryString}
 							/>
 							{hasConnectors &&
 								rotatedConnectors.map(({ relativePosition }: ConnectorsProps, id: number) => {
@@ -252,31 +250,9 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 						<PreviewContentTitleStyled>
 							<Typography variant="h2">{capitalizeWords(name.replace('-', ' '))}</Typography>
 						</PreviewContentTitleStyled>
-
-						<PreviewContentDescStyled>
-							{/* <Typography variant="body_short">{description}</Typography> */}
-							{hasConnectors && (
-								<Switch
-									onChange={({ target }: ChangeEvent<HTMLInputElement>) => setPresentConnectors(target.checked)}
-									checked={presentConnectors}
-									label={`${presentConnectors ? ' Hide' : 'Show'} connectors`}
-								/>
-							)}
-						</PreviewContentDescStyled>
 					</PreviewContentStyled>
 				</PreviewWrapStyled>
 
-				<CustomizeElementStyled>
-					<CustomizeResetStyled>
-						<Typography variant="body_short" bold>
-							Customize
-						</Typography>
-						<Button color="secondary" onClick={() => onRestCustomize()}>
-							Reset
-						</Button>
-					</CustomizeResetStyled>
-				</CustomizeElementStyled>
-				{/* 
 				<CustomizeElementStyled>
 					<Label label="Rotation" id="even-simpler-slider" />
 					<Slider
@@ -290,11 +266,21 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 						// @ts-ignore: next-line
 						onChange={(el, val) => debounceRotateValue(val[0])}
 					/>
-				</CustomizeElementStyled> */}
+				</CustomizeElementStyled>
 
 				<CustomizeElementStyled>
-					<Label htmlFor="textfield-normal" label="Rotation" />
-					<Input onChange={({ target }) => onRotate(target.value)} value={rotate === 0 ? '' : rotate} />
+					<PreviewContentDescStyled>
+						{/* <Typography variant="body_short">{description}</Typography> */}
+						{hasConnectors && (
+							<CustomizeSwitchStyled>
+								<Switch
+									onChange={({ target }: ChangeEvent<HTMLInputElement>) => setPresentConnectors(target.checked)}
+									checked={presentConnectors}
+									label={`${presentConnectors ? ' Hide' : 'Show'} connectors`}
+								/>
+							</CustomizeSwitchStyled>
+						)}
+					</PreviewContentDescStyled>
 				</CustomizeElementStyled>
 
 				<CustomizeElementStyled>
@@ -307,18 +293,29 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 					</CustomizeColorStyled>
 				</CustomizeElementStyled>
 
+				<CustomizeElementStyled>
+					<CustomizeResetStyled>
+						<Typography variant="body_short" bold>
+							Customize
+						</Typography>
+						<Button color="secondary" onClick={() => onRestCustomize()}>
+							Reset
+						</Button>
+					</CustomizeResetStyled>
+				</CustomizeElementStyled>
+
 				<PreviewContenButtonsStyled>
 					<Button fullWidth variant="outlined" onClick={() => onDownloadSvg()}>
 						<Icon data={download}></Icon>
-						{presentConnectors ? 'Download with connectors' : 'Download without connectors'}
+						Download
 					</Button>
 
-					<Button aria-controls="popover" aria-haspopup ref={popoverRef} onClick={() => setPopoverIsOpen(true)}>
+					<Button aria-controls="popover" aria-haspopup ref={popoverRef} onClick={() => setPopoverOpen(true)}>
 						<Icon data={copy}></Icon>
 						Copy ...
 					</Button>
 
-					<Popover anchorEl={popoverRef.current} open={isPopoverOpen} id="popover" placement="top" onClose={() => setPopoverIsOpen(false)}>
+					<Popover anchorEl={popoverRef.current} open={isPopoverOpen} id="popover" placement="top" onClose={() => setPopoverOpen(false)}>
 						<Popover.Content>
 							<PopoverWrapStyled>
 								<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(getSvgPathString() as string)}>

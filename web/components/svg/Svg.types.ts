@@ -10,6 +10,7 @@ export type SvgComponentProps = {
 	viewBoxWidth: number;
 	connectors?: SymbolConnector[];
 	height: number;
+	rotate: number;
 	width: number;
 	fill: string;
 	path: string;

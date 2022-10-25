@@ -7,16 +7,65 @@ export const IconsHeaderStyled = styled.div`
 
 export const IconsContainerStyled = styled.div`
 	padding: 2rem 0;
-	// justify-content: space-between;
-	// display: flex;
 	display: grid;
-	// grid-template-rows: 1fr 1fr;
 	grid-template-columns: 75% 25%;
-	// gap: 1rem;
+	min-height: 100vh;
+`;
+
+export const IconSelectWrapperStyled = styled.div`
+	display: flex;
+	border-radius: 12px;
+	border: 1px solid #f2f2f2;
+	position sticky;
+	top: 1rem;
+	margin-bottom: 2rem;
+	padding: 1rem;
+	background: ${({ theme }) => theme.body};
+	z-index: 10;
+
+	& > div:nth-child(1) {
+		border-right: 1px solid #f2f2f2;
+	}
+
+	& > div:nth-child(2) {
+		margin-left: 1rem;
+
+		svg {
+			display: flex;
+			margin: auto 10px auto auto;
+			fill: #6f6f6f;
+		}
+	}
+
+	input {
+		box-shadow: none;
+	}
+`;
+
+export const IconInputsWrapperStyled = styled.div`
+	// margin: 0 0 1rem 1rem;
+
+	width: 100%;
+	display: flex;
+
+	& > div {
+		width: 100%;
+	}
+
+	span {
+		background: ${({ theme }) => theme.body};
+	}
+
+	input::placeholder {
+		color: ${({ theme }) => theme.text} !important;
+	}
+
+	svg {
+		fill: ${({ theme }) => theme.text};
+	}
 `;
 
 export const CategoriesStyled = styled.ul`
-	// width: 20%;
 	padding: 0 1rem 0 0;
 	list-style: none;
 	margin: 0;
@@ -36,24 +85,18 @@ export const CategoriesStyled = styled.ul`
 `;
 
 export const IconsListStyled = styled.div`
-	// width: 55%;
-
 	ul {
 		list-style: none;
 		display: grid;
 		padding-left: 0;
 		margin: 0;
-		// grid-template-rows: repeat(auto-fill, 175px);
-		// grid-template-rows: max-content 175px;
-		grid-template-rows: repeat(fit-content(125px));
-		// grid-template-columns: repeat(auto-fill, minmax(130px, auto));
-		grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+		grid-template-rows: repeat(fit-content(150px));
+		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 		gap: 1rem;
-		// height: 100%;
 	}
 
 	ul + p {
-		margin-top: 3rem;
+		padding-top: 3rem;
 	}
 
 	button {
@@ -67,15 +110,9 @@ export const IconsListStyled = styled.div`
 		width: 100%;
 	}
 
-	li {
-		// align-items: center;
-		// height: auto;
-	}
-
 	button > div {
 		cursor: pointer;
-		// height: 100%;
-		height: 140px;
+		height: 150px;
 		width: 100%;
 		background: ${({ theme }) => theme.body};
 		border: 1px solid #f2f2f2;
