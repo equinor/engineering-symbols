@@ -121,6 +121,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	const onCopyToClipboard = (val: string) => {
 		copyToClipboard(val);
 		setSnackbarOpen(true);
+		setPopoverOpen(false);
 	};
 
 	const handleResize = () => {
