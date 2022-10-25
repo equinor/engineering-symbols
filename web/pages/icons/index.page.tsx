@@ -194,8 +194,8 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 																<SvgComponent
 																	viewBoxHeight={height}
 																	viewBoxWidth={width}
-																	height={85}
-																	width={85}
+																	height={75}
+																	width={75}
 																	fill={appearance}
 																	path={geometryString}
 																/>
