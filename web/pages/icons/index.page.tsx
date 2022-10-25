@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { Typography, Card, Search, Icon, SingleSelect } from '@equinor/eds-core-react';
+import { Typography, Card, Search, Icon, Autocomplete } from '@equinor/eds-core-react';
 import { change_history } from '@equinor/eds-icons';
 
 import { NoResultComponent, PreviewComponent, SvgComponent } from '../../components';
@@ -101,10 +101,10 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 	// };
 
 	const onSelectedCategory = (val: string) => {
-		if (val === null) {
-			window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-		} else {
+		if (val) {
 			router.push(`#${val}`);
+		} else {
+			window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 		}
 	};
 
@@ -166,10 +166,10 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 						</IconInputsWrapperStyled>
 						<IconInputsWrapperStyled>
 							<Icon data={change_history}></Icon>
-							<SingleSelect
-								items={FIXTURE_CATEGORIES}
+							<Autocomplete
+								options={FIXTURE_CATEGORIES}
 								placeholder="Category"
-								handleSelectedItemChange={({ selectedItem }) => onSelectedCategory(selectedItem)}
+								onOptionsChange={({ selectedItems }) => onSelectedCategory(selectedItems[0])}
 							/>
 						</IconInputsWrapperStyled>
 					</IconSelectWrapperStyled>

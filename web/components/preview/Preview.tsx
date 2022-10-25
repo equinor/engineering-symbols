@@ -305,14 +305,14 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 				</CustomizeElementStyled>
 
 				<PreviewContenButtonsStyled>
-					<Button fullWidth variant="outlined" onClick={() => onDownloadSvg()}>
-						<Icon data={download}></Icon>
-						Download
-					</Button>
-
-					<Button aria-controls="popover" aria-haspopup ref={popoverRef} onClick={() => setPopoverOpen(true)}>
+					<Button aria-controls="popover" variant="outlined" aria-haspopup ref={popoverRef} onClick={() => setPopoverOpen(true)}>
 						<Icon data={copy}></Icon>
 						Copy ...
+					</Button>
+
+					<Button fullWidth onClick={() => onDownloadSvg()}>
+						<Icon data={download}></Icon>
+						Download
 					</Button>
 
 					<Popover anchorEl={popoverRef.current} open={isPopoverOpen} id="popover" placement="top" onClose={() => setPopoverOpen(false)}>

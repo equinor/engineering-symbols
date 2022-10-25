@@ -150,7 +150,7 @@ export const IconCategoryName = styled.p`
 `;
 
 export const IconsListWrapStyled = styled.div`
-	padding: 1rem;
+	padding: 0.5rem;
 	display: flex;
 	justify-content: space-between;
 	flex-direction: column;
