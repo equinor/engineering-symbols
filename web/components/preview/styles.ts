@@ -18,7 +18,7 @@ interface CustomizeColorProps {
 }
 
 export const PreviewStyled = styled.div<PreviewStyledProps>`
-	width: ${({ width }) => (width > 0 ? `${width}px` : 'auto')};
+	// width: ${({ width }) => (width > 0 ? `${width}px` : 'auto')};
 	max-width: 304px;
 	min-width: 270px;
 	// position: ${({ isFixed }) => (isFixed ? 'fixed' : 'relative')};
