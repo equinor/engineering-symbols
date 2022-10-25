@@ -112,11 +112,12 @@ export const IconsListStyled = styled.div`
 
 	button > div {
 		cursor: pointer;
-		height: 150px;
+		height: 170px;
 		width: 100%;
 		background: ${({ theme }) => theme.body};
 		border: 1px solid #f2f2f2;
 		border-radius: 12px;
+		padding: 1rem;
 		// box-shadow: ${({ theme }) => theme.boxShadow};
 
 		&:hover svg {
@@ -131,6 +132,7 @@ export const IconsListStyled = styled.div`
 	li p {
 		text-align: center;
 		word-wrap: break-word;
+		height: 40px;
 	}
 `;
 
@@ -150,7 +152,7 @@ export const IconCategoryName = styled.p`
 `;
 
 export const IconsListWrapStyled = styled.div`
-	padding: 0.5rem;
+	// padding: 0.5rem;
 	display: flex;
 	justify-content: space-between;
 	flex-direction: column;

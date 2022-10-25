@@ -7,7 +7,6 @@ export const SvgComponent: React.FunctionComponent<SvgComponentProps> = ({
 	viewBoxHeight,
 	connectors,
 	height,
-	rotate,
 	width,
 	fill,
 	path,
@@ -16,13 +15,7 @@ export const SvgComponent: React.FunctionComponent<SvgComponentProps> = ({
 
 	return (
 		<SvgWrapStyled>
-			<svg
-				width={width}
-				height={height}
-				viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
-				xmlns="http://www.w3.org/2000/svg"
-				fill={fill}
-				transform={`rotate(${rotate})`}>
+			<svg width={width} height={height} viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} xmlns="http://www.w3.org/2000/svg" fill={fill}>
 				<g id="Symbol">
 					<path d={path} />
 				</g>

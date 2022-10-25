@@ -104,6 +104,7 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 		if (val) {
 			router.push(`#${val}`);
 		} else {
+			router.push('');
 			window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 		}
 	};
@@ -167,6 +168,7 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 						<IconInputsWrapperStyled>
 							<Icon data={change_history}></Icon>
 							<Autocomplete
+								label=""
 								options={FIXTURE_CATEGORIES}
 								placeholder="Category"
 								onOptionsChange={({ selectedItems }) => onSelectedCategory(selectedItems[0])}
@@ -192,8 +194,8 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 																<SvgComponent
 																	viewBoxHeight={height}
 																	viewBoxWidth={width}
-																	height={70}
-																	width={70}
+																	height={75}
+																	width={75}
 																	fill={appearance}
 																	path={geometryString}
 																/>
@@ -253,7 +255,6 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 					selected={selectedIcon}
 					setPreviewAppearance={setAppearance}
 					setPreviewColorPicked={setColorPicked}
-					onSearchValue={debounceSearchValue}
 					theme={theme}
 					appearance={appearance}
 				/>

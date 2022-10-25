@@ -37,7 +37,6 @@ import { SvgComponent } from '../svg';
 export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = ({
 	setPreviewColorPicked,
 	setPreviewAppearance,
-	onSearchValue,
 	appearance,
 	selected,
 	theme,
@@ -94,19 +93,10 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 		return svgData;
 	};
 
-	const getSvgPathString = () => {
-		const svg = getSvg();
-
-		if (!svg) return '';
-
-		const path = svg.getElementsByTagName('path');
-		const d = path[0].getAttribute('d');
-
-		return d;
-	};
-
 	const onDownloadSvg = () => {
 		const url = new Blob([getSvgString()], { type: 'image/svg+xml' });
+
+		// if (!presentConnectors) clone.getElementById('Annotations').remove();
 
 		saveAs(url, `${name}.svg`);
 	};
@@ -210,13 +200,12 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 			<CustomizeStyled>
 				<PreviewWrapStyled>
 					<PreviewImageWrapStyled>
-						<PreviewImageStyled ref={svgRef}>
+						<PreviewImageStyled ref={svgRef} rotate={rotate}>
 							<SvgComponent
 								renderConnectors={presentConnectors}
 								viewBoxHeight={height}
 								viewBoxWidth={width}
 								connectors={connectors}
-								rotate={rotate}
 								height={ICON_FRAME_HEIGHT}
 								width={ICON_FRAME_WIDTH}
 								fill={appearance}
@@ -318,7 +307,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 					<Popover anchorEl={popoverRef.current} open={isPopoverOpen} id="popover" placement="top" onClose={() => setPopoverOpen(false)}>
 						<Popover.Content>
 							<PopoverWrapStyled>
-								<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(getSvgPathString() as string)}>
+								<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(geometryString)}>
 									<Icon data={copy}></Icon>Copy geometry string
 								</Button>
 								<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(name)}>

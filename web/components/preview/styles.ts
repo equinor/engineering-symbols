@@ -16,6 +16,9 @@ interface CustomizeColorProps {
 	color: string;
 	show: boolean;
 }
+interface PreviewImageStyledProps {
+	rotate: number;
+}
 
 export const PreviewStyled = styled.div<PreviewStyledProps>`
 	// width: ${({ width }) => (width > 0 ? `${width}px` : 'auto')};
@@ -206,9 +209,13 @@ export const PreviewContenButtonsStyled = styled.div`
 	}
 `;
 
-export const PreviewImageStyled = styled.div`
+export const PreviewImageStyled = styled.div<PreviewImageStyledProps>`
 	position: relative;
 	padding: 2rem 0;
+
+	svg {
+		transform: ${({ rotate }) => `rotate(${rotate}deg)`};
+	}
 
 	img {
 		width: 100%;
