@@ -2,22 +2,23 @@ import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
+
 import { Typography, Card, Search, Icon, Autocomplete } from '@equinor/eds-core-react';
 import { change_history } from '@equinor/eds-icons';
 
 import { NoResultComponent, PreviewComponent, SvgComponent } from '../../components';
 
-import { ColorThemeProps, IconProps, IconByCategoryProps } from '../../types';
+import { IconPageProps, IconProps, IconByCategoryProps } from '../../types';
 
 import {
+	IconSelectWrapperStyled,
+	IconInputsWrapperStyled,
 	IconsContainerStyled,
 	IconsListWrapStyled,
 	IconsHeaderStyled,
 	IconWrapperStyled,
 	IconCategoryName,
 	IconsListStyled,
-	IconSelectWrapperStyled,
-	IconInputsWrapperStyled,
 } from './styles';
 
 import lib from '../../__FIXTURE__/symbol-library.json';
@@ -37,7 +38,7 @@ const iconNamesWithCategories = iconNames.map(({ name }) => ({
 // Merge arrays based on same name key to have category value inside
 const icons = arrayIcons.map((v) => ({ ...v, ...iconNamesWithCategories.find((sp) => sp.name === v.name) }));
 
-const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
+const Icons: NextPage<IconPageProps> = ({ theme }) => {
 	const [isColorPicked, setColorPicked] = useState<boolean>(false);
 	const [searchingValue, setSearchingValue] = useState<string>('');
 	const [appearance, setAppearance] = useState<string>(theme.fill);
@@ -48,7 +49,6 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 	// type IconProps
 	const [icns, seIcns] = useState<IconProps[] | []>(icons);
 	const [icnsByCategory, seIcnsByCategory] = useState<IconByCategoryProps[] | []>([]);
-	// const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
 	const debounceSearchValue = useDebouncedCallback((value) => onSearch(value), 1000);
 
@@ -58,6 +58,7 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 
 	const onSearch = (val: string) => {
 		setSearchingValue(val);
+
 		if (val) {
 			const searchedValue = icons.filter(({ name }) => name.includes(val));
 
@@ -183,7 +184,9 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 
 							return (
 								<>
-									<IconCategoryName id={category}>{category}</IconCategoryName>
+									<IconCategoryName key={category} id={category}>
+										{category}
+									</IconCategoryName>
 									<ul aria-label={category}>
 										{icons.map(({ name, width, height, geometryString }) => (
 											<li key={name}>
@@ -252,11 +255,11 @@ const Icons: NextPage<ColorThemeProps> = ({ theme }) => {
 				</div>
 
 				<PreviewComponent
-					selected={selectedIcon}
-					setPreviewAppearance={setAppearance}
 					setPreviewColorPicked={setColorPicked}
-					theme={theme}
+					setPreviewAppearance={setAppearance}
 					appearance={appearance}
+					selected={selectedIcon}
+					theme={theme}
 				/>
 			</IconsContainerStyled>
 		</>
