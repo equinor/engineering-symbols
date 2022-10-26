@@ -111,8 +111,11 @@ export const AnnotationWrapStyled = styled.div<AnnotationWrapProps>`
 	opacity: ${({ presentConnectors }) => (presentConnectors ? '1' : '0')};
 	top: ${({ top }) => `${top}px`};
 	left: ${({ left }) => `${left}px`};
-	z-index: 10;
 	transition: all 0.3s ease;
+
+	span {
+		z-index: 10;
+	}
 
 	&:hover {
 		span {
