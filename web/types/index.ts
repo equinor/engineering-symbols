@@ -10,21 +10,23 @@ export type ConnectorsProps = {
 };
 
 export type ColorThemeProps = {
-	theme: {
+	body: string;
+	text: string;
+	fill: string;
+	toggleBorder: string;
+	boxShadow: string;
+	background: string;
+	hover: {
 		body: string;
 		text: string;
 		fill: string;
 		toggleBorder: string;
-		boxShadow: string;
 		background: string;
-		hover: {
-			body: string;
-			text: string;
-			fill: string;
-			toggleBorder: string;
-			background: string;
-		};
 	};
+};
+
+export type IconPageProps = {
+	theme: ColorThemeProps;
 };
 
 export type IconDefaultProps = {

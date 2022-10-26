@@ -42,6 +42,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	theme,
 }): JSX.Element => {
 	const { name, connectors, width, height, geometryString } = selected;
+	const FIXTURE_METADATA = ['oil', 'gas', 'water', 'CO2', 'Aquifer', 'Shale'];
 
 	const [presentConnectors, setPresentConnectors] = useState<boolean>(false);
 	const [isSnackbarOpen, setSnackbarOpen] = useState<boolean>(false);
@@ -53,16 +54,11 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 
 	const [rotate, setRotate] = useState<number>(0);
 
-	const [containerWidth, setContainerWidth] = useState<number>(0);
-
-	const [isStickyPosition, setStickPosition] = useState<boolean>(false);
-	const [resizePosition, setResizePosition] = useState<number>(0);
-
 	const debounceRotateValue = useDebouncedCallback((value) => setRotate(value), 1);
 
-	const svgRef = useRef(null);
-	const popoverRef = useRef<HTMLButtonElement>(null);
 	const customizeColorRef = useRef(null);
+	const popoverRef = useRef<HTMLButtonElement>(null);
+	const svgRef = useRef(null);
 
 	const ICON_FRAME_WIDTH = 140;
 	const ICON_FRAME_HEIGHT = 140;
@@ -96,8 +92,6 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	const onDownloadSvg = () => {
 		const url = new Blob([getSvgString()], { type: 'image/svg+xml' });
 
-		// if (!presentConnectors) clone.getElementById('Annotations').remove();
-
 		saveAs(url, `${name}.svg`);
 	};
 
@@ -112,45 +106,11 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 		setPreviewAppearance(theme.fill);
 	};
 
-	const handleScroll = () => {
-		const isStick = window.pageYOffset >= 270;
-
-		setStickPosition(isStick);
-	};
-
 	const onCopyToClipboard = (val: string) => {
 		copyToClipboard(val);
 		setSnackbarOpen(true);
 		setPopoverOpen(false);
 	};
-
-	const handleResize = () => {
-		const REM = 16;
-		const SIDE_PADDING = 3.5 * REM;
-		const SIZE_OF_PREVIEW = 0.25; // 25%
-
-		const { innerWidth } = window;
-		const previewWidth = (innerWidth - SIDE_PADDING * 2) * SIZE_OF_PREVIEW - REM;
-
-		setContainerWidth(previewWidth);
-
-		if (!isStickyPosition) return;
-
-		const right = (innerWidth - 1400) / 2 / REM + 3.65 + 1;
-		const position = right > 0 ? right : SIDE_PADDING / REM;
-
-		setResizePosition(position);
-	};
-
-	useEffect(() => {
-		window.addEventListener('scroll', handleScroll, { passive: true });
-		window.addEventListener('resize', handleResize, true);
-
-		return () => {
-			window.removeEventListener('scroll', handleScroll);
-			window.removeEventListener('resize', handleResize);
-		};
-	}, []);
 
 	useEffect(() => {
 		if (!hasConnectors) return;
@@ -169,35 +129,8 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 		setRotatedConnectors(updtConnectors);
 	}, [rotate, selected]);
 
-	useEffect(() => (isStickyPosition ? handleResize() : setResizePosition(0)), [isStickyPosition]);
-
 	return (
-		<PreviewStyled isFixed={isStickyPosition} right={resizePosition} width={containerWidth}>
-			{/* <IconInputsWrapperStyled>
-				<Search aria-label="sitewide" id="search-normal" placeholder="Search" onChange={({ target }) => onSearchValue(target.value)} />
-			</IconInputsWrapperStyled>
-
-			<IconSelectWrapperStyled>
-				<IconInputsWrapperStyled>
-					<Icon data={category}></Icon>
-				</IconInputsWrapperStyled>
-				<IconInputsWrapperStyled>
-					<SingleSelect items={[
-						'Oslo',
-						'Rogaland',
-						'Møre og Romsdal',
-						'Nordland',
-						'Viken',
-						'Innlandet',
-						'Vestfold og Telemark',
-						'Agder',
-						'Vestland',
-						'Trøndelag',
-						'Troms og Finnmark'
-					]}/>
-				</IconInputsWrapperStyled>
-			</IconSelectWrapperStyled> */}
-
+		<PreviewStyled>
 			<CustomizeStyled>
 				<PreviewWrapStyled>
 					<PreviewImageWrapStyled>
@@ -228,7 +161,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 
 									return (
 										<AnnotationWrapStyled key={`annnotaion-${id}`} presentConnectors={presentConnectors} top={top} left={left}>
-											<AnnotationTooltipStyled>Oil</AnnotationTooltipStyled>
+											<AnnotationTooltipStyled>{FIXTURE_METADATA[id]}</AnnotationTooltipStyled>
 											<AnnotationTooltipDotStyled />
 										</AnnotationWrapStyled>
 									);
@@ -260,13 +193,12 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 
 				<CustomizeElementStyled>
 					<PreviewContentDescStyled>
-						{/* <Typography variant="body_short">{description}</Typography> */}
 						{hasConnectors && (
 							<CustomizeSwitchStyled>
 								<Switch
 									onChange={({ target }: ChangeEvent<HTMLInputElement>) => setPresentConnectors(target.checked)}
 									checked={presentConnectors}
-									label={`${presentConnectors ? ' Hide' : 'Show'} connectors`}
+									label="Connectors"
 								/>
 							</CustomizeSwitchStyled>
 						)}
@@ -295,7 +227,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 				</CustomizeElementStyled>
 
 				<PreviewContenButtonsStyled>
-					<Button aria-controls="popover" variant="outlined" aria-haspopup ref={popoverRef} onClick={() => setPopoverOpen(true)}>
+					<Button aria-controls="popover" variant="outlined" aria-haspopup ref={popoverRef} onClick={() => setPopoverOpen(!isPopoverOpen)}>
 						<Icon data={copy}></Icon>
 						Copy ...
 					</Button>

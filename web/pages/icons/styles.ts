@@ -43,8 +43,6 @@ export const IconSelectWrapperStyled = styled.div`
 `;
 
 export const IconInputsWrapperStyled = styled.div`
-	// margin: 0 0 1rem 1rem;
-
 	width: 100%;
 	display: flex;
 

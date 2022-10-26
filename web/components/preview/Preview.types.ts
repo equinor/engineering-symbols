@@ -1,9 +1,9 @@
-import { IconProps } from '../../types';
+import { ColorThemeProps, IconProps } from '../../types';
 
 export type PreviewComponentProps = {
 	setPreviewColorPicked: (val: boolean) => void;
 	setPreviewAppearance: (val: string) => void;
-	selected: IconProps;
-	theme: any;
 	appearance: string;
+	selected: IconProps;
+	theme: ColorThemeProps;
 };

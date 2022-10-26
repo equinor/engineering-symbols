@@ -6,28 +6,19 @@ interface AnnotationWrapProps {
 	left: number;
 }
 
-interface PreviewStyledProps {
-	isFixed: boolean;
-	right: number;
-	width: number;
-}
-
 interface CustomizeColorProps {
 	color: string;
 	show: boolean;
 }
+
 interface PreviewImageStyledProps {
 	rotate: number;
 }
 
-export const PreviewStyled = styled.div<PreviewStyledProps>`
-	// width: ${({ width }) => (width > 0 ? `${width}px` : 'auto')};
+export const PreviewStyled = styled.div`
 	max-width: 304px;
 	min-width: 270px;
-	// position: ${({ isFixed }) => (isFixed ? 'fixed' : 'relative')};
 	position sticky;
-	// right: ${({ right }) => `${right}rem`};
-	// top: ${({ isFixed }) => (isFixed ? '2rem' : '0')};
 	background: ${({ theme }) => theme.body};
 `;
 
@@ -40,7 +31,6 @@ export const CustomizeStyled = styled.div`
 	align-self: start;
 	margin: 0 0 0 1rem;
 	box-shadow: ${({ theme }) => theme.boxShadow};
-	// transition: all 0.3s ease;
 
 	border: 1px solid #f2f2f2;
 	// box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
@@ -67,8 +57,6 @@ export const PreviewImageWrapStyled = styled.div`
 		fill: none;
 	}
 `;
-
-export const AnnotationStyled = styled.div``;
 
 export const PopoverWrapStyled = styled.div`
 	display: flex;
@@ -130,15 +118,14 @@ export const AnnotationWrapStyled = styled.div<AnnotationWrapProps>`
 		span {
 			transform: scale(1.2);
 			z-index: 11;
-		}
 
-		span:before {
-			opacity: 0;
-		}
+			&:before {
+				opacity: 0;
+			}
 
-		span:after {
-			transform: scale(0.8);
-			// content: none
+			&:after {
+				transform: scale(0.8);
+			}
 		}
 	}
 `;
@@ -175,8 +162,6 @@ export const AnnotationTooltipStyled = styled.span`
 `;
 
 export const PreviewContentStyled = styled.div`
-	// width: 50%;
-	// margin: 0 0 0 1rem;
 	position: relative;
 `;
 
@@ -206,6 +191,11 @@ export const PreviewContenButtonsStyled = styled.div`
 
 	& > button {
 		width: 100%;
+	}
+
+	button {
+		padding: 0.6rem 1rem;
+		height: auto;
 	}
 `;
 
@@ -242,12 +232,12 @@ export const CustomizeSwitchStyled = styled.div`
 
 	span {
 		margin-left: 0;
+		font-weight: bold;
 	}
 `;
 
 export const CustomizeColorStyled = styled.div<CustomizeColorProps>`
 	position: relative;
-	// padding: 1.5rem 0 0;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;

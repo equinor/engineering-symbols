@@ -20,7 +20,7 @@ export const HeaderComponent: NextPage = () => {
 				</Link>
 				<>
 					{/* <a>{data.length > 0 && <Chip variant="active">{data[0].name}</Chip>}</a> */}
-					<Chip variant="active">v.0.0.13</Chip>
+					<Chip variant="active">v.0.2.3</Chip>
 				</>
 			</LogoWrapStyled>
 
