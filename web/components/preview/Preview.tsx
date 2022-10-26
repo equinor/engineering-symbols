@@ -31,7 +31,7 @@ import { PreviewComponentProps } from './Preview.types';
 import { SymbolConnector } from '../svg/Svg.types';
 import { ConnectorsProps } from '../../types';
 
-import { capitalizeWords, rotatePoint, useOnClickOutside } from '../../helpers';
+import { rotatePoint, useOnClickOutside } from '../../helpers';
 import { SvgComponent } from '../svg';
 
 export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = ({
@@ -171,7 +171,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 
 					<PreviewContentStyled>
 						<PreviewContentTitleStyled>
-							<Typography variant="h2">{capitalizeWords(name.replace('-', ' '))}</Typography>
+							<Typography variant="h2">{name}</Typography>
 						</PreviewContentTitleStyled>
 					</PreviewContentStyled>
 				</PreviewWrapStyled>
