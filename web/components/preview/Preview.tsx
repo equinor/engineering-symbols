@@ -42,7 +42,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	theme,
 }): JSX.Element => {
 	const { name, connectors, width, height, geometryString } = selected;
-	const FIXTURE_METADATA = ['oil', 'gas', 'water', 'CO2', 'Aquifer', 'Shale'];
+	const FIXTURE_METADATA = ['Gas', 'Oil', 'Water', 'CO2', 'Aquifer', 'Shale'];
 
 	const [presentConnectors, setPresentConnectors] = useState<boolean>(false);
 	const [isSnackbarOpen, setSnackbarOpen] = useState<boolean>(false);
