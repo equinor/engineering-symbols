@@ -124,7 +124,7 @@
 		"@testing-library/dom": "^8.11.4",
 		"@testing-library/jest-dom": "^5.14.1",
 		"@testing-library/react": "^12.1.2",
-		"@types/node": "^18.7.23",
+		"@types/node": "^18.11.17",
 		"@types/styled-components": "^5.1.26",
 		"babel-loader": "^8.2.5",
 		"conventional-changelog-conventionalcommits": "^5.0.0",
