@@ -18,18 +18,10 @@
 		{ "type": "ci", "section": "Continuous Integration", "hidden": false }
 	],
 	"packages": {
-		"server": {
-			"package-name": "server",
-			"release-type": "simple",
+		"web": {
 			"deploy": true
 		},
-		"clients/shutdown-hierarchies": {
-			"deploy": true
-		},
-		"clients/splinter-admin": {
-			"deploy": true
-		},
-		"clients/big-model": {
+		"package": {
 			"deploy": true
 		}
 	}
