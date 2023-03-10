@@ -5,7 +5,7 @@ on:
         branches: [master]
         paths: ['web/**']
     pull_request:
-        branches: ['develop']
+        branches: ['master']
         paths: ['web/**']
     workflow_dispatch:
     workflow_call:
@@ -19,6 +19,12 @@ env:
     NODE_VERSION: ${{ github.event.inputs.node-version  || '16' }}
 
 jobs:
+    code-quality:
+        name: 'Code Quality'
+        uses: equinor/engineering-symbols/.github/workflows/code-quality.yml@master
+        secrets:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
     code_issues:
         runs-on: ubuntu-latest
         name: 👮‍♂️ Code issues

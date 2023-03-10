@@ -20,9 +20,9 @@ const Template: ComponentStory<typeof Icon> = (args) => <Icon {...args} />;
 export const Story = Template.bind({});
 
 Story.args = {
-	name: 'arrow-right',
-	width: 50,
-	height: 50,
+	name: 'ND0001',
+	width: 250,
+	height: 250,
 	rotate: 0,
 };
 

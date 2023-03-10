@@ -1,0 +1,103 @@
+name: Release
+
+on:
+    push:
+        branches: ['master']
+        paths: ['package/**']
+
+jobs:
+    code-quality:
+        name: 'Code Quality'
+        uses: equinor/engineering-symbols/.github/workflows/code-quality.yml@master
+        secrets:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+    package:
+        name: 'Package'
+        uses: equinor/engineering-symbols/.github/workflows/package.yml@master
+        secrets:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+    build:
+        runs-on: ubuntu-latest
+        needs: [code-quality, package]
+        name: '🤹‍♀️ Build'
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: 16
+                  registry-url: https://registry.npmjs.org
+            - run: npm install --frozen-lockfile
+              working-directory: package
+              env:
+                  NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+    semantic-release:
+        name: '🧇 Semantic release'
+        needs: [build]
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: 'npm'
+            - name: Install dependencies
+              run: npm ci
+              working-directory: package
+            - name: Semantic release
+              run: npm run semantic-release
+              working-directory: package
+              env:
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+        # steps:
+        #     - uses: actions/checkout@v3
+        #     - uses: cycjimmy/semantic-release-action@v3
+        #       with:
+        #           extra_plugins: |
+        #               @semantic-release/git
+        #               @semantic-release/changelog
+        #       env:
+        #           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        #           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+        # name: '🧇 Semantic release'
+        # needs: [build]
+        # runs-on: ubuntu-latest
+        # steps:
+        #     - name: Checkout
+        #       uses: actions/checkout@v3
+
+        #     - name: Semantic Release
+        #       uses: cycjimmy/semantic-release-action@v3
+        #       with:
+        #           dry_run: true
+        #           branches: |
+        #               [
+        #               '+([0-9])?(.{+([0-9]),x}).x',
+        #               'main',
+        #               'master',
+        #               'next',
+        #               'next-major',
+        #               {
+        #                   name: 'beta',
+        #                   prerelease: true
+        #               },
+        #               {
+        #                   name: 'alpha',
+        #                   prerelease: true
+        #               }
+        #               ]
+        #           repository_url: https://github.com/codfish/semantic-release-action.git
+        #           tag_format: 'v${version}'
+        #           extends: '@semantic-release/apm-config'
+        #           additional_packages: |
+        #               ['@semantic-release/apm@4.0.0', '@semantic-release/git']
+        #           plugins: |
+        #               ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', '@semantic-release/github', '@semantic-release/apm', '@semantic-release/git']
+        #       env:
+        #           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        #           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
