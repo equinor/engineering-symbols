@@ -1,0 +1,36 @@
+{
+	"bootstrap-sha": "bf5084b8adfda9bf076c71c5b1c0e016f2b677bc",
+	"separate-pull-requests": true,
+	"bump-patch-for-minor-pre-major": false,
+	"pull-request-header": "Automated Release 🎉",
+	"changelog-sections": [
+		{ "type": "feat", "section": "Features" },
+		{ "type": "feature", "section": "Features" },
+		{ "type": "fix", "section": "Bug Fixes" },
+		{ "type": "perf", "section": "Performance Improvements" },
+		{ "type": "revert", "section": "Reverts" },
+		{ "type": "docs", "section": "Documentation", "hidden": false },
+		{ "type": "style", "section": "Styles", "hidden": false },
+		{ "type": "chore", "section": "Miscellaneous Chores", "hidden": false },
+		{ "type": "refactor", "section": "Code Refactoring", "hidden": false },
+		{ "type": "test", "section": "Tests", "hidden": false },
+		{ "type": "build", "section": "Build System", "hidden": false },
+		{ "type": "ci", "section": "Continuous Integration", "hidden": false }
+	],
+	"packages": {
+		"server": {
+			"package-name": "server",
+			"release-type": "simple",
+			"deploy": true
+		},
+		"clients/shutdown-hierarchies": {
+			"deploy": true
+		},
+		"clients/splinter-admin": {
+			"deploy": true
+		},
+		"clients/big-model": {
+			"deploy": true
+		}
+	}
+}

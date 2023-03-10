@@ -6,7 +6,7 @@ on:
         paths: ['package/**']
     pull_request:
         # The branches below must be a subset of the branches above
-        branches: [develop]
+        branches: [master]
         paths: ['package/**']
     workflow_dispatch:
     workflow_call:
@@ -20,12 +20,18 @@ env:
     NODE_VERSION: ${{ github.event.inputs.node-version  || '16' }}
 
 jobs:
+    code-quality:
+        name: 'Code Quality'
+        uses: equinor/engineering-symbols/.github/workflows/code-quality.yml@master
+        secrets:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
     code_issues:
         name: 👮‍♂️ Code issues
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v2
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
               with:
                   node-version: ${{ env.NODE_VERSION }}
                   cache: 'npm'
