@@ -1,9 +1,6 @@
 name: Web
 
 on:
-    push:
-        branches: [master]
-        paths: ['web/**']
     pull_request:
         branches: ['master']
         paths: ['web/**']
