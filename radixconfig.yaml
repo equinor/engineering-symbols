@@ -7,9 +7,6 @@ spec:
         - name: prod
           build:
               from: master
-        - name: dev
-          build:
-              from: develop
     # build:
     #     from: master
     # environments:
