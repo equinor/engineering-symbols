@@ -2,10 +2,9 @@
 
 ## [1.0.3](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.0.2...engineering-symbols-v1.0.3) (2023-03-13)
 
-
 ### Bug Fixes
 
-* releases created ([#332](https://github.com/equinor/engineering-symbols/issues/332)) ([22acd72](https://github.com/equinor/engineering-symbols/commit/22acd726b967f547a9722275c5c66d975a88a9ca))
+-   releases created ([#332](https://github.com/equinor/engineering-symbols/issues/332)) ([22acd72](https://github.com/equinor/engineering-symbols/commit/22acd726b967f547a9722275c5c66d975a88a9ca))
 
 ## [1.0.2](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.0.1...engineering-symbols-v1.0.2) (2023-03-13)
 
