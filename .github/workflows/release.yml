@@ -47,17 +47,17 @@ jobs:
                   actions/checkout@v3
                   # these if statements ensure that a publication only occurs when
                   # a new release is created:
-              if: ${{ steps.release.outputs.release_created }}
+              if: ${{ steps.release.outputs.releases_created }}
             - uses: actions/setup-node@v3
               with:
                   node-version: ${{ env.NODE_VERSION }}
                   registry-url: 'https://registry.npmjs.org'
-              if: ${{ steps.release.outputs.release_created }}
+              if: ${{ steps.release.outputs.releases_created }}
             - run: npm ci
-              if: ${{ steps.release.outputs.release_created }}
+              if: ${{ steps.release.outputs.releases_created }}
             - run: npm publish
               working-directory: package
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
                   GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-              if: ${{ steps.release.outputs.release_created }}
+              if: ${{ steps.release.outputs.releases_created }}
