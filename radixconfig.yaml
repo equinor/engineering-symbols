@@ -30,6 +30,10 @@ spec:
           ports:
               - name: http
                 port: 3000
+    dnsExternalAlias:
+        - alias: engineering-symbols.equinor.com
+          environment: prod
+          component: web
     dnsAppAlias:
         environment: prod
         component: storybook
