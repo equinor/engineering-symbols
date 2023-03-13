@@ -2,10 +2,9 @@
 
 ## [1.0.4](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.0.3...engineering-symbols-v1.0.4) (2023-03-13)
 
-
 ### Miscellaneous Chores
 
-* rollup-plugin-import-css from 3.0.3 to 3.2.1 ([#336](https://github.com/equinor/engineering-symbols/issues/336)) ([00536df](https://github.com/equinor/engineering-symbols/commit/00536dfd329e03dbb8582764ce5dedc34a52b283))
+-   rollup-plugin-import-css from 3.0.3 to 3.2.1 ([#336](https://github.com/equinor/engineering-symbols/issues/336)) ([00536df](https://github.com/equinor/engineering-symbols/commit/00536dfd329e03dbb8582764ce5dedc34a52b283))
 
 ## [1.0.3](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.0.2...engineering-symbols-v1.0.3) (2023-03-13)
 
