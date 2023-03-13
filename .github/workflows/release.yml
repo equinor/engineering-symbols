@@ -53,7 +53,7 @@ jobs:
                   node-version: ${{ env.NODE_VERSION }}
                   registry-url: 'https://registry.npmjs.org'
               if: ${{ steps.release.outputs.releases_created }}
-            - run: npm ci
+            - run: npm install --frozen-lockfile
               if: ${{ steps.release.outputs.releases_created }}
             - run: npm publish
               working-directory: package
