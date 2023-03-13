@@ -121,7 +121,7 @@
 		"@storybook/preset-create-react-app": "^3.2.0",
 		"@storybook/react": "^6.5.16",
 		"@svgr/cli": "^6.5.1",
-		"@testing-library/dom": "^8.11.4",
+		"@testing-library/dom": "^9.0.1",
 		"@testing-library/jest-dom": "^5.14.1",
 		"@testing-library/react": "^12.1.2",
 		"@types/node": "^18.15.0",
