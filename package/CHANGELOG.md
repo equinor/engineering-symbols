@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.5](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.0.4...engineering-symbols-v1.0.5) (2023-03-13)
+
+
+### Miscellaneous Chores
+
+* babel-loader from 8.2.5 to 9.1.2 ([#338](https://github.com/equinor/engineering-symbols/issues/338)) ([5651a97](https://github.com/equinor/engineering-symbols/commit/5651a976fa57385a4c6190a5015d34c581abf71e))
+
 ## [1.0.4](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.0.3...engineering-symbols-v1.0.4) (2023-03-13)
 
 ### Miscellaneous Chores
