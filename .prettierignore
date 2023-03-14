@@ -7,3 +7,4 @@ storybook-public
 storybook-static
 package-lock.json
 **/package-lock.json
+package/CHANGELOG.md
