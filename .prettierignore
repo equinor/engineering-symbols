@@ -1,6 +1,9 @@
 .husky
 build
+**/build
 node_modules
+**/node_modules
 storybook-public
 storybook-static
-package/src/lib
+package-lock.json
+**/package-lock.json
