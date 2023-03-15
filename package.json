@@ -11,7 +11,7 @@
 		"ts:testcompile": "tsc --noEmit",
 		"prettier:check": "prettier --check .",
 		"prettier:write": "prettier --write .",
-		"checkcode": "npm run lint && npm run ts:testcompile && npm run prettier:check",
+		"checkcode": "npm run lint && npm run ts:testcompile && npm run prettier:check --verbose",
 		"prepare": "husky install"
 	},
 	"engines": {
