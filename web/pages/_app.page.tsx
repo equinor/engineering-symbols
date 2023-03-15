@@ -25,7 +25,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 			<Head>
 				<title>🍯 Engineering symbols</title>
 				<meta name="description" content="Your new Engineering symbols library." />
-				<meta name="robots" content="noindex,nofollow" />
+				<meta key="robots" name="robots" content="noindex,follow" />
+				<meta key="googlebot" name="googlebot" content="noindex,follow" />
+				{/* ADD SEO */}
 			</Head>
 
 			<ThemeProvider theme={theme}>
