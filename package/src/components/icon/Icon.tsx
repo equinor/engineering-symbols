@@ -23,9 +23,9 @@ export const iconsName = iconsKeys.map((name) =>
 		.toUpperCase()
 );
 
-type IconNameKeys = typeof iconsKeys[number];
+type IconNameKeys = (typeof iconsKeys)[number];
 
-export type IconName = typeof iconsName[number];
+export type IconName = (typeof iconsName)[number];
 
 export const components: Record<IconName, ComponentType<SvgBaseProps>> = Object.assign(
 	{},
