@@ -73,6 +73,7 @@
 	"devDependencies": {
 		"@types/jest": "^29.4.0",
 		"eslint": "^8.36.0",
-		"husky": "^8.0.3"
+		"husky": "^8.0.3",
+		"prettier": "^2.8.4"
 	}
 }
