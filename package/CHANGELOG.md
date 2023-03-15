@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.6](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.0.5...engineering-symbols-v1.0.6) (2023-03-15)
+
+
+### Miscellaneous Chores
+
+* trigger Radix via GHA and fix prettier ([#341](https://github.com/equinor/engineering-symbols/issues/341)) ([9007773](https://github.com/equinor/engineering-symbols/commit/90077734d2efe4611b70a494050cc750f9a053da))
+
 ## [1.0.5](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.0.4...engineering-symbols-v1.0.5) (2023-03-13)
 
 ### Miscellaneous Chores
