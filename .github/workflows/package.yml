@@ -83,6 +83,7 @@ jobs:
                   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     deploy_radix:
         name: Deploy on Radix
+        runs-on: ubuntu-latest
         steps:
             - uses: equinor/radix-github-actions@master
               with:
