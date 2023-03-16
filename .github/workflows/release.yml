@@ -63,14 +63,14 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
               if: ${{ steps.release.outputs.releases_created }}
 
-            - name: Deploy on Radix
-              if: ${{ steps.release.outputs.releases_created }}
-              uses: equinor/radix-github-actions@master
-              with:
-                  github-token: ${{ secrets.GITHUB_TOKEN }}
-                  args: >
-                      create job
-                      deploy
-                      -a engineering-symbols
-                      -e ${{ steps.getEnvironment.outputs.result }}
-                      -f
+            # - name: Deploy on Radix
+            #   if: ${{ steps.release.outputs.releases_created }}
+            #   uses: equinor/radix-github-actions@master
+            #   with:
+            #       github-token: ${{ secrets.GITHUB_TOKEN }}
+            #       args: >
+            #           create job
+            #           deploy
+            #           -a engineering-symbols
+            #           -e ${{ steps.getEnvironment.outputs.result }}
+            #           -f

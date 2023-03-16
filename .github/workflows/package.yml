@@ -81,3 +81,15 @@ jobs:
               working-directory: package
               env:
                   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    deploy_radix:
+        name: Deploy on Radix
+        steps:
+            - uses: equinor/radix-github-actions@master
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  args: >
+                      create job
+                      deploy
+                      -a engineering-symbols
+                      -e ${{ steps.getEnvironment.outputs.result }}
+                      -f
