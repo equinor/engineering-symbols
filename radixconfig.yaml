@@ -11,6 +11,8 @@ spec:
         - name: storybook
           publicPort: http
           src: ./package
+          environmentConfig:
+              - environment: prod
           ports:
               - name: http
                 port: 3000
