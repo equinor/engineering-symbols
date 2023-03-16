@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.0.6...engineering-symbols-v1.1.0) (2023-03-16)
+
+
+### Features
+
+* just some feature to trigger feat verison ([#343](https://github.com/equinor/engineering-symbols/issues/343)) ([44c6702](https://github.com/equinor/engineering-symbols/commit/44c6702130397d65af9cd66cdcfa477009b78172))
+
 ## [1.0.6](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.0.5...engineering-symbols-v1.0.6) (2023-03-15)
 
 
