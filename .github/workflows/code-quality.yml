@@ -15,7 +15,7 @@ on:
         - cron: '0 6 * * 1'
 
 env:
-    NODE_VERSION: ${{ github.event.inputs.node-version  || '16' }}
+    NODE_VERSION: ${{ github.event.inputs.node-version  || '18' }}
 
 jobs:
     code_style_issues:

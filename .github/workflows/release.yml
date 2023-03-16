@@ -9,7 +9,7 @@ on:
             - 'web/**'
 
 env:
-    NODE_VERSION: ${{ github.event.inputs.node-version  || '16' }}
+    NODE_VERSION: ${{ github.event.inputs.node-version  || '18' }}
 
 jobs:
     build:
