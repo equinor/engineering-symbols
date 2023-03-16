@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.1.0...engineering-symbols-v1.1.1) (2023-03-16)
+
+
+### Miscellaneous Chores
+
+* empty trigger commit ([#345](https://github.com/equinor/engineering-symbols/issues/345)) ([a4e719c](https://github.com/equinor/engineering-symbols/commit/a4e719c7e7108cee3cc4b28b1399764a58742bc0))
+
 ## [1.1.0](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.0.6...engineering-symbols-v1.1.0) (2023-03-16)
 
 
