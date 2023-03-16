@@ -17,6 +17,8 @@ spec:
         - name: web
           publicPort: http
           src: ./web
+          environmentConfig:
+              - environment: prod
           ports:
               - name: http
                 port: 3000
