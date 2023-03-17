@@ -123,5 +123,5 @@ jobs:
                       build-deploy
                       --context playground
                       --from-config
-                      -e ${{ steps.getEnvironment.outputs.result }}
+                      -b ${{ steps.getEnvironment.outputs.result }}
                       -f
