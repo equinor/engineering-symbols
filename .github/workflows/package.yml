@@ -83,6 +83,9 @@ jobs:
                   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     set_build_secret:
         runs-on: ubuntu-latest
+        permissions:
+            id-token: write
+            contents: read
         steps:
             - name: 'Az CLI login'
               uses: azure/login@v1
