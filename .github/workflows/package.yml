@@ -106,7 +106,7 @@ jobs:
                     -H 'Authorization: Bearer ${{ env.APP_SERVICE_ACCOUNT_TOKEN }}'
             - name: 'Get environment from branch'
               id: getEnvironment
-              uses: equinor/radix-github-actions@main
+              uses: equinor/radix-github-actions@master
               with:
                   args: >
                       get config branch-environment
