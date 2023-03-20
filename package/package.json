@@ -105,7 +105,7 @@
 	},
 	"devDependencies": {
 		"@cycjimmy/awesome-js-funcs": "^4.0.8",
-		"@rollup/plugin-commonjs": "^22.0.0",
+		"@rollup/plugin-commonjs": "^24.0.1",
 		"@rollup/plugin-node-resolve": "^15.0.1",
 		"@rollup/plugin-typescript": "^8.5.0",
 		"@storybook/addon-actions": "^6.5.16",
