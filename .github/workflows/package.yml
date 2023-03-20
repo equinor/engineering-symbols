@@ -104,15 +104,14 @@ jobs:
                     -X PUT \
                     -d '{"secretValue":"new value"}' \
                     -H 'Authorization: Bearer ${{ env.APP_SERVICE_ACCOUNT_TOKEN }}'
-            - name: Restart qa env
-              uses: equinor/radix-github-actions@master
+            - name: 'Get environment from branch'
+              id: getEnvironment
+              uses: equinor/radix-github-actions@main
               with:
                   args: >
-                      restart
-                      environment
-                      --application engineering-symbols
-                      --environment prod
-                      --context playground
+                      get config branch-environment
+                      --from-config
+                      -b ${GITHUB_REF##*/}
 
             - uses: actions/checkout@v3
             - name: 'Deploy on Radix'
