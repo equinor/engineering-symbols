@@ -110,9 +110,9 @@ jobs:
               uses: equinor/radix-github-actions@master
               with:
                   args: >
-                      create job
+                      get application
                       build-deploy
                       --context platform
                       --from-config
-                      -b chore/test-trigger-v2
+                      -b master
                       -f
