@@ -10,7 +10,7 @@ async function convertingApiToSvg() {
 		// const res = await fetch(lib);
 		// const json = await res.json();
 
-		const { id, geometryString, width, height, connectors } = lib.IM005A;
+		const { id, geometryString, width, height, connectors } = lib.ND0001;
 		const hasConnectors = connectors && connectors.length > 0;
 
 		const content = `

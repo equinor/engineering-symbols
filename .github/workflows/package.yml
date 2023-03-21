@@ -112,7 +112,7 @@ jobs:
                   args: >
                       create job
                       build-deploy
-                      --context playground
+                      --context platform
                       --from-config
                       -b master
                       -f
