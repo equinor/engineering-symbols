@@ -63,14 +63,34 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
               if: ${{ steps.release.outputs.releases_created }}
 
+    deploy-on-radix:
+        name: 🧌 Deploy on Radix
+        # needs: [build]
+        # if: ${{ steps.release.outputs.releases_created }}
+        runs-on: ubuntu-latest
+        permissions:
+            id-token: write
+            contents: read
+        steps:
+            - name: Az CLI login
+              uses: azure/login@v1
+              with:
+                  client-id: ${{ secrets.CLIENT_ID }} #app registration Application ID or user-assigned managed identity Client ID
+                  tenant-id: ${{ secrets.TENANT_ID }}
+                  allow-no-subscriptions: true
+            - name: Get Azure principal token for Radix
+              run: |
+                  token=$(az account get-access-token --resource 6dae42f8-4368-4678-94ff-3960e28e3630 --query=accessToken -otsv)
+                  echo "::add-mask::$token"
+                  echo "APP_SERVICE_ACCOUNT_TOKEN=$token" >> $GITHUB_ENV
+            - uses: actions/checkout@v3
             - name: Deploy on Radix
-              if: ${{ steps.release.outputs.releases_created }}
               uses: equinor/radix-github-actions@master
               with:
-                  github-token: ${{ secrets.GITHUB_TOKEN }}
                   args: >
                       create job
-                      deploy
-                      -a engineering-symbols
-                      -e ${{ steps.getEnvironment.outputs.result }}
+                      build-deploy
+                      --context platform
+                      --from-config
+                      -b master
                       -f
