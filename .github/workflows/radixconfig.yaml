@@ -1,5 +1,0 @@
-spec:
-    environments:
-        - name: prod
-          build:
-              from: master

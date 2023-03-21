@@ -104,14 +104,6 @@ jobs:
                     -X PUT \
                     -d '{"secretValue":"new value"}' \
                     -H 'Authorization: Bearer ${{ env.APP_SERVICE_ACCOUNT_TOKEN }}'
-            - name: 'Get environment from branch'
-              id: getEnvironment
-              uses: equinor/radix-github-actions@master
-              with:
-                  args: >
-                      get config branch-environment
-                      --from-config
-                      -b ${GITHUB_REF##*/}
 
             - uses: actions/checkout@v3
             - name: 'Deploy on Radix'
@@ -122,5 +114,5 @@ jobs:
                       build-deploy
                       --context playground
                       --from-config
-                      -b ${{ steps.getEnvironment.outputs.result }}
+                      -b master
                       -f
