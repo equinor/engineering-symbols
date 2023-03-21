@@ -88,5 +88,9 @@ jobs:
               uses: equinor/radix-github-actions@master
               with:
                   args: >
-                      get application
+                      create job
+                      build-deploy
                       --context platform
+                      --from-config
+                      -b master
+                      -f
