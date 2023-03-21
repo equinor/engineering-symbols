@@ -111,6 +111,3 @@ jobs:
               with:
                   args: >
                       get application
-                      build-deploy
-                      --context platform
-                      --from-config
