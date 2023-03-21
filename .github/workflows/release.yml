@@ -3,10 +3,10 @@ on:
     push:
         branches:
             - master
-        paths:
-            - '.release-please-manifest.json'
-            - 'package/**'
-            - 'web/**'
+        # paths:
+        # - '.release-please-manifest.json'
+        # - 'package/**'
+        # - 'web/**'
 
 env:
     NODE_VERSION: ${{ github.event.inputs.node-version  || '18' }}
