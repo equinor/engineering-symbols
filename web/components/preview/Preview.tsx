@@ -41,7 +41,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	selected,
 	theme,
 }): JSX.Element => {
-	const { name, connectors, width, height, geometryString } = selected;
+	const { name, connectors, width, height, geometry } = selected;
 	const FIXTURE_METADATA = ['Gas', 'Oil', 'Water', 'CO2', 'Aquifer', 'Shale'];
 
 	const [presentConnectors, setPresentConnectors] = useState<boolean>(false);
@@ -143,7 +143,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 								height={ICON_FRAME_HEIGHT}
 								width={ICON_FRAME_WIDTH}
 								fill={appearance}
-								path={geometryString}
+								path={geometry}
 							/>
 							{hasConnectors &&
 								rotatedConnectors.map(({ relativePosition }: ConnectorsProps, id: number) => {
