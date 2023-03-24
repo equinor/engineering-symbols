@@ -240,7 +240,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 					<Popover anchorEl={popoverRef.current} open={isPopoverOpen} id="popover" placement="top" onClose={() => setPopoverOpen(false)}>
 						<Popover.Content>
 							<PopoverWrapStyled>
-								<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(geometryString)}>
+								<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(geometry)}>
 									<Icon data={copy}></Icon>Copy geometry string
 								</Button>
 								<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(name)}>
