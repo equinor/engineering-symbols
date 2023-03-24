@@ -41,7 +41,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	selected,
 	theme,
 }): JSX.Element => {
-	const { name, connectors, width, height, geometryString } = selected;
+	const { name, connectors, width, height, geometry } = selected;
 	const FIXTURE_METADATA = ['Gas', 'Oil', 'Water', 'CO2', 'Aquifer', 'Shale'];
 
 	const [presentConnectors, setPresentConnectors] = useState<boolean>(false);
@@ -143,7 +143,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 								height={ICON_FRAME_HEIGHT}
 								width={ICON_FRAME_WIDTH}
 								fill={appearance}
-								path={geometryString}
+								path={geometry}
 							/>
 							{hasConnectors &&
 								rotatedConnectors.map(({ relativePosition }: ConnectorsProps, id: number) => {
@@ -240,7 +240,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 					<Popover anchorEl={popoverRef.current} open={isPopoverOpen} id="popover" placement="top" onClose={() => setPopoverOpen(false)}>
 						<Popover.Content>
 							<PopoverWrapStyled>
-								<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(geometryString)}>
+								<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(geometry)}>
 									<Icon data={copy}></Icon>Copy geometry string
 								</Button>
 								<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(name)}>
