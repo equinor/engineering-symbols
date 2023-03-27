@@ -30,6 +30,9 @@ jobs:
         name: 🧇 Release Please
         needs: [build]
         runs-on: ubuntu-latest
+        permissions:
+            id-token: write
+            contents: read
         outputs:
             releases_created: ${{ steps.release.outputs.releases_created }}
             result: ${{ toJson(steps.release.outputs) }}
