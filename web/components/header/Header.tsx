@@ -27,14 +27,10 @@ export const HeaderComponent: NextPage = () => {
 			<NavStyled isOpen={isMobileBurgerOpen}>
 				<ul>
 					<NavStyledListItem isActive={pathname === '/icons'}>
-						<Link href="/icons">
-							<a>Icon</a>
-						</Link>
+						<Link href="/icons">Icon</Link>
 					</NavStyledListItem>
 					<NavStyledListItem isActive={pathname === '/documentation'}>
-						<Link href="/documentation">
-							<a>Documentation</a>
-						</Link>
+						<Link href="/documentation">Documentation</Link>
 					</NavStyledListItem>
 				</ul>
 			</NavStyled>

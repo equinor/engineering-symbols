@@ -32,8 +32,9 @@ export type IconPageProps = {
 export type IconDefaultProps = {
 	name: string;
 	id: string;
-	svgString: string;
-	geometryString: string;
+	dateTimeCreated?: string;
+	dateTimeUpdated?: string;
+	geometry: string;
 	width: number;
 	height: number;
 	connectors: ConnectorsProps[];

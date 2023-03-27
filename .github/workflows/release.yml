@@ -30,6 +30,9 @@ jobs:
         name: 🧇 Release Please
         needs: [build]
         runs-on: ubuntu-latest
+        permissions:
+            id-token: write
+            contents: read
         outputs:
             releases_created: ${{ steps.release.outputs.releases_created }}
             result: ${{ toJson(steps.release.outputs) }}
@@ -62,16 +65,6 @@ jobs:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
                   GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
               if: ${{ steps.release.outputs.releases_created }}
-
-    deploy-on-radix:
-        name: 🧌 Deploy on Radix
-        # needs: [build]
-        # if: ${{ steps.release.outputs.releases_created }}
-        runs-on: ubuntu-latest
-        permissions:
-            id-token: write
-            contents: read
-        steps:
             - name: Az CLI login
               uses: azure/login@v1
               with:

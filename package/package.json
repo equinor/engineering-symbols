@@ -19,11 +19,9 @@
 		"start": "npm run storybook",
 		"dev": "npm run storybook",
 		"storybook": "start-storybook -p 3000",
-		"build:svgs": "npx ts-node ./src/symbol-lib/build.ts",
 		"build:storybook": "build-storybook",
 		"build:lib": "rollup -c --environment NODE_ENV:production",
-		"prepublishOnly": "npm run build:lib",
-		"svgr": "npx @svgr/cli --typescript --no-dimensions --svgo-config ./svgo.config.js --out-dir src/components/icon/icons -- src/svg"
+		"prepublishOnly": "npm run build:lib"
 	},
 	"engines": {
 		"npm": ">= 8.3.1",
@@ -95,7 +93,7 @@
 		"react-dom": "^16.14.0 || ^17.0.0 || ^18.0.0"
 	},
 	"dependencies": {
-		"@rollup/plugin-json": "^4.1.0",
+		"@rollup/plugin-json": "^6.0.0",
 		"@types/react": "^18.0.6",
 		"@types/react-dom": "^18.0.0",
 		"rollup": "^2.60.2",
@@ -105,16 +103,16 @@
 	},
 	"devDependencies": {
 		"@cycjimmy/awesome-js-funcs": "^4.0.8",
-		"@rollup/plugin-commonjs": "^22.0.0",
+		"@rollup/plugin-commonjs": "^24.0.1",
 		"@rollup/plugin-node-resolve": "^15.0.1",
-		"@rollup/plugin-typescript": "^8.5.0",
+		"@rollup/plugin-typescript": "^11.0.0",
 		"@storybook/addon-actions": "^6.5.16",
 		"@storybook/addon-essentials": "^6.4.9",
 		"@storybook/addon-links": "^6.4.21",
+		"@storybook/builder-webpack5": "^6.5.16",
+		"@storybook/manager-webpack5": "^6.5.16",
 		"@storybook/node-logger": "^6.5.11",
-		"@storybook/preset-create-react-app": "^3.2.0",
 		"@storybook/react": "^6.5.16",
-		"@svgr/cli": "^6.5.1",
 		"@testing-library/dom": "^9.0.1",
 		"@testing-library/jest-dom": "^5.14.1",
 		"@testing-library/react": "^12.1.2",

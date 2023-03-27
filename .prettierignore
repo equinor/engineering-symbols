@@ -1,6 +1,7 @@
 .husky
 build
 web/build
+web/.next
 package/build
 node_modules
 package/node_modules

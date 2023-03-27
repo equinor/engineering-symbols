@@ -23,7 +23,7 @@ export const LogoWrapStyled = styled.div`
 	position: relative;
 `;
 
-export const HeaderLogoStyled = styled.a`
+export const HeaderLogoStyled = styled.span`
 	padding-right: 1rem;
 `;
 

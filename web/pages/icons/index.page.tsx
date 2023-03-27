@@ -21,22 +21,24 @@ import {
 	IconsListStyled,
 } from './styles';
 
-import lib from '../../__FIXTURE__/symbol-library.json';
+import symbols from '../../data/symbols.json';
 
 // From object to array
-const arrayIcons = Object.entries(lib).map(([name, obj]) => ({ name, ...obj }));
+// const arrayIcons = Object.entries(lib).map(([name, obj]) => ({ name, ...obj }));
 // Categories
 // ALL WORDS ARE UPPERCASE (temp.)
 const FIXTURE_CATEGORIES = ['Party', 'Superheroes', 'Circulation', 'Pool Party', 'Coachella', 'Isolation', 'Rainbow', 'Pop Art', 'Disco', 'Duck'];
 // Only for list of the names
-const iconNames = Object.entries(lib).map(([name]) => ({ name }));
-const iconNamesWithCategories = iconNames.map(({ name }) => ({
-	name,
+// const iconNames = Object.entries(symbols).map(([name]) => ({ name }));
+const icons = symbols.map(({ key, ...rest }) => ({
+	name: key,
 	// category: FIXTURE_CATEGORIES[Math.floor(Math.random() * (9 - 1))],
 	category: FIXTURE_CATEGORIES[Math.floor(Math.random() * (9 + 1))],
+	...rest,
 }));
 // Merge arrays based on same name key to have category value inside
-const icons = arrayIcons.map((v) => ({ ...v, ...iconNamesWithCategories.find((sp) => sp.name === v.name) }));
+// const icons = symbols.map((v) => ({ ...v, ...iconNamesWithCategories.find((sp) => sp.name === v.key) }));
+console.log(88, icons);
 
 const Icons: NextPage<IconPageProps> = ({ theme }) => {
 	const [isColorPicked, setColorPicked] = useState<boolean>(false);
@@ -132,30 +134,6 @@ const Icons: NextPage<IconPageProps> = ({ theme }) => {
 			</IconsHeaderStyled>
 
 			<IconsContainerStyled>
-				{/* <CategoriesStyled>
-					<li>
-						<Button onClick={() => onSelectedCategory('All')} variant={selectedCategory === 'All' ? '' : 'ghost'}>
-							<span>All</span>
-							<Chip>{icons.length}</Chip>
-						</Button>
-					</li>
-					{Object.keys(counts).map((key) => {
-						const name = capitalizeWords(key.slice(1, -1)).join(' ');
-
-						return (
-							<li key={key}>
-								<Button
-									// @ts-ignore: next-line
-									variant={selectedCategory === name ? '' : 'ghost'}
-									onClick={() => onSelectedCategory(name)}>
-									<span>{name}</span>
-									<Chip>{counts[key]}</Chip>
-								</Button>
-							</li>
-						);
-					})}
-				</CategoriesStyled> */}
-
 				<div>
 					<IconSelectWrapperStyled>
 						<IconInputsWrapperStyled>
@@ -188,7 +166,7 @@ const Icons: NextPage<IconPageProps> = ({ theme }) => {
 										{category}
 									</IconCategoryName>
 									<ul aria-label={category}>
-										{icons.map(({ name, width, height, geometryString }) => (
+										{icons.map(({ name, width, height, geometry }) => (
 											<li key={name}>
 												<button onClick={() => onSelectIcon(name)}>
 													<Card>
@@ -200,7 +178,7 @@ const Icons: NextPage<IconPageProps> = ({ theme }) => {
 																	height={75}
 																	width={75}
 																	fill={appearance}
-																	path={geometryString}
+																	path={geometry}
 																/>
 															</IconWrapperStyled>
 															<>
@@ -215,42 +193,6 @@ const Icons: NextPage<IconPageProps> = ({ theme }) => {
 								</>
 							);
 						})}
-						{/* {FIXTURE_CATEGORIES.map((val) => {
-							return (
-								<>
-									<IconCategoryName id={val}>{val}</IconCategoryName>
-									<ul aria-label={val}>
-										{icns.map(({ name, width, height, geometryString, category }) => {
-											if (val === category) {
-												return (
-													<li key={name}>
-														<button onClick={() => onSelectIcon(name)}>
-															<Card>
-																<IconsListWrapStyled>
-																	<IconWrapperStyled>
-																		<SvgComponent
-																			viewBoxHeight={height}
-																			viewBoxWidth={width}
-																			height={60}
-																			width={60}
-																			fill={appearance}
-																			path={geometryString}
-																		/>
-																	</IconWrapperStyled>
-																	<>
-																		<Typography variant="body_short">{name}</Typography>
-																	</>
-																</IconsListWrapStyled>
-															</Card>
-														</button>
-													</li>
-												);
-											}
-										})}
-									</ul>
-								</>
-							);
-						})} */}
 					</IconsListStyled>
 				</div>
 
