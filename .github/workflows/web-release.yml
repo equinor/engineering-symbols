@@ -29,6 +29,8 @@ jobs:
         permissions:
             id-token: write
             contents: write
+            issues: write
+            pull-requests: write
         outputs:
             releases_created: ${{ steps.release.outputs.releases_created }}
             result: ${{ toJson(steps.release.outputs) }}
