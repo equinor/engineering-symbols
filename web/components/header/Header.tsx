@@ -4,11 +4,15 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { version } from '../../package.json';
+
 import { HeaderStyled, LogoWrapStyled, HeaderLogoStyled, NavStyled, BurgerWrapStyled, HeaderNoteStyled, NavStyledListItem } from './styles';
 
 export const HeaderComponent: NextPage = () => {
 	const [isMobileBurgerOpen, setMobileBurgerOpen] = useState<boolean>(false);
 	const { pathname } = useRouter();
+
+	console.log(111, version);
 
 	return (
 		<HeaderStyled>
@@ -20,7 +24,7 @@ export const HeaderComponent: NextPage = () => {
 				</Link>
 				<>
 					{/* <a>{data.length > 0 && <Chip variant="active">{data[0].name}</Chip>}</a> */}
-					<Chip variant="active">v.0.2.3</Chip>
+					<Chip variant="active">v.{version}</Chip>
 				</>
 			</LogoWrapStyled>
 
