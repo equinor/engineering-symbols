@@ -12,7 +12,7 @@ export const HeaderComponent: NextPage = () => {
 	const [isMobileBurgerOpen, setMobileBurgerOpen] = useState<boolean>(false);
 	const { pathname } = useRouter();
 
-	console.log(111, version);
+	console.log(111);
 
 	return (
 		<HeaderStyled>

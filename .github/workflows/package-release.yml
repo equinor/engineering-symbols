@@ -28,7 +28,7 @@ jobs:
         runs-on: ubuntu-latest
         permissions:
             id-token: write
-            contents: read
+            contents: write
         outputs:
             releases_created: ${{ steps.release.outputs.releases_created }}
             result: ${{ toJson(steps.release.outputs) }}
