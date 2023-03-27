@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.1.1...engineering-symbols-v1.1.2) (2023-03-21)
+
+
+### Bug Fixes
+
+* Radix on master ([#347](https://github.com/equinor/engineering-symbols/issues/347)) ([f0a289d](https://github.com/equinor/engineering-symbols/commit/f0a289df6364edbdfb4a921740ff2e87a94d563c))
+
 ## [1.1.1](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.1.0...engineering-symbols-v1.1.1) (2023-03-16)
 
 
