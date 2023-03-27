@@ -113,7 +113,7 @@
 		"@storybook/manager-webpack5": "^6.5.16",
 		"@storybook/node-logger": "^6.5.11",
 		"@storybook/react": "^6.5.16",
-		"@testing-library/dom": "^9.0.1",
+		"@testing-library/dom": "^9.2.0",
 		"@testing-library/jest-dom": "^5.14.1",
 		"@testing-library/react": "^12.1.2",
 		"@types/node": "^18.15.10",
