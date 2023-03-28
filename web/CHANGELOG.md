@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.0.2](https://github.com/equinor/engineering-symbols/compare/web-v1.0.1...web-v1.0.2) (2023-03-28)
+
+
+### Miscellaneous Chores
+
+* more permissions ([#380](https://github.com/equinor/engineering-symbols/issues/380)) ([b561b8a](https://github.com/equinor/engineering-symbols/commit/b561b8a5dac7242ec813899e348968a681b9c752))
+* pr test ([#377](https://github.com/equinor/engineering-symbols/issues/377)) ([5b15ad6](https://github.com/equinor/engineering-symbols/commit/5b15ad69a5cdf246b8126d5db8e3bc51343e33a5))
+* pr test ([#378](https://github.com/equinor/engineering-symbols/issues/378)) ([d28c077](https://github.com/equinor/engineering-symbols/commit/d28c0779f7cf9cb8cc3c81a6fc2fb59a52e7b1b9))
+* pr test ([#379](https://github.com/equinor/engineering-symbols/issues/379)) ([7627c56](https://github.com/equinor/engineering-symbols/commit/7627c56115d3e7dc807ee266d98af55f24e7b6d9))
+* revert previos versions ([#381](https://github.com/equinor/engineering-symbols/issues/381)) ([362dfe0](https://github.com/equinor/engineering-symbols/commit/362dfe012a81ebb211d9acd02d70daf72033dfa4))
+* split releases ([#375](https://github.com/equinor/engineering-symbols/issues/375)) ([6c0454c](https://github.com/equinor/engineering-symbols/commit/6c0454c92b1d91ec21aa872a08b524e7b2172f9b))
+* web versionering ([#376](https://github.com/equinor/engineering-symbols/issues/376)) ([d672c92](https://github.com/equinor/engineering-symbols/commit/d672c9215d7c22867dc1566777af4dd973f1326d))
+
+
+### Bump package
+
+* **web:** bump @svgr/webpack from 6.5.1 to 7.0.0 in /web ([#370](https://github.com/equinor/engineering-symbols/issues/370)) ([fe16c27](https://github.com/equinor/engineering-symbols/commit/fe16c276d26ccbf1a4d4e0b32a77d338fb6ab2c4))
+* **web:** bump @types/node from 18.15.1 to 18.15.10 in /web ([#371](https://github.com/equinor/engineering-symbols/issues/371)) ([1ba90a5](https://github.com/equinor/engineering-symbols/commit/1ba90a554c2adef1f8c0519ee343960cf1cf7fa1))
+* **web:** bump @types/react-dom from 18.0.6 to 18.0.11 in /web ([#367](https://github.com/equinor/engineering-symbols/issues/367)) ([98b714a](https://github.com/equinor/engineering-symbols/commit/98b714aaa2bb15458b86422c6f1a7f3f39e8a578))
+* **web:** bump axios from 0.27.2 to 1.3.4 in /web ([#366](https://github.com/equinor/engineering-symbols/issues/366)) ([69e3dac](https://github.com/equinor/engineering-symbols/commit/69e3dac126b4ff143287d7b2b1e2c5400a6bfac7))
+
 ## [1.0.1](https://github.com/equinor/engineering-symbols/compare/web-v1.0.0...web-v1.0.1) (2023-03-21)
 
 ### Bug Fixes
