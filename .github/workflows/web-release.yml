@@ -2,7 +2,7 @@ name: 🥝 Web Release
 on:
     push:
         branches: [master]
-        paths: ['web/**']
+        paths: ['web/**', '.release-please-manifest.json']
 
 env:
     NODE_VERSION: ${{ github.event.inputs.node-version  || '18' }}
