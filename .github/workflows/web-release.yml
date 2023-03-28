@@ -44,6 +44,7 @@ jobs:
                   release-type: node
                   package-name: engineering-symbols
                   # The logic below handles the npm publication:
+              if: ${{ steps.release.outputs.releases_created }}
             - uses: actions/checkout@v3
 
               if: ${{ steps.release.outputs.releases_created }}
@@ -53,12 +54,15 @@ jobs:
                   client-id: ${{ secrets.CLIENT_ID }} #app registration Application ID or user-assigned managed identity Client ID
                   tenant-id: ${{ secrets.TENANT_ID }}
                   allow-no-subscriptions: true
+              if: ${{ steps.release.outputs.releases_created }}
             - name: Get Azure principal token for Radix
               run: |
                   token=$(az account get-access-token --resource 6dae42f8-4368-4678-94ff-3960e28e3630 --query=accessToken -otsv)
                   echo "::add-mask::$token"
                   echo "APP_SERVICE_ACCOUNT_TOKEN=$token" >> $GITHUB_ENV
+              if: ${{ steps.release.outputs.releases_created }}
             - uses: actions/checkout@v3
+              if: ${{ steps.release.outputs.releases_created }}
             - name: Deploy on Radix
               uses: equinor/radix-github-actions@master
               with:
@@ -69,3 +73,4 @@ jobs:
                       --from-config
                       -b master
                       -f
+              if: ${{ steps.release.outputs.releases_created }}
