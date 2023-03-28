@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.3](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.1.2...engineering-symbols-v1.1.3) (2023-03-28)
+
+
+### Miscellaneous Chores
+
+* pr test ([#377](https://github.com/equinor/engineering-symbols/issues/377)) ([5b15ad6](https://github.com/equinor/engineering-symbols/commit/5b15ad69a5cdf246b8126d5db8e3bc51343e33a5))
+* pr test ([#379](https://github.com/equinor/engineering-symbols/issues/379)) ([7627c56](https://github.com/equinor/engineering-symbols/commit/7627c56115d3e7dc807ee266d98af55f24e7b6d9))
+* revert previos versions ([#381](https://github.com/equinor/engineering-symbols/issues/381)) ([362dfe0](https://github.com/equinor/engineering-symbols/commit/362dfe012a81ebb211d9acd02d70daf72033dfa4))
+
+
+### Bump package
+
+* **package:** bump @testing-library/dom from 9.0.1 to 9.2.0 in /package ([#372](https://github.com/equinor/engineering-symbols/issues/372)) ([72a9a97](https://github.com/equinor/engineering-symbols/commit/72a9a97aefec561cb48d81422b8f04d35e0369c7))
+* **package:** bump @types/node from 18.15.7 to 18.15.10 in /package ([#373](https://github.com/equinor/engineering-symbols/issues/373)) ([73eb90b](https://github.com/equinor/engineering-symbols/commit/73eb90bd09fdd696135f57799b7d738d1a758a82))
+
 ## [1.1.2](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.1.1...engineering-symbols-v1.1.2) (2023-03-21)
 
 
