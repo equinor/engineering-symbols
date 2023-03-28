@@ -18,6 +18,19 @@ env:
     NODE_VERSION: ${{ github.event.inputs.node-version  || '18' }}
 
 jobs:
+    build:
+        runs-on: ubuntu-latest
+        name: '🐞 Build'
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  registry-url: https://registry.npmjs.org
+            - run: npm install --frozen-lockfile
+              working-directory: package
+              env:
+                  NODE_AUTH_TOKEN: ${{ env.NODE_VERSION }}
     code_style_issues:
         name: 💅 Code style issues
         runs-on: ubuntu-latest
