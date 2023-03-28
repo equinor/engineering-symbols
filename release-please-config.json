@@ -15,6 +15,7 @@
 		{ "type": "bump(package)", "section": "Bump package", "hidden": false },
 		{ "type": "bump(iconor)", "section": "Bump package", "hidden": false },
 		{ "type": "bump(web)", "section": "Bump package", "hidden": false },
+		{ "type": "bump", "section": "Bump package", "hidden": false },
 		{ "type": "refactor", "section": "Code Refactoring", "hidden": false },
 		{ "type": "test", "section": "Tests", "hidden": false },
 		{ "type": "build", "section": "Build System", "hidden": false },
