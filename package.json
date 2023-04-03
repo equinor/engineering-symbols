@@ -75,7 +75,7 @@
 	"devDependencies": {
 		"@types/jest": "^29.5.0",
 		"@svgr/cli": "^7.0.0",
-		"eslint": "^8.36.0",
+		"eslint": "^8.37.0",
 		"husky": "^8.0.3",
 		"prettier": "^2.8.7"
 	}
