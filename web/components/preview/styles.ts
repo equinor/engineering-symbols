@@ -199,6 +199,21 @@ export const PreviewContenButtonsStyled = styled.div`
 	button {
 		padding: 0.6rem 1rem;
 		height: auto;
+		font-family: 'Equinor';
+		appearance: none;
+		border: none;
+		font-size: 15px;
+		border-radius: 0.5rem;
+		background: ${({ theme }) => theme.backgroundGrey};
+		color: ${({ theme }) => theme.text};
+		cursor: pointer;
+		transition: transform 0.3s ease;
+
+		&:hover {
+			background: ${({ theme }) => theme.backgroundGrey};
+			border: none;
+			transform: scale(1.05);
+		}
 	}
 `;
 
@@ -223,6 +238,25 @@ export const CustomizeResetStyled = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+
+	button {
+		font-family: 'Equinor';
+		appearance: none;
+		border: none;
+		font-size: 15px;
+		/* padding: 0.9rem 0.2rem; */
+		/* border-radius: 0.5rem; */
+		background: ${({ theme }) => theme.backgroundGrey};
+		color: ${({ theme }) => theme.text};
+		cursor: pointer;
+		transition: transform 0.3s ease;
+
+		&:hover {
+			background: ${({ theme }) => theme.backgroundGrey};
+			border: none;
+			transform: scale(1.05);
+		}
+	}
 `;
 
 export const CustomizeSwitchStyled = styled.div`

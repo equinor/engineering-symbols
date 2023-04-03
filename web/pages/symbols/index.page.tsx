@@ -8,20 +8,21 @@ import { change_history } from '@equinor/eds-icons';
 
 import { NoResultComponent, PreviewComponent, SvgComponent } from '../../components';
 
-import { IconPageProps, IconProps, IconByCategoryProps } from '../../types';
+import { SymbolsPageProps, IconProps, IconByCategoryProps } from '../../types';
 
 import {
-	IconSelectWrapperStyled,
-	IconInputsWrapperStyled,
-	IconsContainerStyled,
-	IconsListWrapStyled,
-	IconsHeaderStyled,
-	IconWrapperStyled,
-	IconCategoryName,
-	IconsListStyled,
+	SymbolSelectWrapperStyled,
+	SymbolInputsWrapperStyled,
+	SymbolsContainerStyled,
+	SymbolsListWrapStyled,
+	SymbolsHeaderStyled,
+	SymbolWrapperStyled,
+	SymbolCategoryName,
+	SymbolsListStyled,
 } from './styles';
 
 import symbols from '../../data/symbols.json';
+import { ContainerStyled } from '../../styles/styles';
 
 // From object to array
 // const arrayIcons = Object.entries(lib).map(([name, obj]) => ({ name, ...obj }));
@@ -40,11 +41,11 @@ const icons = symbols.map(({ key, ...rest }) => ({
 // const icons = symbols.map((v) => ({ ...v, ...iconNamesWithCategories.find((sp) => sp.name === v.key) }));
 console.log(88, icons);
 
-const Icons: NextPage<IconPageProps> = ({ theme }) => {
+const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 	const [isColorPicked, setColorPicked] = useState<boolean>(false);
 	const [searchingValue, setSearchingValue] = useState<string>('');
 	const [appearance, setAppearance] = useState<string>(theme.fill);
-	const [selectedIcon, setSelectedIcon] = useState<IconProps>(icons[0]);
+	const [selectedSymbol, setSelectedSymbol] = useState<IconProps>(icons[0]);
 
 	const router = useRouter();
 
@@ -112,10 +113,10 @@ const Icons: NextPage<IconPageProps> = ({ theme }) => {
 		}
 	};
 
-	const onSelectIcon = (selectedName: string) => {
+	const onSelectSymbol = (selectedName: string) => {
 		const selected = icons.filter(({ name }) => name === selectedName)[0];
 
-		setSelectedIcon(selected);
+		setSelectedSymbol(selected);
 	};
 
 	// const counts = icons.reduce((acc: any, curr) => {
@@ -126,25 +127,25 @@ const Icons: NextPage<IconPageProps> = ({ theme }) => {
 	// }, {});
 
 	return (
-		<>
-			<IconsHeaderStyled>
+		<ContainerStyled>
+			<SymbolsHeaderStyled>
 				<Typography variant="h1_bold" style={{ textAlign: 'center' }}>
 					Crazy fast workflow
 				</Typography>
-			</IconsHeaderStyled>
+			</SymbolsHeaderStyled>
 
-			<IconsContainerStyled>
+			<SymbolsContainerStyled>
 				<div>
-					<IconSelectWrapperStyled>
-						<IconInputsWrapperStyled>
+					<SymbolSelectWrapperStyled>
+						<SymbolInputsWrapperStyled>
 							<Search
 								aria-label="sitewide"
 								id="search-normal"
 								placeholder="Search"
 								onChange={({ target }) => debounceSearchValue(target.value)}
 							/>
-						</IconInputsWrapperStyled>
-						<IconInputsWrapperStyled>
+						</SymbolInputsWrapperStyled>
+						<SymbolInputsWrapperStyled>
 							<Icon data={change_history}></Icon>
 							<Autocomplete
 								label=""
@@ -152,40 +153,40 @@ const Icons: NextPage<IconPageProps> = ({ theme }) => {
 								placeholder="Category"
 								onOptionsChange={({ selectedItems }) => onSelectedCategory(selectedItems[0])}
 							/>
-						</IconInputsWrapperStyled>
-					</IconSelectWrapperStyled>
+						</SymbolInputsWrapperStyled>
+					</SymbolSelectWrapperStyled>
 
-					<IconsListStyled>
+					<SymbolsListStyled>
 						{icnsByCategory.length <= 0 && <NoResultComponent value={searchingValue} />}
 						{icnsByCategory.map(({ category, icons }) => {
 							if (icons.length <= 0) return;
 
 							return (
 								<>
-									<IconCategoryName key={category} id={category}>
+									<SymbolCategoryName key={category} id={category}>
 										{category}
-									</IconCategoryName>
+									</SymbolCategoryName>
 									<ul aria-label={category}>
 										{icons.map(({ name, width, height, geometry }) => (
 											<li key={name}>
-												<button onClick={() => onSelectIcon(name)}>
+												<button onClick={() => onSelectSymbol(name)}>
 													<Card>
-														<IconsListWrapStyled>
-															<IconWrapperStyled>
+														<SymbolsListWrapStyled>
+															<SymbolWrapperStyled>
 																<SvgComponent
 																	viewBoxHeight={height}
 																	viewBoxWidth={width}
-																	height={75}
-																	width={75}
+																	height={95}
+																	width={95}
 																	fill={appearance}
 																	path={geometry}
 																/>
-															</IconWrapperStyled>
-															<>
-																<Typography variant="body_short">{name}</Typography>
-															</>
-														</IconsListWrapStyled>
+															</SymbolWrapperStyled>
+														</SymbolsListWrapStyled>
 													</Card>
+													<>
+														<p>{name}</p>
+													</>
 												</button>
 											</li>
 										))}
@@ -193,19 +194,19 @@ const Icons: NextPage<IconPageProps> = ({ theme }) => {
 								</>
 							);
 						})}
-					</IconsListStyled>
+					</SymbolsListStyled>
 				</div>
 
 				<PreviewComponent
 					setPreviewColorPicked={setColorPicked}
 					setPreviewAppearance={setAppearance}
 					appearance={appearance}
-					selected={selectedIcon}
+					selected={selectedSymbol}
 					theme={theme}
 				/>
-			</IconsContainerStyled>
-		</>
+			</SymbolsContainerStyled>
+		</ContainerStyled>
 	);
 };
 
-export default Icons;
+export default Symbols;

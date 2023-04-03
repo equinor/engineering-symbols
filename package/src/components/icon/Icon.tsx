@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import { IconProps, SvgBaseProps } from './Icon.types';
 import * as Icons from './icons';
 
-type IconWrapperStyledProps = {
+type SymbolWrapperStyledProps = {
 	rotate: number;
 };
 
-const IconWrapper = styled.div<IconWrapperStyledProps>`
+const IconWrapper = styled.div<SymbolWrapperStyledProps>`
 	.eq_icon {
 		transform: rotate(${(props) => `${props.rotate}deg`});
 	}

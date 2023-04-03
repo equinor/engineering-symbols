@@ -1,18 +1,18 @@
 import styled from 'styled-components';
 
-export const IconsHeaderStyled = styled.div`
+export const SymbolsHeaderStyled = styled.div`
 	padding: 1rem 0 4rem;
 	width: 100%;
 `;
 
-export const IconsContainerStyled = styled.div`
+export const SymbolsContainerStyled = styled.div`
 	padding: 2rem 0;
 	display: grid;
 	grid-template-columns: 75% 25%;
 	min-height: 100vh;
 `;
 
-export const IconSelectWrapperStyled = styled.div`
+export const SymbolSelectWrapperStyled = styled.div`
 	display: flex;
 	border-radius: 12px;
 	border: 1px solid #f2f2f2;
@@ -42,7 +42,7 @@ export const IconSelectWrapperStyled = styled.div`
 	}
 `;
 
-export const IconInputsWrapperStyled = styled.div`
+export const SymbolInputsWrapperStyled = styled.div`
 	width: 100%;
 	display: flex;
 
@@ -82,7 +82,7 @@ export const CategoriesStyled = styled.ul`
 	}
 `;
 
-export const IconsListStyled = styled.div`
+export const SymbolsListStyled = styled.div`
 	ul {
 		list-style: none;
 		display: grid;
@@ -131,10 +131,14 @@ export const IconsListStyled = styled.div`
 		text-align: center;
 		word-wrap: break-word;
 		height: 40px;
+		padding: 0.2rem 0 0;
+		font-size: 14px;
+		color: ${({ theme }) => theme.textGrey};
+		font-family: 'Equinor';
 	}
 `;
 
-export const IconCategoryName = styled.p`
+export const SymbolCategoryName = styled.p`
 	display: flex;
 	align-items: center;
 	padding-bottom: 0.5rem;
@@ -149,7 +153,7 @@ export const IconCategoryName = styled.p`
 	}
 `;
 
-export const IconsListWrapStyled = styled.div`
+export const SymbolsListWrapStyled = styled.div`
 	// padding: 0.5rem;
 	display: flex;
 	justify-content: space-between;
@@ -172,7 +176,7 @@ export const CustomizeColorWrapStyled = styled.div`
 	}
 `;
 
-export const IconWrapperStyled = styled.div`
+export const SymbolWrapperStyled = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;

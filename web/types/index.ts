@@ -25,11 +25,11 @@ export type ColorThemeProps = {
 	};
 };
 
-export type IconPageProps = {
+export type SymbolsPageProps = {
 	theme: ColorThemeProps;
 };
 
-export type IconDefaultProps = {
+export type SymbolsDefaultProps = {
 	name: string;
 	id: string;
 	dateTimeCreated?: string;
@@ -40,11 +40,11 @@ export type IconDefaultProps = {
 	connectors: ConnectorsProps[];
 };
 
-export interface IconProps extends IconDefaultProps {
+export interface IconProps extends SymbolsDefaultProps {
 	category?: string;
 }
 
 export type IconByCategoryProps = {
 	category: string;
-	icons: IconDefaultProps[];
+	icons: SymbolsDefaultProps[];
 };

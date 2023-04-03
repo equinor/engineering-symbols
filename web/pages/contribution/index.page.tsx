@@ -2,13 +2,13 @@ import { Typography } from '@equinor/eds-core-react';
 import type { NextPage } from 'next';
 import { MDXProvider } from '@mdx-js/react';
 
-import DOC from './documentation.md';
+import DOC from './contribution.md';
 
 import styles from './styles.module.css';
 
 import { SymbolsHeaderStyled } from '../symbols/styles';
 
-const Documentation: NextPage = () => {
+const Contribution: NextPage = () => {
 	return (
 		<>
 			<SymbolsHeaderStyled>
@@ -27,4 +27,4 @@ const Documentation: NextPage = () => {
 	);
 };
 
-export default Documentation;
+export default Contribution;
