@@ -70,7 +70,7 @@
 	},
 	"dependencies": {
 		"lint-staged": "^13.2.0",
-		"typescript": "^5.0.2"
+		"typescript": "^5.0.3"
 	},
 	"devDependencies": {
 		"@types/jest": "^29.5.0",
