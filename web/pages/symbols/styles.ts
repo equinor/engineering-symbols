@@ -8,7 +8,7 @@ export const SymbolsHeaderStyled = styled.div`
 export const SymbolsContainerStyled = styled.div`
 	padding: 2rem 0;
 	display: grid;
-	grid-template-columns: 75% 25%;
+	/* grid-template-columns: 75% 25%; */
 	min-height: 100vh;
 `;
 
@@ -16,7 +16,7 @@ export const SymbolSelectWrapperStyled = styled.div`
 	display: flex;
 	border-radius: 12px;
 	border: 1px solid #f2f2f2;
-	position sticky;
+	position: sticky;
 	top: 1rem;
 	margin-bottom: 2rem;
 	padding: 1rem;
@@ -82,6 +82,47 @@ export const CategoriesStyled = styled.ul`
 	}
 `;
 
+export const SymbolMenyWrapStyled = styled.div`
+	position: absolute;
+	border: 0.3rem solid ${({ theme }) => theme.body};
+	background: ${({ theme }) => theme.backgroundGrey};
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	border-radius: 12px;
+	opacity: 0;
+	transform: scale(0.9);
+	transition: opacity 0.3s ease, transform 0.3s ease;
+
+	li {
+		height: calc(100% / 3);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		transition: transform 0.3s ease;
+
+		&:hover {
+			transform: scale(1.15);
+		}
+	}
+
+	button {
+		appearance: none;
+		background: transparent;
+		border: none;
+		font-family: 'Equinor';
+		font-size: 14px;
+		font-weight: 600;
+		color: ${({ theme }) => theme.textBlackGrey};
+		cursor: pointer;
+	}
+
+	li + li {
+		border-top: 0.3rem solid ${({ theme }) => theme.body};
+	}
+`;
+
 export const SymbolsListStyled = styled.div`
 	ul {
 		list-style: none;
@@ -108,18 +149,24 @@ export const SymbolsListStyled = styled.div`
 		width: 100%;
 	}
 
-	button > div {
-		cursor: pointer;
+	li > div {
+		/* cursor: pointer; */
 		height: 170px;
 		width: 100%;
 		background: ${({ theme }) => theme.body};
 		border: 1px solid #f2f2f2;
 		border-radius: 12px;
 		padding: 1rem;
+		overflow: hidden;
 		// box-shadow: ${({ theme }) => theme.boxShadow};
 
 		&:hover svg {
-			transform: scale(1.1);
+			/* transform: scale(1.1); */
+		}
+
+		&:hover ${SymbolMenyWrapStyled} {
+			transform: scale(1);
+			opacity: 1;
 		}
 	}
 
@@ -160,6 +207,7 @@ export const SymbolsListWrapStyled = styled.div`
 	flex-direction: column;
 	width: 100%;
 	height: 100%;
+	/* position: relative; */
 
 	#Annotations > * {
 		fill: none;

@@ -39,6 +39,11 @@ export const GlobalStyles = createGlobalStyle`
     }
   }
 
+  main {
+    position: relative;
+    transition: height 0.3s ease;
+  }
+
   html,
   body {
     padding: 0;

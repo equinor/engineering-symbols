@@ -1,9 +1,11 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
+import { saveAs } from 'file-saver';
+import copyToClipboard from 'copy-to-clipboard';
 
-import { Typography, Card, Search, Icon, Autocomplete } from '@equinor/eds-core-react';
+import { Typography, Card, Search, Icon, Autocomplete, Snackbar } from '@equinor/eds-core-react';
 import { change_history } from '@equinor/eds-icons';
 
 import { NoResultComponent, PreviewComponent, SvgComponent } from '../../components';
@@ -15,6 +17,7 @@ import {
 	SymbolInputsWrapperStyled,
 	SymbolsContainerStyled,
 	SymbolsListWrapStyled,
+	SymbolMenyWrapStyled,
 	SymbolsHeaderStyled,
 	SymbolWrapperStyled,
 	SymbolCategoryName,
@@ -39,15 +42,18 @@ const icons = symbols.map(({ key, ...rest }) => ({
 }));
 // Merge arrays based on same name key to have category value inside
 // const icons = symbols.map((v) => ({ ...v, ...iconNamesWithCategories.find((sp) => sp.name === v.key) }));
-console.log(88, icons);
 
 const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 	const [isColorPicked, setColorPicked] = useState<boolean>(false);
+	const [isPreviewShow, setPreviewShow] = useState<boolean>(false);
 	const [searchingValue, setSearchingValue] = useState<string>('');
 	const [appearance, setAppearance] = useState<string>(theme.fill);
 	const [selectedSymbol, setSelectedSymbol] = useState<IconProps>(icons[0]);
+	const [isSnackbarOpen, setSnackbarOpen] = useState<boolean>(false);
 
 	const router = useRouter();
+
+	const svgElementsRef = useRef([]);
 
 	// type IconProps
 	const [icns, seIcns] = useState<IconProps[] | []>(icons);
@@ -117,95 +123,141 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 		const selected = icons.filter(({ name }) => name === selectedName)[0];
 
 		setSelectedSymbol(selected);
+		setPreviewShow(true);
 	};
 
-	// const counts = icons.reduce((acc: any, curr) => {
-	// 	const str = JSON.stringify(curr.category);
+	const getSvg = (id: string) => {
+		if (!svgElementsRef || !svgElementsRef.current) return '';
 
-	// 	acc[str] = (acc[str] || 0) + 1;
-	// 	return acc;
-	// }, {});
+		// @ts-ignore next-line
+		const ref: HTMLDivElement = svgElementsRef.current[id];
+		const svg = ref.getElementsByTagName('svg')[0];
+		const clone = svg.cloneNode(true) as SVGSVGElement;
+
+		return clone;
+	};
+
+	const getSvgString = (id: string) => {
+		const svg = getSvg(id);
+
+		if (!svg) return '';
+
+		const svgData = new XMLSerializer().serializeToString(svg);
+
+		return svgData;
+	};
+
+	const onDownloadSvg = (name: string, id: string) => {
+		console.log('i =>', id);
+		const url = new Blob([getSvgString(id)], { type: 'image/svg+xml' });
+
+		saveAs(url, `${name}.svg`);
+	};
+
+	const onCopyToClipboard = (val: string) => {
+		copyToClipboard(val);
+		setSnackbarOpen(true);
+	};
 
 	return (
-		<ContainerStyled>
-			<SymbolsHeaderStyled>
-				<Typography variant="h1_bold" style={{ textAlign: 'center' }}>
-					Crazy fast workflow
-				</Typography>
-			</SymbolsHeaderStyled>
+		<>
+			<ContainerStyled>
+				<SymbolsHeaderStyled>
+					<Typography variant="h1_bold" style={{ textAlign: 'center' }}>
+						Crazy fast workflow
+					</Typography>
+				</SymbolsHeaderStyled>
 
-			<SymbolsContainerStyled>
-				<div>
-					<SymbolSelectWrapperStyled>
-						<SymbolInputsWrapperStyled>
-							<Search
-								aria-label="sitewide"
-								id="search-normal"
-								placeholder="Search"
-								onChange={({ target }) => debounceSearchValue(target.value)}
-							/>
-						</SymbolInputsWrapperStyled>
-						<SymbolInputsWrapperStyled>
-							<Icon data={change_history}></Icon>
-							<Autocomplete
-								label=""
-								options={FIXTURE_CATEGORIES}
-								placeholder="Category"
-								onOptionsChange={({ selectedItems }) => onSelectedCategory(selectedItems[0])}
-							/>
-						</SymbolInputsWrapperStyled>
-					</SymbolSelectWrapperStyled>
+				<SymbolsContainerStyled>
+					<div>
+						<SymbolSelectWrapperStyled>
+							<SymbolInputsWrapperStyled>
+								<Search
+									aria-label="sitewide"
+									id="search-normal"
+									placeholder="Search"
+									onChange={({ target }) => debounceSearchValue(target.value)}
+								/>
+							</SymbolInputsWrapperStyled>
+							<SymbolInputsWrapperStyled>
+								<Icon data={change_history}></Icon>
+								<Autocomplete
+									label=""
+									options={FIXTURE_CATEGORIES}
+									placeholder="Category"
+									onOptionsChange={({ selectedItems }) => onSelectedCategory(selectedItems[0])}
+								/>
+							</SymbolInputsWrapperStyled>
+						</SymbolSelectWrapperStyled>
 
-					<SymbolsListStyled>
-						{icnsByCategory.length <= 0 && <NoResultComponent value={searchingValue} />}
-						{icnsByCategory.map(({ category, icons }) => {
-							if (icons.length <= 0) return;
+						<SymbolsListStyled>
+							{icnsByCategory.length <= 0 && <NoResultComponent value={searchingValue} />}
+							{icnsByCategory.map(({ category, icons }) => {
+								if (icons.length <= 0) return;
 
-							return (
-								<>
-									<SymbolCategoryName key={category} id={category}>
-										{category}
-									</SymbolCategoryName>
-									<ul aria-label={category}>
-										{icons.map(({ name, width, height, geometry }) => (
-											<li key={name}>
-												<button onClick={() => onSelectSymbol(name)}>
-													<Card>
-														<SymbolsListWrapStyled>
-															<SymbolWrapperStyled>
-																<SvgComponent
-																	viewBoxHeight={height}
-																	viewBoxWidth={width}
-																	height={95}
-																	width={95}
-																	fill={appearance}
-																	path={geometry}
-																/>
-															</SymbolWrapperStyled>
-														</SymbolsListWrapStyled>
-													</Card>
+								return (
+									<>
+										<SymbolCategoryName key={category} id={category}>
+											{category}
+										</SymbolCategoryName>
+										<ul aria-label={category}>
+											{icons.map(({ name, width, height, geometry, id }) => (
+												<li key={name}>
 													<>
-														<p>{name}</p>
-													</>
-												</button>
-											</li>
-										))}
-									</ul>
-								</>
-							);
-						})}
-					</SymbolsListStyled>
-				</div>
+														<Card>
+															<SymbolsListWrapStyled>
+																{/* @ts-ignore next-line */}
+																<SymbolWrapperStyled ref={(ref) => (svgElementsRef.current[id] = ref)}>
+																	<SvgComponent
+																		viewBoxHeight={height}
+																		viewBoxWidth={width}
+																		height={95}
+																		width={95}
+																		fill={appearance}
+																		path={geometry}
+																	/>
+																</SymbolWrapperStyled>
 
-				<PreviewComponent
-					setPreviewColorPicked={setColorPicked}
-					setPreviewAppearance={setAppearance}
-					appearance={appearance}
-					selected={selectedSymbol}
-					theme={theme}
-				/>
-			</SymbolsContainerStyled>
-		</ContainerStyled>
+																<SymbolMenyWrapStyled>
+																	<li>
+																		<button onClick={() => onCopyToClipboard(name)}>Copy</button>
+																	</li>
+																	<li>
+																		<button onClick={() => onDownloadSvg(name, id)}>Download</button>
+																	</li>
+																	<li>
+																		<button onClick={() => onSelectSymbol(name)}>More...</button>
+																	</li>
+																</SymbolMenyWrapStyled>
+															</SymbolsListWrapStyled>
+														</Card>
+														<>
+															<p>{name}</p>
+														</>
+													</>
+												</li>
+											))}
+										</ul>
+									</>
+								);
+							})}
+						</SymbolsListStyled>
+					</div>
+				</SymbolsContainerStyled>
+			</ContainerStyled>
+			<PreviewComponent
+				setPreviewColorPicked={setColorPicked}
+				setPreviewAppearance={setAppearance}
+				setPreviewShow={setPreviewShow}
+				appearance={appearance}
+				selected={selectedSymbol}
+				isShow={isPreviewShow}
+				theme={theme}
+			/>
+			<Snackbar open={isSnackbarOpen} onClose={() => setSnackbarOpen(false)} autoHideDuration={3000}>
+				Copied!
+			</Snackbar>
+		</>
 	);
 };
 
