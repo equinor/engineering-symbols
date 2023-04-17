@@ -188,7 +188,9 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 				<SymbolsHeaderStyled>
 					<h1 ref={typedElementRef}></h1>
 					<p>
+						{/* eslint-disable react/no-unescaped-entities */}
 						We're constantly adding new symbols to our library, so be sure to check back regularly for the latest additions. And if you
+						{/* eslint-disable react/no-unescaped-entities */}
 						can't find the symbol you're looking for, let us know - we're always happy to take suggestions and feedback from our users.
 					</p>
 				</SymbolsHeaderStyled>
