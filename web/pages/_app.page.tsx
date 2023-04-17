@@ -1,29 +1,31 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import { useState } from 'react';
 
 // import 'https://eds-static.equinor.com/font/equinor-font.css';
 import { GlobalStyles } from '../styles/globalStyles';
-import { lightTheme, darkTheme } from '../styles/Themes';
 import {
-	ContainerStyled,
-	DarkModeSwitcherStyled,
-	FooterLicenseStyled,
-	FooterMenuListStyled,
-	FooterMenuStyled,
-	FooterMenuTitleStyled,
 	FooterMenuWrapperStyled,
-	FooterStyled,
+	FooterLogoWrapperStyled,
+	DarkModeSwitcherStyled,
+	FooterMenuTitleStyled,
+	FooterMenuListStyled,
 	FooterWrapperStyled,
+	FooterLicenseStyled,
+	FooterMenuStyled,
+	ContainerStyled,
+	FooterStyled,
 } from '../styles/styles';
 import '../styles/globals.css';
 
-import { HeaderComponent } from '../components';
+import { lightTheme, darkTheme } from '../styles/Themes';
 
-import Sun from '../svg/sun.svg';
-import Moon from '../svg/moon.svg';
-import Link from 'next/link';
+import { HeaderComponent, LogoComponent } from '../components';
+
+// import Sun from '../svg/sun.svg';
+// import Moon from '../svg/moon.svg';
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const [themeName, setThemeName] = useState('light');
@@ -44,10 +46,15 @@ function MyApp({ Component, pageProps }: AppProps) {
 			<ThemeProvider theme={theme}>
 				<GlobalStyles />
 				<DarkModeSwitcherStyled>
-					<input type="checkbox" id="darkmode-toggle" onClick={themeToggler} />
-					<label htmlFor="darkmode-toggle">
-						<Sun />
-						<Moon />
+					<label className="switch">
+						<input className="switch__input" type="checkbox" onClick={themeToggler} />
+						<span className="switch__background">
+							<span className="switch__toggle">
+								<span className="switch__moon"></span>
+							</span>
+							<span className="switch__stars"></span>
+							<span className="switch__clouds"></span>
+						</span>
 					</label>
 				</DarkModeSwitcherStyled>
 
@@ -55,11 +62,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 				<main>
 					<Component {...pageProps} theme={theme} />
 				</main>
-
 				<FooterStyled>
 					<ContainerStyled>
 						<FooterWrapperStyled>
-							Logo
+							<FooterLogoWrapperStyled>
+								<LogoComponent fill="backgroundGrey" />
+								<p>Engineering symbols</p>
+							</FooterLogoWrapperStyled>
 							<FooterMenuWrapperStyled>
 								<FooterMenuStyled>
 									<FooterMenuTitleStyled>Project</FooterMenuTitleStyled>

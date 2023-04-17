@@ -29,6 +29,10 @@ export type SymbolsPageProps = {
 	theme: ColorThemeProps;
 };
 
+export type HomePageProps = {
+	theme: ColorThemeProps;
+};
+
 export type SymbolsDefaultProps = {
 	name: string;
 	id: string;

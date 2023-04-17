@@ -16,32 +16,6 @@ export const HeaderStyled = styled.header`
 	padding: 3rem 0;
 `;
 
-export const HeaderLogoSvgStyled = styled.div`
-	position: relative;
-	display: flex;
-	align-items: center;
-	margin-right: 5px;
-	width: 45px;
-
-	path {
-		stroke-dasharray: 150;
-		stroke-dashoffset: 150;
-		animation: dash 5s linear alternate infinite;
-		stroke: black;
-		stroke-width: 0.8px;
-		fill: white;
-	}
-
-	@keyframes dash {
-		from {
-			stroke-dashoffset: 150;
-		}
-		to {
-			stroke-dashoffset: 0;
-		}
-	}
-`;
-
 export const LogoWrapStyled = styled.div`
 	display: flex;
 	align-items: flex-start;

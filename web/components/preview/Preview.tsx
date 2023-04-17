@@ -1,23 +1,25 @@
-import { ChangeEvent, useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { HexColorPicker } from 'react-colorful';
 import { saveAs } from 'file-saver';
 import copyToClipboard from 'copy-to-clipboard';
 
-import { Typography, Button, Switch, Icon, Snackbar, Label, Popover, Slider } from '@equinor/eds-core-react';
+import { Typography, Button, Icon, Snackbar, Popover } from '@equinor/eds-core-react';
 import { download, copy } from '@equinor/eds-icons';
 
 import {
+	CustomizeColorElementStyled,
+	CustomizeResetElementStyled,
 	AnnotationTooltipDotStyled,
 	PreviewContenButtonsStyled,
-	PreviewContentTitleStyled,
-	PreviewContentDescStyled,
+	PreviewCloseButtonStyled,
 	AnnotationTooltipStyled,
+	CustomizeElementsStyled,
 	PreviewImageWrapStyled,
 	CustomizeElementStyled,
-	CustomizeSwitchStyled,
+	CustomizeDetailsStyled,
+	CustomizeSliderStyled,
 	AnnotationWrapStyled,
-	PreviewContentStyled,
 	CustomizeColorStyled,
 	CustomizeResetStyled,
 	PreviewImageStyled,
@@ -25,12 +27,6 @@ import {
 	PreviewWrapStyled,
 	CustomizeStyled,
 	PreviewStyled,
-	CustomizeElementsStyled,
-	CustomizeDetailsStyled,
-	CustomizeSliderStyled,
-	CustomizeColorElementStyled,
-	CustomizeResetElementStyled,
-	PreviewCloseButtonStyled,
 } from './styles';
 
 import { PreviewComponentProps } from './Preview.types';
@@ -190,12 +186,6 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 							</Button>
 						</PreviewImageStyled>
 					</PreviewImageWrapStyled>
-
-					{/* <PreviewContentStyled>
-						<PreviewContentTitleStyled>
-							<Typography variant="h2">{name}</Typography>
-						</PreviewContentTitleStyled>
-					</PreviewContentStyled> */}
 				</PreviewWrapStyled>
 
 				<CustomizeElementsStyled>

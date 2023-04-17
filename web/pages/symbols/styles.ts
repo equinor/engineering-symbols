@@ -1,8 +1,25 @@
 import styled from 'styled-components';
 
 export const SymbolsHeaderStyled = styled.div`
-	padding: 1rem 0 4rem;
+	padding: 1rem 0 2rem;
 	width: 100%;
+	font-family: 'Equinor';
+	text-align: center;
+	color: ${({ theme }) => theme.text};
+
+	h1 {
+		font-size: 36px;
+		font-style: bold;
+		padding: 0 0 1rem;
+		height: 3rem;
+	}
+
+	p {
+		font-size: 16px;
+		font-style: italic;
+		max-width: 55rem;
+		margin: 0 auto;
+	}
 `;
 
 export const SymbolsContainerStyled = styled.div`
@@ -54,8 +71,15 @@ export const SymbolInputsWrapperStyled = styled.div`
 		background: ${({ theme }) => theme.body};
 	}
 
-	input::placeholder {
-		color: ${({ theme }) => theme.text} !important;
+	input {
+		&::placeholder {
+			color: ${({ theme }) => theme.text} !important;
+		}
+
+		/* &:focus {
+			border-color: red;
+			box-shadow: none;
+		} */
 	}
 
 	svg {

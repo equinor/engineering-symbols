@@ -41,7 +41,7 @@ export const GlobalStyles = createGlobalStyle`
 
   main {
     position: relative;
-    transition: height 0.3s ease;
+    transition: height 0.3s;
   }
 
   html,

@@ -1,55 +1,111 @@
 import type { NextPage } from 'next';
-import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { Typography } from '@equinor/eds-core-react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
+import Link from 'next/link';
 
 import { SvgComponent } from '../components';
 
 import {
-	HeroStyled,
-	HeroDescriptionStyled,
-	InfoBoxesStyled,
-	AvailableListStyled,
-	ContainerStyled,
-	ParallaxItem,
-	ParallaxContainer,
-	HeroButtons,
-	ButtonStyled,
-	SecondSectionStyled,
-	HalfContainerStyled,
 	GetStartIllustrationStyled,
-	GetStartContentStyled,
-	WrapperStyled,
-	GetStartButtons,
-	ThirdSectionStyled,
-	CaseStudiesStyled,
-	CaseStudyStyled,
-	CaseStudyImageStyled,
-	CaseStudyTextStyled,
+	AvailableFormageStyled,
 	CaseStudyWrapperStyled,
-	FourthSectionStyled,
-	TrustedByStyled,
-	TrustedImageStyled,
+	GetStartContentStyled,
+	HeroDescriptionStyled,
+	CaseStudyImageStyled,
 	TrustedImagesStyled,
 	FivethSectionStyled,
+	SecondSectionStyled,
+	HalfContainerStyled,
+	FourthSectionStyled,
+	CaseStudyTextStyled,
 	AvailableForStyled,
-	AvailableFormageStyled,
+	ThirdSectionStyled,
+	TrustedImageStyled,
+	ParallaxSvgWrapper,
+	CaseStudiesStyled,
+	ParallaxContainer,
+	ContainerStyled,
+	CaseStudyStyled,
+	GetStartButtons,
+	TrustedByStyled,
+	WrapperStyled,
+	ParallaxItem,
+	ButtonStyled,
+	HeroButtons,
+	HeroStyled,
 } from '../styles/styles';
 
 import symbols from './symbol-library.json';
-import Link from 'next/link';
 
-const Home: NextPage = () => {
+import { HomePageProps } from '../types';
+
+const parallaxItemsPostion = [
+	{
+		top: 15,
+		left: 20,
+		color: 'ff6961',
+		text: 'Fill',
+	},
+	{
+		top: 21,
+		left: 79,
+		color: 'ffb480',
+		text: 'Connectors',
+	},
+	{
+		top: 5,
+		left: 35,
+		color: 'f8f38d',
+		text: 'Size',
+	},
+	{
+		top: 10,
+		left: 55,
+		color: '42d6a4',
+		text: 'Path',
+	},
+	{
+		top: 55,
+		left: 10,
+		color: '08cad1',
+		text: 'Shape',
+	},
+	{
+		top: 72,
+		left: 23,
+		color: '59adf6',
+		text: 'Coordinates',
+	},
+	{
+		top: 79,
+		left: 69,
+		color: '9d94ff',
+		text: 'Scale',
+	},
+	{
+		top: 62,
+		left: 87,
+		color: 'c780e8',
+		text: 'Rotation',
+	},
+];
+
+const Home: NextPage<HomePageProps> = ({ theme }) => {
 	const { push } = useRouter();
 
-	const divRef = useRef(null);
+	const scrollToRef = useRef(null);
 
 	const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 	const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
 
 	const [left, setLeft] = useState(0);
 	const [top, setTop] = useState(0);
+
+	const handleWindowResize = () => {
+		setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+	};
 
 	useEffect(() => {
 		const handleMouseMove = (event: { clientX: number; clientY: number }) => {
@@ -63,44 +119,56 @@ const Home: NextPage = () => {
 		};
 	}, []);
 
-	useEffect(() => {
-		if (Object.keys(windowSize).length >= 1) return;
+	// useEffect(() => {
+	// 	if (Object.keys(windowSize).length >= 1) return;
 
-		setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-	}, []);
+	// 	setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+	// }, []);
 
-	useEffect(() => {
-		const handleWindowResize = () => {
-			setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-		};
+	// useEffect(() => {
+	// 	window.addEventListener('resize', handleWindowResize);
 
-		window.addEventListener('resize', handleWindowResize);
-
-		return () => {
-			window.removeEventListener('resize', handleWindowResize);
-		};
-	}, []);
+	// 	return () => {
+	// 		window.removeEventListener('resize', handleWindowResize);
+	// 	};
+	// }, []);
 
 	useEffect(() => {
-		let top = 0;
-		let left = 0;
+		let top = 1;
+		let left = 1;
 
 		const { x, y } = mousePos;
 		const { width, height } = windowSize;
 
-		top = height * 0.1;
-		left = width * 0.1;
+		handleWindowResize();
+
+		if (width === 0 || height === 0) return;
+
+		const centerX = width / 2;
+		const centerY = height / 2;
+
+		const deviationX = x / centerX - 1;
+		const deviationY = y / centerY - 1;
+		// left === right
+		left = deviationX * 0.03;
+		top = deviationY * 0.05;
 
 		setTop(top);
 		setLeft(left);
-
-		// console.log('left:', left, 'left:', left);
-	}, [windowSize, mousePos]);
+	}, [mousePos]);
 
 	const onScrollIntoView = () => {
-		if (!divRef.current) return;
+		if (!scrollToRef.current) return;
 		// @ts-ignore
-		divRef.current.scrollIntoView({ behavior: 'smooth' });
+		scrollToRef.current.scrollIntoView({ behavior: 'smooth' });
+	};
+
+	const getTop = (i: number) => {
+		return parallaxItemsPostion[i].top * top + parallaxItemsPostion[i].top + Math.random() * 0.1 + '%';
+	};
+
+	const getLeft = (i: number) => {
+		return parallaxItemsPostion[i].left * left + parallaxItemsPostion[i].left + Math.random() * 0.1 + '%';
 	};
 
 	return (
@@ -121,9 +189,20 @@ const Home: NextPage = () => {
 					</HeroDescriptionStyled>
 
 					<ParallaxContainer>
-						{symbols.map(({ key, geometry, width, height }) => (
-							<ParallaxItem key={key} top={top} left={left}>
-								<SvgComponent width={width} height={height} viewBoxWidth={width} viewBoxHeight={height} path={geometry} fill="#000" />
+						{symbols.map(({ key, geometry, width, height }, i) => (
+							<ParallaxItem key={key} style={{ top: getTop(i), left: getLeft(i) }}>
+								<span>{parallaxItemsPostion[i].text}</span>
+								<ParallaxSvgWrapper color={parallaxItemsPostion[i].color}>
+									<SvgComponent
+										width={width}
+										height={height}
+										viewBoxWidth={width}
+										viewBoxHeight={height}
+										path={geometry}
+										fill={theme.fill}
+									/>
+									<span></span>
+								</ParallaxSvgWrapper>
 							</ParallaxItem>
 						))}
 					</ParallaxContainer>
@@ -135,13 +214,12 @@ const Home: NextPage = () => {
 				</ContainerStyled>
 			</HeroStyled>
 
-			<SecondSectionStyled ref={divRef}>
+			<SecondSectionStyled ref={scrollToRef}>
 				<ContainerStyled>
 					<WrapperStyled>
 						<HalfContainerStyled>
 							<GetStartIllustrationStyled>
 								<Image src="/gif/paper-boat.gif" layout="fill" alt="Paper boat" />
-								{/* <Image src="/image/html-coding.png" layout="fill" alt="Paper boat" /> */}
 							</GetStartIllustrationStyled>
 						</HalfContainerStyled>
 						<HalfContainerStyled>
@@ -236,7 +314,15 @@ const Home: NextPage = () => {
 						<TrustedImagesStyled>
 							<TrustedImageStyled>
 								<Link href="https://www.equinor.com/" target="_blank">
-									<Image src="/image/equinor.png" layout="fill" alt="equinor" />
+									<Image src="/image/webstep.png" layout="fill" alt="webstep" />
+									{/* <Image
+										src="/image/eqnr.png"
+										width={0}
+										height={0}
+										sizes="100vw"
+										style={{ width: '100%', height: 'auto' }}
+										alt="webstep"
+									/> */}
 								</Link>
 							</TrustedImageStyled>
 							<TrustedImageStyled>
@@ -271,54 +357,6 @@ const Home: NextPage = () => {
 					</TrustedByStyled>
 				</ContainerStyled>
 			</FivethSectionStyled>
-
-			{/* <InfoBoxesStyled>
-						<li>
-							<Typography variant="h4">
-								<strong>100%</strong>
-							</Typography>
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-						</li>
-						<li>
-							<Typography variant="h4">
-								<strong>1077</strong>
-							</Typography>
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-						</li>
-						<li>
-							<Typography variant="h4">
-								<strong>10.9k</strong>
-							</Typography>
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-						</li>
-						<li>
-							<Typography variant="h4">
-								<strong>100 mil.</strong>
-							</Typography>
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-						</li>
-					</InfoBoxesStyled> */}
-
-			{/* <AvailableListStyled>
-				<li className="availableListText">
-					<p>Available for:</p>
-				</li>
-				<li className="availableListReact">
-					<Image src="/image/react.png" layout="fill" alt="hello" />
-				</li>
-				<li className="availableListFigma">
-					<Image src="/image/figma.png" layout="fill" alt="hello" />
-				</li>
-				<li className="availableListCode">
-					<Image src="/image/html-coding.png" layout="fill" alt="hello" />
-				</li>
-				<li className="availableListFlutter">
-					<Image src="/image/flutter.png" layout="fill" alt="hello" />
-				</li>
-				<li className="availableListAdobe">
-					<Image src="/image/adobe-illustrator.png" layout="fill" alt="hello" />
-				</li>
-			</AvailableListStyled> */}
 		</>
 	);
 };

@@ -70,11 +70,12 @@
 	},
 	"dependencies": {
 		"lint-staged": "^13.2.0",
+		"typed.js": "^2.0.15",
 		"typescript": "^5.0.2"
 	},
 	"devDependencies": {
-		"@types/jest": "^29.5.0",
 		"@svgr/cli": "^7.0.0",
+		"@types/jest": "^29.5.0",
 		"eslint": "^8.36.0",
 		"husky": "^8.0.3",
 		"prettier": "^2.8.7"

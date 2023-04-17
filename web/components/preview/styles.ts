@@ -12,7 +12,7 @@ interface CustomizeColorProps {
 }
 
 interface PreviewStyledProps {
-	isShow: number;
+	isShow: boolean;
 }
 
 interface PreviewImageStyledProps {
@@ -56,10 +56,10 @@ export const CustomizeStyled = styled.div`
 	height: 100%;
 	/* margin: 0 0 0 1rem; */
 
-	// box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
-	// box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-	// box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-	// box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+	/* box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset; */
+	/* box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset; */
+	/* box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px; */
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px;
 `;
 
 export const PreviewCloseButtonStyled = styled.button`
@@ -204,7 +204,7 @@ export const AnnotationTooltipStyled = styled.span`
 	position: relative;
 	left: -50%;
 	background-color: rgba(0, 0, 0, 0.9);
-	color: white;
+	color: #fafafa !important;
 	display: flex;
 	padding: 4px 12px 5px;
 	border-radius: 3px;
@@ -228,26 +228,6 @@ export const AnnotationTooltipStyled = styled.span`
 		border-style: solid;
 		border-width: 7px 7px 0 7px;
 		border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
-	}
-`;
-
-export const PreviewContentStyled = styled.div`
-	position: relative;
-`;
-
-export const PreviewContentTitleStyled = styled.div`
-	/* padding: 0 0 2rem; */
-
-	h2 {
-		text-align: center;
-		font-size: 30px;
-		word-wrap: break-word;
-	}
-`;
-
-export const PreviewContentDescStyled = styled.div`
-	p {
-		padding: 0 0 1rem 0;
 	}
 `;
 
@@ -393,20 +373,6 @@ export const CustomizeResetStyled = styled.div`
 			border: none;
 			transform: scale(1.05);
 		}
-	}
-`;
-
-export const CustomizeSwitchStyled = styled.div`
-	label {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		flex-direction: row-reverse;
-	}
-
-	span {
-		margin-left: 0;
-		font-weight: bold;
 	}
 `;
 

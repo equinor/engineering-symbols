@@ -1,53 +1,17 @@
-## Basic Usage
+## Contributing
 
-You can download any icon of the pack directly from [https://equinor.com](https://equinor.com) or get them from this repository.
+Thank you for your interest in contributing to the **Engineering Symbols Library**! We welcome contributions from anyone who wants to help improve the library and make it more valuable for engineers, designers, and other technical professionals.
 
-Additionally, the icons are available via the `equinor` NPM package:
+To contribute to the library, follow these steps:
 
-```bash
-yarn add equinor/engineering-symbols
-# or
-npm i equinor/engineering-symbols
-```
+1. _Fork the repository to your own [GitHub account](https://github.com/equinor/engineering-symbols)._
+2. _Clone the repository to your local machine._
+3. _Make the changes you want to the library, such as adding new symbols, updating existing symbols, or improving the organization and structure of the library._
+4. _Test your changes thoroughly to make sure they work as intended and don't introduce any issues or bugs._
+5. _Create a pull request to submit your changes to the original repository. Make sure to include a detailed description of the changes you made and why they are valuable._
+6. _The repository maintainers will review your changes and either merge them into the main codebase or request further changes if necessary._
+7. _Once your changes are merged, they will be available for use by anyone who accesses the library._
 
-Example usage:
+Please note that we have established some guidelines and conventions for contributing to the library, such as coding standards, file structure, or documentation. Make sure to review these guidelines before submitting your changes to ensure they are consistent with the rest of the library.
 
-```jsx
-import { Icon } from '@equinor/engineering-symbols';
-```
-
-## React
-
-A React library is available to install under the name `@equinor/engineering-symbols`. For more details, see the package [README](../../../package/README.md).
-
-## Flutter
-
-A Flutter library is available to install under the name `@equinor/engineering-symbols`. For more details, see the package [README](../../../package/README.md).
-
-## Framer
-
-A Framer library is available to install under the name `@equinor/engineering-symbols`. For more details, see the package [README](../../../package/README.md).
-
-## CSS
-
-Import the CSS File:
-
-```html
-<link rel="stylesheet" href="https://cdn.equinor.com/engineering-symbols@main/css/engineering-symbols.css" />
-```
-
-Here is an example in HTML:
-
-```html
-<i class="equinor-hand-brake"></i>
-```
-
-The class must always be "equinor-" and then the name of the icon. You can find the names of the icons [here](https://equinor.com).
-
-## Figma
-
-The library is available in the Figma community [here](https://www.figma.com/).
-
-## License
-
-[License](../../../LICENSE)
+Thank you again for your interest in contributing to the Engineering Symbols Library, and we look forward to working with you!

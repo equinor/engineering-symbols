@@ -24,13 +24,13 @@ export const Page = (): ReactElement => {
 
 **Required props are marked with `*`.**
 
-| Name         | Type             | Default | Description                                |
-| ------------ | ---------------- | ------- | ------------------------------------------ |
-| `appearance` | `IconAppearance` | `main`  | Provides icon styling                      |
-| `rotate`     | `number`         | `0`     | Renders a icon with pre-declaration rotate |
-| `height`     | `number`         | `70`    | Renders a icon with pre-declaration height |
-| `width`      | `number`         | `70`    | Renders a icon with pre-declaration width  |
-| `name`\*     | `IconName`       |         | Provides icon illustration                 |
+| Name     | Type       | Default   | Description                                |
+| -------- | ---------- | --------- | ------------------------------------------ |
+| `fill`   | `string`   | `#fafafa` | Provides icon styling                      |
+| `rotate` | `number`   | `0`       | Renders a icon with pre-declaration rotate |
+| `height` | `number`   | `70`      | Renders a icon with pre-declaration height |
+| `width`  | `number`   | `70`      | Renders a icon with pre-declaration width  |
+| `name`\* | `IconName` |           | Provides icon illustration                 |
 
 # Svg convertor 🪚
 

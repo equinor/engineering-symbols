@@ -1,24 +1,14 @@
 import { Chip, Typography } from '@equinor/eds-core-react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { useState } from 'react';
+import Link from 'next/link';
 
 import packageJson from '../../package.json';
 
-import Cat from '../../svg/cat.svg';
-
-import {
-	HeaderStyled,
-	LogoWrapStyled,
-	HeaderLogoStyled,
-	NavStyled,
-	BurgerWrapStyled,
-	HeaderNoteStyled,
-	NavStyledListItem,
-	HeaderLogoSvgStyled,
-} from './styles';
+import { HeaderStyled, LogoWrapStyled, HeaderLogoStyled, NavStyled, BurgerWrapStyled, HeaderNoteStyled, NavStyledListItem } from './styles';
 import { ContainerStyled } from '../../styles/styles';
+import { LogoComponent } from '../logo';
 
 export const HeaderComponent: NextPage = () => {
 	const [isMobileBurgerOpen, setMobileBurgerOpen] = useState<boolean>(false);
@@ -30,9 +20,7 @@ export const HeaderComponent: NextPage = () => {
 				<LogoWrapStyled>
 					<Link href="/">
 						<HeaderLogoStyled>
-							<HeaderLogoSvgStyled>
-								<Cat />
-							</HeaderLogoSvgStyled>
+							<LogoComponent />
 							<Typography variant="h1_bold">Engineering symbols</Typography>
 						</HeaderLogoStyled>
 					</Link>

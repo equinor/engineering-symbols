@@ -3,8 +3,8 @@ import { SvgWrapStyled } from './styles';
 
 export const SvgComponent: React.FunctionComponent<SvgComponentProps> = ({
 	renderConnectors = false,
-	viewBoxWidth,
 	viewBoxHeight,
+	viewBoxWidth,
 	connectors,
 	height,
 	width,

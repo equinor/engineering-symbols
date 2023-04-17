@@ -1,11 +1,12 @@
 import type { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { saveAs } from 'file-saver';
 import copyToClipboard from 'copy-to-clipboard';
+import { useRouter } from 'next/router';
+import { saveAs } from 'file-saver';
+import Typed from 'typed.js';
 
-import { Typography, Card, Search, Icon, Autocomplete, Snackbar } from '@equinor/eds-core-react';
+import { Card, Search, Icon, Autocomplete, Snackbar } from '@equinor/eds-core-react';
 import { change_history } from '@equinor/eds-icons';
 
 import { NoResultComponent, PreviewComponent, SvgComponent } from '../../components';
@@ -54,6 +55,7 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 	const router = useRouter();
 
 	const svgElementsRef = useRef([]);
+	const typedElementRef = useRef(null);
 
 	// type IconProps
 	const [icns, seIcns] = useState<IconProps[] | []>(icons);
@@ -65,11 +67,32 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 		!isColorPicked && setAppearance(theme.fill);
 	}, [theme.fill]);
 
+	useEffect(() => {
+		const typed = new Typed(typedElementRef.current, {
+			strings: [
+				'Aid visualization.',
+				'Simplify communication.',
+				'Enhance technical drawings.',
+				'Standardize representation.',
+				'Improve drafting accuracy.',
+			],
+			typeSpeed: 75,
+			backSpeed: 50,
+			showCursor: false,
+			loop: true,
+		});
+
+		return () => {
+			// Destroy Typed instance during cleanup to stop animation
+			typed.destroy();
+		};
+	}, []);
+
 	const onSearch = (val: string) => {
 		setSearchingValue(val);
 
 		if (val) {
-			const searchedValue = icons.filter(({ name }) => name.includes(val));
+			const searchedValue = icons.filter(({ name }) => name.toLocaleLowerCase().includes(val.toLocaleLowerCase()));
 
 			seIcns(searchedValue);
 
@@ -163,9 +186,11 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 		<>
 			<ContainerStyled>
 				<SymbolsHeaderStyled>
-					<Typography variant="h1_bold" style={{ textAlign: 'center' }}>
-						Crazy fast workflow
-					</Typography>
+					<h1 ref={typedElementRef}></h1>
+					<p>
+						We're constantly adding new symbols to our library, so be sure to check back regularly for the latest additions. And if you
+						can't find the symbol you're looking for, let us know - we're always happy to take suggestions and feedback from our users.
+					</p>
 				</SymbolsHeaderStyled>
 
 				<SymbolsContainerStyled>
@@ -191,7 +216,7 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 						</SymbolSelectWrapperStyled>
 
 						<SymbolsListStyled>
-							{icnsByCategory.length <= 0 && <NoResultComponent value={searchingValue} />}
+							{icnsByCategory.length <= 0 && searchingValue && <NoResultComponent value={searchingValue} />}
 							{icnsByCategory.map(({ category, icons }) => {
 								if (icons.length <= 0) return;
 
@@ -213,7 +238,7 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 																		viewBoxWidth={width}
 																		height={95}
 																		width={95}
-																		fill={appearance}
+																		fill={theme.fill}
 																		path={geometry}
 																	/>
 																</SymbolWrapperStyled>
