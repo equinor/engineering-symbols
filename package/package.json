@@ -107,7 +107,7 @@
 		"@rollup/plugin-node-resolve": "^15.0.1",
 		"@rollup/plugin-typescript": "^11.0.0",
 		"@storybook/addon-actions": "^6.5.16",
-		"@storybook/addon-essentials": "^6.4.9",
+		"@storybook/addon-essentials": "^7.0.5",
 		"@storybook/addon-links": "^6.4.21",
 		"@storybook/builder-webpack5": "^6.5.16",
 		"@storybook/manager-webpack5": "^6.5.16",
