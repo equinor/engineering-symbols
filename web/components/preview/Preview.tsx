@@ -37,6 +37,7 @@ import { rotatePoint, useOnClickOutside } from '../../helpers';
 import { SvgComponent } from '../svg';
 
 import Close from '../../svg/close.svg';
+import { ButtonComponent } from '../button';
 
 const SLIDER_MIN_VALUE = 0;
 const SLIDER_MAX_VALUE = 359;
@@ -181,9 +182,9 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 										</AnnotationWrapStyled>
 									);
 								})}
-							<Button color="secondary" onClick={() => setPresentConnectors(!presentConnectors)}>
+							<ButtonComponent size="s" onClick={() => setPresentConnectors(!presentConnectors)}>
 								Connectors {!presentConnectors ? 'on' : 'off'}
-							</Button>
+							</ButtonComponent>
 						</PreviewImageStyled>
 					</PreviewImageWrapStyled>
 				</PreviewWrapStyled>
@@ -226,9 +227,9 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 									<Typography variant="body_short" bold>
 										Customize
 									</Typography>
-									<button color="secondary" onClick={() => onRestCustomize()}>
+									<ButtonComponent size="s" onClick={() => onRestCustomize()}>
 										Reset
-									</button>
+									</ButtonComponent>
 								</CustomizeResetStyled>
 							</CustomizeElementStyled>
 						</CustomizeResetElementStyled>

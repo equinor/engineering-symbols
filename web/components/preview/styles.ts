@@ -47,18 +47,10 @@ export const PreviewStyled = styled.div<PreviewStyledProps>`
 `;
 
 export const CustomizeStyled = styled.div`
-	/* position sticky; */
-	/* top: 1rem; */
-	/* padding: 0 1rem 2rem; */
 	display: flex;
 	justify-content: space-between;
 	align-self: start;
 	height: 100%;
-	/* margin: 0 0 0 1rem; */
-
-	/* box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset; */
-	/* box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset; */
-	/* box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px; */
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px;
 `;
 
@@ -84,8 +76,6 @@ export const PreviewCloseButtonStyled = styled.button`
 `;
 
 export const PreviewWrapStyled = styled.div`
-	// background: ${({ theme }) => theme.body} !important;
-	// color: ${({ theme }) => theme.text} !important;
 	padding: 2rem;
 	width: 25.5rem;
 	display: flex;
@@ -94,28 +84,11 @@ export const PreviewWrapStyled = styled.div`
 
 	button {
 		margin: 2rem auto 0;
-		padding: 0.6rem 1rem;
 		height: auto;
-		font-family: 'Equinor';
-		appearance: none;
-		border: none;
-		font-size: 15px;
-		border-radius: 0.5rem;
-		background: ${({ theme }) => theme.backgroundGrey};
-		color: ${({ theme }) => theme.text};
-		cursor: pointer;
-		transition: transform 0.3s ease;
-
-		&:hover {
-			background: ${({ theme }) => theme.backgroundGrey};
-			border: none;
-			transform: scale(1.05);
-		}
 	}
 `;
 
 export const PreviewImageWrapStyled = styled.div`
-	// margin: 0 1rem 0 0;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -234,9 +207,6 @@ export const AnnotationTooltipStyled = styled.span`
 export const PreviewContenButtonsStyled = styled.div`
 	display: flex;
 	flex-direction: row;
-	/* justify-content: end; */
-	/* align-items: flex-end; */
-	/* flex-wrap: wrap; */
 	padding: 2rem 0 0;
 	grid-template-columns: 1fr 1fr;
 	gap: 0.5rem;
@@ -248,7 +218,6 @@ export const PreviewContenButtonsStyled = styled.div`
 	button {
 		width: auto;
 		min-width: 12rem;
-		/* margin-top: 3rem; */
 		padding: 0.6rem 1rem;
 		height: auto;
 		appearance: none;
@@ -288,7 +257,6 @@ export const PreviewImageStyled = styled.div<PreviewImageStyledProps>`
 `;
 
 export const CustomizeElementsStyled = styled.div`
-	/* background: ${({ theme }) => theme.backgroundGrey}; */
 	border-left: 0.1rem solid ${({ theme }) => theme.backgroundGrey};
 	display: flex;
 	width: 100%;
@@ -303,8 +271,6 @@ export const CustomizeElementsStyled = styled.div`
 
 export const CustomizeElementStyled = styled.div`
 	padding: 1rem 0;
-	/* width: 33%; */
-	/* flex: 1 1 50%; */
 `;
 
 export const CustomizeDetailsStyled = styled.div`
@@ -322,7 +288,6 @@ export const CustomizeSliderStyled = styled.div<CustomizeSliderProps>`
 	input {
 		width: 100%;
 		-webkit-appearance: none;
-		/* width:400px; */
 		height: 0.1rem;
 		border-radius: 0.5rem;
 		outline: none;
@@ -354,26 +319,6 @@ export const CustomizeResetStyled = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-
-	button {
-		padding: 0.6rem 1rem;
-		height: auto;
-		font-family: 'Equinor';
-		appearance: none;
-		border: none;
-		font-size: 15px;
-		border-radius: 0.2rem;
-		background: ${({ theme }) => theme.backgroundGrey};
-		color: ${({ theme }) => theme.text};
-		cursor: pointer;
-		transition: transform 0.3s ease;
-
-		&:hover {
-			background: ${({ theme }) => theme.backgroundGrey};
-			border: none;
-			transform: scale(1.05);
-		}
-	}
 `;
 
 export const CustomizeColorElementStyled = styled.div`

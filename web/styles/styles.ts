@@ -531,25 +531,6 @@ export const HeroButtons = styled.div`
 	padding-top: 7rem;
 `;
 
-export const ButtonStyled = styled.button<ButtonProps>`
-	width: 10rem;
-	margin: 0.5rem;
-	font-family: 'Equinor';
-	appearance: none;
-	border: none;
-	font-size: 15px;
-	padding: 0.9rem 0.2rem;
-	border-radius: 0.5rem;
-	background: ${({ theme, appearance }) => (appearance ? theme.background : theme.backgroundGrey)};
-	color: ${({ theme, appearance }) => (appearance ? theme.textWhite : theme.text)};
-	cursor: pointer;
-	transition: transform 0.3s ease;
-
-	&:hover {
-		transform: scale(1.05);
-	}
-`;
-
 // Section 2
 export const SecondSectionStyled = styled.section`
 	padding: 7.5rem 0;

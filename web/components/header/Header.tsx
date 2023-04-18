@@ -4,11 +4,12 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Link from 'next/link';
 
-import packageJson from '../../package.json';
-
 import { HeaderStyled, LogoWrapStyled, HeaderLogoStyled, NavStyled, BurgerWrapStyled, HeaderNoteStyled, NavStyledListItem } from './styles';
 import { ContainerStyled } from '../../styles/styles';
+
 import { LogoComponent } from '../logo';
+
+import packageJson from '../../package.json';
 
 export const HeaderComponent: NextPage = () => {
 	const [isMobileBurgerOpen, setMobileBurgerOpen] = useState<boolean>(false);

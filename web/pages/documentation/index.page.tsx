@@ -1,12 +1,12 @@
 import type { NextPage } from 'next';
 import { MDXProvider } from '@mdx-js/react';
 
-import DOC from './documentation.md';
+import { SymbolsHeaderStyled } from '../symbols/styles';
+import { ContainerStyled } from '../../styles/styles';
 
 import styles from './styles.module.css';
 
-import { SymbolsHeaderStyled } from '../symbols/styles';
-import { ContainerStyled } from '../../styles/styles';
+import DOC from './documentation.md';
 
 const Documentation: NextPage = () => {
 	return (

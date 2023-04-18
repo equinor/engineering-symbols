@@ -45,21 +45,20 @@ const icons = symbols.map(({ key, ...rest }) => ({
 // const icons = symbols.map((v) => ({ ...v, ...iconNamesWithCategories.find((sp) => sp.name === v.key) }));
 
 const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
-	const [isColorPicked, setColorPicked] = useState<boolean>(false);
-	const [isPreviewShow, setPreviewShow] = useState<boolean>(false);
 	const [searchingValue, setSearchingValue] = useState<string>('');
-	const [appearance, setAppearance] = useState<string>(theme.fill);
 	const [selectedSymbol, setSelectedSymbol] = useState<IconProps>(icons[0]);
 	const [isSnackbarOpen, setSnackbarOpen] = useState<boolean>(false);
+	const [isColorPicked, setColorPicked] = useState<boolean>(false);
+	const [isPreviewShow, setPreviewShow] = useState<boolean>(false);
+	const [appearance, setAppearance] = useState<string>(theme.fill);
 
 	const router = useRouter();
 
-	const svgElementsRef = useRef([]);
 	const typedElementRef = useRef(null);
+	const svgElementsRef = useRef([]);
 
-	// type IconProps
-	const [icns, seIcns] = useState<IconProps[] | []>(icons);
 	const [icnsByCategory, seIcnsByCategory] = useState<IconByCategoryProps[] | []>([]);
+	const [icns, seIcns] = useState<IconProps[] | []>(icons);
 
 	const debounceSearchValue = useDebouncedCallback((value) => onSearch(value), 1000);
 
@@ -171,7 +170,6 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 	};
 
 	const onDownloadSvg = (name: string, id: string) => {
-		console.log('i =>', id);
 		const url = new Blob([getSvgString(id)], { type: 'image/svg+xml' });
 
 		saveAs(url, `${name}.svg`);

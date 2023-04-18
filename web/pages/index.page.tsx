@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { SvgComponent } from '../components';
+import { ButtonComponent, SvgComponent } from '../components';
 
 import {
 	GetStartIllustrationStyled,
@@ -32,7 +32,6 @@ import {
 	TrustedByStyled,
 	WrapperStyled,
 	ParallaxItem,
-	ButtonStyled,
 	HeroButtons,
 	HeroStyled,
 } from '../styles/styles';
@@ -208,8 +207,8 @@ const Home: NextPage<HomePageProps> = ({ theme }) => {
 					</ParallaxContainer>
 
 					<HeroButtons>
-						<ButtonStyled onClick={() => push('/symbols')}>Symbols</ButtonStyled>
-						<ButtonStyled onClick={() => onScrollIntoView()}>Explore more</ButtonStyled>
+						<ButtonComponent onClick={() => push('/symbols')}>Symbols</ButtonComponent>
+						<ButtonComponent onClick={() => onScrollIntoView()}>Explore more</ButtonComponent>
 					</HeroButtons>
 				</ContainerStyled>
 			</HeroStyled>
@@ -235,12 +234,12 @@ const Home: NextPage<HomePageProps> = ({ theme }) => {
 									seamlessly into your existing projects.
 								</p>
 								<GetStartButtons>
-									<ButtonStyled appearance="secondary" onClick={() => push('/symbols')}>
+									<ButtonComponent appearance="secondary" onClick={() => push('/symbols')}>
 										Symbols
-									</ButtonStyled>
-									<ButtonStyled appearance="secondary" onClick={() => push('/documentation')}>
+									</ButtonComponent>
+									<ButtonComponent appearance="secondary" onClick={() => push('/documentation')}>
 										See Documentation
-									</ButtonStyled>
+									</ButtonComponent>
 								</GetStartButtons>
 							</GetStartContentStyled>
 						</HalfContainerStyled>
