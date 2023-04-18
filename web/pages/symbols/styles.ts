@@ -124,10 +124,22 @@ export const SymbolMenyWrapStyled = styled.div`
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		transition: transform 0.3s ease;
+		/* transition: transform 0.3s ease; */
 
-		&:hover {
+		&:hover button {
 			transform: scale(1.15);
+		}
+
+		&:nth-child(3) {
+			background: ${({ theme }) => theme.background};
+			z-index: -1;
+			position: relative;
+			border-bottom-left-radius: 12px;
+			border-bottom-right-radius: 12px;
+
+			button {
+				color: ${({ theme }) => theme.textWhite};
+			}
 		}
 	}
 
@@ -140,6 +152,7 @@ export const SymbolMenyWrapStyled = styled.div`
 		font-weight: 600;
 		color: ${({ theme }) => theme.textBlackGrey};
 		cursor: pointer;
+		transition: transform 0.3s ease;
 	}
 
 	li + li {
