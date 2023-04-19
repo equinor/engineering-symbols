@@ -37,11 +37,12 @@ export const PreviewStyled = styled.div<PreviewStyledProps>`
 	box-shadow: ${({ theme }) => theme.boxShadow};
 	transform: ${({ isShow }) => (isShow ? 'translateY(0)' : 'translateY(10rem)')};
 	opacity: ${({ isShow }) => (isShow ? '1' : '0')};
+	z-index: ${({ isShow }) => (isShow ? '10' : '-1')};
 	transition: 0.5s transform ease, 0.2s opacity ease;
 	left: 0;
 	right: 0;
 	margin: 0 auto 2rem;
-	z-index: 10;
+	/* z-index: 10; */
 	background: ${({ theme }) => theme.body};
 	border-radius: 12px;
 `;

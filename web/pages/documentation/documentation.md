@@ -58,14 +58,16 @@ To use the symbols in your HTML, simply add the class name to the element, like 
 You can style the symbols further by adjusting the background-size, background-position, and other properties as needed.
 It's important to keep in mind that the symbols may have different dimensions and proportions, so you may need to adjust your CSS code accordingly.
 
-## Figma
+<!-- ## API -->
+
+<!-- ## Figma
 
 Install the [engineering symbols plugin](https://github.com/) in Figma from the plugin directory.
 Once the plugin is installed, open it from the Figma menu or by using the keyboard shortcut.
 In the plugin interface, you will see a list of engineering symbols that you can use in your Figma project. Simply click on the symbol you want to use to add it to your canvas.
 You can customize the symbol by adjusting its size, color, stroke, and other properties using the Figma design tools.
 You can also add multiple symbols to your canvas and arrange them as needed to create technical drawings, diagrams, or any other engineering-related visuals.
-When you are finished, you can export your design from Figma in a variety of formats, such as PNG, SVG, or PDF, depending on your needs.
+When you are finished, you can export your design from Figma in a variety of formats, such as PNG, SVG, or PDF, depending on your needs. -->
 
 ## License
 

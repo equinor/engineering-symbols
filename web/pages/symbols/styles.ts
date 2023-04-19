@@ -186,6 +186,13 @@ export const SymbolsListStyled = styled.div`
 		width: 100%;
 	}
 
+	li {
+		&:hover ${SymbolMenyWrapStyled} {
+			transform: scale(1);
+			opacity: 1;
+		}
+	}
+
 	li > div {
 		/* cursor: pointer; */
 		height: 170px;
@@ -199,11 +206,6 @@ export const SymbolsListStyled = styled.div`
 
 		&:hover svg {
 			/* transform: scale(1.1); */
-		}
-
-		&:hover ${SymbolMenyWrapStyled} {
-			transform: scale(1);
-			opacity: 1;
 		}
 	}
 
