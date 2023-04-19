@@ -378,6 +378,22 @@ export const FooterMenuListStyled = styled.ul`
 
 	a {
 		font-family: 'Equinor';
+		position: relative;
+
+		&::before {
+			content: '';
+			background: ${({ theme }) => theme.hover.textBlackGrey};
+			transition: width 0.3s ease;
+			width: 0;
+			height: 2px;
+			position: absolute;
+			bottom: -3px;
+			left: 0;
+		}
+
+		&:hover::before {
+			width: 100%;
+		}
 	}
 `;
 
@@ -603,6 +619,7 @@ export const CaseStudiesStyled = styled.div`
 		text-align: center;
 		font-size: 44px;
 		font-family: 'Equinor';
+		color: ${({ theme }) => theme.text};
 	}
 
 	p {
@@ -700,6 +717,9 @@ export const TrustedByStyled = styled.div`
 	h5 {
 		font-size: 40px;
 		text-align: center;
+		font-family: 'Equinor';
+		font-weight: 400;
+		color: ${({ theme }) => theme.text};
 	}
 `;
 

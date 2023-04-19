@@ -13,6 +13,7 @@ export const lightTheme = {
 	hover: {
 		body: '#1c2226',
 		text: '#fafafa',
+		textBlackGrey: '#bcc0c3',
 		textBackground: '#ecf0f4',
 		toggleBorder: '#6B8096',
 		background: '#999',
@@ -35,6 +36,7 @@ export const darkTheme = {
 		body: '#fff',
 		text: '#1c2226',
 		textBackground: '#464849',
+		textBlackGrey: '#fafafa',
 		toggleBorder: '#fff',
 		background: '#1c2226',
 	},
