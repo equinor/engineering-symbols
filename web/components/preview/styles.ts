@@ -11,44 +11,87 @@ interface CustomizeColorProps {
 	show: boolean;
 }
 
+interface PreviewStyledProps {
+	isShow: boolean;
+}
+
 interface PreviewImageStyledProps {
 	rotate: number;
 }
 
-export const PreviewStyled = styled.div`
-	max-width: 304px;
-	min-width: 270px;
-	position sticky;
+interface CustomizeSliderProps {
+	value: number;
+	min: number;
+	max: number;
+}
+
+export const PreviewStyled = styled.div<PreviewStyledProps>`
+	max-width: 1440px;
+	/* max-width: 90%; */
+	width: calc(100% - 7rem);
+	min-width: 27rem;
+	height: 20rem;
+	position: fixed;
+	bottom: 2rem;
+	border: 1px solid ${({ theme }) => theme.backgroundGrey};
+	box-shadow: ${({ theme }) => theme.boxShadow};
+	transform: ${({ isShow }) => (isShow ? 'translateY(0)' : 'translateY(10rem)')};
+	opacity: ${({ isShow }) => (isShow ? '1' : '0')};
+	z-index: ${({ isShow }) => (isShow ? '10' : '-1')};
+	transition: 0.5s transform ease, 0.2s opacity ease;
+	left: 0;
+	right: 0;
+	margin: 0 auto 2rem;
+	/* z-index: 10; */
 	background: ${({ theme }) => theme.body};
+	border-radius: 12px;
 `;
 
 export const CustomizeStyled = styled.div`
-	position sticky;
-	top: 1rem;
-
-	padding: 0 1rem 2rem;
-	border-radius: 12px;
+	display: flex;
+	justify-content: space-between;
 	align-self: start;
-	margin: 0 0 0 1rem;
-	box-shadow: ${({ theme }) => theme.boxShadow};
+	height: 100%;
+	/* box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px; */
+	border-radius: 12px;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+`;
 
-	border: 1px solid #f2f2f2;
-	// box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
-	// box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-	// box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-	// box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+export const PreviewCloseButtonStyled = styled.button`
+	position: absolute;
+	top: 1.5rem;
+	right: 1.2rem;
+	appearance: none;
+	background: transparent;
+	border: none;
+	transition: transform 0.3s ease;
+	cursor: pointer;
+
+	&:hover {
+		transform: scale(1.25);
+	}
+
+	svg {
+		width: 1rem;
+		height: 1rem;
+		fill: ${({ theme }) => theme.text};
+	}
 `;
 
 export const PreviewWrapStyled = styled.div`
-	// background: ${({ theme }) => theme.body} !important;
-	// color: ${({ theme }) => theme.text} !important;
+	padding: 2rem;
+	width: 25.5rem;
 	display: flex;
 	flex-direction: column;
 	position: relative;
+
+	button {
+		margin: 2rem auto 0;
+		height: auto;
+	}
 `;
 
 export const PreviewImageWrapStyled = styled.div`
-	// margin: 0 1rem 0 0;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -137,7 +180,7 @@ export const AnnotationTooltipStyled = styled.span`
 	position: relative;
 	left: -50%;
 	background-color: rgba(0, 0, 0, 0.9);
-	color: white;
+	color: #fafafa !important;
 	display: flex;
 	padding: 4px 12px 5px;
 	border-radius: 3px;
@@ -164,30 +207,9 @@ export const AnnotationTooltipStyled = styled.span`
 	}
 `;
 
-export const PreviewContentStyled = styled.div`
-	position: relative;
-`;
-
-export const PreviewContentTitleStyled = styled.div`
-	padding: 0 0 2rem;
-
-	h2 {
-		text-align: center;
-		font-size: 34px;
-		word-wrap: break-word;
-	}
-`;
-
-export const PreviewContentDescStyled = styled.div`
-	p {
-		padding: 0 0 1rem 0;
-	}
-`;
-
 export const PreviewContenButtonsStyled = styled.div`
 	display: flex;
 	flex-direction: row;
-	flex-wrap: wrap;
 	padding: 2rem 0 0;
 	grid-template-columns: 1fr 1fr;
 	gap: 0.5rem;
@@ -197,8 +219,30 @@ export const PreviewContenButtonsStyled = styled.div`
 	}
 
 	button {
+		width: auto;
+		min-width: 12rem;
 		padding: 0.6rem 1rem;
 		height: auto;
+		appearance: none;
+		border: none;
+		font-size: 15px;
+		border-radius: 0.5rem;
+		background: ${({ theme }) => theme.backgroundGrey};
+		cursor: pointer;
+		transition: transform 0.3s ease;
+
+		span {
+			font-style: normal !important;
+
+			font-family: 'Equinor';
+			color: ${({ theme }) => theme.text} !important;
+		}
+
+		&:hover {
+			background: ${({ theme }) => theme.backgroundGrey};
+			border: none;
+			transform: scale(1.05);
+		}
 	}
 `;
 
@@ -215,8 +259,63 @@ export const PreviewImageStyled = styled.div<PreviewImageStyledProps>`
 	}
 `;
 
+export const CustomizeElementsStyled = styled.div`
+	border-left: 0.1rem solid ${({ theme }) => theme.backgroundGrey};
+	display: flex;
+	width: 100%;
+	height: 100%;
+	padding: 2rem;
+	flex-direction: column;
+
+	h2 {
+		padding: 0 0 1rem;
+	}
+`;
+
 export const CustomizeElementStyled = styled.div`
-	padding: 1rem 0 0;
+	padding: 1rem 0;
+`;
+
+export const CustomizeDetailsStyled = styled.div`
+	display: flex;
+	flex-wrap: no-wrap;
+	justify-content: center;
+	align-items: center;
+`;
+
+export const CustomizeSliderStyled = styled.div<CustomizeSliderProps>`
+	padding: 0 2rem 0 0;
+	width: 40%;
+	position: relative;
+
+	input {
+		width: 100%;
+		-webkit-appearance: none;
+		height: 0.1rem;
+		border-radius: 0.5rem;
+		outline: none;
+		background: ${({ theme, value, min, max }) =>
+			`linear-gradient(to right, ${theme.background} 0%, ${((value - min) / (max - min)) * 100}%, ${theme.backgroundGrey} 100%) !important`};
+	}
+	input::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		width: 1rem;
+		height: 1rem;
+		border-radius: 50%;
+		background: ${({ theme }) => theme.background};
+		z-index: 10;
+		position: relative;
+		cursor: pointer;
+	}
+
+	output {
+		position: absolute;
+		font-family: 'Equinor';
+		font-size: 12px;
+		padding: 0.6rem 0 0 0.4rem;
+		left: ${({ value }) => (100 / 455) * value + `%`};
+		color: ${({ theme }) => theme.text};
+	}
 `;
 
 export const CustomizeResetStyled = styled.div`
@@ -225,18 +324,15 @@ export const CustomizeResetStyled = styled.div`
 	align-items: center;
 `;
 
-export const CustomizeSwitchStyled = styled.div`
-	label {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		flex-direction: row-reverse;
-	}
+export const CustomizeColorElementStyled = styled.div`
+	width: 30%;
+	min-width: 10rem;
+	padding: 0 2rem 0 0;
+`;
 
-	span {
-		margin-left: 0;
-		font-weight: bold;
-	}
+export const CustomizeResetElementStyled = styled.div`
+	width: 30%;
+	min-width: 10rem;
 `;
 
 export const CustomizeColorStyled = styled.div<CustomizeColorProps>`

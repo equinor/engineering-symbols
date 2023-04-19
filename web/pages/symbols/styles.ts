@@ -1,22 +1,39 @@
 import styled from 'styled-components';
 
-export const IconsHeaderStyled = styled.div`
-	padding: 1rem 0 4rem;
+export const SymbolsHeaderStyled = styled.div`
+	padding: 1rem 0 2rem;
 	width: 100%;
+	font-family: 'Equinor';
+	text-align: center;
+	color: ${({ theme }) => theme.text};
+
+	h1 {
+		font-size: 36px;
+		font-style: bold;
+		padding: 0 0 1rem;
+		height: 3rem;
+	}
+
+	p {
+		font-size: 16px;
+		font-style: italic;
+		max-width: 55rem;
+		margin: 0 auto;
+	}
 `;
 
-export const IconsContainerStyled = styled.div`
+export const SymbolsContainerStyled = styled.div`
 	padding: 2rem 0;
 	display: grid;
-	grid-template-columns: 75% 25%;
+	/* grid-template-columns: 75% 25%; */
 	min-height: 100vh;
 `;
 
-export const IconSelectWrapperStyled = styled.div`
+export const SymbolSelectWrapperStyled = styled.div`
 	display: flex;
 	border-radius: 12px;
 	border: 1px solid #f2f2f2;
-	position sticky;
+	position: sticky;
 	top: 1rem;
 	margin-bottom: 2rem;
 	padding: 1rem;
@@ -42,7 +59,7 @@ export const IconSelectWrapperStyled = styled.div`
 	}
 `;
 
-export const IconInputsWrapperStyled = styled.div`
+export const SymbolInputsWrapperStyled = styled.div`
 	width: 100%;
 	display: flex;
 
@@ -54,8 +71,15 @@ export const IconInputsWrapperStyled = styled.div`
 		background: ${({ theme }) => theme.body};
 	}
 
-	input::placeholder {
-		color: ${({ theme }) => theme.text} !important;
+	input {
+		&::placeholder {
+			color: ${({ theme }) => theme.text} !important;
+		}
+
+		/* &:focus {
+			border-color: red;
+			box-shadow: none;
+		} */
 	}
 
 	svg {
@@ -82,7 +106,61 @@ export const CategoriesStyled = styled.ul`
 	}
 `;
 
-export const IconsListStyled = styled.div`
+export const SymbolMenyWrapStyled = styled.div`
+	position: absolute;
+	border: 0.3rem solid ${({ theme }) => theme.body};
+	background: ${({ theme }) => theme.backgroundGrey};
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	border-radius: 12px;
+	opacity: 0;
+	transform: scale(0.9);
+	transition: opacity 0.3s ease, transform 0.3s ease;
+
+	li {
+		height: calc(100% / 3);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		/* transition: transform 0.3s ease; */
+
+		&:hover button {
+			transform: scale(1.15);
+		}
+
+		&:nth-child(3) {
+			background: ${({ theme }) => theme.background};
+			z-index: -1;
+			position: relative;
+			border-bottom-left-radius: 12px;
+			border-bottom-right-radius: 12px;
+
+			button {
+				color: ${({ theme }) => theme.textWhite};
+			}
+		}
+	}
+
+	button {
+		appearance: none;
+		background: transparent;
+		border: none;
+		font-family: 'Equinor';
+		font-size: 14px;
+		font-weight: 600;
+		color: ${({ theme }) => theme.textBlackGrey};
+		cursor: pointer;
+		transition: transform 0.3s ease;
+	}
+
+	li + li {
+		border-top: 0.3rem solid ${({ theme }) => theme.body};
+	}
+`;
+
+export const SymbolsListStyled = styled.div`
 	ul {
 		list-style: none;
 		display: grid;
@@ -108,18 +186,26 @@ export const IconsListStyled = styled.div`
 		width: 100%;
 	}
 
-	button > div {
-		cursor: pointer;
+	li {
+		&:hover ${SymbolMenyWrapStyled} {
+			transform: scale(1);
+			opacity: 1;
+		}
+	}
+
+	li > div {
+		/* cursor: pointer; */
 		height: 170px;
 		width: 100%;
 		background: ${({ theme }) => theme.body};
 		border: 1px solid #f2f2f2;
 		border-radius: 12px;
 		padding: 1rem;
+		overflow: hidden;
 		// box-shadow: ${({ theme }) => theme.boxShadow};
 
 		&:hover svg {
-			transform: scale(1.1);
+			/* transform: scale(1.1); */
 		}
 	}
 
@@ -131,10 +217,14 @@ export const IconsListStyled = styled.div`
 		text-align: center;
 		word-wrap: break-word;
 		height: 40px;
+		padding: 0.2rem 0 0;
+		font-size: 14px;
+		color: ${({ theme }) => theme.textGrey};
+		font-family: 'Equinor';
 	}
 `;
 
-export const IconCategoryName = styled.p`
+export const SymbolCategoryName = styled.p`
 	display: flex;
 	align-items: center;
 	padding-bottom: 0.5rem;
@@ -149,13 +239,14 @@ export const IconCategoryName = styled.p`
 	}
 `;
 
-export const IconsListWrapStyled = styled.div`
+export const SymbolsListWrapStyled = styled.div`
 	// padding: 0.5rem;
 	display: flex;
 	justify-content: space-between;
 	flex-direction: column;
 	width: 100%;
 	height: 100%;
+	/* position: relative; */
 
 	#Annotations > * {
 		fill: none;
@@ -172,7 +263,7 @@ export const CustomizeColorWrapStyled = styled.div`
 	}
 `;
 
-export const IconWrapperStyled = styled.div`
+export const SymbolWrapperStyled = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;

@@ -1,23 +1,25 @@
-import { ChangeEvent, useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { HexColorPicker } from 'react-colorful';
 import { saveAs } from 'file-saver';
 import copyToClipboard from 'copy-to-clipboard';
 
-import { Typography, Button, Switch, Icon, Snackbar, Label, Popover, Slider } from '@equinor/eds-core-react';
+import { Typography, Button, Icon, Snackbar, Popover } from '@equinor/eds-core-react';
 import { download, copy } from '@equinor/eds-icons';
 
 import {
+	CustomizeColorElementStyled,
+	CustomizeResetElementStyled,
 	AnnotationTooltipDotStyled,
 	PreviewContenButtonsStyled,
-	PreviewContentTitleStyled,
-	PreviewContentDescStyled,
+	PreviewCloseButtonStyled,
 	AnnotationTooltipStyled,
+	CustomizeElementsStyled,
 	PreviewImageWrapStyled,
 	CustomizeElementStyled,
-	CustomizeSwitchStyled,
+	CustomizeDetailsStyled,
+	CustomizeSliderStyled,
 	AnnotationWrapStyled,
-	PreviewContentStyled,
 	CustomizeColorStyled,
 	CustomizeResetStyled,
 	PreviewImageStyled,
@@ -34,11 +36,19 @@ import { ConnectorsProps } from '../../types';
 import { rotatePoint, useOnClickOutside } from '../../helpers';
 import { SvgComponent } from '../svg';
 
+import Close from '../../svg/close.svg';
+import { ButtonComponent } from '../button';
+
+const SLIDER_MIN_VALUE = 0;
+const SLIDER_MAX_VALUE = 359;
+
 export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = ({
 	setPreviewColorPicked,
 	setPreviewAppearance,
+	setPreviewShow,
 	appearance,
 	selected,
+	isShow,
 	theme,
 }): JSX.Element => {
 	const { name, connectors, width, height, geometry } = selected;
@@ -56,6 +66,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 
 	const debounceRotateValue = useDebouncedCallback((value) => setRotate(value), 1);
 
+	const previewComponentRef = useRef(null);
 	const customizeColorRef = useRef(null);
 	const popoverRef = useRef<HTMLButtonElement>(null);
 	const svgRef = useRef(null);
@@ -112,6 +123,8 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 		setPopoverOpen(false);
 	};
 
+	useOnClickOutside(previewComponentRef, () => setPreviewShow(false));
+
 	useEffect(() => {
 		if (!hasConnectors) return;
 
@@ -130,8 +143,11 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	}, [rotate, selected]);
 
 	return (
-		<PreviewStyled>
+		<PreviewStyled ref={previewComponentRef} isShow={isShow}>
 			<CustomizeStyled>
+				<PreviewCloseButtonStyled onClick={() => setPreviewShow(false)}>
+					<Close />
+				</PreviewCloseButtonStyled>
 				<PreviewWrapStyled>
 					<PreviewImageWrapStyled>
 						<PreviewImageStyled ref={svgRef} rotate={rotate}>
@@ -166,96 +182,100 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 										</AnnotationWrapStyled>
 									);
 								})}
+							<ButtonComponent size="s" onClick={() => setPresentConnectors(!presentConnectors)}>
+								Connectors {!presentConnectors ? 'on' : 'off'}
+							</ButtonComponent>
 						</PreviewImageStyled>
 					</PreviewImageWrapStyled>
-
-					<PreviewContentStyled>
-						<PreviewContentTitleStyled>
-							<Typography variant="h2">{name}</Typography>
-						</PreviewContentTitleStyled>
-					</PreviewContentStyled>
 				</PreviewWrapStyled>
 
-				<CustomizeElementStyled>
-					<Label label="Rotation" id="even-simpler-slider" />
-					<Slider
-						aria-labelledby="even-simpler-slider"
-						value={rotate}
-						step={1}
-						max={359}
-						min={0}
-						minMaxDots={false}
-						minMaxValues={false}
-						// @ts-ignore: next-line
-						onChange={(el, val) => debounceRotateValue(val[0])}
-					/>
-				</CustomizeElementStyled>
+				<CustomizeElementsStyled>
+					<Typography variant="h2">{name}</Typography>
 
-				<CustomizeElementStyled>
-					<PreviewContentDescStyled>
-						{hasConnectors && (
-							<CustomizeSwitchStyled>
-								<Switch
-									onChange={({ target }: ChangeEvent<HTMLInputElement>) => setPresentConnectors(target.checked)}
-									checked={presentConnectors}
-									label="Connectors"
+					<CustomizeDetailsStyled>
+						<CustomizeSliderStyled value={rotate} min={SLIDER_MIN_VALUE} max={SLIDER_MAX_VALUE}>
+							<CustomizeElementStyled>
+								<input
+									type="range"
+									name="range"
+									id="range"
+									min={SLIDER_MIN_VALUE}
+									max={SLIDER_MAX_VALUE}
+									step="0"
+									value={rotate}
+									onChange={({ target }) => debounceRotateValue(target.value)}
 								/>
-							</CustomizeSwitchStyled>
-						)}
-					</PreviewContentDescStyled>
-				</CustomizeElementStyled>
+								<output name="result">{rotate}</output>
+							</CustomizeElementStyled>
+						</CustomizeSliderStyled>
 
-				<CustomizeElementStyled>
-					<CustomizeColorStyled color={appearance} show={showCustomizeColor} ref={customizeColorRef}>
-						<Typography variant="body_short" bold>
-							Color
-						</Typography>
-						<Button onClick={() => setShowCustomizeColor(true)}></Button>
-						<HexColorPicker color={appearance} onChange={onColorPicker} />
-					</CustomizeColorStyled>
-				</CustomizeElementStyled>
+						<CustomizeColorElementStyled>
+							<CustomizeElementStyled>
+								<CustomizeColorStyled color={appearance} show={showCustomizeColor} ref={customizeColorRef}>
+									<Typography variant="body_short" bold>
+										Color
+									</Typography>
+									<Button onClick={() => setShowCustomizeColor(true)}></Button>
+									<HexColorPicker color={appearance} onChange={onColorPicker} />
+								</CustomizeColorStyled>
+							</CustomizeElementStyled>
+						</CustomizeColorElementStyled>
 
-				<CustomizeElementStyled>
-					<CustomizeResetStyled>
-						<Typography variant="body_short" bold>
-							Customize
-						</Typography>
-						<Button color="secondary" onClick={() => onRestCustomize()}>
-							Reset
+						<CustomizeResetElementStyled>
+							<CustomizeElementStyled>
+								<CustomizeResetStyled>
+									<Typography variant="body_short" bold>
+										Customize
+									</Typography>
+									<ButtonComponent size="s" onClick={() => onRestCustomize()}>
+										Reset
+									</ButtonComponent>
+								</CustomizeResetStyled>
+							</CustomizeElementStyled>
+						</CustomizeResetElementStyled>
+					</CustomizeDetailsStyled>
+
+					<PreviewContenButtonsStyled>
+						<Button
+							aria-controls="popover"
+							variant="outlined"
+							aria-haspopup
+							ref={popoverRef}
+							onClick={() => setPopoverOpen(!isPopoverOpen)}>
+							<Icon data={copy}></Icon>
+							Copy ...
 						</Button>
-					</CustomizeResetStyled>
-				</CustomizeElementStyled>
 
-				<PreviewContenButtonsStyled>
-					<Button aria-controls="popover" variant="outlined" aria-haspopup ref={popoverRef} onClick={() => setPopoverOpen(!isPopoverOpen)}>
-						<Icon data={copy}></Icon>
-						Copy ...
-					</Button>
+						<Button onClick={() => onDownloadSvg()}>
+							<Icon data={download}></Icon>
+							Download
+						</Button>
 
-					<Button fullWidth onClick={() => onDownloadSvg()}>
-						<Icon data={download}></Icon>
-						Download
-					</Button>
-
-					<Popover anchorEl={popoverRef.current} open={isPopoverOpen} id="popover" placement="top" onClose={() => setPopoverOpen(false)}>
-						<Popover.Content>
-							<PopoverWrapStyled>
-								<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(geometry)}>
-									<Icon data={copy}></Icon>Copy geometry string
-								</Button>
-								<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(name)}>
-									<Icon data={copy}></Icon>Copy icon name
-								</Button>
-								<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(getSvgString())}>
-									<Icon data={copy}></Icon>Copy SVG
-								</Button>
-							</PopoverWrapStyled>
-						</Popover.Content>
-					</Popover>
-					<Snackbar open={isSnackbarOpen} onClose={() => setSnackbarOpen(false)} autoHideDuration={3000}>
-						Copied!
-					</Snackbar>
-				</PreviewContenButtonsStyled>
+						<Popover
+							anchorEl={popoverRef.current}
+							open={isPopoverOpen}
+							id="popover"
+							placement="top"
+							onClose={() => setPopoverOpen(false)}>
+							<Popover.Content>
+								<PopoverWrapStyled>
+									<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(geometry)}>
+										<Icon data={copy}></Icon>Copy geometry string
+									</Button>
+									<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(name)}>
+										<Icon data={copy}></Icon>Copy icon name
+									</Button>
+									<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(getSvgString())}>
+										<Icon data={copy}></Icon>Copy SVG
+									</Button>
+								</PopoverWrapStyled>
+							</Popover.Content>
+						</Popover>
+						<Snackbar open={isSnackbarOpen} onClose={() => setSnackbarOpen(false)} autoHideDuration={3000}>
+							Copied!
+						</Snackbar>
+					</PreviewContenButtonsStyled>
+				</CustomizeElementsStyled>
 			</CustomizeStyled>
 		</PreviewStyled>
 	);

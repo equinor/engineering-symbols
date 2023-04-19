@@ -6,13 +6,13 @@ import { ContainerStyled } from '../../styles/styles';
 
 import styles from './styles.module.css';
 
-import DOC from './documentation.md';
+import DOC from './contribution.md';
 
-const Documentation: NextPage = () => {
+const Contribution: NextPage = () => {
 	return (
 		<ContainerStyled>
 			<SymbolsHeaderStyled>
-				<h1>Documentation</h1>
+				<h1>Contributing to the Engineering Symbols Library</h1>
 			</SymbolsHeaderStyled>
 
 			{/* <ReactMarkdown children={content} remarkPlugins={[remarkGfm]} /> */}
@@ -25,4 +25,4 @@ const Documentation: NextPage = () => {
 	);
 };
 
-export default Documentation;
+export default Contribution;

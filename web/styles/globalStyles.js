@@ -1,8 +1,8 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
-  html {
-    scroll-behavior: smooth;
+  *, html {
+    scroll-behavior: smooth !important;
   }
 
   #eds-autocomplete-container {
@@ -37,6 +37,11 @@ export const GlobalStyles = createGlobalStyle`
         fill: ${({ theme }) => theme.fill};
       }
     }
+  }
+
+  main {
+    position: relative;
+    transition: height 0.3s;
   }
 
   html,

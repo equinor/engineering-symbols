@@ -1,18 +1,31 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import { useState } from 'react';
 
 // import 'https://eds-static.equinor.com/font/equinor-font.css';
 import { GlobalStyles } from '../styles/globalStyles';
-import { lightTheme, darkTheme } from '../styles/Themes';
-import { ContainerStyled, DarkModeSwitcherStyled } from '../styles/styles';
+import {
+	FooterMenuWrapperStyled,
+	FooterLogoWrapperStyled,
+	DarkModeSwitcherStyled,
+	FooterMenuTitleStyled,
+	FooterMenuListStyled,
+	FooterWrapperStyled,
+	FooterLicenseStyled,
+	FooterMenuStyled,
+	ContainerStyled,
+	FooterStyled,
+} from '../styles/styles';
 import '../styles/globals.css';
 
-import { HeaderComponent } from '../components';
+import { lightTheme, darkTheme } from '../styles/Themes';
 
-import Sun from './svg/sun.svg';
-import Moon from './svg/moon.svg';
+import { HeaderComponent, LogoComponent } from '../components';
+
+// import Sun from '../svg/sun.svg';
+// import Moon from '../svg/moon.svg';
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const [themeName, setThemeName] = useState('light');
@@ -21,7 +34,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 	const theme = themeName === 'light' ? lightTheme : darkTheme;
 
 	return (
-		<ContainerStyled>
+		<>
 			<Head>
 				<title>🍯 Engineering symbols</title>
 				<meta name="description" content="Your new Engineering symbols library." />
@@ -33,10 +46,15 @@ function MyApp({ Component, pageProps }: AppProps) {
 			<ThemeProvider theme={theme}>
 				<GlobalStyles />
 				<DarkModeSwitcherStyled>
-					<input type="checkbox" id="darkmode-toggle" onClick={themeToggler} />
-					<label htmlFor="darkmode-toggle">
-						<Sun />
-						<Moon />
+					<label className="switch">
+						<input className="switch__input" type="checkbox" onClick={themeToggler} />
+						<span className="switch__background">
+							<span className="switch__toggle">
+								<span className="switch__moon"></span>
+							</span>
+							<span className="switch__stars"></span>
+							<span className="switch__clouds"></span>
+						</span>
 					</label>
 				</DarkModeSwitcherStyled>
 
@@ -44,10 +62,74 @@ function MyApp({ Component, pageProps }: AppProps) {
 				<main>
 					<Component {...pageProps} theme={theme} />
 				</main>
+				<FooterStyled>
+					<ContainerStyled>
+						<FooterWrapperStyled>
+							<FooterLogoWrapperStyled>
+								<LogoComponent fill="backgroundGrey" />
+								<p>Engineering symbols</p>
+							</FooterLogoWrapperStyled>
+							<FooterMenuWrapperStyled>
+								<FooterMenuStyled>
+									<FooterMenuTitleStyled>Project</FooterMenuTitleStyled>
+									<FooterMenuListStyled>
+										<li>
+											<Link href="./contribution">Contribute</Link>
+										</li>
+									</FooterMenuListStyled>
+								</FooterMenuStyled>
 
-				<footer style={{ padding: '3rem 0' }}>Im License</footer>
+								<FooterMenuStyled>
+									<FooterMenuTitleStyled>Suport</FooterMenuTitleStyled>
+									<FooterMenuListStyled>
+										<li>
+											<Link href="./license">License</Link>
+										</li>
+										<li>
+											<Link href="https://github.com/equinor/engineering-symbols/" target="_blank">
+												GitHub Repository
+											</Link>
+										</li>
+										<li>
+											<Link href="./documentation">Documentation</Link>
+										</li>
+									</FooterMenuListStyled>
+								</FooterMenuStyled>
+
+								<FooterMenuStyled>
+									<FooterMenuTitleStyled>Developers</FooterMenuTitleStyled>
+									<FooterMenuListStyled>
+										<li>
+											<Link href="https://github.com/equinor/engineering-symbols/releases" target="_blank">
+												Changelogs
+											</Link>
+										</li>
+										<li>
+											<Link href="https://www.npmjs.com/package/@equinor/engineering-symbols" target="_blank">
+												React and React Native
+											</Link>
+										</li>
+										<li>
+											<Link href="./documentation#figma">Figma plugin</Link>
+										</li>
+										<li>
+											<Link href="./documentation#css">CSS</Link>
+										</li>
+									</FooterMenuListStyled>
+								</FooterMenuStyled>
+							</FooterMenuWrapperStyled>
+							<FooterLicenseStyled>
+								<p>
+									Parts of this content are ©2023 by individual Engineering symbols contributors. Content available under a{' '}
+									<Link href="https://www.npmjs.com/package/@equinor/engineering-symbols">MIT License</Link>
+								</p>
+								<Link href="https://www.npmjs.com/package/@equinor/engineering-symbols">Privacy.</Link>
+							</FooterLicenseStyled>
+						</FooterWrapperStyled>
+					</ContainerStyled>
+				</FooterStyled>
 			</ThemeProvider>
-		</ContainerStyled>
+		</>
 	);
 }
 

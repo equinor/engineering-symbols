@@ -18,18 +18,21 @@ export const HeaderStyled = styled.header`
 
 export const LogoWrapStyled = styled.div`
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
+	justify-content: flex-start;
 	z-index: 1;
 	position: relative;
 `;
 
 export const HeaderLogoStyled = styled.span`
-	padding-right: 1rem;
+	padding-right: 0.5rem;
+	display: flex;
+	align-items: center;
 `;
 
 export const NavStyled = styled.nav<MenuStateProps>`
 	position: absolute;
-	top: 0.4rem;
+	top: 0.9rem;
 	left: 0;
 	right: 0;
 	margin: 3rem auto 0;
@@ -58,33 +61,54 @@ export const NavStyled = styled.nav<MenuStateProps>`
 			flex-direction: column;
 		}
 	}
-
-	li {
-	}
 `;
 
 export const NavStyledListItem = styled.li<NavStyledListItemProps>`
-	color: ${({ theme, isActive }) => (isActive ? theme.hover.text : theme.text)};
-	background: ${({ theme, isActive }) => (isActive ? theme.hover.body : theme.body)};
-	transition: background-color 0.4s ease, color 0.4s ease;
+	color: ${({ theme }) => theme.text};
 	cursor: pointer;
+	position: relative;
+	background: transparent;
+	line-height: 1;
+
+	&::before {
+		content: '';
+		padding: 0.9rem 0.2rem;
+		border-radius: 5px;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: -0.9rem;
+		left: -0.2rem;
+		z-index: -1;
+		background: ${({ theme }) => theme.hover.textBackground};
+		transform: ${({ isActive }) => (isActive ? 'scale(1)' : 'scale(0.8)')};
+		opacity: ${({ isActive }) => (isActive ? 1 : 0)};
+		transition: opacity 0.2s ease, transform 0.2s ease;
+	}
 
 	@media screen and (max-width: 1024px) {
 		margin: 0 0 2rem;
 	}
 
 	&:hover {
-		color: ${({ theme }) => theme.hover.text};
-		background: ${({ theme }) => theme.hover.body};
+		/* color: ${({ theme }) => theme.hover.text}; */
+
+		&::before {
+			opacity: 1;
+			transform: scale(1);
+		}
 	}
 
 	a {
 		display: block;
-		padding: 1rem 1.5rem;
+		padding: 0 1.5rem;
+		font-size: 16px;
 	}
 `;
 
 export const HeaderNoteStyled = styled.div`
+	font-size: 14px;
+
 	@media screen and (max-width: 1024px) {
 		display: none;
 	}
