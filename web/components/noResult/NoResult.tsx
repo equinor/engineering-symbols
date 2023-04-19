@@ -8,9 +8,9 @@ type NoResultComponentProps = {
 export const NoResultComponent: React.FunctionComponent<NoResultComponentProps> = ({ value }): JSX.Element => {
 	return (
 		<NoResultStyled>
-			<svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 656.609 656.614">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 656.609 656.614">
 				<g>
-					<circle cx="328.305" cy="328.305" r="328.305" fill="#367cff" opacity="0.1"></circle>
+					<circle cx="328.305" cy="328.305" r="328.305" fill="#595C59" opacity="0.1"></circle>
 					<g>
 						<g>
 							<g>
@@ -57,7 +57,7 @@ export const NoResultComponent: React.FunctionComponent<NoResultComponentProps> 
 					</g>
 					<path
 						d="M589.5,527.234c-59.98,78.64-154.66,129.38-261.19,129.38s-201.21-50.74-261.19-129.38c68.47-25.76,160.27-41.51,261.19-41.51S521.025,501.474,589.5,527.234Z"
-						fill="#367cff"></path>
+						fill="#595C59"></path>
 					<path
 						d="M617.054,171.945l-168.491-.72c0-28.14,15.85-33.68,32.7-38.25s24.43-35.5,53.71-37.26c17.291-1.04,26.36,3.41,33.87,9.14.01.01.01.02.02.02A329.187,329.187,0,0,1,617.054,171.945Z"
 						fill="#fff"></path>
