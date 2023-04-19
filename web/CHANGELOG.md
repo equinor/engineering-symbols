@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/equinor/engineering-symbols/compare/web-v1.0.2...web-v1.1.0) (2023-04-19)
+
+
+### Features
+
+* new look ([#396](https://github.com/equinor/engineering-symbols/issues/396)) ([b2fbcd6](https://github.com/equinor/engineering-symbols/commit/b2fbcd655446f0a6395e01983d5dafd60b75d4c6))
+
+
+### Miscellaneous Chores
+
+* **master:** release engineering-symbols 1.1.3 ([#383](https://github.com/equinor/engineering-symbols/issues/383)) ([d76d9f9](https://github.com/equinor/engineering-symbols/commit/d76d9f9d0cd994b0c9109121b96a5a7a14a5a3e8))
+
 ## [1.0.2](https://github.com/equinor/engineering-symbols/compare/web-v1.0.1...web-v1.0.2) (2023-03-28)
 
 ### Miscellaneous Chores
