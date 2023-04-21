@@ -5,7 +5,9 @@ web/.next
 package/build
 node_modules
 package/node_modules
+package/CHANGELOG.md
 web/node_modules
+web/CHANGELOG.md
 storybook-public
 storybook-static
 package-lock.json
