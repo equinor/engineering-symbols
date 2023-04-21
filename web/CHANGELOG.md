@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.1](https://github.com/equinor/engineering-symbols/compare/web-v1.1.0...web-v1.1.1) (2023-04-21)
+
+
+### Bug Fixes
+
+* changelog prettier ([#414](https://github.com/equinor/engineering-symbols/issues/414)) ([7324275](https://github.com/equinor/engineering-symbols/commit/732427534bccb2029423502940f29ef6140ad73b))
+
+
+### Bump package
+
+* **web:** bump eslint from 8.36.0 to 8.38.0 in /web ([#406](https://github.com/equinor/engineering-symbols/issues/406)) ([a1a2379](https://github.com/equinor/engineering-symbols/commit/a1a23791512d7a51b2720e21420cc28d1b75018b))
+
 ## [1.1.0](https://github.com/equinor/engineering-symbols/compare/web-v1.0.2...web-v1.1.0) (2023-04-19)
 
 
