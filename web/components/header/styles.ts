@@ -69,16 +69,17 @@ export const NavStyledListItem = styled.li<NavStyledListItemProps>`
 	position: relative;
 	background: transparent;
 	line-height: 1;
+	margin-top: -0.9rem;
 
 	&::before {
 		content: '';
-		padding: 0.9rem 0.2rem;
+		/* padding: 0.9rem 0.2rem; */
 		border-radius: 5px;
 		position: absolute;
 		width: 100%;
 		height: 100%;
-		top: -0.9rem;
-		left: -0.2rem;
+		/* top: -0.9rem; */
+		/* left: -0.2rem; */
 		z-index: -1;
 		background: ${({ theme }) => theme.hover.textBackground};
 		transform: ${({ isActive }) => (isActive ? 'scale(1)' : 'scale(0.8)')};
@@ -91,8 +92,6 @@ export const NavStyledListItem = styled.li<NavStyledListItemProps>`
 	}
 
 	&:hover {
-		/* color: ${({ theme }) => theme.hover.text}; */
-
 		&::before {
 			opacity: 1;
 			transform: scale(1);
@@ -101,7 +100,8 @@ export const NavStyledListItem = styled.li<NavStyledListItemProps>`
 
 	a {
 		display: block;
-		padding: 0 1.5rem;
+		padding: 0.9rem 1.5rem;
+		/* padding: 0 1.5rem; */
 		font-size: 16px;
 	}
 `;
