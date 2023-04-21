@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.2](https://github.com/equinor/engineering-symbols/compare/web-v1.1.1...web-v1.1.2) (2023-04-21)
+
+
+### Bug Fixes
+
+* header link ([#418](https://github.com/equinor/engineering-symbols/issues/418)) ([4ebb949](https://github.com/equinor/engineering-symbols/commit/4ebb949e8c3c8fb735b630bd9277877bbfec273d))
+
+
+### Bump package
+
+* **web:** bump @types/node from 18.15.10 to 18.15.13 in /web ([#415](https://github.com/equinor/engineering-symbols/issues/415)) ([1213e53](https://github.com/equinor/engineering-symbols/commit/1213e53f7b1847db7f105b9891ba784a68de7eb3))
+* **web:** bump @types/react from 18.0.29 to 18.0.37 in /web ([#412](https://github.com/equinor/engineering-symbols/issues/412)) ([6257e24](https://github.com/equinor/engineering-symbols/commit/6257e24e2faed33749300cbdd8e5468676d8ead0))
+* **web:** bump typescript from 5.0.2 to 5.0.4 in /web ([#405](https://github.com/equinor/engineering-symbols/issues/405)) ([2f3016c](https://github.com/equinor/engineering-symbols/commit/2f3016c98bc55416d43f1bb7db638f878e4a288b))
+* **web:** bump use-debounce from 9.0.3 to 9.0.4 in /web ([#400](https://github.com/equinor/engineering-symbols/issues/400)) ([871186a](https://github.com/equinor/engineering-symbols/commit/871186a96948eb6981bdac8dd64fa873099135fa))
+
 ## [1.1.1](https://github.com/equinor/engineering-symbols/compare/web-v1.1.0...web-v1.1.1) (2023-04-21)
 
 
