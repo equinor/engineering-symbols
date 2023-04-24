@@ -2,7 +2,7 @@ name: 🍋 Package Release
 on:
     push:
         branches: [master]
-        paths: ['package/**', '.release-please-manifest.json']
+        paths: ['package/**']
 
 env:
     NODE_VERSION: ${{ github.event.inputs.node-version  || '18' }}
