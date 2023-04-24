@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/equinor/engineering-symbols/compare/web-v1.1.2...web-v1.1.3) (2023-04-24)
+
+
+### Bump package
+
+* **web:** bump @types/react from 18.0.37 to 18.0.38 in /web ([#423](https://github.com/equinor/engineering-symbols/issues/423)) ([b699cb0](https://github.com/equinor/engineering-symbols/commit/b699cb08970789d72a69df782325e0ac6800bbcf))
+
 ## [1.1.2](https://github.com/equinor/engineering-symbols/compare/web-v1.1.1...web-v1.1.2) (2023-04-21)
 
 
