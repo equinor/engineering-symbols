@@ -6,7 +6,7 @@ In this document we intend for `symbol` to be interpreted as an artifact intende
 
 ### **A Valve**
 
-![A valve](/docs/PV003B-LargeConnectors.svg)
+![A valve](/Models/docs/PV003B-LargeConnectors.svg)
 
 When a designer does layout and design of a diagram by hand they solve a variant of the [Brick factory problem](https://en.wikipedia.org/wiki/Tur%C3%A1n%27s_brick_factory_problem), often by hand every time a significant change has been made to the system the diagram is a representation of.
 
