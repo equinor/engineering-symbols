@@ -3,6 +3,7 @@ import styled from 'styled-components';
 interface ButtonProps {
 	appearance?: 'secondary';
 	size?: 's';
+	isWide?: boolean;
 }
 
 export const ButtonStyled = styled.button<ButtonProps>`
@@ -13,7 +14,7 @@ export const ButtonStyled = styled.button<ButtonProps>`
 	font-size: 15px;
 
 	padding: ${({ size }) => (size === 's' ? '0.6rem 1rem' : '0.9rem 0.2rem')};
-	width: ${({ size }) => (size === 's' ? 'auto' : '10rem')};
+	width: ${({ size, isWide }) => (isWide ? '100%' : size === 's' ? 'auto' : '10rem')};
 
 	border-radius: 0.5rem;
 	background: ${({ theme, appearance }) => (appearance ? theme.background : theme.backgroundGrey)};

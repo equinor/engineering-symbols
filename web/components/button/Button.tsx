@@ -6,6 +6,7 @@ interface ButtonComponentProps extends React.ComponentPropsWithoutRef<'button'> 
 	children: ReactNode;
 	appearance?: 'secondary';
 	size?: 's';
+	isWide?: boolean;
 }
 export const ButtonComponent: FunctionComponent<ButtonComponentProps> = ({ children, ...rest }) => <ButtonStyled {...rest}>{children}</ButtonStyled>;
 

@@ -4,7 +4,6 @@ import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import { useState } from 'react';
 
-// import 'https://eds-static.equinor.com/font/equinor-font.css';
 import { GlobalStyles } from '../styles/globalStyles';
 import {
 	FooterMenuWrapperStyled,
