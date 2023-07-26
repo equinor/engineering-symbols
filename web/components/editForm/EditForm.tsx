@@ -1,7 +1,13 @@
 import { FunctionComponent } from 'react';
 import { Form, Field, ErrorMessage, FieldArray, useFormikContext } from 'formik';
 
-import { EditFromAddConnectorButton, EditFromElementStyled, EditFromElementsStyled, EditFromRemoveConnectorStyled } from './styles';
+import {
+	EditFromAddConnectorButton,
+	EditFromElementStyled,
+	EditFromElementsStyled,
+	EditFromRemoveConnectorStyled,
+	ErrorMessageStyled,
+} from './styles';
 import { ButtonComponent } from '../button';
 import { SymbolConnector } from '../svg/Svg.types';
 import { SymbolsProps } from '../../types';
@@ -22,16 +28,17 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 
 		setValues(updatedSymbol);
 		updateSymbol(updatedSymbol);
-
-		// updateSymbolConnectors(updatedConnectors);
 	};
 
 	return (
 		<Form onChange={formChange}>
 			<EditFromElementStyled>
-				<label htmlFor="name">Name: </label>
-				<Field id="name" name="name" required />
+				<label htmlFor="key">Name: </label>
+				<Field id="key" name="key" required />
 			</EditFromElementStyled>
+			<ErrorMessageStyled>
+				<ErrorMessage name="key" component="div" />
+			</ErrorMessageStyled>
 
 			<EditFromElementStyled>
 				<label htmlFor="description">Description: </label>
@@ -42,11 +49,17 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 				<label htmlFor="width">Width: </label>
 				<Field id="width" name="width" required />
 			</EditFromElementStyled>
+			<ErrorMessageStyled>
+				<ErrorMessage name="width" component="div" />
+			</ErrorMessageStyled>
 
 			<EditFromElementStyled>
 				<label htmlFor="height">Height: </label>
 				<Field id="height" name="height" required />
 			</EditFromElementStyled>
+			<ErrorMessageStyled>
+				<ErrorMessage name="height" component="div" />
+			</ErrorMessageStyled>
 
 			<EditFromElementStyled>
 				<label htmlFor="geometry">Geometry: </label>
@@ -78,6 +91,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 									<label htmlFor={`connectors[${i}].direction`}>Direction:</label>
 									<Field type="number" name={`connectors[${i}].direction`} />
 								</EditFromElementStyled>
+								<ErrorMessage name="connector" component="div" />
 
 								<EditFromRemoveConnectorStyled type="button" onClick={() => handleRemoveConnector(connector.id)}>
 									Remove Connector
@@ -106,9 +120,6 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 			</FieldArray>
 
 			{/* +++ metadata? */}
-
-			<ErrorMessage name="width" component="div" />
-			<ErrorMessage name="height" component="div" />
 		</Form>
 	);
 };

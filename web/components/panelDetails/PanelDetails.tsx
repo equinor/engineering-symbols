@@ -19,14 +19,18 @@ type PanelDetailsComponentProps = {
 		fill: string;
 		connectors: SymbolConnector[];
 	};
+	symbols: SymbolsProps[];
 	isExistingSvg: boolean;
 	enableReinitialize: boolean;
 	updateCurrentSymbol: (symbol: SymbolsProps) => void;
+	setUpdateSymbolToDraft: (symbol: SymbolsProps) => void;
 };
 
 type FormErrorsType = {
 	width?: string;
 	height?: string;
+	key?: string;
+	connector?: string;
 };
 
 type DetailsChildrenProps = {};
@@ -36,8 +40,10 @@ const isDivisibleBy24 = (value: number) => value % 24 === 0;
 export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps> = ({
 	symbol,
 	isExistingSvg,
+	symbols,
 	enableReinitialize,
 	updateCurrentSymbol,
+	setUpdateSymbolToDraft,
 }): JSX.Element => {
 	const { key, description, width, height, geometry, connectors } = symbol;
 
@@ -61,6 +67,9 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 		};
 	};
 
+	// @ts-ignore next-line
+	const isUniqueID = (obj: any, name: string, id: string) => obj.filter((sbl) => sbl[name] === id).length <= 0;
+
 	return (
 		<PanelDetailsStyled isShow>
 			<PanelDetailsWrapperStyled>
@@ -79,7 +88,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 						enableReinitialize={enableReinitialize}
 						innerRef={formRef}
 						initialValues={{
-							name: key,
+							key,
 							description,
 							width,
 							height,
@@ -88,8 +97,17 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 							symbilId: 'Im random id',
 							connectors,
 						}}
-						validate={({ width, height }) => {
+						validate={({ width, height, key }) => {
 							const errors: FormErrorsType = {};
+							// Unique key
+
+							// Connector ID
+
+							// IF no changes -> cant push save
+
+							if (!isUniqueID(symbols, 'key', key)) {
+								errors.key = 'Name must be unique';
+							}
 
 							if (!isDivisibleBy24(Number(width))) {
 								errors.width = 'Width must be divisible by 24';
@@ -99,13 +117,14 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 								errors.height = 'Height must be divisible by 24';
 							}
 
+							// connectors.map(({ id }) => !isUniqueID(connectors, 'id', id) ? errors.connector = 'Connector must have unique ID' : '')
+
 							return errors;
 						}}
 						onSubmit={(values, { setSubmitting }) => {
 							setTimeout(() => {
-								alert(JSON.stringify(values, null, 2));
-								console.log(100, values);
 								setSubmitting(false);
+								setUpdateSymbolToDraft(values);
 							}, 400);
 						}}>
 						{/* {({ values }) => (

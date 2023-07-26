@@ -4,6 +4,14 @@ interface PanelDetailsStyledProps {
 	isShow: boolean;
 }
 
+export const ErrorMessageStyled = styled.div`
+	color: ${({ theme }) => theme.textRed};
+	font-family: 'Equinor';
+	font-size: 12px;
+	padding: 0 0 12px;
+	text-align: right;
+`;
+
 export const EditFromElementStyled = styled.div`
 	/* padding: 0 0 1rem; */
 	display: grid;

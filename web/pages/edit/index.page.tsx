@@ -1,27 +1,32 @@
-import { useRef, useState, ChangeEvent, Ref, useEffect } from 'react';
+import { useRef, useState, ChangeEvent, useEffect } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
 import { PanelDetailsComponent, SvgComponent, SymbolElement } from '../../components';
 
-import { ConnectorsProps, EditPageProps, SymbolsProps } from '../../types';
+import { EditPageProps, SymbolsProps } from '../../types';
 
 import {
 	PanelContainerStyled,
 	PanelPresentationContentStyled,
+	PanelPresentationLinesWrapperStyled,
+	PanelPresentationMHLineStyled,
+	PanelPresentationMRLineStyled,
+	PanelPresentationMSLineStyled,
+	PanelPresentationMVLineStyled,
 	PanelPresentationStyled,
 	PanelSymbolsListStyled,
 	PanelSymbolsStyled,
 	UploadSvgStyled,
 } from './styles';
-import symbols from '../../data/symbols.json';
+import allSymbols from '../../data/symbols.json';
 import { ContainerStyled } from '../../styles/styles';
 import useConfirm from '../../components/confirmation/Confirmation';
 
 const Edit: NextPage<EditPageProps> = ({ theme }) => {
+	const [symbols, setSymbols] = useState<SymbolsProps[]>(allSymbols);
 	const [svgContent, setSvgContent] = useState(null);
-	const [isShowDeletingConfirmation, setShowDeletingConfirmation] = useState(true);
-	const [deletionConfirmed, setDeletionConfirmed] = useState(false);
+	const [confirmationContent, setConfirmationContent] = useState('');
 	const [selectedSymbol, setSelectedSymbol] = useState<SymbolsProps | null>();
 	// const [currentSymbolConnectors, setCurrentSymbolConnectors] = useState<ConnectorsProps[] | []>([]);
 	const [symbolForDetail, setSymbolForDetail] = useState<any>(null);
@@ -30,7 +35,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const svgElementsRef = useRef([]);
 	const fileInputRef = useRef<HTMLInputElement>();
 
-	const [getConfirmation, ConfirmationComponent] = useConfirm(selectedSymbol);
+	const [getConfirmation, ConfirmationComponent] = useConfirm(selectedSymbol, confirmationContent);
 
 	const checkForbiddenElements = (content: string): boolean => {
 		// const forbiddenElements = ['image', 'mask', 'polygon', 'polyline', 'style'];
@@ -45,6 +50,15 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 		return false;
 	};
+
+	useEffect(() => {
+		const getSymbolsLocaly = localStorage.getItem('symbols');
+		// @ts-ignore
+		const localStorageSymbols =
+			JSON.parse(getSymbolsLocaly) === null || JSON.parse(getSymbolsLocaly).length <= 0 ? allSymbols : JSON.parse(getSymbolsLocaly);
+
+		setSymbols(localStorageSymbols);
+	}, []);
 
 	const convertSvgToJson = (svgElement: Element): object => {
 		const svgData: any = {};
@@ -130,26 +144,60 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		setSymbolForDetail({ ...symbolForDetail, connectors: symbol.connectors });
 	};
 
+	const onUpdateSymbolToDraft = (newSymbol: SymbolsProps) => {
+		const newSybolWithStatus: SymbolsProps = {
+			...newSymbol,
+			state: 'draft',
+		};
+
+		setSymbols([...symbols, newSybolWithStatus]);
+
+		// When you click on onSubmit -> local storage updates
+		localStorage.setItem('symbols', JSON.stringify([...symbols, newSybolWithStatus]));
+	};
+
 	const onFileUpload = () => fileInputRef.current && fileInputRef.current.click();
 
-	const onSendOnReview = () => {
-		console.log('⚡️', 'onSendOnReview');
+	const onSendOnReview = async () => {
+		// Clear all Drafts after push
+		setConfirmationContent('Are you sure you want to send on review');
+		const status = await getConfirmation();
+
+		console.log('⚡️', 'onSendOnReview', status);
+		// localStorage.clear();
 	};
 
 	const onDeleteConfirmation = async (symbol: SymbolsProps) => {
 		setSelectedSymbol(symbol);
 		setSymbolForDetail(symbol);
 
+		setConfirmationContent('Are you sure you want to delete');
+
 		const status = await getConfirmation();
 
-		if (status) onDelete();
+		if (status) onDelete(symbol);
 	};
 
-	const onDelete = () => {
+	const onDelete = ({ key, state }: SymbolsProps) => {
 		console.log('⚡️', 'onDelete');
+		const isDraft = state === 'draft';
+
+		if (isDraft) {
+			const getSymbolsLocaly = JSON.parse(localStorage.getItem('symbols')) as SymbolsProps[];
+
+			if (getSymbolsLocaly && getSymbolsLocaly?.length > 0) {
+				const updatedSymbols = getSymbolsLocaly.filter((item) => item.key !== key);
+
+				localStorage.setItem('symbols', JSON.stringify(updatedSymbols));
+				setSymbols(updatedSymbols);
+			}
+		} else {
+		}
+		// Check if Draft or not
+		// Clear by ID
 	};
 
-	const symbolMeny = (symbol: SymbolsProps) => [
+	const symbolMeny = (symbol: SymbolsProps, isDisabled: boolean) => [
 		{
 			name: 'Edit',
 			action: () => onEditSymbol(symbol),
@@ -157,7 +205,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		{
 			name: 'Send on review',
 			action: () => onSendOnReview(),
-			isDisabled: true,
+			isDisabled,
 		},
 		{
 			name: 'Delete',
@@ -177,6 +225,12 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 			<PanelContainerStyled>
 				<PanelPresentationStyled>
 					<ContainerStyled>
+						<PanelPresentationLinesWrapperStyled>
+							<PanelPresentationMHLineStyled />
+							<PanelPresentationMVLineStyled />
+							<PanelPresentationMRLineStyled />
+							<PanelPresentationMSLineStyled />
+						</PanelPresentationLinesWrapperStyled>
 						<PanelPresentationContentStyled>
 							{!!selectedSymbol ? (
 								<SvgComponent
@@ -196,11 +250,12 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						</PanelPresentationContentStyled>
 						{symbolForDetail && (
 							<PanelDetailsComponent
-								// symbol={{...symbolForDetail, connectors: currentSymbolConnectors}}
 								symbol={{ ...symbolForDetail }}
+								symbols={symbols}
 								isExistingSvg={!!selectedSymbol}
 								enableReinitialize={enableReinitialize}
 								updateCurrentSymbol={onChangeSymbolForDetail}
+								setUpdateSymbolToDraft={onUpdateSymbolToDraft}
 							/>
 						)}
 					</ContainerStyled>
@@ -212,34 +267,34 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 							<li>
 								<UploadSvgStyled>
 									<label htmlFor="file">Choose file to upload</label>
+									{/* @ts-ignore next-line */}
 									<input type="file" id="file" ref={fileInputRef} name="file" accept=".svg" onChange={onChangeFileInput} />
 								</UploadSvgStyled>
 							</li>
-							{symbols.map((symbol) => (
-								<li key={symbol.key}>
-									<SymbolElement
-										meny={symbolMeny(symbol)}
-										chipsStatus="waiting"
-										svgElementsRef={svgElementsRef}
-										width={symbol.width}
-										height={symbol.height}
-										geometry={symbol.geometry}
-										id={symbol.id}
-										theme={theme}
-										name={symbol.key}
-									/>
-								</li>
-							))}
+							{symbols.map((symbol) => {
+								const isDisabled = symbol.state !== 'draft';
+
+								return (
+									<li key={symbol.key}>
+										<SymbolElement
+											meny={symbolMeny(symbol, isDisabled)}
+											chipsStatus={symbol.state}
+											svgElementsRef={svgElementsRef}
+											width={symbol.width}
+											height={symbol.height}
+											geometry={symbol.geometry}
+											id={symbol.id}
+											theme={theme}
+											name={symbol.key}
+										/>
+									</li>
+								);
+							})}
 						</PanelSymbolsListStyled>
 					</ContainerStyled>
 				</PanelSymbolsStyled>
-
-				<ConfirmationComponent
-					isShow={isShowDeletingConfirmation}
-					setPreviewShow={setShowDeletingConfirmation}
-					name={selectedSymbol && selectedSymbol.key}
-					onConfirm={setDeletionConfirmed}
-				/>
+				{/* @ts-ignore next-line */}
+				<ConfirmationComponent />
 			</PanelContainerStyled>
 		</div>
 	);

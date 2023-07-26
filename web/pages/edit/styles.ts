@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 
+const HEIGHT = 500;
+
 export const PanelContainerStyled = styled.div``;
 
 export const PanelPresentationStyled = styled.div`
 	/* min-height: 50vh; */
-	height: 500px;
+	height: ${HEIGHT}px;
 	/* height: 100%; */
 	width: 100%;
 	position: relative;
@@ -98,5 +100,131 @@ export const UploadSvgStyled = styled.div`
 
 		&:before {
 		}
+	}
+`;
+
+export const PanelPresentationLinesWrapperStyled = styled.div`
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+
+	div {
+		position: absolute;
+	}
+`;
+
+export const PanelPresentationMHLineStyled = styled.div`
+	width: 100%;
+	height: 100%;
+
+	&::before,
+	&::after {
+		content: '';
+		position: absolute;
+	}
+
+	&::before {
+		width: 100%;
+		height: ${HEIGHT * 0.5}px;
+		top: 50%;
+		transform: translateY(-50%);
+		border-top: 1px solid ${({ theme }) => theme.backgroundGrey};
+		border-bottom: 1px solid ${({ theme }) => theme.backgroundGrey};
+	}
+
+	&::after {
+		height: 100%;
+		width: ${HEIGHT * 0.5}px;
+		left: 50%;
+		transform: translateX(-50%);
+		border-left: 1px solid ${({ theme }) => theme.backgroundGrey};
+		border-right: 1px solid ${({ theme }) => theme.backgroundGrey};
+	}
+`;
+
+export const PanelPresentationMVLineStyled = styled.div`
+	width: ${HEIGHT * 0.5}px;
+	height: ${HEIGHT * 0.5}px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	&::before,
+	&::after {
+		content: '';
+		position: absolute;
+	}
+
+	&::before {
+		height: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		border-left: 1px solid ${({ theme }) => theme.backgroundGrey};
+	}
+
+	&::after {
+		width: 100%;
+		top: 50%;
+		transform: translateY(-50%);
+		border-top: 1px solid ${({ theme }) => theme.backgroundGrey};
+	}
+`;
+
+export const PanelPresentationMRLineStyled = styled.div`
+	width: ${HEIGHT * 0.71}px;
+	height: ${HEIGHT * 0.71}px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) rotate(45deg);
+
+	&::before,
+	&::after {
+		content: '';
+		position: absolute;
+	}
+
+	&::before {
+		height: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		border-left: 1px solid ${({ theme }) => theme.backgroundGrey};
+	}
+
+	&::after {
+		width: 100%;
+		top: 50%;
+		transform: translateY(-50%);
+		border-top: 1px solid ${({ theme }) => theme.backgroundGrey};
+	}
+`;
+
+export const PanelPresentationMSLineStyled = styled.div`
+	width: ${HEIGHT * 0.5}px;
+	height: ${HEIGHT * 0.5}px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	&::before,
+	&::after {
+		content: '';
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		border: 1px solid ${({ theme }) => theme.backgroundGrey};
+		border-radius: 50%;
+	}
+
+	&::before {
+		height: 85%;
+		width: 85%;
+	}
+
+	&::after {
+		height: 30%;
+		width: 30%;
 	}
 `;

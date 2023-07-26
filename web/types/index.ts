@@ -37,8 +37,11 @@ export type HomePageProps = {
 	theme: ColorThemeProps;
 };
 
+export type ChipsStatusProps = 'draft' | 'waiting' | 'canceled';
+
 export interface SymbolsProps extends SymbolsDefaultProps {
 	key: string;
+	state?: ChipsStatusProps;
 }
 
 export type SymbolsDefaultProps = {

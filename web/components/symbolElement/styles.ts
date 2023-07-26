@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ChipsStatusProps } from './symbolElement';
+import { ChipsStatusProps } from '../../types';
 
 interface SymbolElementChipsProps {
 	status: ChipsStatusProps;

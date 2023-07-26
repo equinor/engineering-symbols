@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 
 import {
 	ConfirmationCloseButtonStyled,
@@ -15,7 +15,7 @@ import { SymbolsProps } from '../../types';
 
 import Close from '../../svg/close.svg';
 
-const useConfirm = (symbol: SymbolsProps) => {
+const useConfirm = (symbol: SymbolsProps, content: string) => {
 	const [open, setOpen] = useState(false);
 	const [resolver, setResolver] = useState<any>({ resolve: null });
 
@@ -36,14 +36,15 @@ const useConfirm = (symbol: SymbolsProps) => {
 	};
 
 	const getConfirmation = async () => {
-		setOpen(true);
-
 		const [promise, resolve] = await createPromise();
+
+		setOpen(true);
 		setResolver({ resolve });
+
 		return promise;
 	};
 
-	const ConfirmationComponent = () => (
+	const ConfirmationComponent: FunctionComponent = () => (
 		<ConfirmationStyled isShow={open}>
 			<ConfirmationCustomizeStyled>
 				<ConfirmationCloseButtonStyled onClick={() => onHandle(false)}>
@@ -52,7 +53,7 @@ const useConfirm = (symbol: SymbolsProps) => {
 				<ConfirmationWrapStyled>
 					<ConfirmationTitleStyled>Conformation</ConfirmationTitleStyled>
 					<ConfirmationContentStyled>
-						Are you sure you want to delete <strong>{symbol && symbol.key}</strong>?
+						{content} <strong>{symbol && symbol.key}</strong>?
 					</ConfirmationContentStyled>
 					<ConfirmationButtonsStyled>
 						<ButtonComponent onClick={() => onHandle(true)}>Confirm</ButtonComponent>
