@@ -1,49 +1,38 @@
 import { FunctionComponent, useRef } from 'react';
 import { Formik, FormikProps } from 'formik';
 
-import { EditFromStyled, EditPanelStyled, PanelDetailsButtons, PanelDetailsStyled, PanelDetailsWrapperStyled } from './styles';
 import { ButtonComponent } from '../button';
-import { SymbolConnector } from '../svg/Svg.types';
 import { EditFormComponent } from '../editForm';
+
 import { SymbolsProps } from '../../types';
-// SymbolsProps
+
+import { EditFromStyled, EditPanelStyled, PanelDetailsButtons, PanelDetailsStyled, PanelDetailsWrapperStyled } from './styles';
+
 type PanelDetailsComponentProps = {
-	symbol: {
-		// children: any;
-		width: string;
-		key: string;
-		description: string;
-		geometry: string;
-		height: string;
-		viewBox: string;
-		fill: string;
-		connectors: SymbolConnector[];
-	};
-	symbols: SymbolsProps[];
-	isExistingSvg: boolean;
-	enableReinitialize: boolean;
-	updateCurrentSymbol: (symbol: SymbolsProps) => void;
 	setUpdateSymbolToDraft: (symbol: SymbolsProps) => void;
+	updateCurrentSymbol: (symbol: SymbolsProps) => void;
+	enableReinitialize: boolean;
+	onClosePanel: () => void;
+	symbols: SymbolsProps[];
+	symbol: SymbolsProps;
 };
 
 type FormErrorsType = {
-	width?: string;
-	height?: string;
-	key?: string;
 	connector?: string;
+	height?: string;
+	width?: string;
+	key?: string;
 };
-
-type DetailsChildrenProps = {};
 
 const isDivisibleBy24 = (value: number) => value % 24 === 0;
 
 export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps> = ({
-	symbol,
-	isExistingSvg,
-	symbols,
-	enableReinitialize,
-	updateCurrentSymbol,
 	setUpdateSymbolToDraft,
+	updateCurrentSymbol,
+	enableReinitialize,
+	onClosePanel,
+	symbols,
+	symbol,
 }): JSX.Element => {
 	const { key, description, width, height, geometry, connectors } = symbol;
 
@@ -67,20 +56,19 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 		};
 	};
 
-	// @ts-ignore next-line
-	const isUniqueID = (obj: any, name: string, id: string) => obj.filter((sbl) => sbl[name] === id).length <= 0;
+	const isUniqueID = (obj: any, name: string, id: string) => obj.filter((sbl: { [x: string]: string }) => sbl[name] === id).length <= 0;
 
 	return (
 		<PanelDetailsStyled isShow>
 			<PanelDetailsWrapperStyled>
-				<EditPanelStyled></EditPanelStyled>
+				<EditPanelStyled />
 
 				<EditFromStyled>
 					<PanelDetailsButtons>
 						<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()}>
 							Save
 						</ButtonComponent>
-						<ButtonComponent size="s" onClick={() => console.log('cancel')} appearance="secondary">
+						<ButtonComponent size="s" onClick={() => onClosePanel()} appearance="secondary">
 							Cancel
 						</ButtonComponent>
 					</PanelDetailsButtons>
@@ -125,6 +113,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 							setTimeout(() => {
 								setSubmitting(false);
 								setUpdateSymbolToDraft(values);
+								console.log('⚡️', 'onSubmin value:', values);
 							}, 400);
 						}}>
 						{/* {({ values }) => (

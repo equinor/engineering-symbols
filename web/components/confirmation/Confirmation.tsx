@@ -2,12 +2,12 @@ import { FunctionComponent, useState } from 'react';
 
 import {
 	ConfirmationCloseButtonStyled,
-	ConfirmationWrapStyled,
 	ConfirmationCustomizeStyled,
-	ConfirmationStyled,
 	ConfirmationButtonsStyled,
 	ConfirmationContentStyled,
 	ConfirmationTitleStyled,
+	ConfirmationWrapStyled,
+	ConfirmationStyled,
 } from './styles';
 
 import { ButtonComponent } from '../button';
@@ -15,7 +15,7 @@ import { SymbolsProps } from '../../types';
 
 import Close from '../../svg/close.svg';
 
-const useConfirm = (symbol: SymbolsProps, content: string) => {
+export const useConfirm = (symbol: SymbolsProps | null | undefined, message: string) => {
 	const [open, setOpen] = useState(false);
 	const [resolver, setResolver] = useState<any>({ resolve: null });
 
@@ -53,7 +53,7 @@ const useConfirm = (symbol: SymbolsProps, content: string) => {
 				<ConfirmationWrapStyled>
 					<ConfirmationTitleStyled>Conformation</ConfirmationTitleStyled>
 					<ConfirmationContentStyled>
-						{content} <strong>{symbol && symbol.key}</strong>?
+						{message} <strong>{symbol && symbol.key}</strong>?
 					</ConfirmationContentStyled>
 					<ConfirmationButtonsStyled>
 						<ButtonComponent onClick={() => onHandle(true)}>Confirm</ButtonComponent>
@@ -61,8 +61,6 @@ const useConfirm = (symbol: SymbolsProps, content: string) => {
 							Cancel
 						</ButtonComponent>
 					</ConfirmationButtonsStyled>
-					{/* <PreviewImageWrapStyled> */}
-					{/* </PreviewImageWrapStyled> */}
 				</ConfirmationWrapStyled>
 			</ConfirmationCustomizeStyled>
 		</ConfirmationStyled>
@@ -70,5 +68,3 @@ const useConfirm = (symbol: SymbolsProps, content: string) => {
 
 	return [getConfirmation, ConfirmationComponent];
 };
-
-export default useConfirm;

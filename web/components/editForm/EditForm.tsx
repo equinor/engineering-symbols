@@ -1,16 +1,19 @@
 import { FunctionComponent } from 'react';
 import { Form, Field, ErrorMessage, FieldArray, useFormikContext } from 'formik';
 
-import {
-	EditFromAddConnectorButton,
-	EditFromElementStyled,
-	EditFromElementsStyled,
-	EditFromRemoveConnectorStyled,
-	ErrorMessageStyled,
-} from './styles';
 import { ButtonComponent } from '../button';
+
 import { SymbolConnector } from '../svg/Svg.types';
 import { SymbolsProps } from '../../types';
+
+import {
+	EditFromRemoveConnectorStyled,
+	EditFromAddConnectorButton,
+	EditFromElementsStyled,
+	EditFromElementStyled,
+	ErrorMessageStyled,
+} from './styles';
+
 // SymbolsProps
 type EditFormComponentProps = {
 	updateSymbol: (symbol: SymbolsProps) => void;

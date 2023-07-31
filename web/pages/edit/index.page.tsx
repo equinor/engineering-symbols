@@ -2,44 +2,53 @@ import { useRef, useState, ChangeEvent, useEffect } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
-import { PanelDetailsComponent, SvgComponent, SymbolElement } from '../../components';
+import { PanelDetailsComponent, SvgComponent, SymbolElement, InformationComponent, useConfirm } from '../../components';
 
 import { EditPageProps, SymbolsProps } from '../../types';
 
 import {
-	PanelContainerStyled,
-	PanelPresentationContentStyled,
 	PanelPresentationLinesWrapperStyled,
+	PanelPresentationContentStyled,
 	PanelPresentationMHLineStyled,
 	PanelPresentationMRLineStyled,
 	PanelPresentationMSLineStyled,
 	PanelPresentationMVLineStyled,
 	PanelPresentationStyled,
 	PanelSymbolsListStyled,
+	PanelContainerStyled,
 	PanelSymbolsStyled,
 	UploadSvgStyled,
 } from './styles';
-import allSymbols from '../../data/symbols.json';
 import { ContainerStyled } from '../../styles/styles';
-import useConfirm from '../../components/confirmation/Confirmation';
+
+import allSymbols from '../../data/symbols.json';
+
+type InformationMessageProps = {
+	title: string;
+	message: string;
+};
 
 const Edit: NextPage<EditPageProps> = ({ theme }) => {
-	const [symbols, setSymbols] = useState<SymbolsProps[]>(allSymbols);
-	const [svgContent, setSvgContent] = useState(null);
-	const [confirmationContent, setConfirmationContent] = useState('');
-	const [selectedSymbol, setSelectedSymbol] = useState<SymbolsProps | null>();
-	// const [currentSymbolConnectors, setCurrentSymbolConnectors] = useState<ConnectorsProps[] | []>([]);
-	const [symbolForDetail, setSymbolForDetail] = useState<any>(null);
+	const [confirmationMessage, setConfirmationMessage] = useState('');
 	const [enableReinitialize, setEnableReinitialize] = useState<boolean>(false);
+	const [informationMessage, setInformationMessage] = useState<InformationMessageProps>();
+	const [symbolForDetail, setSymbolForDetail] = useState<SymbolsProps | null>(null);
+	const [selectedSymbol, setSelectedSymbol] = useState<SymbolsProps | null>();
+
+	const [symbols, setSymbols] = useState<SymbolsProps[]>(allSymbols);
 
 	const svgElementsRef = useRef([]);
 	const fileInputRef = useRef<HTMLInputElement>();
 
-	const [getConfirmation, ConfirmationComponent] = useConfirm(selectedSymbol, confirmationContent);
+	const [getConfirmation, ConfirmationComponent] = useConfirm(selectedSymbol, confirmationMessage);
+
+	const onPanelReset = () => {
+		setSelectedSymbol(null);
+		setSymbolForDetail(null);
+	};
 
 	const checkForbiddenElements = (content: string): boolean => {
-		// const forbiddenElements = ['image', 'mask', 'polygon', 'polyline', 'style'];
-		const forbiddenElements = ['image', 'polygon', 'polyline', 'style'];
+		const forbiddenElements = ['image', 'mask', 'polygon', 'polyline', 'style'];
 
 		for (const element of forbiddenElements) {
 			const regex = new RegExp(`<${element}\\b[^>]*>`, 'gi');
@@ -51,16 +60,25 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		return false;
 	};
 
+	const getSymbolsLocaly = () => {
+		const symbolsLocaly = localStorage.getItem('symbols');
+		if (!symbolsLocaly) return null;
+
+		return JSON.parse(symbolsLocaly);
+	};
+
+	const hasSymbolsLocaly = () => {
+		if (getSymbolsLocaly() === null) return '';
+		return getSymbolsLocaly().length <= 0;
+	};
+
 	useEffect(() => {
-		const getSymbolsLocaly = localStorage.getItem('symbols');
-		// @ts-ignore
-		const localStorageSymbols =
-			JSON.parse(getSymbolsLocaly) === null || JSON.parse(getSymbolsLocaly).length <= 0 ? allSymbols : JSON.parse(getSymbolsLocaly);
+		const localStorageSymbols = hasSymbolsLocaly() ? allSymbols : getSymbolsLocaly();
 
 		setSymbols(localStorageSymbols);
 	}, []);
 
-	const convertSvgToJson = (svgElement: Element): object => {
+	const convertSvgToObject = (svgElement: Element): object => {
 		const svgData: any = {};
 		svgData.tagName = svgElement.tagName.toLowerCase();
 
@@ -77,7 +95,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 			svgData.children = [];
 			for (let i = 0; i < children.length; i++) {
 				const childElement = children[i];
-				const childData = convertSvgToJson(childElement);
+				const childData = convertSvgToObject(childElement);
 				svgData.children.push(childData);
 			}
 		}
@@ -85,36 +103,169 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		return svgData;
 	};
 
+	const extractConnectorId = (id: string) => {
+		const matches = id.match(/\d+$/);
+		return matches ? matches[0] : '';
+	};
+
+	const convertInputSvgObjectToAPIStructureObject = (inputObject: any, key: string) => {
+		const viewBox = inputObject.viewBox.split(' ').map(parseFloat);
+		const outputObject = {
+			id: '201ad1e6-2ed5-49ce-9bfd-fc9b3d19cf40',
+			key,
+			description: 'None',
+			dateTimeCreated: new Date(),
+			dateTimeUpdated: new Date(),
+			geometry: inputObject.children[0].children[0].d,
+			width: viewBox[2],
+			height: viewBox[3],
+			connectors: inputObject.children[1].children
+				.filter(({ tagName }: any) => tagName === 'circle')
+				.map(({ id, cx, cy, r }: any) => ({
+					id: extractConnectorId(id),
+					relativePosition: {
+						x: parseFloat(cx),
+						y: parseFloat(cy),
+					},
+					// direction: parseFloat(r),
+					// TODO: do it in better way?
+					direction: '90',
+				})),
+		};
+
+		return outputObject;
+	};
+
 	const onChangeFileInput = (event: ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
-		console.log(1, 'onChangeFileInput');
+		onPanelReset();
+
 		if (!file || file.type !== 'image/svg+xml') return;
 
 		const reader = new FileReader();
 
 		reader.onload = (fileEvent) => {
 			const contents = fileEvent.target?.result;
-			// Show error if there is forbidden elements
-			// setSvgContent(contents as string);
-
 			const hasForbiddenElements = checkForbiddenElements(contents as string);
-			console.log('hasForbiddenElements:', hasForbiddenElements);
 
-			if (typeof contents !== 'string' || hasForbiddenElements) return;
+			if (typeof contents !== 'string' || hasForbiddenElements) {
+				setInformationMessage({
+					title: 'Error',
+					message: 'Svg has forbidden elements, to find more information, read documentation',
+				});
 
-			setSvgContent(contents as any);
-			setSelectedSymbol(null);
-			setSymbolForDetail(contents);
+				return;
+			}
 
 			const parser = new DOMParser();
 			const svgDocument = parser.parseFromString(contents, 'image/svg+xml');
 			const svgElement = svgDocument.documentElement;
 
 			if (svgElement.tagName.toLowerCase() === 'svg') {
-				const svgData = convertSvgToJson(svgElement);
-				console.log(100, 'svgData:', svgData);
+				const convertedSvgToObject = convertSvgToObject(svgElement);
+				const { tagName, children }: any = convertedSvgToObject;
+				const ANNOTATIONS = 'Annotations';
+				const SYMBOL = 'Symbol';
+				// HEIGHT, WIDTH - can be validate & edit itro panel
+
+				if (tagName !== 'svg') {
+					setInformationMessage({
+						title: 'Error',
+						message: 'Allows only svg files',
+					});
+
+					return;
+				}
+
+				const getChildrenSvgIds = children.map((el: any) => el.id);
+
+				if (!getChildrenSvgIds.includes(SYMBOL) && !getChildrenSvgIds.includes(ANNOTATIONS)) {
+					setInformationMessage({
+						title: 'Error',
+						message: `Svg must include ${SYMBOL} & ${ANNOTATIONS} ids. To find more information, read documentation`,
+					});
+
+					return;
+				}
+
+				const foundSymbols = children.find(({ id }: { id: string }) => id === SYMBOL);
+				const foundAnnotations = children.find(({ id }: { id: string }) => id === ANNOTATIONS);
+
+				if (!foundAnnotations || !foundAnnotations.children || !foundSymbols || !foundSymbols.children) {
+					setInformationMessage({
+						title: 'Error',
+						message: `${ANNOTATIONS} or ${SYMBOL} not found`,
+					});
+
+					return;
+				}
+
+				if (foundSymbols.tagName !== 'g' || foundAnnotations.tagName !== 'g') {
+					setInformationMessage({
+						title: 'Error',
+						message: `Allows only 'g' tag for wrapping ${SYMBOL} & ${ANNOTATIONS}`,
+					});
+
+					return;
+				}
+
+				if (foundSymbols.children.length !== 1) {
+					setInformationMessage({
+						title: 'Error',
+						message: `Allows only singel path for ${SYMBOL}`,
+					});
+
+					return;
+				}
+
+				if (foundSymbols.children[0].tagName !== 'path') {
+					setInformationMessage({
+						title: 'Error',
+						message: `Allows only path for ${SYMBOL}`,
+					});
+
+					return;
+				}
+
+				if (foundSymbols.children.length <= 0) {
+					setInformationMessage({
+						title: 'Error',
+						message: `Minimal amount for ${SYMBOL} is 1`,
+					});
+
+					return;
+				}
+
+				const isArrayOfCircleObjects = (arr: any) => {
+					const requiredProperties = ['tagName', 'id', 'cx', 'cy', 'r'];
+
+					return arr.reduce((result: any, obj: { hasOwnProperty: (arg0: string) => unknown; tagName: string }) => {
+						return result && requiredProperties.every((prop) => obj.hasOwnProperty(prop)) && obj.tagName === 'circle';
+					}, true);
+				};
+
+				// Check if all objects in the array have the same properties as the first object
+				if (!isArrayOfCircleObjects(foundAnnotations.children)) {
+					setInformationMessage({
+						title: 'Error',
+						message: 'Objects in the array have different structures or missing some properties.',
+					});
+
+					return;
+				}
+
+				// Convert from convertedSvgToObject to SymbolProps
+				const keyName = file.name.replace('.svg', '');
+				const svgContent = convertInputSvgObjectToAPIStructureObject(convertedSvgToObject, keyName) as unknown as SymbolsProps;
+				console.log('⚡️', 'svgContent:', svgContent);
+				// IF all is good
+				setSelectedSymbol(svgContent);
+				setSymbolForDetail(svgContent);
 			} else {
-				console.error('Invalid SVG file');
+				setInformationMessage({
+					title: 'Error',
+					message: '⛔️ ⛔️ ⛔️ Invalid SVG file',
+				});
 			}
 		};
 
@@ -122,11 +273,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	};
 
 	const onEditSymbol = (symbol: SymbolsProps) => {
+		console.log('⚡️', 'onEditSymbol:', symbol);
 		setSelectedSymbol(symbol);
-		setSvgContent(null);
 		setSymbolForDetail(symbol);
 		setEnableReinitialize(true);
-		// setCurrentSymbolConnectors(symbol.connectors);
 
 		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
 
@@ -138,10 +288,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		};
 	};
 
-	const onChangeSymbolForDetail = (symbol: SymbolsProps) => {
+	const onChangeSymbolForDetail = ({ connectors }: SymbolsProps) => {
 		console.log('⚡️', 'onChangeSymbolForDetail:');
 
-		setSymbolForDetail({ ...symbolForDetail, connectors: symbol.connectors });
+		setSymbolForDetail({ ...symbolForDetail, connectors } as SymbolsProps);
 	};
 
 	const onUpdateSymbolToDraft = (newSymbol: SymbolsProps) => {
@@ -158,20 +308,26 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onFileUpload = () => fileInputRef.current && fileInputRef.current.click();
 
-	const onSendOnReview = async () => {
+	const onSubmitOnReview = async () => {
 		// Clear all Drafts after push
-		setConfirmationContent('Are you sure you want to send on review');
+		setConfirmationMessage('Are you sure you want to submit for review');
 		const status = await getConfirmation();
 
-		console.log('⚡️', 'onSendOnReview', status);
-		// localStorage.clear();
+		console.log('⚡️', 'onSubmitOnReview', status);
+
+		if (!status) return;
+
+		setInformationMessage({
+			title: 'Thank you',
+			message: 'Your symbol has been submit for review',
+		});
 	};
 
 	const onDeleteConfirmation = async (symbol: SymbolsProps) => {
 		setSelectedSymbol(symbol);
 		setSymbolForDetail(symbol);
 
-		setConfirmationContent('Are you sure you want to delete');
+		setConfirmationMessage('Are you sure you want to delete');
 
 		const status = await getConfirmation();
 
@@ -179,19 +335,19 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	};
 
 	const onDelete = ({ key, state }: SymbolsProps) => {
-		console.log('⚡️', 'onDelete');
 		const isDraft = state === 'draft';
 
-		if (isDraft) {
-			const getSymbolsLocaly = JSON.parse(localStorage.getItem('symbols')) as SymbolsProps[];
+		if (isDraft && !hasSymbolsLocaly()) {
+			if (!getSymbolsLocaly()) return;
 
-			if (getSymbolsLocaly && getSymbolsLocaly?.length > 0) {
-				const updatedSymbols = getSymbolsLocaly.filter((item) => item.key !== key);
+			const updatedSymbols = getSymbolsLocaly().filter((item: SymbolsProps) => item.key !== key);
 
-				localStorage.setItem('symbols', JSON.stringify(updatedSymbols));
-				setSymbols(updatedSymbols);
-			}
+			localStorage.setItem('symbols', JSON.stringify(updatedSymbols));
+			setSymbols(updatedSymbols);
+
+			onPanelReset();
 		} else {
+			console.log('⚡️', 'onDelete:', 'isDraft:', isDraft, '!hasSymbolsLocaly:', !hasSymbolsLocaly());
 		}
 		// Check if Draft or not
 		// Clear by ID
@@ -203,8 +359,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 			action: () => onEditSymbol(symbol),
 		},
 		{
-			name: 'Send on review',
-			action: () => onSendOnReview(),
+			name: 'Submit for review',
+			action: () => onSubmitOnReview(),
 			isDisabled,
 		},
 		{
@@ -232,7 +388,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 							<PanelPresentationMSLineStyled />
 						</PanelPresentationLinesWrapperStyled>
 						<PanelPresentationContentStyled>
-							{!!selectedSymbol ? (
+							{!!selectedSymbol && !!symbolForDetail && (
 								<SvgComponent
 									renderConnectors
 									viewBoxHeight={selectedSymbol.height}
@@ -243,16 +399,13 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 									fill={theme.fill}
 									path={selectedSymbol.geometry}
 								/>
-							) : (
-								// @ts-ignore
-								<div dangerouslySetInnerHTML={{ __html: svgContent }} />
 							)}
 						</PanelPresentationContentStyled>
 						{symbolForDetail && (
 							<PanelDetailsComponent
 								symbol={{ ...symbolForDetail }}
 								symbols={symbols}
-								isExistingSvg={!!selectedSymbol}
+								onClosePanel={onPanelReset}
 								enableReinitialize={enableReinitialize}
 								updateCurrentSymbol={onChangeSymbolForDetail}
 								setUpdateSymbolToDraft={onUpdateSymbolToDraft}
@@ -260,6 +413,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						)}
 					</ContainerStyled>
 				</PanelPresentationStyled>
+
+				<InformationComponent title={informationMessage?.title} message={informationMessage?.message} />
 
 				<PanelSymbolsStyled theme={theme}>
 					<ContainerStyled>
@@ -273,19 +428,20 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 							</li>
 							{symbols.map((symbol) => {
 								const isDisabled = symbol.state !== 'draft';
+								const { state, width, height, geometry, id, key } = symbol;
 
 								return (
-									<li key={symbol.key}>
+									<li key={key}>
 										<SymbolElement
 											meny={symbolMeny(symbol, isDisabled)}
-											chipsStatus={symbol.state}
+											chipsStatus={state}
 											svgElementsRef={svgElementsRef}
-											width={symbol.width}
-											height={symbol.height}
-											geometry={symbol.geometry}
-											id={symbol.id}
+											width={width}
+											height={height}
+											geometry={geometry}
+											id={id}
 											theme={theme}
-											name={symbol.key}
+											name={key}
 										/>
 									</li>
 								);

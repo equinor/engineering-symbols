@@ -42,6 +42,7 @@ export type ChipsStatusProps = 'draft' | 'waiting' | 'canceled';
 export interface SymbolsProps extends SymbolsDefaultProps {
 	key: string;
 	state?: ChipsStatusProps;
+	description?: string;
 }
 
 export type SymbolsDefaultProps = {

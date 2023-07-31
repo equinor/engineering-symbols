@@ -9,7 +9,7 @@ import { saveAs } from 'file-saver';
 import { Search, Icon, Autocomplete, Snackbar } from '@equinor/eds-core-react';
 import { change_history } from '@equinor/eds-icons';
 
-import { NoResultComponent, PreviewComponent, SvgComponent, SymbolElement } from '../../components';
+import { NoResultComponent, PreviewComponent, SymbolElement } from '../../components';
 
 import { SymbolsPageProps, IconProps, IconByCategoryProps, SymbolsProps } from '../../types';
 
@@ -51,7 +51,7 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 
 	const router = useRouter();
 
-	const typedElementRef = useRef(null);
+	const typedElementRef = useRef<HTMLInputElement>(null);
 	const svgElementsRef = useRef([]);
 
 	const [icnsByCategory, seIcnsByCategory] = useState<IconByCategoryProps[] | []>([]);
@@ -156,7 +156,7 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 		if (!svgElementsRef || !svgElementsRef.current) return '';
 
 		// @ts-ignore next-line
-		const ref: HTMLDivElement = ref.current[id];
+		const ref: HTMLDivElement = svgElementsRef.current[id];
 		const svg = ref.getElementsByTagName('svg')[0];
 		const clone = svg.cloneNode(true) as SVGSVGElement;
 
@@ -168,9 +168,7 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 
 		if (!svg) return '';
 
-		const svgData = new XMLSerializer().serializeToString(svg);
-
-		return svgData;
+		return new XMLSerializer().serializeToString(svg);
 	};
 
 	const onDownloadSvg = (name: string, id: string) => {
@@ -250,8 +248,6 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 														id={icon.id}
 														theme={theme}
 														name={icon.key}
-														// onSelectSymbol={onSelectSymbol}
-														// setSnackbarOpen={setSnackbarOpen}
 													/>
 												</li>
 											))}

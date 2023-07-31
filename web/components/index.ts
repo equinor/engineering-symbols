@@ -1,6 +1,7 @@
 export * from './symbolElement';
 export * from './panelDetails';
 export * from './confirmation';
+export * from './information';
 export * from './editForm';
 export * from './noResult';
 export * from './preview';

@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 interface ButtonProps {
 	appearance?: 'secondary';
-	size?: 's';
 	isWide?: boolean;
+	size?: 's';
 }
 
 export const ButtonStyled = styled.button<ButtonProps>`
