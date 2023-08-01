@@ -1,4 +1,4 @@
-export type AppearanceInformationTypes = 'error';
+export type AppearanceInformationTypes = 'error' | 'success';
 
 export type InformationComponentTypes = {
 	appearance?: AppearanceInformationTypes;

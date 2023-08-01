@@ -31,6 +31,10 @@ export const InformationStyled = styled.div<PreviewStyledProps>`
 				return `
 						border: 1px solid ${theme.backgroundRed};
 					`;
+			case 'success':
+				return `
+						border: 1px solid ${theme.backgroundGreen};
+					`;
 
 			default:
 				return `

@@ -12,6 +12,7 @@ export const lightTheme = {
 	background: '#1c2226',
 	backgroundGrey: '#ecf0f4',
 	backgroundRed: '#ff726f',
+	backgroundGreen: '#3bb143',
 
 	hover: {
 		body: '#1c2226',
@@ -37,6 +38,7 @@ export const darkTheme = {
 	background: '#fafafa',
 	backgroundGrey: '#464849',
 	backgroundRed: '#ff726f',
+	backgroundGreen: '#3bb143',
 
 	hover: {
 		body: '#fff',

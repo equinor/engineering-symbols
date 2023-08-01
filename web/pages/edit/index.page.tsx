@@ -117,27 +117,23 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		return outputObject;
 	};
 
-	const onChangeFileInput = (event: ChangeEvent<HTMLInputElement>) => {
-		const file = event.target.files?.[0];
+	const onChangeFileInput = ({ target }: ChangeEvent<HTMLInputElement>) => {
+		const file = target.files?.[0];
 		onPanelReset();
 
 		if (!file || file.type !== 'image/svg+xml') return;
 
 		const reader = new FileReader();
 
-		reader.onload = (fileEvent) => {
-			const contents = fileEvent.target?.result;
+		reader.onload = ({ target }) => {
+			const contents = target?.result;
 			const hasForbiddenElements = checkForbiddenElements(contents as string);
-
 			const FIND_MORE = 'To find more information, <a href="./documentation" target="_blank">read documentation</a>';
 
-			if (typeof contents !== 'string' || hasForbiddenElements) {
-				setInformationMessage({
-					title: 'Error',
-					message: `Svg has forbidden elements, ${FIND_MORE}`,
-					appearance: 'error',
-				});
+			const setErrorMessage = (message: string) => setInformationMessage({ title: 'Error', message, appearance: 'error' });
 
+			if (typeof contents !== 'string' || hasForbiddenElements) {
+				setErrorMessage(`Svg has forbidden elements, ${FIND_MORE}`);
 				return;
 			}
 
@@ -153,24 +149,14 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				// HEIGHT, WIDTH - can be validate & edit itro panel. Now it based on viewBox
 
 				if (tagName !== 'svg') {
-					setInformationMessage({
-						title: 'Error',
-						message: 'Allows only svg files',
-						appearance: 'error',
-					});
-
+					setErrorMessage('Allows only svg files');
 					return;
 				}
 
 				const getChildrenSvgIds = children.map((el: any) => el.id);
 
 				if (!getChildrenSvgIds.includes(SYMBOL) && !getChildrenSvgIds.includes(ANNOTATIONS)) {
-					setInformationMessage({
-						title: 'Error',
-						message: `Svg must include ${SYMBOL} & ${ANNOTATIONS} ids. ${FIND_MORE}`,
-						appearance: 'error',
-					});
-
+					setErrorMessage(`Svg must include ${SYMBOL} & ${ANNOTATIONS} ids. ${FIND_MORE}`);
 					return;
 				}
 
@@ -178,52 +164,27 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				const foundAnnotations = children.find(({ id }: { id: string }) => id === ANNOTATIONS);
 
 				if (!foundAnnotations || !foundAnnotations.children || !foundSymbols || !foundSymbols.children) {
-					setInformationMessage({
-						title: 'Error',
-						message: `${ANNOTATIONS} or ${SYMBOL} not found. ${FIND_MORE}`,
-						appearance: 'error',
-					});
-
+					setErrorMessage(`${ANNOTATIONS} or ${SYMBOL} not found. ${FIND_MORE}`);
 					return;
 				}
 
 				if (foundSymbols.tagName !== 'g' || foundAnnotations.tagName !== 'g') {
-					setInformationMessage({
-						title: 'Error',
-						message: `Allows only 'g' tag for wrapping ${SYMBOL} & ${ANNOTATIONS}. ${FIND_MORE}`,
-						appearance: 'error',
-					});
-
+					setErrorMessage(`Allows only 'g' tag for wrapping ${SYMBOL} & ${ANNOTATIONS}. ${FIND_MORE}`);
 					return;
 				}
 
 				if (foundSymbols.children.length !== 1) {
-					setInformationMessage({
-						title: 'Error',
-						message: `Allows only singel path for ${SYMBOL}. ${FIND_MORE}`,
-						appearance: 'error',
-					});
-
+					setErrorMessage(`Allows only singel path for ${SYMBOL}. ${FIND_MORE}`);
 					return;
 				}
 
 				if (foundSymbols.children[0].tagName !== 'path') {
-					setInformationMessage({
-						title: 'Error',
-						message: `Allows only path for ${SYMBOL}. ${FIND_MORE}`,
-						appearance: 'error',
-					});
-
+					setErrorMessage(`Allows only path for ${SYMBOL}. ${FIND_MORE}`);
 					return;
 				}
 
 				if (foundSymbols.children.length <= 0) {
-					setInformationMessage({
-						title: 'Error',
-						message: `Minimal amount for ${SYMBOL} is 1. ${FIND_MORE}`,
-						appearance: 'error',
-					});
-
+					setErrorMessage(`Minimal amount for ${SYMBOL} is 1. ${FIND_MORE}`);
 					return;
 				}
 
@@ -237,12 +198,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 				// Check if all objects in the array have the same properties as the first object
 				if (!isArrayOfCircleObjects(foundAnnotations.children)) {
-					setInformationMessage({
-						title: 'Error',
-						message: `Objects in the array have different structures or missing some properties. ${FIND_MORE}`,
-						appearance: 'error',
-					});
-
+					setErrorMessage(`Objects in the array have different structures or missing some properties. ${FIND_MORE}`);
 					return;
 				}
 
@@ -253,11 +209,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				// IF all is good
 				setSelectedSymbol(svgContent);
 			} else {
-				setInformationMessage({
-					title: 'Error',
-					message: `⛔️ ⛔️ ⛔️ Invalid SVG file. ${FIND_MORE}`,
-					appearance: 'error',
-				});
+				setErrorMessage(`⛔️ ⛔️ ⛔️ Invalid SVG file. ${FIND_MORE}`);
 			}
 		};
 
@@ -312,6 +264,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		setInformationMessage({
 			title: 'Thank you',
 			message: 'Your symbol has been submit for review',
+			appearance: 'success',
 		});
 	};
 
@@ -343,7 +296,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		// Clear by ID
 	};
 
-	const symbolMeny = (symbol: SymbolsProps, isDisabled: boolean) => [
+	const symbolMeny = (symbol: SymbolsProps) => [
 		{
 			name: 'Edit',
 			action: () => onEditSymbol(symbol),
@@ -351,7 +304,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		{
 			name: 'Submit for review',
 			action: () => onSubmitOnReview(),
-			isDisabled,
+			isDisabled: symbol.state !== 'draft',
 		},
 		{
 			name: 'Delete',
@@ -414,25 +367,21 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 									<input type="file" id="file" ref={fileInputRef} name="file" accept=".svg" onChange={onChangeFileInput} />
 								</UploadSvgStyled>
 							</li>
-							{symbols.map((symbol) => {
-								const isDisabled = symbol.state !== 'draft';
-
-								return (
-									<li key={symbol.key}>
-										<SymbolElement
-											meny={symbolMeny(symbol, isDisabled)}
-											chipsStatus={symbol.state}
-											svgElementsRef={svgElementsRef}
-											width={symbol.width}
-											height={symbol.height}
-											geometry={symbol.geometry}
-											id={symbol.id}
-											theme={theme}
-											name={symbol.key}
-										/>
-									</li>
-								);
-							})}
+							{symbols.map((symbol) => (
+								<li key={symbol.key}>
+									<SymbolElement
+										meny={symbolMeny(symbol)}
+										chipsStatus={symbol.state}
+										svgElementsRef={svgElementsRef}
+										width={symbol.width}
+										height={symbol.height}
+										geometry={symbol.geometry}
+										id={symbol.id}
+										theme={theme}
+										name={symbol.key}
+									/>
+								</li>
+							))}
 						</PanelSymbolsListStyled>
 					</ContainerStyled>
 				</PanelSymbolsStyled>

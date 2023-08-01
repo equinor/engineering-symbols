@@ -4,10 +4,11 @@ import { Formik, FormikProps } from 'formik';
 import { ButtonComponent } from '../button';
 import { EditFormComponent } from '../editForm';
 
+import { getUniqueId } from '../../helpers';
+
 import { SymbolsProps } from '../../types';
 
 import { EditFromStyled, EditPanelStyled, PanelDetailsButtons, PanelDetailsStyled, PanelDetailsWrapperStyled } from './styles';
-import { getUniqueId } from '../../helpers';
 
 type PanelDetailsComponentProps = {
 	setUpdateSymbolToDraft: (symbol: SymbolsProps) => void;
@@ -111,7 +112,6 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 							return errors;
 						}}
 						onSubmit={(values, { setSubmitting }) => {
-							console.log(2);
 							setTimeout(() => {
 								setSubmitting(false);
 								setUpdateSymbolToDraft(values);

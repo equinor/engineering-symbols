@@ -14,7 +14,6 @@ import {
 import { InformationComponentTypes } from './Information.types';
 
 export const InformationComponent = ({ appearance, title, message }: InformationComponentTypes) => {
-	console.log(188, appearance);
 	const [open, setOpen] = useState(false);
 
 	const onHandle = () => setOpen(false);

@@ -20,6 +20,12 @@ type EditFormComponentProps = {
 	formChange: () => void;
 };
 
+type FormElementsTypes = {
+	id: string;
+	name: string;
+	type?: 'number' | 'text';
+};
+
 export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ updateSymbol, formChange }): JSX.Element => {
 	const { values, setValues } = useFormikContext<any>();
 
@@ -33,70 +39,85 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 		updateSymbol(updatedSymbol);
 	};
 
+	const formElements: FormElementsTypes[] = [
+		{
+			id: 'key',
+			name: 'Name',
+		},
+		{
+			id: 'description',
+			name: 'Description',
+		},
+		{
+			id: 'width',
+			name: 'Width',
+		},
+		{
+			id: 'height',
+			name: 'Height',
+		},
+		{
+			id: 'geometry',
+			name: 'Geometry',
+		},
+	];
+
+	const formConnectorElements = (i: number): FormElementsTypes[] => [
+		{
+			id: `connectors[${i}].id`,
+			name: 'Id',
+			type: 'number',
+		},
+		{
+			id: `connectors[${i}].relativePosition.x`,
+			name: 'Position X',
+			type: 'number',
+		},
+		{
+			id: `connectors[${i}].relativePosition.y`,
+			name: 'Position Y',
+			type: 'number',
+		},
+		{
+			id: `connectors[${i}].direction`,
+			name: 'Direction',
+			type: 'number',
+		},
+	];
+
+	const EditFromElement = ({ id, name, type = 'text' }: FormElementsTypes) => {
+		return (
+			<>
+				<EditFromElementStyled>
+					<label htmlFor={id}>{name}: </label>
+					<Field type={type} id={id} name={id} required />
+				</EditFromElementStyled>
+				<ErrorMessageStyled>
+					<ErrorMessage name={id} component="div" />
+				</ErrorMessageStyled>
+			</>
+		);
+	};
+
 	return (
 		<Form onChange={formChange}>
-			<EditFromElementStyled>
-				<label htmlFor="key">Name: </label>
-				<Field id="key" name="key" required />
-			</EditFromElementStyled>
-			<ErrorMessageStyled>
-				<ErrorMessage name="key" component="div" />
-			</ErrorMessageStyled>
-
-			<EditFromElementStyled>
-				<label htmlFor="description">Description: </label>
-				<Field id="description" name="description" required />
-			</EditFromElementStyled>
-
-			<EditFromElementStyled>
-				<label htmlFor="width">Width: </label>
-				<Field id="width" name="width" required />
-			</EditFromElementStyled>
-			<ErrorMessageStyled>
-				<ErrorMessage name="width" component="div" />
-			</ErrorMessageStyled>
-
-			<EditFromElementStyled>
-				<label htmlFor="height">Height: </label>
-				<Field id="height" name="height" required />
-			</EditFromElementStyled>
-			<ErrorMessageStyled>
-				<ErrorMessage name="height" component="div" />
-			</ErrorMessageStyled>
-
-			<EditFromElementStyled>
-				<label htmlFor="geometry">Geometry: </label>
-				<Field id="geometry" name="geometry" required />
-			</EditFromElementStyled>
+			{formElements.map((elems) => (
+				<div key={elems.id}>
+					<EditFromElement {...elems} />
+				</div>
+			))}
 
 			<p>Connectors</p>
 			<FieldArray name="connectors">
 				{({ push }) => (
 					<>
-						{values.connectors.map((connector: SymbolConnector, i: number) => (
-							<EditFromElementsStyled key={connector.id}>
-								<EditFromElementStyled>
-									<label htmlFor={`connectors[${i}].id`}>Id: </label>
-									<Field type="text" name={`connectors[${i}].id`} />
-								</EditFromElementStyled>
+						{values.connectors.map(({ id }: SymbolConnector, i: number) => (
+							<EditFromElementsStyled key={id}>
+								{formConnectorElements(i).map((elems) => (
+									<EditFromElement {...elems} />
+								))}
 
-								<EditFromElementStyled>
-									<label htmlFor={`connectors[${i}].relativePosition.x`}>Position X:</label>
-									<Field type="number" name={`connectors[${i}].relativePosition.x`} />
-								</EditFromElementStyled>
-
-								<EditFromElementStyled>
-									<label htmlFor={`connectors[${i}].relativePosition.y`}>Position Y:</label>
-									<Field type="number" name={`connectors[${i}].relativePosition.y`} />
-								</EditFromElementStyled>
-
-								<EditFromElementStyled>
-									<label htmlFor={`connectors[${i}].direction`}>Direction:</label>
-									<Field type="number" name={`connectors[${i}].direction`} />
-								</EditFromElementStyled>
-								<ErrorMessage name="connector" component="div" />
-
-								<EditFromRemoveConnectorStyled type="button" onClick={() => handleRemoveConnector(connector.id)}>
+								<EditFromRemoveConnectorStyled type="button" onClick={() => handleRemoveConnector(id)}>
 									Remove Connector
 								</EditFromRemoveConnectorStyled>
 							</EditFromElementsStyled>

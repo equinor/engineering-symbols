@@ -1,12 +1,12 @@
 import { Card } from '@equinor/eds-core-react';
 
 import {
-	SymbolElementWrapStyled,
-	SymbolWrapperStyled,
-	SymbolMenyWrapStyled,
-	SymbolElementCardWrap,
 	SymbolElementParagraphStyled,
 	SymbolElementChipsStyled,
+	SymbolElementWrapStyled,
+	SymbolElementCardWrap,
+	SymbolMenyWrapStyled,
+	SymbolWrapperStyled,
 } from './styles';
 
 import { SvgComponent } from '../svg';
@@ -26,8 +26,8 @@ type SymbolElementProps = {
 	width: number;
 	theme: ColorThemeProps;
 	name: string;
-	id: string;
 	meny: SymbolMenyProps[];
+	id: string;
 };
 
 export const SymbolElement: React.FunctionComponent<SymbolElementProps> = ({
