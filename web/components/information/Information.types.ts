@@ -1,6 +1,7 @@
-export type ConfirmationComponentProps = {
-	// setPreviewShow: (val: boolean) => void;
-	// onConfirm: (val: boolean) => void;
-	// isShow: boolean;
-	name: string | undefined | null;
+export type AppearanceInformationTypes = 'error';
+
+export type InformationComponentTypes = {
+	appearance?: AppearanceInformationTypes;
+	message?: string;
+	title?: string;
 };

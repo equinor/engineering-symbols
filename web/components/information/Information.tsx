@@ -11,12 +11,10 @@ import {
 	InformationStyled,
 } from './styles';
 
-type InformationComponentTypes = {
-	message?: string;
-	title?: string;
-};
+import { InformationComponentTypes } from './Information.types';
 
-export const InformationComponent = ({ title, message }: InformationComponentTypes) => {
+export const InformationComponent = ({ appearance, title, message }: InformationComponentTypes) => {
+	console.log(188, appearance);
 	const [open, setOpen] = useState(false);
 
 	const onHandle = () => setOpen(false);
@@ -26,14 +24,14 @@ export const InformationComponent = ({ title, message }: InformationComponentTyp
 	}, [message]);
 
 	return (
-		<InformationStyled isShow={open}>
+		<InformationStyled isShow={open} appearance={appearance}>
 			<InformationCustomizeStyled>
 				<InformationCloseButtonStyled onClick={() => onHandle()}>
 					<Close />
 				</InformationCloseButtonStyled>
 				<InformationWrapStyled>
 					<InformationTitleStyled>{title}</InformationTitleStyled>
-					<InformationContentStyled>{message}</InformationContentStyled>
+					{message && <InformationContentStyled dangerouslySetInnerHTML={{ __html: message }} />}
 				</InformationWrapStyled>
 			</InformationCustomizeStyled>
 		</InformationStyled>

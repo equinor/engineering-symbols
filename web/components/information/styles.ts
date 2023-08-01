@@ -1,6 +1,8 @@
 import styled from 'styled-components';
+import { AppearanceInformationTypes } from './Information.types';
 
 interface PreviewStyledProps {
+	appearance?: AppearanceInformationTypes;
 	isShow: boolean;
 }
 
@@ -10,7 +12,6 @@ export const InformationStyled = styled.div<PreviewStyledProps>`
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
-	border: 1px solid ${({ theme }) => theme.backgroundGrey};
 	box-shadow: ${({ theme }) => theme.boxShadow};
 	transform: ${({ isShow }) => (isShow ? 'translateY(0)' : 'translateY(10rem)')};
 	opacity: ${({ isShow }) => (isShow ? '1' : '0')};
@@ -21,7 +22,22 @@ export const InformationStyled = styled.div<PreviewStyledProps>`
 	margin: 0 auto 2rem;
 	/* z-index: 10; */
 	background: ${({ theme }) => theme.body};
+	/* background: #ffc6c4; */
 	border-radius: 12px;
+
+	${({ appearance, theme }) => {
+		switch (appearance) {
+			case 'error':
+				return `
+						border: 1px solid ${theme.backgroundRed};
+					`;
+
+			default:
+				return `
+						border: 1px solid ${theme.backgroundGrey};
+					`;
+		}
+	}}
 `;
 
 export const InformationCustomizeStyled = styled.div`
@@ -81,4 +97,8 @@ export const InformationContentStyled = styled.p`
 	font-size: 16px;
 	display: inline-block;
 	padding: 20px 0 0;
+
+	a {
+		text-decoration: underline;
+	}
 `;

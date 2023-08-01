@@ -2,7 +2,7 @@ import { useRef, useState, ChangeEvent, useEffect } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
-import { PanelDetailsComponent, SvgComponent, SymbolElement, InformationComponent, useConfirm } from '../../components';
+import { PanelDetailsComponent, SvgComponent, SymbolElement, InformationComponent, useConfirm, InformationComponentTypes } from '../../components';
 
 import { EditPageProps, SymbolsProps } from '../../types';
 
@@ -24,15 +24,10 @@ import { ContainerStyled } from '../../styles/styles';
 import allSymbols from '../../data/symbols.json';
 import { getUniqueId } from '../../helpers';
 
-type InformationMessageProps = {
-	title: string;
-	message: string;
-};
-
 const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [confirmationMessage, setConfirmationMessage] = useState('');
 	const [enableReinitialize, setEnableReinitialize] = useState<boolean>(false);
-	const [informationMessage, setInformationMessage] = useState<InformationMessageProps>();
+	const [informationMessage, setInformationMessage] = useState<InformationComponentTypes>();
 	const [selectedSymbol, setSelectedSymbol] = useState<SymbolsProps | null>();
 
 	const [symbols, setSymbols] = useState<SymbolsProps[]>(allSymbols);
@@ -134,10 +129,13 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 			const contents = fileEvent.target?.result;
 			const hasForbiddenElements = checkForbiddenElements(contents as string);
 
+			const FIND_MORE = 'To find more information, <a href="./documentation" target="_blank">read documentation</a>';
+
 			if (typeof contents !== 'string' || hasForbiddenElements) {
 				setInformationMessage({
 					title: 'Error',
-					message: 'Svg has forbidden elements, to find more information, read documentation',
+					message: `Svg has forbidden elements, ${FIND_MORE}`,
+					appearance: 'error',
 				});
 
 				return;
@@ -158,6 +156,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 					setInformationMessage({
 						title: 'Error',
 						message: 'Allows only svg files',
+						appearance: 'error',
 					});
 
 					return;
@@ -168,7 +167,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				if (!getChildrenSvgIds.includes(SYMBOL) && !getChildrenSvgIds.includes(ANNOTATIONS)) {
 					setInformationMessage({
 						title: 'Error',
-						message: `Svg must include ${SYMBOL} & ${ANNOTATIONS} ids. To find more information, read documentation`,
+						message: `Svg must include ${SYMBOL} & ${ANNOTATIONS} ids. ${FIND_MORE}`,
+						appearance: 'error',
 					});
 
 					return;
@@ -180,7 +180,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				if (!foundAnnotations || !foundAnnotations.children || !foundSymbols || !foundSymbols.children) {
 					setInformationMessage({
 						title: 'Error',
-						message: `${ANNOTATIONS} or ${SYMBOL} not found`,
+						message: `${ANNOTATIONS} or ${SYMBOL} not found. ${FIND_MORE}`,
+						appearance: 'error',
 					});
 
 					return;
@@ -189,7 +190,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				if (foundSymbols.tagName !== 'g' || foundAnnotations.tagName !== 'g') {
 					setInformationMessage({
 						title: 'Error',
-						message: `Allows only 'g' tag for wrapping ${SYMBOL} & ${ANNOTATIONS}`,
+						message: `Allows only 'g' tag for wrapping ${SYMBOL} & ${ANNOTATIONS}. ${FIND_MORE}`,
+						appearance: 'error',
 					});
 
 					return;
@@ -198,7 +200,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				if (foundSymbols.children.length !== 1) {
 					setInformationMessage({
 						title: 'Error',
-						message: `Allows only singel path for ${SYMBOL}`,
+						message: `Allows only singel path for ${SYMBOL}. ${FIND_MORE}`,
+						appearance: 'error',
 					});
 
 					return;
@@ -207,7 +210,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				if (foundSymbols.children[0].tagName !== 'path') {
 					setInformationMessage({
 						title: 'Error',
-						message: `Allows only path for ${SYMBOL}`,
+						message: `Allows only path for ${SYMBOL}. ${FIND_MORE}`,
+						appearance: 'error',
 					});
 
 					return;
@@ -216,7 +220,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				if (foundSymbols.children.length <= 0) {
 					setInformationMessage({
 						title: 'Error',
-						message: `Minimal amount for ${SYMBOL} is 1`,
+						message: `Minimal amount for ${SYMBOL} is 1. ${FIND_MORE}`,
+						appearance: 'error',
 					});
 
 					return;
@@ -234,7 +239,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				if (!isArrayOfCircleObjects(foundAnnotations.children)) {
 					setInformationMessage({
 						title: 'Error',
-						message: 'Objects in the array have different structures or missing some properties.',
+						message: `Objects in the array have different structures or missing some properties. ${FIND_MORE}`,
+						appearance: 'error',
 					});
 
 					return;
@@ -249,7 +255,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 			} else {
 				setInformationMessage({
 					title: 'Error',
-					message: '⛔️ ⛔️ ⛔️ Invalid SVG file',
+					message: `⛔️ ⛔️ ⛔️ Invalid SVG file. ${FIND_MORE}`,
+					appearance: 'error',
 				});
 			}
 		};
@@ -429,7 +436,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						</PanelSymbolsListStyled>
 					</ContainerStyled>
 				</PanelSymbolsStyled>
-				<InformationComponent title={informationMessage?.title} message={informationMessage?.message} />
+				<InformationComponent {...informationMessage} />
 				{/* @ts-ignore next-line */}
 				<ConfirmationComponent />
 			</PanelContainerStyled>

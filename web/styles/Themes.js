@@ -11,6 +11,7 @@ export const lightTheme = {
 	boxShadow: '0 0 1px rgb(0 0 0 / 14%)',
 	background: '#1c2226',
 	backgroundGrey: '#ecf0f4',
+	backgroundRed: '#ff726f',
 
 	hover: {
 		body: '#1c2226',
@@ -35,6 +36,7 @@ export const darkTheme = {
 	boxShadow: '0 0 1px rgb(255 255 255 / 14%)',
 	background: '#fafafa',
 	backgroundGrey: '#464849',
+	backgroundRed: '#ff726f',
 
 	hover: {
 		body: '#fff',
