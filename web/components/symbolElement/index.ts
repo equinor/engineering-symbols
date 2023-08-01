@@ -1,1 +1,1 @@
-export { SymbolElement } from './symbolElement';
+export { SymbolElement } from './SymbolElement';

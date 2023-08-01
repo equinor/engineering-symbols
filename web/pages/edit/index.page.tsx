@@ -295,6 +295,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const onSubmitOnReview = async () => {
 		// Clear all Drafts after push
 		setConfirmationMessage('Are you sure you want to submit for review');
+		// @ts-ignore next-line
 		const status = await getConfirmation();
 
 		console.log('⚡️', 'onSubmitOnReview', status);
@@ -312,6 +313,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 		setConfirmationMessage('Are you sure you want to delete');
 
+		// @ts-ignore next-line
 		const status = await getConfirmation();
 
 		if (status) onDelete(symbol);
