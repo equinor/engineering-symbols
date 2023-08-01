@@ -22,7 +22,6 @@ export const InformationStyled = styled.div<PreviewStyledProps>`
 	margin: 0 auto 2rem;
 	/* z-index: 10; */
 	background: ${({ theme }) => theme.body};
-	/* background: #ffc6c4; */
 	border-radius: 12px;
 
 	${({ appearance, theme }) => {

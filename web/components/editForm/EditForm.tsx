@@ -114,7 +114,9 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 						{values.connectors.map(({ id }: SymbolConnector, i: number) => (
 							<EditFromElementsStyled key={id}>
 								{formConnectorElements(i).map((elems) => (
-									<EditFromElement {...elems} />
+									<div key={elems.id}>
+										<EditFromElement {...elems} />
+									</div>
 								))}
 
 								<EditFromRemoveConnectorStyled type="button" onClick={() => handleRemoveConnector(id)}>
