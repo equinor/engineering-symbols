@@ -22,6 +22,7 @@ import {
 import { ContainerStyled } from '../../styles/styles';
 
 import allSymbols from '../../data/symbols.json';
+import { getUniqueId } from '../../helpers';
 
 type InformationMessageProps = {
 	title: string;
@@ -32,7 +33,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [confirmationMessage, setConfirmationMessage] = useState('');
 	const [enableReinitialize, setEnableReinitialize] = useState<boolean>(false);
 	const [informationMessage, setInformationMessage] = useState<InformationMessageProps>();
-	const [symbolForDetail, setSymbolForDetail] = useState<SymbolsProps | null>(null);
 	const [selectedSymbol, setSelectedSymbol] = useState<SymbolsProps | null>();
 
 	const [symbols, setSymbols] = useState<SymbolsProps[]>(allSymbols);
@@ -42,10 +42,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const [getConfirmation, ConfirmationComponent] = useConfirm(selectedSymbol, confirmationMessage);
 
-	const onPanelReset = () => {
-		setSelectedSymbol(null);
-		setSymbolForDetail(null);
-	};
+	const onPanelReset = () => setSelectedSymbol(null);
 
 	const checkForbiddenElements = (content: string): boolean => {
 		const forbiddenElements = ['image', 'mask', 'polygon', 'polyline', 'style'];
@@ -60,23 +57,11 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		return false;
 	};
 
-	const getSymbolsLocaly = () => {
-		const symbolsLocaly = localStorage.getItem('symbols');
-		if (!symbolsLocaly) return null;
+	const getSymbolsFromLocalStorage = () => JSON.parse(localStorage.getItem('symbols') as string);
 
-		return JSON.parse(symbolsLocaly);
-	};
+	const hasSymbolsInLocalStorage = () => getSymbolsFromLocalStorage() !== null;
 
-	const hasSymbolsLocaly = () => {
-		if (getSymbolsLocaly() === null) return '';
-		return getSymbolsLocaly().length <= 0;
-	};
-
-	useEffect(() => {
-		const localStorageSymbols = hasSymbolsLocaly() ? allSymbols : getSymbolsLocaly();
-
-		setSymbols(localStorageSymbols);
-	}, []);
+	useEffect(() => setSymbols(hasSymbolsInLocalStorage() ? getSymbolsFromLocalStorage() : allSymbols), []);
 
 	const convertSvgToObject = (svgElement: Element): object => {
 		const svgData: any = {};
@@ -85,8 +70,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		// Store attributes
 		const attributes = svgElement.attributes;
 		for (let i = 0; i < attributes.length; i++) {
-			const attribute = attributes[i];
-			svgData[attribute.name] = attribute.value;
+			const { name, value } = attributes[i];
+			svgData[name] = value;
 		}
 
 		// Store child elements
@@ -96,6 +81,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 			for (let i = 0; i < children.length; i++) {
 				const childElement = children[i];
 				const childData = convertSvgToObject(childElement);
+
 				svgData.children.push(childData);
 			}
 		}
@@ -111,7 +97,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const convertInputSvgObjectToAPIStructureObject = (inputObject: any, key: string) => {
 		const viewBox = inputObject.viewBox.split(' ').map(parseFloat);
 		const outputObject = {
-			id: '201ad1e6-2ed5-49ce-9bfd-fc9b3d19cf40',
+			id: getUniqueId(),
 			key,
 			description: 'None',
 			dateTimeCreated: new Date(),
@@ -166,7 +152,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				const { tagName, children }: any = convertedSvgToObject;
 				const ANNOTATIONS = 'Annotations';
 				const SYMBOL = 'Symbol';
-				// HEIGHT, WIDTH - can be validate & edit itro panel
+				// HEIGHT, WIDTH - can be validate & edit itro panel. Now it based on viewBox
 
 				if (tagName !== 'svg') {
 					setInformationMessage({
@@ -260,7 +246,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				console.log('⚡️', 'svgContent:', svgContent);
 				// IF all is good
 				setSelectedSymbol(svgContent);
-				setSymbolForDetail(svgContent);
 			} else {
 				setInformationMessage({
 					title: 'Error',
@@ -275,7 +260,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const onEditSymbol = (symbol: SymbolsProps) => {
 		console.log('⚡️', 'onEditSymbol:', symbol);
 		setSelectedSymbol(symbol);
-		setSymbolForDetail(symbol);
 		setEnableReinitialize(true);
 
 		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
@@ -291,7 +275,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const onChangeSymbolForDetail = ({ connectors }: SymbolsProps) => {
 		console.log('⚡️', 'onChangeSymbolForDetail:');
 
-		setSymbolForDetail({ ...symbolForDetail, connectors } as SymbolsProps);
+		setSelectedSymbol({ ...selectedSymbol, connectors } as SymbolsProps);
 	};
 
 	const onUpdateSymbolToDraft = (newSymbol: SymbolsProps) => {
@@ -325,7 +309,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onDeleteConfirmation = async (symbol: SymbolsProps) => {
 		setSelectedSymbol(symbol);
-		setSymbolForDetail(symbol);
 
 		setConfirmationMessage('Are you sure you want to delete');
 
@@ -337,17 +320,15 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const onDelete = ({ key, state }: SymbolsProps) => {
 		const isDraft = state === 'draft';
 
-		if (isDraft && !hasSymbolsLocaly()) {
-			if (!getSymbolsLocaly()) return;
-
-			const updatedSymbols = getSymbolsLocaly().filter((item: SymbolsProps) => item.key !== key);
+		if (isDraft && hasSymbolsInLocalStorage()) {
+			const updatedSymbols = getSymbolsFromLocalStorage().filter((item: SymbolsProps) => item.key !== key);
 
 			localStorage.setItem('symbols', JSON.stringify(updatedSymbols));
 			setSymbols(updatedSymbols);
 
 			onPanelReset();
 		} else {
-			console.log('⚡️', 'onDelete:', 'isDraft:', isDraft, '!hasSymbolsLocaly:', !hasSymbolsLocaly());
+			console.log('⚡️', 'onDelete:', 'isDraft:', isDraft, 'hasSymbolsInLocalStorage:', hasSymbolsInLocalStorage());
 		}
 		// Check if Draft or not
 		// Clear by ID
@@ -388,12 +369,12 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 							<PanelPresentationMSLineStyled />
 						</PanelPresentationLinesWrapperStyled>
 						<PanelPresentationContentStyled>
-							{!!selectedSymbol && !!symbolForDetail && (
+							{!!selectedSymbol && (
 								<SvgComponent
 									renderConnectors
 									viewBoxHeight={selectedSymbol.height}
 									viewBoxWidth={selectedSymbol.width}
-									connectors={symbolForDetail.connectors}
+									connectors={selectedSymbol.connectors}
 									height={250}
 									width={250}
 									fill={theme.fill}
@@ -401,9 +382,9 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 								/>
 							)}
 						</PanelPresentationContentStyled>
-						{symbolForDetail && (
+						{selectedSymbol && (
 							<PanelDetailsComponent
-								symbol={{ ...symbolForDetail }}
+								symbol={{ ...selectedSymbol }}
 								symbols={symbols}
 								onClosePanel={onPanelReset}
 								enableReinitialize={enableReinitialize}
@@ -413,8 +394,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						)}
 					</ContainerStyled>
 				</PanelPresentationStyled>
-
-				<InformationComponent title={informationMessage?.title} message={informationMessage?.message} />
 
 				<PanelSymbolsStyled theme={theme}>
 					<ContainerStyled>
@@ -428,20 +407,19 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 							</li>
 							{symbols.map((symbol) => {
 								const isDisabled = symbol.state !== 'draft';
-								const { state, width, height, geometry, id, key } = symbol;
 
 								return (
-									<li key={key}>
+									<li key={symbol.key}>
 										<SymbolElement
 											meny={symbolMeny(symbol, isDisabled)}
-											chipsStatus={state}
+											chipsStatus={symbol.state}
 											svgElementsRef={svgElementsRef}
-											width={width}
-											height={height}
-											geometry={geometry}
-											id={id}
+											width={symbol.width}
+											height={symbol.height}
+											geometry={symbol.geometry}
+											id={symbol.id}
 											theme={theme}
-											name={key}
+											name={symbol.key}
 										/>
 									</li>
 								);
@@ -449,6 +427,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						</PanelSymbolsListStyled>
 					</ContainerStyled>
 				</PanelSymbolsStyled>
+				<InformationComponent title={informationMessage?.title} message={informationMessage?.message} />
 				{/* @ts-ignore next-line */}
 				<ConfirmationComponent />
 			</PanelContainerStyled>

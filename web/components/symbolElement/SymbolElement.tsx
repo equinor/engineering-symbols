@@ -53,7 +53,7 @@ export const SymbolElement: React.FunctionComponent<SymbolElementProps> = ({
 
 						<SymbolMenyWrapStyled>
 							{meny.map(({ name, action, isDisabled = false }) => (
-								<li>
+								<li key={name}>
 									<button disabled={isDisabled} onClick={action}>
 										{name}
 									</button>

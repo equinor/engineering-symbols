@@ -7,6 +7,7 @@ import { EditFormComponent } from '../editForm';
 import { SymbolsProps } from '../../types';
 
 import { EditFromStyled, EditPanelStyled, PanelDetailsButtons, PanelDetailsStyled, PanelDetailsWrapperStyled } from './styles';
+import { getUniqueId } from '../../helpers';
 
 type PanelDetailsComponentProps = {
 	setUpdateSymbolToDraft: (symbol: SymbolsProps) => void;
@@ -82,7 +83,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 							height,
 							geometry,
 							dateTimeUpdated: new Date(),
-							symbilId: 'Im random id',
+							symbilId: getUniqueId(),
 							connectors,
 						}}
 						validate={({ width, height, key }) => {
@@ -110,6 +111,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 							return errors;
 						}}
 						onSubmit={(values, { setSubmitting }) => {
+							console.log(2);
 							setTimeout(() => {
 								setSubmitting(false);
 								setUpdateSymbolToDraft(values);
