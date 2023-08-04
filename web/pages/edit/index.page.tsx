@@ -23,6 +23,7 @@ import { ContainerStyled } from '../../styles/styles';
 
 import allSymbols from '../../data/symbols.json';
 import { getUniqueId } from '../../helpers';
+import { AuthenticatedTemplate } from '@azure/msal-react';
 
 const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [confirmationMessage, setConfirmationMessage] = useState('');
@@ -313,10 +314,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	];
 
 	return (
-		<div>
+		<AuthenticatedTemplate>
 			<Head>
-				<title>🍯 Engineering symbols</title>
-				<meta name="description" content="Your new Engineering symbols library." />
+				<title>🍯 Customize Engineering Symbols</title>
+				<meta name="description" content="Tailor engineering symbols to your needs." />
 				<link rel="icon" href="/favicon.ico" />
 				<meta name="robots" content="noindex,nofollow" />
 			</Head>
@@ -389,7 +390,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				{/* @ts-ignore next-line */}
 				<ConfirmationComponent />
 			</PanelContainerStyled>
-		</div>
+		</AuthenticatedTemplate>
 	);
 };
 

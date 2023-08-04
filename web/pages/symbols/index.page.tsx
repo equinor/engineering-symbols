@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import copyToClipboard from 'copy-to-clipboard';
 import Typed from 'typed.js';
 import { saveAs } from 'file-saver';
+import Head from 'next/head';
 
 import { Search, Icon, Autocomplete, Snackbar } from '@equinor/eds-core-react';
 import { change_history } from '@equinor/eds-icons';
@@ -194,6 +195,16 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 
 	return (
 		<>
+			<Head>
+				<title>🍯 SVG Engineering Symbols Library</title>
+				<meta
+					name="description"
+					content="Access a vast SVG library of engineering symbols. Download and use in your projects, or contribute your own."
+				/>
+				<meta key="robots" name="robots" content="noindex,follow" />
+				<meta key="googlebot" name="googlebot" content="noindex,follow" />
+				{/* ADD SEO */}
+			</Head>
 			<ContainerStyled>
 				<SymbolsHeaderStyled>
 					<h1 ref={typedElementRef}></h1>

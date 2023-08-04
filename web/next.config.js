@@ -6,6 +6,10 @@ const nextConfig = {
 	compiler: {
 		styledComponents: true,
 	},
+	env: {
+		NEXT_MSAL_CLIENT_ID: process.env.NEXT_MSAL_CLIENT_ID,
+		NEXT_MSAL_AUTHORITY: process.env.NEXT_MSAL_AUTHORITY,
+	},
 	webpack(config) {
 		config.module.rules.push({
 			test: /\.svg$/i,
