@@ -2,6 +2,7 @@
 build
 web/build
 web/.next
+web/CHANGELOG.md
 package/build
 node_modules
 package/node_modules
