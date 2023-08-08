@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.2.0](https://github.com/equinor/engineering-symbols/compare/web-v1.1.3...web-v1.2.0) (2023-08-08)
+
+
+### Features
+
+* content editor view ([#520](https://github.com/equinor/engineering-symbols/issues/520)) ([20d5fc2](https://github.com/equinor/engineering-symbols/commit/20d5fc2aa62c1c71e25cbda0c5433dc191bfe279))
+
+
+### Bump package
+
+* **web:** bump @equinor/eds-core-react from 0.30.0 to 0.32.3 in /web ([#509](https://github.com/equinor/engineering-symbols/issues/509)) ([97c2da6](https://github.com/equinor/engineering-symbols/commit/97c2da62417665d6d93b613874ac56be0b46ea49))
+* **web:** bump @types/node from 18.15.13 to 20.4.8 in /web ([#525](https://github.com/equinor/engineering-symbols/issues/525)) ([2ea413c](https://github.com/equinor/engineering-symbols/commit/2ea413c95d375ecd5b9c659652d229cf8cd4c674))
+* **web:** bump axios from 1.3.4 to 1.4.0 in /web ([#436](https://github.com/equinor/engineering-symbols/issues/436)) ([a9b6fcc](https://github.com/equinor/engineering-symbols/commit/a9b6fcc1b0ffe157b9128264a515cff815da8974))
+* **web:** bump eslint-config-next from 13.2.4 to 13.4.12 in /web ([#514](https://github.com/equinor/engineering-symbols/issues/514)) ([6315ca7](https://github.com/equinor/engineering-symbols/commit/6315ca7e79ab9845898a5a67cc576e4086f60452))
+
 ## [1.1.3](https://github.com/equinor/engineering-symbols/compare/web-v1.1.2...web-v1.1.3) (2023-04-24)
 
 
