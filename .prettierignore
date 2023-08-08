@@ -14,3 +14,4 @@ package-lock.json
 web/package-lock.json
 package/package-lock.json
 package/CHANGELOG.md
+radixconfig.yaml

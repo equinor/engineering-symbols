@@ -55,7 +55,7 @@ jobs:
               run: snyk auth ${{ secrets.SNYK_TOKEN }}
               working-directory: web
             - name: Test dependencies for known issues
-              run: snyk test --fail-on=all --severity-threshold=high
+              run: snyk test --severity-threshold=high
               working-directory: web
               env:
                   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}

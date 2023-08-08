@@ -1,10 +1,11 @@
-import { FunctionComponent, ReactNode } from 'react';
+import { ComponentPropsWithoutRef, FunctionComponent, ReactNode } from 'react';
 
 import { ButtonStyled } from './styles';
 
-interface ButtonComponentProps extends React.ComponentPropsWithoutRef<'button'> {
-	children: ReactNode;
+interface ButtonComponentProps extends ComponentPropsWithoutRef<'button'> {
 	appearance?: 'secondary';
+	children: ReactNode;
+	isWide?: boolean;
 	size?: 's';
 }
 export const ButtonComponent: FunctionComponent<ButtonComponentProps> = ({ children, ...rest }) => <ButtonStyled {...rest}>{children}</ButtonStyled>;

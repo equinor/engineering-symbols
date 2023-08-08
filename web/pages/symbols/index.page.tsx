@@ -1,26 +1,24 @@
 import type { NextPage } from 'next';
 import { useEffect, useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import copyToClipboard from 'copy-to-clipboard';
 import { useRouter } from 'next/router';
-import { saveAs } from 'file-saver';
+import copyToClipboard from 'copy-to-clipboard';
 import Typed from 'typed.js';
+import { saveAs } from 'file-saver';
+import Head from 'next/head';
 
-import { Card, Search, Icon, Autocomplete, Snackbar } from '@equinor/eds-core-react';
+import { Search, Icon, Autocomplete, Snackbar } from '@equinor/eds-core-react';
 import { change_history } from '@equinor/eds-icons';
 
-import { NoResultComponent, PreviewComponent, SvgComponent } from '../../components';
+import { NoResultComponent, PreviewComponent, SymbolElement } from '../../components';
 
-import { SymbolsPageProps, IconProps, IconByCategoryProps } from '../../types';
+import { SymbolsPageProps, IconProps, IconByCategoryProps, SymbolsProps } from '../../types';
 
 import {
 	SymbolSelectWrapperStyled,
 	SymbolInputsWrapperStyled,
 	SymbolsContainerStyled,
-	SymbolsListWrapStyled,
-	SymbolMenyWrapStyled,
 	SymbolsHeaderStyled,
-	SymbolWrapperStyled,
 	SymbolCategoryName,
 	SymbolsListStyled,
 } from './styles';
@@ -36,7 +34,7 @@ const FIXTURE_CATEGORIES = ['Party', 'Superheroes', 'Circulation', 'Pool Party',
 // Only for list of the names
 // const iconNames = Object.entries(symbols).map(([name]) => ({ name }));
 const icons = symbols.map(({ key, ...rest }) => ({
-	name: key,
+	key,
 	// category: FIXTURE_CATEGORIES[Math.floor(Math.random() * (9 - 1))],
 	category: FIXTURE_CATEGORIES[Math.floor(Math.random() * (9 + 1))],
 	...rest,
@@ -54,7 +52,7 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 
 	const router = useRouter();
 
-	const typedElementRef = useRef(null);
+	const typedElementRef = useRef<HTMLInputElement>(null);
 	const svgElementsRef = useRef([]);
 
 	const [icnsByCategory, seIcnsByCategory] = useState<IconByCategoryProps[] | []>([]);
@@ -91,7 +89,7 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 		setSearchingValue(val);
 
 		if (val) {
-			const searchedValue = icons.filter(({ name }) => name.toLocaleLowerCase().includes(val.toLocaleLowerCase()));
+			const searchedValue = icons.filter(({ key }) => key.toLocaleLowerCase().includes(val.toLocaleLowerCase()));
 
 			seIcns(searchedValue);
 
@@ -141,11 +139,18 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 		}
 	};
 
-	const onSelectSymbol = (selectedName: string) => {
-		const selected = icons.filter(({ name }) => name === selectedName)[0];
+	const onSelectSymbol = (selectedName?: string) => {
+		const selected = icons.filter(({ key }) => key === selectedName)[0];
 
 		setSelectedSymbol(selected);
 		setPreviewShow(true);
+	};
+
+	// Meny
+	// TODO: clean it
+	const onCopyToClipboard = (val: string) => {
+		copyToClipboard(val);
+		setSnackbarOpen && setSnackbarOpen(true);
 	};
 
 	const getSvg = (id: string) => {
@@ -164,9 +169,7 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 
 		if (!svg) return '';
 
-		const svgData = new XMLSerializer().serializeToString(svg);
-
-		return svgData;
+		return new XMLSerializer().serializeToString(svg);
 	};
 
 	const onDownloadSvg = (name: string, id: string) => {
@@ -175,13 +178,33 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 		saveAs(url, `${name}.svg`);
 	};
 
-	const onCopyToClipboard = (val: string) => {
-		copyToClipboard(val);
-		setSnackbarOpen(true);
-	};
+	const symbolMeny = ({ key, id }: SymbolsProps) => [
+		{
+			name: 'Copy',
+			action: () => onCopyToClipboard(key),
+		},
+		{
+			name: 'Download',
+			action: () => onDownloadSvg(key, id),
+		},
+		{
+			name: 'More...',
+			action: () => onSelectSymbol(key),
+		},
+	];
 
 	return (
 		<>
+			<Head>
+				<title>🍯 SVG Engineering Symbols Library</title>
+				<meta
+					name="description"
+					content="Access a vast SVG library of engineering symbols. Download and use in your projects, or contribute your own."
+				/>
+				<meta key="robots" name="robots" content="noindex,follow" />
+				<meta key="googlebot" name="googlebot" content="noindex,follow" />
+				{/* ADD SEO */}
+			</Head>
 			<ContainerStyled>
 				<SymbolsHeaderStyled>
 					<h1 ref={typedElementRef}></h1>
@@ -214,7 +237,7 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 							</SymbolInputsWrapperStyled>
 						</SymbolSelectWrapperStyled>
 
-						<SymbolsListStyled>
+						<>
 							{icnsByCategory.length <= 0 && searchingValue && <NoResultComponent value={searchingValue} />}
 							{icnsByCategory.map(({ category, icons }) => {
 								if (icons.length <= 0) return;
@@ -224,48 +247,26 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 										<SymbolCategoryName key={category} id={category}>
 											{category}
 										</SymbolCategoryName>
-										<ul aria-label={category}>
-											{icons.map(({ name, width, height, geometry, id }) => (
-												<li key={name}>
-													<>
-														<Card>
-															<SymbolsListWrapStyled>
-																{/* @ts-ignore next-line */}
-																<SymbolWrapperStyled ref={(ref) => (svgElementsRef.current[id] = ref)}>
-																	<SvgComponent
-																		viewBoxHeight={height}
-																		viewBoxWidth={width}
-																		height={95}
-																		width={95}
-																		fill={theme.fill}
-																		path={geometry}
-																	/>
-																</SymbolWrapperStyled>
-
-																<SymbolMenyWrapStyled>
-																	<li>
-																		<button onClick={() => onCopyToClipboard(name)}>Copy</button>
-																	</li>
-																	<li>
-																		<button onClick={() => onDownloadSvg(name, id)}>Download</button>
-																	</li>
-																	<li>
-																		<button onClick={() => onSelectSymbol(name)}>More...</button>
-																	</li>
-																</SymbolMenyWrapStyled>
-															</SymbolsListWrapStyled>
-														</Card>
-														<>
-															<p>{name}</p>
-														</>
-													</>
+										<SymbolsListStyled aria-label={category}>
+											{icons.map((icon) => (
+												<li key={icon.key}>
+													<SymbolElement
+														svgElementsRef={svgElementsRef}
+														width={icon.width}
+														meny={symbolMeny(icon)}
+														height={icon.height}
+														geometry={icon.geometry}
+														id={icon.id}
+														theme={theme}
+														name={icon.key}
+													/>
 												</li>
 											))}
-										</ul>
+										</SymbolsListStyled>
 									</>
 								);
 							})}
-						</SymbolsListStyled>
+						</>
 					</div>
 				</SymbolsContainerStyled>
 			</ContainerStyled>

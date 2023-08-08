@@ -4,12 +4,14 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Link from 'next/link';
 
+import { SignButtonComponent } from '../signButton/SignButton';
 import { HeaderStyled, LogoWrapStyled, HeaderLogoStyled, NavStyled, BurgerWrapStyled, HeaderNoteStyled, NavStyledListItem } from './styles';
 import { ContainerStyled } from '../../styles/styles';
 
 import { LogoComponent } from '../logo';
 
 import packageJson from '../../package.json';
+import { AuthenticatedTemplate } from '@azure/msal-react';
 
 export const HeaderComponent: NextPage = () => {
 	const [isMobileBurgerOpen, setMobileBurgerOpen] = useState<boolean>(false);
@@ -42,7 +44,13 @@ export const HeaderComponent: NextPage = () => {
 						<NavStyledListItem isActive={pathname === '/contribution'}>
 							<Link href="/contribution">Contribution</Link>
 						</NavStyledListItem>
+						<AuthenticatedTemplate>
+							<NavStyledListItem isActive={pathname === '/edit'}>
+								<Link href="/edit">Edit symbols</Link>
+							</NavStyledListItem>
+						</AuthenticatedTemplate>
 					</ul>
+					<SignButtonComponent />
 				</NavStyled>
 
 				<BurgerWrapStyled onClick={() => setMobileBurgerOpen(!isMobileBurgerOpen)} isOpen={isMobileBurgerOpen}>
@@ -59,6 +67,8 @@ export const HeaderComponent: NextPage = () => {
 				<HeaderNoteStyled>
 					<p>Designed and built with ❤️</p>
 				</HeaderNoteStyled>
+
+				{/* <SignInButton /> */}
 			</HeaderStyled>
 		</ContainerStyled>
 	);

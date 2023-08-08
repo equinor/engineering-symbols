@@ -3,8 +3,11 @@ import Link from 'next/link';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import { useState } from 'react';
+import { PublicClientApplication } from '@azure/msal-browser';
+import { MsalProvider } from '@azure/msal-react';
 
-// import 'https://eds-static.equinor.com/font/equinor-font.css';
+import { msalConfig } from '../utils/authConfig';
+
 import { GlobalStyles } from '../styles/globalStyles';
 import {
 	FooterMenuWrapperStyled,
@@ -24,20 +27,22 @@ import { lightTheme, darkTheme } from '../styles/Themes';
 
 import { HeaderComponent, LogoComponent } from '../components';
 
-// import Sun from '../svg/sun.svg';
-// import Moon from '../svg/moon.svg';
+const pca = new PublicClientApplication(msalConfig);
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const [themeName, setThemeName] = useState('light');
 
-	const themeToggler = () => (themeName === 'light' ? setThemeName('dark') : setThemeName('light'));
+	const themeToggler = () => setThemeName(themeName === 'light' ? 'dark' : 'light');
 	const theme = themeName === 'light' ? lightTheme : darkTheme;
 
 	return (
-		<>
+		<MsalProvider instance={pca}>
 			<Head>
-				<title>🍯 Engineering symbols</title>
-				<meta name="description" content="Your new Engineering symbols library." />
+				<title>🍯 Engineering symbols - Download, Customize, Create</title>
+				<meta
+					name="description"
+					content="Explore a collection of SVG engineering symbols. Download, customize colors & sizes, and create new symbols."
+				/>
 				<meta key="robots" name="robots" content="noindex,follow" />
 				<meta key="googlebot" name="googlebot" content="noindex,follow" />
 				{/* ADD SEO */}
@@ -58,10 +63,14 @@ function MyApp({ Component, pageProps }: AppProps) {
 					</label>
 				</DarkModeSwitcherStyled>
 
-				<HeaderComponent />
-				<main>
-					<Component {...pageProps} theme={theme} />
-				</main>
+				<>
+					{/* <UnauthenticatedTemplate> */}
+					<HeaderComponent />
+					{/* </UnauthenticatedTemplate> */}
+					<main>
+						<Component {...pageProps} theme={theme} />
+					</main>
+				</>
 				<FooterStyled>
 					<ContainerStyled>
 						<FooterWrapperStyled>
@@ -129,7 +138,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 					</ContainerStyled>
 				</FooterStyled>
 			</ThemeProvider>
-		</>
+		</MsalProvider>
 	);
 }
 

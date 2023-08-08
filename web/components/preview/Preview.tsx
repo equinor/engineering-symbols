@@ -51,7 +51,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	isShow,
 	theme,
 }): JSX.Element => {
-	const { name, connectors, width, height, geometry } = selected;
+	const { key, connectors, width, height, geometry } = selected;
 	const FIXTURE_METADATA = ['Gas', 'Oil', 'Water', 'CO2', 'Aquifer', 'Shale'];
 
 	const [presentConnectors, setPresentConnectors] = useState<boolean>(false);
@@ -103,7 +103,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	const onDownloadSvg = () => {
 		const url = new Blob([getSvgString()], { type: 'image/svg+xml' });
 
-		saveAs(url, `${name}.svg`);
+		saveAs(url, `${key}.svg`);
 	};
 
 	const onColorPicker = (color: string) => {
@@ -190,7 +190,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 				</PreviewWrapStyled>
 
 				<CustomizeElementsStyled>
-					<Typography variant="h2">{name}</Typography>
+					<Typography variant="h2">{key}</Typography>
 
 					<CustomizeDetailsStyled>
 						<CustomizeSliderStyled value={rotate} min={SLIDER_MIN_VALUE} max={SLIDER_MAX_VALUE}>
@@ -262,7 +262,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 									<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(geometry)}>
 										<Icon data={copy}></Icon>Copy geometry string
 									</Button>
-									<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(name)}>
+									<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(key)}>
 										<Icon data={copy}></Icon>Copy icon name
 									</Button>
 									<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(getSvgString())}>

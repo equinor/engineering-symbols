@@ -32,10 +32,12 @@ export const HeaderLogoStyled = styled.span`
 
 export const NavStyled = styled.nav<MenuStateProps>`
 	position: absolute;
-	top: 0.9rem;
+	/* top: 0.9rem; */
+	top: 4.2rem;
 	left: 0;
 	right: 0;
-	margin: 3rem auto 0;
+	/* margin: 3rem auto 0; */
+	margin: 0 auto;
 	width: 100%;
 	z-index: 0;
 
@@ -71,6 +73,10 @@ export const NavStyledListItem = styled.li<NavStyledListItemProps>`
 	line-height: 1;
 	margin-top: -0.9rem;
 
+	/* @media screen and (max-width: 1024px) {
+		margin: 0 0 2rem;
+	} */
+
 	&::before {
 		content: '';
 		/* padding: 0.9rem 0.2rem; */
@@ -78,8 +84,6 @@ export const NavStyledListItem = styled.li<NavStyledListItemProps>`
 		position: absolute;
 		width: 100%;
 		height: 100%;
-		/* top: -0.9rem; */
-		/* left: -0.2rem; */
 		z-index: -1;
 		background: ${({ theme }) => theme.hover.textBackground};
 		transform: ${({ isActive }) => (isActive ? 'scale(1)' : 'scale(0.8)')};
@@ -108,6 +112,8 @@ export const NavStyledListItem = styled.li<NavStyledListItemProps>`
 
 export const HeaderNoteStyled = styled.div`
 	font-size: 14px;
+	line-height: 2;
+	padding: 0 3rem 0 0;
 
 	@media screen and (max-width: 1024px) {
 		display: none;
