@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.1](https://github.com/equinor/engineering-symbols/compare/web-v1.2.0...web-v1.2.1) (2023-08-08)
+
+
+### Miscellaneous Chores
+
+* empty commit, trigger release ([#526](https://github.com/equinor/engineering-symbols/issues/526)) ([f7cf8f7](https://github.com/equinor/engineering-symbols/commit/f7cf8f7dcb969bdae26f221d7974bf60bd16422c))
+* fix prettier ([#527](https://github.com/equinor/engineering-symbols/issues/527)) ([b29f318](https://github.com/equinor/engineering-symbols/commit/b29f318f1853d730ed399acef5bb264247ab7cc9))
+
 ## [1.2.0](https://github.com/equinor/engineering-symbols/compare/web-v1.1.3...web-v1.2.0) (2023-08-08)
 
 ### Features
