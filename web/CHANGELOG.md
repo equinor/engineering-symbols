@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/equinor/engineering-symbols/compare/web-v1.2.1...web-v1.2.2) (2023-08-08)
+
+
+### Bump package
+
+* **web:** bump eslint from 8.38.0 to 8.46.0 in /web ([#522](https://github.com/equinor/engineering-symbols/issues/522)) ([aa57a97](https://github.com/equinor/engineering-symbols/commit/aa57a977e74f7ff9e59ed6d3b8606e76fe4f6661))
+
 ## [1.2.1](https://github.com/equinor/engineering-symbols/compare/web-v1.2.0...web-v1.2.1) (2023-08-08)
 
 
