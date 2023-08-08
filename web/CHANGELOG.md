@@ -2,64 +2,55 @@
 
 ## [1.2.0](https://github.com/equinor/engineering-symbols/compare/web-v1.1.3...web-v1.2.0) (2023-08-08)
 
-
 ### Features
 
-* content editor view ([#520](https://github.com/equinor/engineering-symbols/issues/520)) ([20d5fc2](https://github.com/equinor/engineering-symbols/commit/20d5fc2aa62c1c71e25cbda0c5433dc191bfe279))
-
+-   content editor view ([#520](https://github.com/equinor/engineering-symbols/issues/520)) ([20d5fc2](https://github.com/equinor/engineering-symbols/commit/20d5fc2aa62c1c71e25cbda0c5433dc191bfe279))
 
 ### Bump package
 
-* **web:** bump @equinor/eds-core-react from 0.30.0 to 0.32.3 in /web ([#509](https://github.com/equinor/engineering-symbols/issues/509)) ([97c2da6](https://github.com/equinor/engineering-symbols/commit/97c2da62417665d6d93b613874ac56be0b46ea49))
-* **web:** bump @types/node from 18.15.13 to 20.4.8 in /web ([#525](https://github.com/equinor/engineering-symbols/issues/525)) ([2ea413c](https://github.com/equinor/engineering-symbols/commit/2ea413c95d375ecd5b9c659652d229cf8cd4c674))
-* **web:** bump axios from 1.3.4 to 1.4.0 in /web ([#436](https://github.com/equinor/engineering-symbols/issues/436)) ([a9b6fcc](https://github.com/equinor/engineering-symbols/commit/a9b6fcc1b0ffe157b9128264a515cff815da8974))
-* **web:** bump eslint-config-next from 13.2.4 to 13.4.12 in /web ([#514](https://github.com/equinor/engineering-symbols/issues/514)) ([6315ca7](https://github.com/equinor/engineering-symbols/commit/6315ca7e79ab9845898a5a67cc576e4086f60452))
+-   **web:** bump @equinor/eds-core-react from 0.30.0 to 0.32.3 in /web ([#509](https://github.com/equinor/engineering-symbols/issues/509)) ([97c2da6](https://github.com/equinor/engineering-symbols/commit/97c2da62417665d6d93b613874ac56be0b46ea49))
+-   **web:** bump @types/node from 18.15.13 to 20.4.8 in /web ([#525](https://github.com/equinor/engineering-symbols/issues/525)) ([2ea413c](https://github.com/equinor/engineering-symbols/commit/2ea413c95d375ecd5b9c659652d229cf8cd4c674))
+-   **web:** bump axios from 1.3.4 to 1.4.0 in /web ([#436](https://github.com/equinor/engineering-symbols/issues/436)) ([a9b6fcc](https://github.com/equinor/engineering-symbols/commit/a9b6fcc1b0ffe157b9128264a515cff815da8974))
+-   **web:** bump eslint-config-next from 13.2.4 to 13.4.12 in /web ([#514](https://github.com/equinor/engineering-symbols/issues/514)) ([6315ca7](https://github.com/equinor/engineering-symbols/commit/6315ca7e79ab9845898a5a67cc576e4086f60452))
 
 ## [1.1.3](https://github.com/equinor/engineering-symbols/compare/web-v1.1.2...web-v1.1.3) (2023-04-24)
 
-
 ### Bump package
 
-* **web:** bump @types/react from 18.0.37 to 18.0.38 in /web ([#423](https://github.com/equinor/engineering-symbols/issues/423)) ([b699cb0](https://github.com/equinor/engineering-symbols/commit/b699cb08970789d72a69df782325e0ac6800bbcf))
+-   **web:** bump @types/react from 18.0.37 to 18.0.38 in /web ([#423](https://github.com/equinor/engineering-symbols/issues/423)) ([b699cb0](https://github.com/equinor/engineering-symbols/commit/b699cb08970789d72a69df782325e0ac6800bbcf))
 
 ## [1.1.2](https://github.com/equinor/engineering-symbols/compare/web-v1.1.1...web-v1.1.2) (2023-04-21)
 
-
 ### Bug Fixes
 
-* header link ([#418](https://github.com/equinor/engineering-symbols/issues/418)) ([4ebb949](https://github.com/equinor/engineering-symbols/commit/4ebb949e8c3c8fb735b630bd9277877bbfec273d))
-
+-   header link ([#418](https://github.com/equinor/engineering-symbols/issues/418)) ([4ebb949](https://github.com/equinor/engineering-symbols/commit/4ebb949e8c3c8fb735b630bd9277877bbfec273d))
 
 ### Bump package
 
-* **web:** bump @types/node from 18.15.10 to 18.15.13 in /web ([#415](https://github.com/equinor/engineering-symbols/issues/415)) ([1213e53](https://github.com/equinor/engineering-symbols/commit/1213e53f7b1847db7f105b9891ba784a68de7eb3))
-* **web:** bump @types/react from 18.0.29 to 18.0.37 in /web ([#412](https://github.com/equinor/engineering-symbols/issues/412)) ([6257e24](https://github.com/equinor/engineering-symbols/commit/6257e24e2faed33749300cbdd8e5468676d8ead0))
-* **web:** bump typescript from 5.0.2 to 5.0.4 in /web ([#405](https://github.com/equinor/engineering-symbols/issues/405)) ([2f3016c](https://github.com/equinor/engineering-symbols/commit/2f3016c98bc55416d43f1bb7db638f878e4a288b))
-* **web:** bump use-debounce from 9.0.3 to 9.0.4 in /web ([#400](https://github.com/equinor/engineering-symbols/issues/400)) ([871186a](https://github.com/equinor/engineering-symbols/commit/871186a96948eb6981bdac8dd64fa873099135fa))
+-   **web:** bump @types/node from 18.15.10 to 18.15.13 in /web ([#415](https://github.com/equinor/engineering-symbols/issues/415)) ([1213e53](https://github.com/equinor/engineering-symbols/commit/1213e53f7b1847db7f105b9891ba784a68de7eb3))
+-   **web:** bump @types/react from 18.0.29 to 18.0.37 in /web ([#412](https://github.com/equinor/engineering-symbols/issues/412)) ([6257e24](https://github.com/equinor/engineering-symbols/commit/6257e24e2faed33749300cbdd8e5468676d8ead0))
+-   **web:** bump typescript from 5.0.2 to 5.0.4 in /web ([#405](https://github.com/equinor/engineering-symbols/issues/405)) ([2f3016c](https://github.com/equinor/engineering-symbols/commit/2f3016c98bc55416d43f1bb7db638f878e4a288b))
+-   **web:** bump use-debounce from 9.0.3 to 9.0.4 in /web ([#400](https://github.com/equinor/engineering-symbols/issues/400)) ([871186a](https://github.com/equinor/engineering-symbols/commit/871186a96948eb6981bdac8dd64fa873099135fa))
 
 ## [1.1.1](https://github.com/equinor/engineering-symbols/compare/web-v1.1.0...web-v1.1.1) (2023-04-21)
 
-
 ### Bug Fixes
 
-* changelog prettier ([#414](https://github.com/equinor/engineering-symbols/issues/414)) ([7324275](https://github.com/equinor/engineering-symbols/commit/732427534bccb2029423502940f29ef6140ad73b))
-
+-   changelog prettier ([#414](https://github.com/equinor/engineering-symbols/issues/414)) ([7324275](https://github.com/equinor/engineering-symbols/commit/732427534bccb2029423502940f29ef6140ad73b))
 
 ### Bump package
 
-* **web:** bump eslint from 8.36.0 to 8.38.0 in /web ([#406](https://github.com/equinor/engineering-symbols/issues/406)) ([a1a2379](https://github.com/equinor/engineering-symbols/commit/a1a23791512d7a51b2720e21420cc28d1b75018b))
+-   **web:** bump eslint from 8.36.0 to 8.38.0 in /web ([#406](https://github.com/equinor/engineering-symbols/issues/406)) ([a1a2379](https://github.com/equinor/engineering-symbols/commit/a1a23791512d7a51b2720e21420cc28d1b75018b))
 
 ## [1.1.0](https://github.com/equinor/engineering-symbols/compare/web-v1.0.2...web-v1.1.0) (2023-04-19)
 
-
 ### Features
 
-* new look ([#396](https://github.com/equinor/engineering-symbols/issues/396)) ([b2fbcd6](https://github.com/equinor/engineering-symbols/commit/b2fbcd655446f0a6395e01983d5dafd60b75d4c6))
-
+-   new look ([#396](https://github.com/equinor/engineering-symbols/issues/396)) ([b2fbcd6](https://github.com/equinor/engineering-symbols/commit/b2fbcd655446f0a6395e01983d5dafd60b75d4c6))
 
 ### Miscellaneous Chores
 
-* **master:** release engineering-symbols 1.1.3 ([#383](https://github.com/equinor/engineering-symbols/issues/383)) ([d76d9f9](https://github.com/equinor/engineering-symbols/commit/d76d9f9d0cd994b0c9109121b96a5a7a14a5a3e8))
+-   **master:** release engineering-symbols 1.1.3 ([#383](https://github.com/equinor/engineering-symbols/issues/383)) ([d76d9f9](https://github.com/equinor/engineering-symbols/commit/d76d9f9d0cd994b0c9109121b96a5a7a14a5a3e8))
 
 ## [1.0.2](https://github.com/equinor/engineering-symbols/compare/web-v1.0.1...web-v1.0.2) (2023-03-28)
 
