@@ -11,12 +11,14 @@
 		"ts:testcompile": "tsc --noEmit",
 		"prettier:check": "prettier --check .",
 		"prettier:write": "prettier --write .",
-		"checkcode": "npm run lint && npm run ts:testcompile && npm run prettier:check",
-		"prepare": "husky install"
+		"checkcode": "npm run lint && npm run ts:testcompile && npx prettier --check .",
+		"prepare": "husky install",
+		"convert": "node converter/index.js && npm run package-svgr",
+		"package-svgr": "npx @svgr/cli --typescript --no-dimensions --svgo-config ./svgo.config.js --out-dir package/src/components/icon/icons -- svg"
 	},
 	"engines": {
 		"npm": ">= 8.3.1",
-		"node": ">= 16.14.0"
+		"node": ">= 18.15.0"
 	},
 	"browser": {
 		"fs": false
@@ -67,13 +69,14 @@
 		]
 	},
 	"dependencies": {
-		"lint-staged": "^12.4.0",
-		"typescript": "^4.8.3"
+		"lint-staged": "^13.2.3",
+		"typescript": "^5.0.4"
 	},
 	"devDependencies": {
-		"@types/jest": "^29.0.3",
-		"eslint": "^8.24.0",
-		"husky": "^7.0.0",
-		"prettier": "^2.6.2"
+		"@svgr/cli": "^7.0.0",
+		"@types/jest": "^29.5.3",
+		"eslint": "^8.46.0",
+		"husky": "^8.0.3",
+		"prettier": "^3.0.0"
 	}
 }

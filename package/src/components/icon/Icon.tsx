@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import { IconProps, SvgBaseProps } from './Icon.types';
 import * as Icons from './icons';
 
-type IconWrapperStyledProps = {
+type SymbolWrapperStyledProps = {
 	rotate: number;
 };
 
-const IconWrapper = styled.div<IconWrapperStyledProps>`
+const IconWrapper = styled.div<SymbolWrapperStyledProps>`
 	.eq_icon {
 		transform: rotate(${(props) => `${props.rotate}deg`});
 	}
@@ -18,14 +18,14 @@ const iconsKeys = Object.keys(Icons) as Array<keyof typeof Icons>; // exmpl: Arr
 
 export const iconsName = iconsKeys.map((name) =>
 	name
-		.split(/(?=[A-Z])/)
-		.join('-')
-		.toLocaleLowerCase()
-); // exmpl: arrow-right
+		// .split(/(?=[A-Z])/)
+		// .join('-')
+		.toUpperCase()
+);
 
-type IconNameKeys = typeof iconsKeys[number];
+type IconNameKeys = (typeof iconsKeys)[number];
 
-export type IconName = typeof iconsName[number];
+export type IconName = (typeof iconsName)[number];
 
 export const components: Record<IconName, ComponentType<SvgBaseProps>> = Object.assign(
 	{},

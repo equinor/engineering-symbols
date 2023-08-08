@@ -1,0 +1,73 @@
+name: 🥝 Web Release
+on:
+    push:
+        branches: [master]
+        paths: ['web/**']
+
+env:
+    NODE_VERSION: ${{ github.event.inputs.node-version  || '18' }}
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        name: '🤹‍♀️ Build'
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  registry-url: https://registry.npmjs.org
+            - run: npm install --frozen-lockfile
+              working-directory: package
+              env:
+                  NODE_AUTH_TOKEN: ${{ env.NODE_VERSION }}
+
+    release-please:
+        name: 🧇 Release Please
+        needs: [build]
+        runs-on: ubuntu-latest
+        permissions:
+            id-token: write
+            contents: write
+            issues: write
+            pull-requests: write
+        outputs:
+            releases_created: ${{ steps.release.outputs.releases_created }}
+            result: ${{ toJson(steps.release.outputs) }}
+        steps:
+            - name: Create PR or Release
+              id: release
+              uses: google-github-actions/release-please-action@v3
+              with:
+                  command: manifest
+                  monorepo-tags: true
+                  release-type: node
+                  package-name: engineering-symbols
+                  # The logic below handles the npm publication:
+            - uses: actions/checkout@v3
+            - name: Az CLI login
+              uses: azure/login@v1
+              with:
+                  client-id: ${{ secrets.CLIENT_ID }} #app registration Application ID or user-assigned managed identity Client ID
+                  tenant-id: ${{ secrets.TENANT_ID }}
+                  allow-no-subscriptions: true
+              if: ${{ steps.release.outputs.releases_created }}
+            - name: Get Azure principal token for Radix
+              run: |
+                  token=$(az account get-access-token --resource 6dae42f8-4368-4678-94ff-3960e28e3630 --query=accessToken -otsv)
+                  echo "::add-mask::$token"
+                  echo "APP_SERVICE_ACCOUNT_TOKEN=$token" >> $GITHUB_ENV
+              if: ${{ steps.release.outputs.releases_created }}
+            - uses: actions/checkout@v3
+              if: ${{ steps.release.outputs.releases_created }}
+            - name: Deploy on Radix
+              uses: equinor/radix-github-actions@master
+              with:
+                  args: >
+                      create job
+                      build-deploy
+                      --context platform
+                      --from-config
+                      -b master
+                      -f
+              if: ${{ steps.release.outputs.releases_created }}

@@ -1,0 +1,1 @@
+export { NoResultComponent } from './NoResult';

@@ -1,0 +1,64 @@
+name: 🍋 Package Release
+on:
+    push:
+        branches: [master]
+        paths: ['package/**']
+
+env:
+    NODE_VERSION: ${{ github.event.inputs.node-version  || '18' }}
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        name: '🤹‍♀️ Build'
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  registry-url: https://registry.npmjs.org
+            - run: npm install --frozen-lockfile
+              working-directory: package
+              env:
+                  NODE_AUTH_TOKEN: ${{ env.NODE_VERSION }}
+
+    release-please:
+        name: 🧇 Release Please
+        needs: [build]
+        runs-on: ubuntu-latest
+        permissions:
+            id-token: write
+            contents: write
+            issues: write
+            pull-requests: write
+        outputs:
+            releases_created: ${{ steps.release.outputs.releases_created }}
+            result: ${{ toJson(steps.release.outputs) }}
+        steps:
+            - name: Create PR or Release
+              id: release
+              uses: google-github-actions/release-please-action@v3
+              with:
+                  command: manifest
+                  monorepo-tags: true
+                  release-type: node
+                  package-name: engineering-symbols
+                  # The logic below handles the npm publication:
+            - uses:
+                  actions/checkout@v3
+                  # these if statements ensure that a publication only occurs when
+                  # a new release is created:
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  registry-url: 'https://registry.npmjs.org'
+              if: ${{ steps.release.outputs.releases_created }}
+            - run: npm install --frozen-lockfile
+              working-directory: package
+              if: ${{ steps.release.outputs.releases_created }}
+            - run: npm publish
+              working-directory: package
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+              if: ${{ steps.release.outputs.releases_created }}

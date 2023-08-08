@@ -1,12 +1,9 @@
 name: Package
 
 on:
-    push:
-        branches: [master]
-        paths: ['package/**']
     pull_request:
         # The branches below must be a subset of the branches above
-        branches: [develop]
+        branches: [master]
         paths: ['package/**']
     workflow_dispatch:
     workflow_call:
@@ -17,15 +14,21 @@ on:
         - cron: '0 6 * * 1'
 
 env:
-    NODE_VERSION: ${{ github.event.inputs.node-version  || '16' }}
+    NODE_VERSION: ${{ github.event.inputs.node-version  || '18' }}
 
 jobs:
+    code-quality:
+        name: 'Code Quality'
+        uses: equinor/engineering-symbols/.github/workflows/code-quality.yml@master
+        secrets:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
     code_issues:
         name: 👮‍♂️ Code issues
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v2
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
               with:
                   node-version: ${{ env.NODE_VERSION }}
                   cache: 'npm'
@@ -68,7 +71,7 @@ jobs:
               run: snyk auth ${{ secrets.SNYK_TOKEN }}
               working-directory: package
             - name: Test dependencies for known issues
-              run: snyk test --fail-on=all --severity-threshold=high
+              run: snyk test --severity-threshold=high
               working-directory: package
               env:
                   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}

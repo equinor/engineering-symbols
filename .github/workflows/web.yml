@@ -1,11 +1,8 @@
 name: Web
 
 on:
-    push:
-        branches: [master]
-        paths: ['web/**']
     pull_request:
-        branches: ['develop']
+        branches: ['master']
         paths: ['web/**']
     workflow_dispatch:
     workflow_call:
@@ -16,9 +13,15 @@ on:
         - cron: '0 6 * * 1'
 
 env:
-    NODE_VERSION: ${{ github.event.inputs.node-version  || '16' }}
+    NODE_VERSION: ${{ github.event.inputs.node-version  || '18' }}
 
 jobs:
+    code-quality:
+        name: 'Code Quality'
+        uses: equinor/engineering-symbols/.github/workflows/code-quality.yml@master
+        secrets:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
     code_issues:
         runs-on: ubuntu-latest
         name: 👮‍♂️ Code issues
@@ -52,7 +55,7 @@ jobs:
               run: snyk auth ${{ secrets.SNYK_TOKEN }}
               working-directory: web
             - name: Test dependencies for known issues
-              run: snyk test --fail-on=all --severity-threshold=high
+              run: snyk test --severity-threshold=high
               working-directory: web
               env:
                   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
