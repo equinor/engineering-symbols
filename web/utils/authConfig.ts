@@ -3,8 +3,8 @@ import { Configuration } from '@azure/msal-browser';
 
 export const msalConfig: Configuration = {
 	auth: {
-		clientId: process.env.NEXT_MSAL_CLIENT_ID as string,
-		authority: process.env.NEXT_MSAL_AUTHORITY,
+		clientId: process.env.NEXT_PUBLIC_MSAL_CLIENT_ID as string,
+		authority: process.env.NEXT_PUBLIC_MSAL_AUTHORITY,
 		redirectUri: '/',
 		postLogoutRedirectUri: '/',
 	},

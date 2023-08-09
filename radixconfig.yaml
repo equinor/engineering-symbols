@@ -25,8 +25,8 @@ spec:
         - name: http
           port: 3000
       secrets:
-        - NEXT_MSAL_CLIENT_ID
-        - NEXT_MSAL_AUTHORITY
+        - NEXT_PUBLIC_MSAL_CLIENT_ID
+        - NEXT_PUBLIC_MSAL_AUTHORITY
   dnsExternalAlias:
     - alias: engineering-symbols.equinor.com
       environment: prod
