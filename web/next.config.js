@@ -7,8 +7,8 @@ const nextConfig = {
 		styledComponents: true,
 	},
 	env: {
-		NEXT_MSAL_CLIENT_ID: process.env.NEXT_MSAL_CLIENT_ID,
-		NEXT_MSAL_AUTHORITY: process.env.NEXT_MSAL_AUTHORITY,
+		NEXT_PUBLIC_MSAL_CLIENT_ID: process.env.NEXT_PUBLIC_MSAL_CLIENT_ID,
+		NEXT_PUBLIC_MSAL_AUTHORITY: process.env.NEXT_PUBLIC_MSAL_AUTHORITY,
 	},
 	webpack(config) {
 		config.module.rules.push({
