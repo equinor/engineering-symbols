@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/equinor/engineering-symbols/compare/web-v1.2.2...web-v1.2.3) (2023-08-09)
+
+
+### Bug Fixes
+
+* replace next vars to public ([#530](https://github.com/equinor/engineering-symbols/issues/530)) ([b8fa93d](https://github.com/equinor/engineering-symbols/commit/b8fa93dab5284256be0041fdf9855977ad6c9054))
+
 ## [1.2.2](https://github.com/equinor/engineering-symbols/compare/web-v1.2.1...web-v1.2.2) (2023-08-08)
 
 
