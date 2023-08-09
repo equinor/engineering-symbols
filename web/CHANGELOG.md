@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.4](https://github.com/equinor/engineering-symbols/compare/web-v1.2.3...web-v1.2.4) (2023-08-09)
+
+
+### Bug Fixes
+
+* build while radix build ([#532](https://github.com/equinor/engineering-symbols/issues/532)) ([22406ff](https://github.com/equinor/engineering-symbols/commit/22406ff535c2844b57529efd4d46f85dfeafa825))
+
 ## [1.2.3](https://github.com/equinor/engineering-symbols/compare/web-v1.2.2...web-v1.2.3) (2023-08-09)
 
 
