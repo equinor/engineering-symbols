@@ -250,7 +250,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		localStorage.setItem('symbols', JSON.stringify([...symbols, newSybolWithStatus]));
 	};
 
-	const onFileUpload = () => fileInputRef.current && fileInputRef.current.click();
+	// const onFileUpload = () => fileInputRef.current && fileInputRef.current.click();
 
 	const onSubmitOnReview = async () => {
 		// Clear all Drafts after push
