@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.5](https://github.com/equinor/engineering-symbols/compare/web-v1.2.4...web-v1.2.5) (2023-08-10)
+
+
+### Miscellaneous Chores
+
+* config.json for Radix ([#534](https://github.com/equinor/engineering-symbols/issues/534)) ([03df11e](https://github.com/equinor/engineering-symbols/commit/03df11e1f5972553744e41467b5613a4c6881264))
+
 ## [1.2.4](https://github.com/equinor/engineering-symbols/compare/web-v1.2.3...web-v1.2.4) (2023-08-09)
 
 
