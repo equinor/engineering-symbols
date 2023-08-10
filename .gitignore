@@ -2,6 +2,7 @@
 
 web/.next
 web/.env
+web/config.json
 web/node_modules
 web/coverage
 web/build
