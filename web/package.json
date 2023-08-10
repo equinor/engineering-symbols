@@ -6,9 +6,10 @@
 		"email": "dzm@equinor.com"
 	},
 	"scripts": {
+		"create-config": "node create-config.js",
 		"dev": "next dev",
-		"build": "next build",
-		"start": "next start",
+		"build": "npm run create-config && next build",
+		"start": "npm run create-config && next start",
 		"lint": "next lint"
 	},
 	"dependencies": {
@@ -38,6 +39,7 @@
 		"@types/react-dom": "18.0.11",
 		"@types/styled-components": "^5.1.26",
 		"axios": "^1.4.0",
+		"dotenv": "^16.3.1",
 		"eslint": "8.46.0",
 		"eslint-config-next": "13.4.12",
 		"next-mdx-remote": "^4.4.1",
