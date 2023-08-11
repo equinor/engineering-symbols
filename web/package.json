@@ -6,10 +6,9 @@
 		"email": "dzm@equinor.com"
 	},
 	"scripts": {
-		"create-config": "node create-config.js",
 		"dev": "next dev",
-		"build": "npm run create-config && next build",
-		"start": "npm run create-config && next start",
+		"build": "next build",
+		"start": "next start",
 		"lint": "next lint"
 	},
 	"dependencies": {
