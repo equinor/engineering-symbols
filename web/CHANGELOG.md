@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.8](https://github.com/equinor/engineering-symbols/compare/web-v1.2.7...web-v1.2.8) (2023-08-11)
+
+
+### Bug Fixes
+
+* radix pima v.2 ([#541](https://github.com/equinor/engineering-symbols/issues/541)) ([5986ec4](https://github.com/equinor/engineering-symbols/commit/5986ec4ad37570a556cbcf28e93ba6ff02c767a2))
+
 ## [1.2.7](https://github.com/equinor/engineering-symbols/compare/web-v1.2.6...web-v1.2.7) (2023-08-11)
 
 
