@@ -1,10 +1,13 @@
 // Config object to be passed to Msal on creation
 import { Configuration } from '@azure/msal-browser';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 export const msalConfig: Configuration = {
 	auth: {
-		clientId: process.env.NEXT_PUBLIC_MSAL_CLIENT_ID || 'No value as NEXT_PUBLIC_MSAL_CLIENT_ID',
-		authority: process.env.NEXT_PUBLIC_MSAL_AUTHORITY || 'No value as NEXT_PUBLIC_MSAL_AUTHORITY',
+		clientId: publicRuntimeConfig.NEXT_PUBLIC_MSAL_CLIENT_ID,
+		authority: publicRuntimeConfig.NEXT_PUBLIC_MSAL_AUTHORITY,
 		redirectUri: '/',
 		postLogoutRedirectUri: '/',
 	},
