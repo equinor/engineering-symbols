@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.6](https://github.com/equinor/engineering-symbols/compare/web-v1.2.5...web-v1.2.6) (2023-08-11)
+
+
+### Miscellaneous Chores
+
+* radix pima ([#536](https://github.com/equinor/engineering-symbols/issues/536)) ([960ed12](https://github.com/equinor/engineering-symbols/commit/960ed127644b1ba2effd0257995b6cd74b126fbd))
+
 ## [1.2.5](https://github.com/equinor/engineering-symbols/compare/web-v1.2.4...web-v1.2.5) (2023-08-10)
 
 
