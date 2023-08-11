@@ -7,6 +7,10 @@ spec:
     - name: prod
       build:
         from: master
+  build:
+      secrets:
+        - MSAL_CLIENT_ID
+        - MSAL_AUTHORITY
   components:
     - name: storybook
       publicPort: http
