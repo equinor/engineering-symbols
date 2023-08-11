@@ -6,7 +6,7 @@ const nextConfig = {
 	compiler: {
 		styledComponents: true,
 	},
-	env: {
+	publicRuntimeConfig: {
 		NEXT_PUBLIC_MSAL_CLIENT_ID: process.env.NEXT_PUBLIC_MSAL_CLIENT_ID,
 		NEXT_PUBLIC_MSAL_AUTHORITY: process.env.NEXT_PUBLIC_MSAL_AUTHORITY,
 	},
