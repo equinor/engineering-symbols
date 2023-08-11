@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.9](https://github.com/equinor/engineering-symbols/compare/web-v1.2.8...web-v1.2.9) (2023-08-11)
+
+
+### Bug Fixes
+
+* publicRuntimeConfig pima ([#543](https://github.com/equinor/engineering-symbols/issues/543)) ([f5e9516](https://github.com/equinor/engineering-symbols/commit/f5e95169d65e00ae7a151ee90ec01a9395e16678))
+
 ## [1.2.8](https://github.com/equinor/engineering-symbols/compare/web-v1.2.7...web-v1.2.8) (2023-08-11)
 
 
