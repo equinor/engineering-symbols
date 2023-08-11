@@ -1,12 +1,12 @@
 // Config object to be passed to Msal on creation
 import { Configuration } from '@azure/msal-browser';
 
-import { MSAL_CLIENT_ID, MSAL_AUTHORITY } from '../config.json';
+import config from '../config.json';
 
 export const msalConfig: Configuration = {
 	auth: {
-		clientId: MSAL_CLIENT_ID,
-		authority: MSAL_AUTHORITY,
+		clientId: config.MSAL_CLIENT_ID,
+		authority: config.MSAL_AUTHORITY,
 		redirectUri: '/',
 		postLogoutRedirectUri: '/',
 	},
