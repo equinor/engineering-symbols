@@ -16,5 +16,9 @@ RUN chown -R 1001 /app && chown -R 1001:0 "/.npm"
 USER 1001
 EXPOSE 3000
 
-RUN npm run build
+ARG MSAL_CLIENT_ID
+ARG MSAL_AUTHORITY
+
+RUN NEXT_PUBLIC_MSAL_CLIENT_ID=$(echo $MSAL_CLIENT_ID|base64 -d) && NEXT_PUBLIC_MSAL_AUTHORITY=$(echo $MSAL_AUTHORITY|base64 -d) && npm run build
+
 CMD ["npm", "start"]
