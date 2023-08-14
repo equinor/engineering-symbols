@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.12](https://github.com/equinor/engineering-symbols/compare/web-v1.2.11...web-v1.2.12) (2023-08-14)
+
+
+### Bug Fixes
+
+* radix config add export ([#561](https://github.com/equinor/engineering-symbols/issues/561)) ([00575e7](https://github.com/equinor/engineering-symbols/commit/00575e71abaefc8ec6c62feda22c5635ec20d5c8))
+
 ## [1.2.11](https://github.com/equinor/engineering-symbols/compare/web-v1.2.10...web-v1.2.11) (2023-08-11)
 
 
