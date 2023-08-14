@@ -18,7 +18,7 @@ export const msalConfig: Configuration = {
 
 // Add here scopes for id token to be used at MS Identity Platform endpoints.
 export const loginRequest = {
-	scopes: ['User.Read'],
+	scopes: ['api://7584f051-6987-4c51-861d-77710537bd06/user_impersonation'],
 };
 
 // Add here the endpoints for MS Graph API services you would like to use.

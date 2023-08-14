@@ -4,7 +4,7 @@ import Head from 'next/head';
 
 import { PanelDetailsComponent, SvgComponent, SymbolElement, InformationComponent, useConfirm, InformationComponentTypes } from '../../components';
 
-import { EditPageProps, SymbolsProps } from '../../types';
+import { EditPageProps, SymbolsProps, WebSymbolsProps } from '../../types';
 
 import {
 	PanelPresentationLinesWrapperStyled,
@@ -22,14 +22,14 @@ import {
 import { ContainerStyled } from '../../styles/styles';
 
 import allSymbols from '../../data/symbols.json';
-import { getUniqueId } from '../../helpers';
+import { getUniqueId, useFileUpload } from '../../helpers';
 import { AuthenticatedTemplate } from '@azure/msal-react';
 
 const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [confirmationMessage, setConfirmationMessage] = useState('');
 	const [enableReinitialize, setEnableReinitialize] = useState<boolean>(false);
 	const [informationMessage, setInformationMessage] = useState<InformationComponentTypes>();
-	const [selectedSymbol, setSelectedSymbol] = useState<SymbolsProps | null>();
+	const [selectedSymbol, setSelectedSymbol] = useState<SymbolsProps | null | WebSymbolsProps>();
 
 	const [symbols, setSymbols] = useState<SymbolsProps[]>(allSymbols);
 
@@ -59,162 +59,27 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	useEffect(() => setSymbols(hasSymbolsInLocalStorage() ? getSymbolsFromLocalStorage() : allSymbols), []);
 
-	const convertSvgToObject = (svgElement: Element): object => {
-		const svgData: any = {};
-		svgData.tagName = svgElement.tagName.toLowerCase();
+	const { selectedFile, uploadStatus, error, handleFileChange, svgContent } = useFileUpload();
 
-		// Store attributes
-		const attributes = svgElement.attributes;
-		for (let i = 0; i < attributes.length; i++) {
-			const { name, value } = attributes[i];
-			svgData[name] = value;
+	// console.log(100, 'selectedFile:', selectedFile);
+	// console.log(101, 'uploadStatus:', uploadStatus);
+	// console.log(102, 'error:', error);
+
+	useEffect(() => {
+		console.log(202, 'svgContent:', svgContent);
+		if (svgContent) {
+			// if(svgContent.length >= 1) {
+			setSelectedSymbol(svgContent);
+			console.log(201, 'svgContent:', svgContent);
+			// }
 		}
+	}, [svgContent]);
 
-		// Store child elements
-		const children = svgElement.children;
-		if (children.length > 0) {
-			svgData.children = [];
-			for (let i = 0; i < children.length; i++) {
-				const childElement = children[i];
-				const childData = convertSvgToObject(childElement);
-
-				svgData.children.push(childData);
-			}
-		}
-
-		return svgData;
-	};
-
-	const extractConnectorId = (id: string) => {
-		const matches = id.match(/\d+$/);
-		return matches ? matches[0] : '';
-	};
-
-	const convertInputSvgObjectToAPIStructureObject = (inputObject: any, key: string) => {
-		const viewBox = inputObject.viewBox.split(' ').map(parseFloat);
-		const outputObject = {
-			id: getUniqueId(),
-			key,
-			description: 'None',
-			dateTimeCreated: new Date(),
-			dateTimeUpdated: new Date(),
-			geometry: inputObject.children[0].children[0].d,
-			width: viewBox[2],
-			height: viewBox[3],
-			connectors: inputObject.children[1].children
-				.filter(({ tagName }: any) => tagName === 'circle')
-				.map(({ id, cx, cy, r }: any) => ({
-					id: extractConnectorId(id),
-					relativePosition: {
-						x: parseFloat(cx),
-						y: parseFloat(cy),
-					},
-					// direction: parseFloat(r),
-					// TODO: do it in better way?
-					direction: '90',
-				})),
-		};
-
-		return outputObject;
-	};
-
-	const onChangeFileInput = ({ target }: ChangeEvent<HTMLInputElement>) => {
-		const file = target.files?.[0];
+	const onChangeFileInput = (e: ChangeEvent<HTMLInputElement>) => {
+		handleFileChange(e);
+		console.log(103, 'svgContent:', svgContent);
+		// setSelectedSymbol(svgContent);
 		onPanelReset();
-
-		if (!file || file.type !== 'image/svg+xml') return;
-
-		const reader = new FileReader();
-
-		reader.onload = ({ target }) => {
-			const contents = target?.result;
-			const hasForbiddenElements = checkForbiddenElements(contents as string);
-			const FIND_MORE = 'To find more information, <a href="./documentation" target="_blank">read documentation</a>';
-
-			const setErrorMessage = (message: string) => setInformationMessage({ title: 'Error', message, appearance: 'error' });
-
-			if (typeof contents !== 'string' || hasForbiddenElements) {
-				setErrorMessage(`Svg has forbidden elements, ${FIND_MORE}`);
-				return;
-			}
-
-			const parser = new DOMParser();
-			const svgDocument = parser.parseFromString(contents, 'image/svg+xml');
-			const svgElement = svgDocument.documentElement;
-
-			if (svgElement.tagName.toLowerCase() === 'svg') {
-				const convertedSvgToObject = convertSvgToObject(svgElement);
-				const { tagName, children }: any = convertedSvgToObject;
-				const ANNOTATIONS = 'Annotations';
-				const SYMBOL = 'Symbol';
-				// HEIGHT, WIDTH - can be validate & edit itro panel. Now it based on viewBox
-
-				if (tagName !== 'svg') {
-					setErrorMessage('Allows only svg files');
-					return;
-				}
-
-				const getChildrenSvgIds = children.map((el: any) => el.id);
-
-				if (!getChildrenSvgIds.includes(SYMBOL) && !getChildrenSvgIds.includes(ANNOTATIONS)) {
-					setErrorMessage(`Svg must include ${SYMBOL} & ${ANNOTATIONS} ids. ${FIND_MORE}`);
-					return;
-				}
-
-				const foundSymbols = children.find(({ id }: { id: string }) => id === SYMBOL);
-				const foundAnnotations = children.find(({ id }: { id: string }) => id === ANNOTATIONS);
-
-				if (!foundAnnotations || !foundAnnotations.children || !foundSymbols || !foundSymbols.children) {
-					setErrorMessage(`${ANNOTATIONS} or ${SYMBOL} not found. ${FIND_MORE}`);
-					return;
-				}
-
-				if (foundSymbols.tagName !== 'g' || foundAnnotations.tagName !== 'g') {
-					setErrorMessage(`Allows only 'g' tag for wrapping ${SYMBOL} & ${ANNOTATIONS}. ${FIND_MORE}`);
-					return;
-				}
-
-				if (foundSymbols.children.length !== 1) {
-					setErrorMessage(`Allows only singel path for ${SYMBOL}. ${FIND_MORE}`);
-					return;
-				}
-
-				if (foundSymbols.children[0].tagName !== 'path') {
-					setErrorMessage(`Allows only path for ${SYMBOL}. ${FIND_MORE}`);
-					return;
-				}
-
-				if (foundSymbols.children.length <= 0) {
-					setErrorMessage(`Minimal amount for ${SYMBOL} is 1. ${FIND_MORE}`);
-					return;
-				}
-
-				const isArrayOfCircleObjects = (arr: any) => {
-					const requiredProperties = ['tagName', 'id', 'cx', 'cy', 'r'];
-
-					return arr.reduce((result: any, obj: { hasOwnProperty: (arg0: string) => unknown; tagName: string }) => {
-						return result && requiredProperties.every((prop) => obj.hasOwnProperty(prop)) && obj.tagName === 'circle';
-					}, true);
-				};
-
-				// Check if all objects in the array have the same properties as the first object
-				if (!isArrayOfCircleObjects(foundAnnotations.children)) {
-					setErrorMessage(`Objects in the array have different structures or missing some properties. ${FIND_MORE}`);
-					return;
-				}
-
-				// Convert from convertedSvgToObject to SymbolProps
-				const keyName = file.name.replace('.svg', '');
-				const svgContent = convertInputSvgObjectToAPIStructureObject(convertedSvgToObject, keyName) as unknown as SymbolsProps;
-				console.log('⚡️', 'svgContent:', svgContent);
-				// IF all is good
-				setSelectedSymbol(svgContent);
-			} else {
-				setErrorMessage(`⛔️ ⛔️ ⛔️ Invalid SVG file. ${FIND_MORE}`);
-			}
-		};
-
-		reader.readAsText(file);
 	};
 
 	const onEditSymbol = (symbol: SymbolsProps) => {
@@ -332,6 +197,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 							<PanelPresentationMSLineStyled />
 						</PanelPresentationLinesWrapperStyled>
 						<PanelPresentationContentStyled>
+							{console.log(200, 'selectedSymbol:', selectedSymbol)}
 							{!!selectedSymbol && (
 								<SvgComponent
 									renderConnectors
@@ -341,7 +207,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 									height={250}
 									width={250}
 									fill={theme.fill}
-									path={selectedSymbol.geometry}
+									path={selectedSymbol.paths || selectedSymbol.paths}
 								/>
 							)}
 						</PanelPresentationContentStyled>
@@ -376,7 +242,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 										svgElementsRef={svgElementsRef}
 										width={symbol.width}
 										height={symbol.height}
-										geometry={symbol.geometry}
+										paths={symbol.paths || symbol.paths}
 										id={symbol.id}
 										theme={theme}
 										name={symbol.key}

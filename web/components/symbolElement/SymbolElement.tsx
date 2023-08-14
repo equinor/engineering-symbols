@@ -21,8 +21,8 @@ type SymbolMenyProps = {
 type SymbolElementProps = {
 	svgElementsRef: any;
 	chipsStatus?: ChipsStatusProps;
-	geometry: string;
 	height: number;
+	paths: string | string[];
 	width: number;
 	theme: ColorThemeProps;
 	name: string;
@@ -33,8 +33,8 @@ type SymbolElementProps = {
 export const SymbolElement: React.FunctionComponent<SymbolElementProps> = ({
 	svgElementsRef,
 	chipsStatus,
-	geometry,
 	height,
+	paths,
 	width,
 	theme,
 	name,
@@ -48,7 +48,7 @@ export const SymbolElement: React.FunctionComponent<SymbolElementProps> = ({
 					{chipsStatus && <SymbolElementChipsStyled status={chipsStatus} />}
 					<SymbolElementWrapStyled>
 						<SymbolWrapperStyled ref={(ref) => (svgElementsRef.current[id] = ref)}>
-							<SvgComponent viewBoxHeight={height} viewBoxWidth={width} height={95} width={95} fill={theme.fill} path={geometry} />
+							<SvgComponent viewBoxHeight={height} viewBoxWidth={width} height={95} width={95} fill={theme.fill} path={paths} />
 						</SymbolWrapperStyled>
 
 						<SymbolMenyWrapStyled>

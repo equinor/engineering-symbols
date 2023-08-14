@@ -255,7 +255,7 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 														width={icon.width}
 														meny={symbolMeny(icon)}
 														height={icon.height}
-														geometry={icon.geometry}
+														paths={icon.paths}
 														id={icon.id}
 														theme={theme}
 														name={icon.key}
