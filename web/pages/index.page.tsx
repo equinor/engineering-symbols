@@ -188,7 +188,7 @@ const Home: NextPage<HomePageProps> = ({ theme }) => {
 					</HeroDescriptionStyled>
 
 					<ParallaxContainer>
-						{symbols.map(({ key, paths, width, height }, i) => (
+						{symbols.map(({ key, geometry, width, height }, i) => (
 							<ParallaxItem key={key} style={{ top: getTop(i), left: getLeft(i) }}>
 								<span>{parallaxItemsPostion[i].text}</span>
 								<ParallaxSvgWrapper color={parallaxItemsPostion[i].color}>
@@ -197,7 +197,7 @@ const Home: NextPage<HomePageProps> = ({ theme }) => {
 										height={height}
 										viewBoxWidth={width}
 										viewBoxHeight={height}
-										path={paths}
+										path={geometry}
 										fill={theme.fill}
 									/>
 									<span></span>
