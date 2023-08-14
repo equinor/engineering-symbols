@@ -18,7 +18,8 @@ EXPOSE 3000
 
 ARG MSAL_CLIENT_ID
 ARG MSAL_AUTHORITY
+ARG API_SCOPE
 
-RUN export NEXT_PUBLIC_MSAL_CLIENT_ID=$(echo $MSAL_CLIENT_ID|base64 -d) && export NEXT_PUBLIC_MSAL_AUTHORITY=$(echo $MSAL_AUTHORITY|base64 -d) && npm run build
+RUN export NEXT_PUBLIC_API_SCOPE=$(echo $API_SCOPE|base64 -d) && export NEXT_PUBLIC_MSAL_CLIENT_ID=$(echo $MSAL_CLIENT_ID|base64 -d) && export NEXT_PUBLIC_MSAL_AUTHORITY=$(echo $MSAL_AUTHORITY|base64 -d) && npm run build
 
 CMD ["npm", "start"]

@@ -55,7 +55,7 @@ export type SymbolsDefaultProps = {
 	connectors: ConnectorsProps[];
 };
 
-export type WebSymbolsProps = {
+export type UploadSymbolProps = {
 	id: string;
 	dateTimeCreated?: string;
 	dateTimeUpdated?: string;

@@ -1,10 +1,19 @@
 import { useRef, useState, ChangeEvent, useEffect } from 'react';
+import { AuthenticatedTemplate } from '@azure/msal-react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
-import { PanelDetailsComponent, SvgComponent, SymbolElement, InformationComponent, useConfirm, InformationComponentTypes } from '../../components';
+import {
+	PanelDetailsComponent,
+	SvgComponent,
+	SymbolElement,
+	InformationComponent,
+	useConfirm,
+	InformationComponentTypes,
+	WeatherLoader,
+} from '../../components';
 
-import { EditPageProps, SymbolsProps, WebSymbolsProps } from '../../types';
+import { EditPageProps, SymbolsProps } from '../../types';
 
 import {
 	PanelPresentationLinesWrapperStyled,
@@ -22,16 +31,21 @@ import {
 import { ContainerStyled } from '../../styles/styles';
 
 import allSymbols from '../../data/symbols.json';
-import { getUniqueId, useFileUpload } from '../../helpers';
-import { AuthenticatedTemplate } from '@azure/msal-react';
+import { useFileUpload } from '../../helpers';
+
+const icons = allSymbols.map(({ key, geometry, ...rest }) => ({
+	key,
+	paths: geometry,
+	...rest,
+}));
 
 const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [confirmationMessage, setConfirmationMessage] = useState('');
 	const [enableReinitialize, setEnableReinitialize] = useState<boolean>(false);
 	const [informationMessage, setInformationMessage] = useState<InformationComponentTypes>();
-	const [selectedSymbol, setSelectedSymbol] = useState<SymbolsProps | null | WebSymbolsProps>();
+	const [selectedSymbol, setSelectedSymbol] = useState<SymbolsProps | null>();
 
-	const [symbols, setSymbols] = useState<SymbolsProps[]>(allSymbols);
+	const [symbols, setSymbols] = useState<SymbolsProps[]>(icons);
 
 	const svgElementsRef = useRef([]);
 	const fileInputRef = useRef<HTMLInputElement>();
@@ -57,23 +71,29 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const hasSymbolsInLocalStorage = () => getSymbolsFromLocalStorage() !== null;
 
-	useEffect(() => setSymbols(hasSymbolsInLocalStorage() ? getSymbolsFromLocalStorage() : allSymbols), []);
+	useEffect(() => setSymbols(hasSymbolsInLocalStorage() ? getSymbolsFromLocalStorage() : icons), []);
 
-	const { selectedFile, uploadStatus, error, handleFileChange, svgContent } = useFileUpload();
+	const { selectedFile, uploadStatus, error, handleFileChange, svgContent, isSvgFileLoading } = useFileUpload();
 
 	// console.log(100, 'selectedFile:', selectedFile);
 	// console.log(101, 'uploadStatus:', uploadStatus);
-	// console.log(102, 'error:', error);
+	console.log(102, 'error:', error);
+	console.log(103, 'isSvgFileLoading:', isSvgFileLoading);
 
 	useEffect(() => {
-		console.log(202, 'svgContent:', svgContent);
-		if (svgContent) {
-			// if(svgContent.length >= 1) {
-			setSelectedSymbol(svgContent);
-			console.log(201, 'svgContent:', svgContent);
-			// }
-		}
+		if (!svgContent) return;
+
+		setSelectedSymbol(svgContent);
 	}, [svgContent]);
+
+	useEffect(() => {
+		if (!error) return;
+		setInformationMessage({
+			title: 'Error',
+			message: error,
+			appearance: 'error',
+		});
+	}, [error]);
 
 	const onChangeFileInput = (e: ChangeEvent<HTMLInputElement>) => {
 		handleFileChange(e);
@@ -196,8 +216,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 							<PanelPresentationMRLineStyled />
 							<PanelPresentationMSLineStyled />
 						</PanelPresentationLinesWrapperStyled>
+						{isSvgFileLoading && <WeatherLoader />}
 						<PanelPresentationContentStyled>
-							{console.log(200, 'selectedSymbol:', selectedSymbol)}
 							{!!selectedSymbol && (
 								<SvgComponent
 									renderConnectors
@@ -242,7 +262,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 										svgElementsRef={svgElementsRef}
 										width={symbol.width}
 										height={symbol.height}
-										paths={symbol.paths || symbol.paths}
+										paths={symbol.paths}
 										id={symbol.id}
 										theme={theme}
 										name={symbol.key}

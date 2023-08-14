@@ -1,26 +1,30 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import axios, { AxiosResponse } from 'axios'; // Make sure to install axios or use your preferred HTTP client
+
 import { getMsGraph } from '../utils/MsGraphApiCall';
 import { convertInputSvgObjectToAPIStructureObject } from './convertInputSvgObjectToAPIStructureObject';
-import { WebSymbolsProps } from '../types';
+
+import { UploadSymbolProps } from '../types';
 
 interface FileUploadHookResult {
+	handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
+	isSvgFileLoading: boolean;
+	autoUploadStatus: string;
 	selectedFile: File | null;
 	uploadStatus: string;
-	autoUploadStatus: string;
 	svgContent: any;
 	error: string;
-	handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const API_URL = 'https://dev-engsym-api.azurewebsites.net/symbols';
 
 export const useFileUpload = (): FileUploadHookResult => {
-	const [selectedFile, setSelectedFile] = useState<File | null>(null);
+	const [error, setError] = useState<string>('');
 	const [svgContent, setSvgContent] = useState<any>(null);
+	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 	const [uploadStatus, setUploadStatus] = useState<string>('No file selected.');
 	const [autoUploadStatus, setAutoUploadStatus] = useState<string>('');
-	const [error, setError] = useState<string>('');
+	const [isSvgFileLoading, setIsSvgFileLoading] = useState<boolean>(false);
 
 	useEffect(() => {
 		const uploadFile = async () => {
@@ -28,6 +32,7 @@ export const useFileUpload = (): FileUploadHookResult => {
 				try {
 					setAutoUploadStatus('Uploading...');
 					setError('');
+					setIsSvgFileLoading(true);
 
 					const formData = new FormData();
 					formData.append('svgFile', selectedFile);
@@ -44,17 +49,23 @@ export const useFileUpload = (): FileUploadHookResult => {
 					if (response.status === 200 || response.status === 201) {
 						setAutoUploadStatus('Upload successful.');
 						handleChange();
+						setIsSvgFileLoading(false);
 					} else {
 						setAutoUploadStatus('Upload failed.');
+						setIsSvgFileLoading(false);
 					}
 				} catch (error) {
 					setAutoUploadStatus('An error occurred during upload.');
-					setError('Error uploading file. Please try again.');
+					// setError('Error uploading file. Please try again.');
+					// @ts-ignore
+					setError(error?.message);
 					console.error(error);
+					setIsSvgFileLoading(false);
 				}
 			} else {
 				setAutoUploadStatus('');
 				setError('No file selected.');
+				setIsSvgFileLoading(true);
 			}
 		};
 
@@ -91,23 +102,21 @@ export const useFileUpload = (): FileUploadHookResult => {
 
 	const handleChange = () => {
 		const reader = new FileReader();
-		// console.log(1);
 		reader.onload = ({ target }) => {
-			// console.log(2);
-			const contents = target?.result;
-
+			const contents = target?.result as string;
 			const parser = new DOMParser();
 			const svgDocument = parser.parseFromString(contents, 'image/svg+xml');
-			const svgElement = svgDocument.documentElement;
-			console.log(9, svgElement);
-			const keyName = selectedFile.name.replace('.svg', '');
-			const convertedSvgToObject = convertSvgToObject(svgElement);
-			const svgContent = convertInputSvgObjectToAPIStructureObject(convertedSvgToObject, keyName) as unknown as WebSymbolsProps;
 
-			// console.log(10, 'svgContent:', svgContent)
+			if (selectedFile === null) return;
+
+			const keyName = selectedFile.name.replace('.svg', '');
+			const convertedSvgToObject = convertSvgToObject(svgDocument.documentElement);
+			const svgContent = convertInputSvgObjectToAPIStructureObject(convertedSvgToObject, keyName) as unknown as UploadSymbolProps;
 
 			setSvgContent(svgContent);
 		};
+
+		if (selectedFile === null) return;
 
 		reader.readAsText(selectedFile);
 	};
@@ -125,5 +134,5 @@ export const useFileUpload = (): FileUploadHookResult => {
 		}
 	};
 
-	return { selectedFile, uploadStatus, autoUploadStatus, error, handleFileChange, svgContent };
+	return { selectedFile, uploadStatus, autoUploadStatus, error, handleFileChange, svgContent, isSvgFileLoading };
 };

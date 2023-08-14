@@ -11,6 +11,7 @@ spec:
       secrets:
         - MSAL_CLIENT_ID
         - MSAL_AUTHORITY
+        - API_SCOPE
   components:
     - name: storybook
       publicPort: http
@@ -31,6 +32,7 @@ spec:
       secrets:
         - NEXT_PUBLIC_MSAL_CLIENT_ID
         - NEXT_PUBLIC_MSAL_AUTHORITY
+        - NEXT_PUBLIC_API_SCOPE
   dnsExternalAlias:
     - alias: engineering-symbols.equinor.com
       environment: prod

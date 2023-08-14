@@ -1,4 +1,5 @@
 export * from './symbolElement';
+export * from './weatherLoader';
 export * from './panelDetails';
 export * from './confirmation';
 export * from './information';

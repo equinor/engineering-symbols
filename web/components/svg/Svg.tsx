@@ -12,9 +12,8 @@ export const SvgComponent: React.FunctionComponent<SvgComponentProps> = ({
 	path,
 }): JSX.Element => {
 	const hasConnectors = renderConnectors && connectors && connectors.length > 0;
-	// console.log(12, 'typeof', typeof path === 'string', path);
-
-	const getSymbolPath = () => (path === undefined ? '' : typeof path === 'string' ? <path d={path} /> : path.map((pt: string) => <path d={pt} />));
+	const getSymbolPath = () =>
+		path === undefined ? '' : typeof path === 'string' ? <path d={path} /> : path.map((pt: string, key: number) => <path key={key} d={pt} />);
 
 	return (
 		<SvgWrapStyled>
