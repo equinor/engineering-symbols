@@ -57,8 +57,8 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 			name: 'Height',
 		},
 		{
-			id: 'geometry',
-			name: 'Geometry',
+			id: 'paths',
+			name: 'paths',
 		},
 	];
 

@@ -1,8 +1,19 @@
-import { useRef, useState, ChangeEvent, useEffect } from 'react';
+import { useRef, useState, ChangeEvent, useEffect, useReducer } from 'react';
+import { AuthenticatedTemplate } from '@azure/msal-react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
-import { PanelDetailsComponent, SvgComponent, SymbolElement, InformationComponent, useConfirm, InformationComponentTypes } from '../../components';
+import {
+	InformationComponentTypes,
+	PanelDetailsComponent,
+	InformationComponent,
+	SymbolElement,
+	WeatherLoader,
+	SvgComponent,
+	useConfirm,
+} from '../../components';
+
+import { useFileUpload } from '../../helpers';
 
 import { EditPageProps, SymbolsProps } from '../../types';
 
@@ -22,8 +33,12 @@ import {
 import { ContainerStyled } from '../../styles/styles';
 
 import allSymbols from '../../data/symbols.json';
-import { getUniqueId } from '../../helpers';
-import { AuthenticatedTemplate } from '@azure/msal-react';
+
+const icons = allSymbols.map(({ key, geometry, ...rest }) => ({
+	key,
+	paths: geometry,
+	...rest,
+}));
 
 const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [confirmationMessage, setConfirmationMessage] = useState('');
@@ -31,7 +46,9 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [informationMessage, setInformationMessage] = useState<InformationComponentTypes>();
 	const [selectedSymbol, setSelectedSymbol] = useState<SymbolsProps | null>();
 
-	const [symbols, setSymbols] = useState<SymbolsProps[]>(allSymbols);
+	const [symbols, setSymbols] = useState<SymbolsProps[]>(icons);
+	// Workaround for popup to show same message more that 1 time
+	const [update, forceUpdate] = useReducer((x) => x + 1, 0);
 
 	const svgElementsRef = useRef([]);
 	const fileInputRef = useRef<HTMLInputElement>();
@@ -40,181 +57,36 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onPanelReset = () => setSelectedSymbol(null);
 
-	const checkForbiddenElements = (content: string): boolean => {
-		const forbiddenElements = ['image', 'mask', 'polygon', 'polyline', 'style'];
-
-		for (const element of forbiddenElements) {
-			const regex = new RegExp(`<${element}\\b[^>]*>`, 'gi');
-			if (regex.test(content)) {
-				return true;
-			}
-		}
-
-		return false;
-	};
-
 	const getSymbolsFromLocalStorage = () => JSON.parse(localStorage.getItem('symbols') as string);
 
 	const hasSymbolsInLocalStorage = () => getSymbolsFromLocalStorage() !== null;
 
-	useEffect(() => setSymbols(hasSymbolsInLocalStorage() ? getSymbolsFromLocalStorage() : allSymbols), []);
+	const { error, handleFileChange, svgContent, isSvgFileLoading } = useFileUpload();
 
-	const convertSvgToObject = (svgElement: Element): object => {
-		const svgData: any = {};
-		svgData.tagName = svgElement.tagName.toLowerCase();
+	useEffect(() => setSymbols(hasSymbolsInLocalStorage() ? getSymbolsFromLocalStorage() : icons), []);
 
-		// Store attributes
-		const attributes = svgElement.attributes;
-		for (let i = 0; i < attributes.length; i++) {
-			const { name, value } = attributes[i];
-			svgData[name] = value;
-		}
+	useEffect(() => {
+		if (!svgContent) return;
 
-		// Store child elements
-		const children = svgElement.children;
-		if (children.length > 0) {
-			svgData.children = [];
-			for (let i = 0; i < children.length; i++) {
-				const childElement = children[i];
-				const childData = convertSvgToObject(childElement);
+		setSelectedSymbol(svgContent);
+	}, [svgContent]);
 
-				svgData.children.push(childData);
-			}
-		}
+	useEffect(() => {
+		if (!error) return;
 
-		return svgData;
-	};
+		forceUpdate();
 
-	const extractConnectorId = (id: string) => {
-		const matches = id.match(/\d+$/);
-		return matches ? matches[0] : '';
-	};
+		setInformationMessage({
+			title: 'Error',
+			message: error,
+			appearance: 'error',
+			refresh: update,
+		});
+	}, [error]);
 
-	const convertInputSvgObjectToAPIStructureObject = (inputObject: any, key: string) => {
-		const viewBox = inputObject.viewBox.split(' ').map(parseFloat);
-		const outputObject = {
-			id: getUniqueId(),
-			key,
-			description: 'None',
-			dateTimeCreated: new Date(),
-			dateTimeUpdated: new Date(),
-			geometry: inputObject.children[0].children[0].d,
-			width: viewBox[2],
-			height: viewBox[3],
-			connectors: inputObject.children[1].children
-				.filter(({ tagName }: any) => tagName === 'circle')
-				.map(({ id, cx, cy, r }: any) => ({
-					id: extractConnectorId(id),
-					relativePosition: {
-						x: parseFloat(cx),
-						y: parseFloat(cy),
-					},
-					// direction: parseFloat(r),
-					// TODO: do it in better way?
-					direction: '90',
-				})),
-		};
-
-		return outputObject;
-	};
-
-	const onChangeFileInput = ({ target }: ChangeEvent<HTMLInputElement>) => {
-		const file = target.files?.[0];
+	const onChangeFileInput = (e: ChangeEvent<HTMLInputElement>) => {
+		handleFileChange(e);
 		onPanelReset();
-
-		if (!file || file.type !== 'image/svg+xml') return;
-
-		const reader = new FileReader();
-
-		reader.onload = ({ target }) => {
-			const contents = target?.result;
-			const hasForbiddenElements = checkForbiddenElements(contents as string);
-			const FIND_MORE = 'To find more information, <a href="./documentation" target="_blank">read documentation</a>';
-
-			const setErrorMessage = (message: string) => setInformationMessage({ title: 'Error', message, appearance: 'error' });
-
-			if (typeof contents !== 'string' || hasForbiddenElements) {
-				setErrorMessage(`Svg has forbidden elements, ${FIND_MORE}`);
-				return;
-			}
-
-			const parser = new DOMParser();
-			const svgDocument = parser.parseFromString(contents, 'image/svg+xml');
-			const svgElement = svgDocument.documentElement;
-
-			if (svgElement.tagName.toLowerCase() === 'svg') {
-				const convertedSvgToObject = convertSvgToObject(svgElement);
-				const { tagName, children }: any = convertedSvgToObject;
-				const ANNOTATIONS = 'Annotations';
-				const SYMBOL = 'Symbol';
-				// HEIGHT, WIDTH - can be validate & edit itro panel. Now it based on viewBox
-
-				if (tagName !== 'svg') {
-					setErrorMessage('Allows only svg files');
-					return;
-				}
-
-				const getChildrenSvgIds = children.map((el: any) => el.id);
-
-				if (!getChildrenSvgIds.includes(SYMBOL) && !getChildrenSvgIds.includes(ANNOTATIONS)) {
-					setErrorMessage(`Svg must include ${SYMBOL} & ${ANNOTATIONS} ids. ${FIND_MORE}`);
-					return;
-				}
-
-				const foundSymbols = children.find(({ id }: { id: string }) => id === SYMBOL);
-				const foundAnnotations = children.find(({ id }: { id: string }) => id === ANNOTATIONS);
-
-				if (!foundAnnotations || !foundAnnotations.children || !foundSymbols || !foundSymbols.children) {
-					setErrorMessage(`${ANNOTATIONS} or ${SYMBOL} not found. ${FIND_MORE}`);
-					return;
-				}
-
-				if (foundSymbols.tagName !== 'g' || foundAnnotations.tagName !== 'g') {
-					setErrorMessage(`Allows only 'g' tag for wrapping ${SYMBOL} & ${ANNOTATIONS}. ${FIND_MORE}`);
-					return;
-				}
-
-				if (foundSymbols.children.length !== 1) {
-					setErrorMessage(`Allows only singel path for ${SYMBOL}. ${FIND_MORE}`);
-					return;
-				}
-
-				if (foundSymbols.children[0].tagName !== 'path') {
-					setErrorMessage(`Allows only path for ${SYMBOL}. ${FIND_MORE}`);
-					return;
-				}
-
-				if (foundSymbols.children.length <= 0) {
-					setErrorMessage(`Minimal amount for ${SYMBOL} is 1. ${FIND_MORE}`);
-					return;
-				}
-
-				const isArrayOfCircleObjects = (arr: any) => {
-					const requiredProperties = ['tagName', 'id', 'cx', 'cy', 'r'];
-
-					return arr.reduce((result: any, obj: { hasOwnProperty: (arg0: string) => unknown; tagName: string }) => {
-						return result && requiredProperties.every((prop) => obj.hasOwnProperty(prop)) && obj.tagName === 'circle';
-					}, true);
-				};
-
-				// Check if all objects in the array have the same properties as the first object
-				if (!isArrayOfCircleObjects(foundAnnotations.children)) {
-					setErrorMessage(`Objects in the array have different structures or missing some properties. ${FIND_MORE}`);
-					return;
-				}
-
-				// Convert from convertedSvgToObject to SymbolProps
-				const keyName = file.name.replace('.svg', '');
-				const svgContent = convertInputSvgObjectToAPIStructureObject(convertedSvgToObject, keyName) as unknown as SymbolsProps;
-				console.log('⚡️', 'svgContent:', svgContent);
-				// IF all is good
-				setSelectedSymbol(svgContent);
-			} else {
-				setErrorMessage(`⛔️ ⛔️ ⛔️ Invalid SVG file. ${FIND_MORE}`);
-			}
-		};
-
-		reader.readAsText(file);
 	};
 
 	const onEditSymbol = (symbol: SymbolsProps) => {
@@ -331,6 +203,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 							<PanelPresentationMRLineStyled />
 							<PanelPresentationMSLineStyled />
 						</PanelPresentationLinesWrapperStyled>
+						{isSvgFileLoading && <WeatherLoader />}
 						<PanelPresentationContentStyled>
 							{!!selectedSymbol && (
 								<SvgComponent
@@ -341,7 +214,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 									height={250}
 									width={250}
 									fill={theme.fill}
-									path={selectedSymbol.geometry}
+									path={selectedSymbol.paths}
 								/>
 							)}
 						</PanelPresentationContentStyled>
@@ -376,7 +249,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 										svgElementsRef={svgElementsRef}
 										width={symbol.width}
 										height={symbol.height}
-										geometry={symbol.geometry}
+										paths={symbol.paths}
 										id={symbol.id}
 										theme={theme}
 										name={symbol.key}

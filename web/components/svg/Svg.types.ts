@@ -13,5 +13,5 @@ export type SvgComponentProps = {
 	rotate?: number;
 	width: number;
 	fill: string;
-	path: string;
+	path: string | string[];
 };

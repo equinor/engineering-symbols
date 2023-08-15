@@ -33,10 +33,11 @@ import { ContainerStyled } from '../../styles/styles';
 const FIXTURE_CATEGORIES = ['Party', 'Superheroes', 'Circulation', 'Pool Party', 'Coachella', 'Isolation', 'Rainbow', 'Pop Art', 'Disco', 'Duck'];
 // Only for list of the names
 // const iconNames = Object.entries(symbols).map(([name]) => ({ name }));
-const icons = symbols.map(({ key, ...rest }) => ({
+const icons = symbols.map(({ key, geometry, ...rest }) => ({
 	key,
 	// category: FIXTURE_CATEGORIES[Math.floor(Math.random() * (9 - 1))],
 	category: FIXTURE_CATEGORIES[Math.floor(Math.random() * (9 + 1))],
+	paths: geometry,
 	...rest,
 }));
 // Merge arrays based on same name key to have category value inside
@@ -255,7 +256,7 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 														width={icon.width}
 														meny={symbolMeny(icon)}
 														height={icon.height}
-														geometry={icon.geometry}
+														paths={icon.paths}
 														id={icon.id}
 														theme={theme}
 														name={icon.key}

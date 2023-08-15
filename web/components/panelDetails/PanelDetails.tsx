@@ -36,7 +36,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 	symbols,
 	symbol,
 }): JSX.Element => {
-	const { key, description, width, height, geometry, connectors } = symbol;
+	const { key, description, width, height, paths, connectors } = symbol;
 
 	const formRef = useRef<FormikProps<any>>(null);
 
@@ -82,7 +82,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 							description,
 							width,
 							height,
-							geometry,
+							paths,
 							dateTimeUpdated: new Date(),
 							symbilId: getUniqueId(),
 							connectors,

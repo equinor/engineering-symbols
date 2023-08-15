@@ -49,10 +49,23 @@ export type SymbolsDefaultProps = {
 	id: string;
 	dateTimeCreated?: string;
 	dateTimeUpdated?: string;
-	geometry: string;
+	paths: string;
 	width: number;
 	height: number;
 	connectors: ConnectorsProps[];
+};
+
+export type UploadSymbolProps = {
+	id: string;
+	dateTimeCreated?: string;
+	dateTimeUpdated?: string;
+	paths: string | string[];
+	width: number;
+	height: number;
+	connectors: ConnectorsProps[];
+	key: string;
+	state?: ChipsStatusProps;
+	description?: string;
 };
 
 export interface IconProps extends SymbolsProps {
