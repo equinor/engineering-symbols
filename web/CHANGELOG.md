@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.3.0](https://github.com/equinor/engineering-symbols/compare/web-v1.2.12...web-v1.3.0) (2023-08-15)
+
+
+### Features
+
+* upload svg ([#563](https://github.com/equinor/engineering-symbols/issues/563)) ([29ef84c](https://github.com/equinor/engineering-symbols/commit/29ef84c2f0507effc4d291e97ae9a329d4a78dd0))
+
+
+### Bump package
+
+* **web:** bump @next/mdx from 13.2.4 to 13.4.13 in /web ([#549](https://github.com/equinor/engineering-symbols/issues/549)) ([72b3954](https://github.com/equinor/engineering-symbols/commit/72b395482448cc00015216d6f9a07a6ff39ef1c0))
+* **web:** bump @svgr/webpack from 7.0.0 to 8.0.1 in /web ([#550](https://github.com/equinor/engineering-symbols/issues/550)) ([ace3a17](https://github.com/equinor/engineering-symbols/commit/ace3a175e5d56a221cf0021f858841098d1e0215))
+* **web:** bump @types/react-dom from 18.0.11 to 18.2.7 in /web ([#553](https://github.com/equinor/engineering-symbols/issues/553)) ([4a489c2](https://github.com/equinor/engineering-symbols/commit/4a489c2fbf914516fd9396f4aed8ed04a7423c07))
+* **web:** bump eslint from 8.46.0 to 8.47.0 in /web ([#551](https://github.com/equinor/engineering-symbols/issues/551)) ([8b0f7b6](https://github.com/equinor/engineering-symbols/commit/8b0f7b61d59b17e895b9f967fc65f4d7ccddf35b))
+* **web:** bump typed.js from 2.0.15 to 2.0.16 in /web ([#552](https://github.com/equinor/engineering-symbols/issues/552)) ([ffec9a9](https://github.com/equinor/engineering-symbols/commit/ffec9a9003cd2a4f15203733e3dc7735ab0bed5a))
+
 ## [1.2.12](https://github.com/equinor/engineering-symbols/compare/web-v1.2.11...web-v1.2.12) (2023-08-14)
 
 
