@@ -51,6 +51,7 @@ export const useFileUpload = (): FileUploadHookResult => {
 						handleChange();
 						setIsSvgFileLoading(false);
 					} else {
+						setSelectedFile(null);
 						setAutoUploadStatus('Upload failed.');
 						setIsSvgFileLoading(false);
 					}
@@ -61,11 +62,13 @@ export const useFileUpload = (): FileUploadHookResult => {
 					setError(error?.message);
 					console.error(error);
 					setIsSvgFileLoading(false);
+					setSelectedFile(null);
 				}
 			} else {
 				setAutoUploadStatus('');
 				setError('No file selected.');
 				setIsSvgFileLoading(true);
+				setSelectedFile(null);
 			}
 		};
 
@@ -123,6 +126,7 @@ export const useFileUpload = (): FileUploadHookResult => {
 
 	const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
+
 		if (file && file.type === 'image/svg+xml') {
 			setSelectedFile(file);
 			setUploadStatus('File selected. Ready to upload.');
@@ -132,6 +136,8 @@ export const useFileUpload = (): FileUploadHookResult => {
 			setUploadStatus('No file selected.');
 			setError('Invalid file format. Please select an SVG file.');
 		}
+
+		event.target.value = '';
 	};
 
 	return { selectedFile, uploadStatus, autoUploadStatus, error, handleFileChange, svgContent, isSvgFileLoading };

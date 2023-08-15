@@ -1,17 +1,19 @@
-import { useRef, useState, ChangeEvent, useEffect } from 'react';
+import { useRef, useState, ChangeEvent, useEffect, useReducer } from 'react';
 import { AuthenticatedTemplate } from '@azure/msal-react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
 import {
-	PanelDetailsComponent,
-	SvgComponent,
-	SymbolElement,
-	InformationComponent,
-	useConfirm,
 	InformationComponentTypes,
+	PanelDetailsComponent,
+	InformationComponent,
+	SymbolElement,
 	WeatherLoader,
+	SvgComponent,
+	useConfirm,
 } from '../../components';
+
+import { useFileUpload } from '../../helpers';
 
 import { EditPageProps, SymbolsProps } from '../../types';
 
@@ -31,7 +33,6 @@ import {
 import { ContainerStyled } from '../../styles/styles';
 
 import allSymbols from '../../data/symbols.json';
-import { useFileUpload } from '../../helpers';
 
 const icons = allSymbols.map(({ key, geometry, ...rest }) => ({
 	key,
@@ -46,6 +47,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [selectedSymbol, setSelectedSymbol] = useState<SymbolsProps | null>();
 
 	const [symbols, setSymbols] = useState<SymbolsProps[]>(icons);
+	// Workaround for popup to show same message more that 1 time
+	const [update, forceUpdate] = useReducer((x) => x + 1, 0);
 
 	const svgElementsRef = useRef([]);
 	const fileInputRef = useRef<HTMLInputElement>();
@@ -54,31 +57,13 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onPanelReset = () => setSelectedSymbol(null);
 
-	const checkForbiddenElements = (content: string): boolean => {
-		const forbiddenElements = ['image', 'mask', 'polygon', 'polyline', 'style'];
-
-		for (const element of forbiddenElements) {
-			const regex = new RegExp(`<${element}\\b[^>]*>`, 'gi');
-			if (regex.test(content)) {
-				return true;
-			}
-		}
-
-		return false;
-	};
-
 	const getSymbolsFromLocalStorage = () => JSON.parse(localStorage.getItem('symbols') as string);
 
 	const hasSymbolsInLocalStorage = () => getSymbolsFromLocalStorage() !== null;
 
+	const { error, handleFileChange, svgContent, isSvgFileLoading } = useFileUpload();
+
 	useEffect(() => setSymbols(hasSymbolsInLocalStorage() ? getSymbolsFromLocalStorage() : icons), []);
-
-	const { selectedFile, uploadStatus, error, handleFileChange, svgContent, isSvgFileLoading } = useFileUpload();
-
-	// console.log(100, 'selectedFile:', selectedFile);
-	// console.log(101, 'uploadStatus:', uploadStatus);
-	console.log(102, 'error:', error);
-	console.log(103, 'isSvgFileLoading:', isSvgFileLoading);
 
 	useEffect(() => {
 		if (!svgContent) return;
@@ -88,17 +73,19 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	useEffect(() => {
 		if (!error) return;
+
+		forceUpdate();
+
 		setInformationMessage({
 			title: 'Error',
 			message: error,
 			appearance: 'error',
+			refresh: update,
 		});
 	}, [error]);
 
 	const onChangeFileInput = (e: ChangeEvent<HTMLInputElement>) => {
 		handleFileChange(e);
-		console.log(103, 'svgContent:', svgContent);
-		// setSelectedSymbol(svgContent);
 		onPanelReset();
 	};
 
@@ -227,7 +214,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 									height={250}
 									width={250}
 									fill={theme.fill}
-									path={selectedSymbol.paths || selectedSymbol.paths}
+									path={selectedSymbol.paths}
 								/>
 							)}
 						</PanelPresentationContentStyled>
