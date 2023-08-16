@@ -5,6 +5,7 @@ import { ButtonStyled } from './styles';
 interface ButtonComponentProps extends ComponentPropsWithoutRef<'button'> {
 	appearance?: 'secondary';
 	children: ReactNode;
+	hasError?: boolean;
 	isWide?: boolean;
 	size?: 's';
 }

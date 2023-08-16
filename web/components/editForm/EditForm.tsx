@@ -1,5 +1,5 @@
-import { FunctionComponent } from 'react';
-import { Form, Field, ErrorMessage, FieldArray, useFormikContext } from 'formik';
+import { FunctionComponent, useEffect } from 'react';
+import { Form, Field, ErrorMessage, FieldArray, useFormikContext, FormikErrors } from 'formik';
 
 import { ButtonComponent } from '../button';
 
@@ -13,6 +13,7 @@ import {
 	EditFromElementStyled,
 	ErrorMessageStyled,
 } from './styles';
+import { isObjEmpty } from '../../helpers';
 
 // SymbolsProps
 type EditFormComponentProps = {
@@ -30,7 +31,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 	const { values, setValues } = useFormikContext<any>();
 
 	const handleRemoveConnector = (id: string) => {
-		if (!values) return;
+		if (!values && !isObjEmpty(values.connectors)) return;
 
 		const updatedConnectors = values.connectors.filter((connector: SymbolConnector) => connector.id !== id);
 		const updatedSymbol = { ...values, connectors: updatedConnectors };
@@ -106,43 +107,51 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 					<EditFromElement {...elems} />
 				</div>
 			))}
-
 			<p>Connectors</p>
 			<FieldArray name="connectors">
-				{({ push }) => (
-					<>
-						{values.connectors.map(({ id }: SymbolConnector, i: number) => (
-							<EditFromElementsStyled key={id}>
-								{formConnectorElements(i).map((elems) => (
-									<div key={elems.id}>
-										<EditFromElement {...elems} />
-									</div>
-								))}
+				{({ push }) => {
+					const isConnectorsEmpty = isObjEmpty(values.connectors);
+					const filteredConnectors = !isConnectorsEmpty && values.connectors.filter((x: any) => x !== undefined);
 
-								<EditFromRemoveConnectorStyled type="button" onClick={() => handleRemoveConnector(id)}>
-									Remove Connector
-								</EditFromRemoveConnectorStyled>
-							</EditFromElementsStyled>
-						))}
-						<EditFromAddConnectorButton>
-							<ButtonComponent
-								isWide
-								type="button"
-								onClick={() =>
-									push({
-										id: '',
-										relativePosition: {
-											x: '',
-											y: '',
-										},
-										direction: '',
-									})
-								}>
-								Add Connector
-							</ButtonComponent>
-						</EditFromAddConnectorButton>
-					</>
-				)}
+					return (
+						<>
+							{isConnectorsEmpty ? (
+								<></>
+							) : (
+								filteredConnectors.map(({ id }: SymbolConnector, i: number) => (
+									<EditFromElementsStyled key={id}>
+										{formConnectorElements(i).map((elems) => (
+											<div key={elems.id}>
+												<EditFromElement {...elems} />
+											</div>
+										))}
+
+										<EditFromRemoveConnectorStyled type="button" onClick={() => handleRemoveConnector(id)}>
+											Remove Connector
+										</EditFromRemoveConnectorStyled>
+									</EditFromElementsStyled>
+								))
+							)}
+							<EditFromAddConnectorButton>
+								<ButtonComponent
+									isWide
+									type="button"
+									onClick={() =>
+										push({
+											id: 1,
+											relativePosition: {
+												x: 0,
+												y: 0,
+											},
+											direction: '',
+										})
+									}>
+									Add Connector
+								</ButtonComponent>
+							</EditFromAddConnectorButton>
+						</>
+					);
+				}}
 			</FieldArray>
 
 			{/* +++ metadata? */}

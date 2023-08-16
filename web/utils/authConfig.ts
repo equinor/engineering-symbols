@@ -1,21 +1,16 @@
 // Config object to be passed to Msal on creation
-import { BrowserAuthOptions, Configuration } from '@azure/msal-browser';
+import { Configuration } from '@azure/msal-browser';
 import getConfig from 'next/config';
 
 const { publicRuntimeConfig } = getConfig();
-
-interface MsalAuthConfigProps extends BrowserAuthOptions {
-	scopes: string;
-}
 
 export const msalConfig: Configuration = {
 	auth: {
 		clientId: publicRuntimeConfig.NEXT_PUBLIC_MSAL_CLIENT_ID,
 		authority: publicRuntimeConfig.NEXT_PUBLIC_MSAL_AUTHORITY,
-		scopes: publicRuntimeConfig.NEXT_PUBLIC_API_SCOPE,
 		redirectUri: '/',
 		postLogoutRedirectUri: '/',
-	} as MsalAuthConfigProps,
+	},
 	system: {
 		allowNativeBroker: false, // Disables WAM Broker
 	},

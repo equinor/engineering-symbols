@@ -1,10 +1,10 @@
-import { FunctionComponent, useRef } from 'react';
-import { Formik, FormikProps } from 'formik';
+import { FunctionComponent, useRef, useState } from 'react';
+import { Formik, FormikErrors, FormikProps } from 'formik';
 
 import { ButtonComponent } from '../button';
 import { EditFormComponent } from '../editForm';
 
-import { getUniqueId } from '../../helpers';
+import { getUniqueId, isObjEmpty } from '../../helpers';
 
 import { SymbolsProps } from '../../types';
 
@@ -18,14 +18,6 @@ type PanelDetailsComponentProps = {
 	symbols: SymbolsProps[];
 	symbol: SymbolsProps;
 };
-
-type FormErrorsType = {
-	connector?: string;
-	height?: string;
-	width?: string;
-	key?: string;
-};
-
 const isDivisibleBy24 = (value: number) => value % 24 === 0;
 
 export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps> = ({
@@ -37,6 +29,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 	symbol,
 }): JSX.Element => {
 	const { key, description, width, height, paths, connectors } = symbol;
+	const [hasFormError, setHasFormError] = useState<boolean>(false);
 
 	const formRef = useRef<FormikProps<any>>(null);
 
@@ -67,7 +60,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 
 				<EditFromStyled>
 					<PanelDetailsButtons>
-						<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()}>
+						<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()} hasError={hasFormError}>
 							Save
 						</ButtonComponent>
 						<ButtonComponent size="s" onClick={() => onClosePanel()} appearance="secondary">
@@ -88,7 +81,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 							connectors,
 						}}
 						validate={({ width, height, key }) => {
-							const errors: FormErrorsType = {};
+							const errors: FormikErrors<any> = {};
 							// Unique key
 
 							// Connector ID
@@ -108,6 +101,8 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 							}
 
 							// connectors.map(({ id }) => !isUniqueID(connectors, 'id', id) ? errors.connector = 'Connector must have unique ID' : '')
+
+							setHasFormError(!isObjEmpty(errors));
 
 							return errors;
 						}}
