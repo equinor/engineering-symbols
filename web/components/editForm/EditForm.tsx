@@ -28,7 +28,7 @@ type FormElementsTypes = {
 };
 
 export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ updateSymbol, formChange }): JSX.Element => {
-	const { values, setValues, errors } = useFormikContext<any>();
+	const { values, setValues } = useFormikContext<any>();
 
 	const handleRemoveConnector = (id: string) => {
 		if (!values && !isObjEmpty(values.connectors)) return;
@@ -39,8 +39,6 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 		setValues(updatedSymbol);
 		updateSymbol(updatedSymbol);
 	};
-
-	// useEffect(() => errorChange(errors), [errors])
 
 	const formElements: FormElementsTypes[] = [
 		{
