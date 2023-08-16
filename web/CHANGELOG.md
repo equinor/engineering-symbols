@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/equinor/engineering-symbols/compare/web-v1.3.0...web-v1.3.1) (2023-08-16)
+
+
+### Bug Fixes
+
+* api scope & svg uploding ([#565](https://github.com/equinor/engineering-symbols/issues/565)) ([a563513](https://github.com/equinor/engineering-symbols/commit/a563513023fedb20628d9bc1766a2e098728b825))
+
 ## [1.3.0](https://github.com/equinor/engineering-symbols/compare/web-v1.2.12...web-v1.3.0) (2023-08-15)
 
 
