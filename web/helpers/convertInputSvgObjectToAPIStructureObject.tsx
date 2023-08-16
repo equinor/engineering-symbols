@@ -1,3 +1,5 @@
+import { isObjEmpty } from './isObjEmpty';
+
 type AnnotationsConnectorProps = {
 	id: number;
 	x: number;
@@ -64,7 +66,13 @@ export const convertInputSvgObjectToAPIStructureObject = (inputObject: any, key:
 	const viewBox = inputObject.viewBox.split(' ').map(parseFloat);
 	const { symbol, annotations } = findObjectsByIds(inputObject) as any;
 
-	console.log('---------------', 'els:', symbol, annotations);
+	const connectors = isObjEmpty(annotations)
+		? []
+		: annotations.annotations.map(({ id, x, y }: AnnotationsConnectorProps) => ({
+				id,
+				relativePosition: { x, y },
+				direction: '90',
+		  }));
 
 	return {
 		id: 'TBA',
@@ -76,11 +84,7 @@ export const convertInputSvgObjectToAPIStructureObject = (inputObject: any, key:
 		paths: symbol.paths,
 		width: viewBox[2],
 		height: viewBox[3],
-		connectors: annotations.annotations.map(({ id, x, y }: AnnotationsConnectorProps) => ({
-			id,
-			relativePosition: { x, y },
-			direction: '90',
-		})),
+		connectors,
 		// connectors: inputObject.children[1].children[0].children
 		// 	.filter(({ tagName }: any) => tagName === 'circle')
 		// 	.map(({ id, cx, cy, r }: any) => ({
