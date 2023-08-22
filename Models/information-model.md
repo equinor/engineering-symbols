@@ -4,7 +4,7 @@
 
 In this document we intend for `symbol` to be interpreted as an artifact intended to be represent physical engineering objects in digital drawing surfaces and presentation surfaces.
 
-### **A Valve**
+### **A Valve symbol**
 
 ![A valve](/Models/docs/PV003B-LargeConnectors.svg)
 
