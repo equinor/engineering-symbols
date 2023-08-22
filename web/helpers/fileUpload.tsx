@@ -1,25 +1,29 @@
 import { useState, useEffect, ChangeEvent } from 'react';
+import { useRouter } from 'next/router';
 
 import { convertInputSvgObjectToAPIStructureObject } from './convertInputSvgObjectToAPIStructureObject';
 
 import { UploadSymbolProps } from '../types';
 
-import { validateSvgFileAction, SymbolUploadStore } from '../store';
+import { validateSvgFileAction, SymbolUploadStore, ISymbolUploadStore } from '../store';
 
-interface FileUploadHookResult {
+export type FileUploadErrorType = {
+	message: string;
+	title?: string;
+};
+
+interface FileUploadHookResultType {
 	handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
 	isSvgFileLoading: boolean;
 	autoUploadStatus: string;
 	selectedFile: File | null;
 	uploadStatus: string;
 	svgContent: any;
-	error: string;
+	error: FileUploadErrorType | null | undefined;
 }
 
-const API_URL = 'https://dev-engsym-api.azurewebsites.net/symbols';
-
-export const useFileUpload = (): FileUploadHookResult => {
-	const [error, setError] = useState<string>('');
+export const useFileUpload = (): FileUploadHookResultType => {
+	const [error, setError] = useState<FileUploadErrorType | null>();
 	const [svgContent, setSvgContent] = useState<any>(null);
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 	const [uploadStatus, setUploadStatus] = useState<string>('No file selected.');
@@ -30,11 +34,13 @@ export const useFileUpload = (): FileUploadHookResult => {
 	const { validateSvgQuery } = SymbolUploadStore.useState();
 	const { status, data } = validateSvgQuery;
 
-	validateSvgFileAction.useBeckon({ query: formData });
+	const dynamicRoute = useRouter().asPath;
+
+	const [finishValidateSvgFile, el] = validateSvgFileAction.useBeckon({ query: formData });
 
 	const uploadFile = (file: File) => {
 		setAutoUploadStatus('Uploading...');
-		setError('');
+		setError(null);
 		setIsSvgFileLoading(true);
 
 		const formData = new FormData();
@@ -44,7 +50,8 @@ export const useFileUpload = (): FileUploadHookResult => {
 	};
 
 	useEffect(() => {
-		console.log(status);
+		console.log('👉', 'status:', status, finishValidateSvgFile, formData);
+		if (!finishValidateSvgFile) return;
 
 		if (status === 200 || status === 201) {
 			setAutoUploadStatus('Upload successful.');
@@ -53,15 +60,16 @@ export const useFileUpload = (): FileUploadHookResult => {
 		}
 
 		if (status === 400) {
-			console.log(111, data);
+			console.log('👉', 'data:', data);
 			setSelectedFile(null);
 			setAutoUploadStatus('Upload failed.');
 			setIsSvgFileLoading(false);
-			setFormData(null);
 
-			setError(`${data.title}: ${data.detail}`);
+			setError({ title: data.title, message: data.detail });
 		}
-	}, [status]);
+
+		setFormData(null);
+	}, [finishValidateSvgFile]);
 
 	const convertSvgToObject = (svgElement: Element): object => {
 		const svgData: any = {};
@@ -117,16 +125,23 @@ export const useFileUpload = (): FileUploadHookResult => {
 			setSelectedFile(file);
 			uploadFile(file);
 			setUploadStatus('File selected. Ready to upload.');
-			setError('');
+			setError(null);
 		} else {
 			setFormData(null);
 			setSelectedFile(null);
 			setUploadStatus('No file selected.');
-			setError('Invalid file format. Please select an SVG file.');
+			setError({ title: 'SVG erorr', message: 'Invalid file format. Please select an SVG file.' });
 		}
 
 		event.target.value = '';
 	};
+
+	useEffect(() => {
+		// Dynamic router to reset the state of validateSvgQuery
+		SymbolUploadStore.update((s: ISymbolUploadStore) => {
+			s.validateSvgQuery = {};
+		});
+	}, [dynamicRoute]);
 
 	return { selectedFile, uploadStatus, autoUploadStatus, error, handleFileChange, svgContent, isSvgFileLoading };
 };

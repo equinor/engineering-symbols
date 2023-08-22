@@ -1,5 +1,5 @@
 import { createAsyncAction, errorResult, successResult } from 'pullstate';
-import { uploadSvgFile, symbolsQuery } from '../../api/API';
+import { uploadSvgFile, getSymbolsQuery } from '../../api/API';
 
 import { ISymbolStore, ISymbolUploadStore, SymbolUploadStore, SymbolStore } from './SymbolsStore';
 
@@ -9,11 +9,9 @@ export const validateSvgFileAction = createAsyncAction(
 			return errorResult([], 'Missing query');
 		}
 
-		const data = await uploadSvgFile(query);
+		const validateSvgQuery = await uploadSvgFile(query);
 
-		return successResult({
-			validateSvgQuery: data,
-		});
+		return successResult({ validateSvgQuery });
 	},
 	{
 		postActionHook: ({ result }) => {
@@ -29,11 +27,9 @@ export const validateSvgFileAction = createAsyncAction(
 
 export const getSymbolsQueryAction = createAsyncAction(
 	async () => {
-		const data = await symbolsQuery();
+		const symbolsQuery = await getSymbolsQuery();
 
-		return successResult({
-			symbolsQuery: data.data,
-		});
+		return successResult({ symbolsQuery });
 	},
 	{
 		postActionHook: ({ result }) => {
