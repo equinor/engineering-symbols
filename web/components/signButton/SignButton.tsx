@@ -10,6 +10,10 @@ import { SignButtonStyled } from './styles';
 export const SignButtonComponent = () => {
 	const { instance, inProgress } = useMsal();
 
+	const user = instance.getActiveAccount();
+
+	console.log(1234, user?.idTokenClaims?.roles);
+
 	const isAuthenticated = useIsAuthenticated();
 
 	const handleLogin = () => {
