@@ -136,7 +136,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 		setInformationMessage({
 			title: 'Thank you',
-			message: 'Your symbol has been submit for review',
+			message: 'Your symbol has been submited for review',
 			appearance: 'success',
 		});
 	};
