@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="100%" height="100%" viewBox="-530 -430 860 860">
+ <title>Zarankiewicz_K4_7</title>
+ <desc>A crossing-minimal drawing of the complete bipartite graph K4,7 with 18 crossings (red dots), solving Tur&#225;n's brick factory problem for parameters (4,7), by CMG Lee.</desc>
+ <style type="text/css">
+.main { font-family:Helvetica,Arial,sans-serif; font-size:72px; text-anchor:middle;
+        fill:none; stroke:#000000; stroke-width:3; stroke-linejoin:round; }
+ </style>
+ <defs>
+  <circle id="node_x"   cx="0" cy="0" r="20" fill="#0099ff"/>
+  <circle id="node_y"   cx="0" cy="0" r="20" fill="#ffcc00"/>
+  <circle id="crossing" cx="0" cy="0" r="10" fill="#ff0000" stroke="none"/>
+  <g id="quarter">
+   <use xlink:href="#crossing" transform="translate( 67,133)"/>
+   <use xlink:href="#crossing" transform="translate( 61,158)"/>
+   <use xlink:href="#crossing" transform="translate(150,100)"/>
+   <path d="M 0,400 L 100,0 L 0,200 L 200,0 L 0,400 L 300,0 L 0,200"/>
+   <use xlink:href="#node_x"   transform="translate(100,  0)"/>
+   <use xlink:href="#node_x"   transform="translate(200,  0)"/>
+   <use xlink:href="#node_x"   transform="translate(300,  0)"/>
+   <use xlink:href="#node_y"   transform="translate(  0,200)"/>
+   <use xlink:href="#node_y"   transform="translate(  0,400)"/>
+  </g>
+  <g id="half">
+   <use xlink:href="#crossing" transform="translate( 56,179)"/>
+   <use xlink:href="#crossing" transform="translate(125,150)"/>
+   <use xlink:href="#crossing" transform="translate(215,114)"/>
+   <path d="M 0,400 L 500,0 L 0,200"/>
+   <use xlink:href="#node_x"   transform="translate(500,  0)"/>
+   <use xlink:href="#quarter"/>
+   <use xlink:href="#quarter"  transform="scale(-1, 1)"/>
+  </g>
+ </defs>
+ <circle cx="0" cy="0" r="99999" fill="#ffffff"/>
+ <g class="main">
+  <use xlink:href="#half" transform="scale(-1, 1)"/>
+  <use xlink:href="#half" transform="scale(-1,-1)"/>
+ </g>
+</svg>

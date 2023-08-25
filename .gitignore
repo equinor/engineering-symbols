@@ -34,3 +34,4 @@ package/.idea
 npm-debug.log*
 
 .idea
+.vscode/settings.json
