@@ -44,7 +44,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [confirmationMessage, setConfirmationMessage] = useState('');
 	const [enableReinitialize, setEnableReinitialize] = useState<boolean>(false);
 	const [informationMessage, setInformationMessage] = useState<InformationComponentTypes>();
-	const [selectedSymbol, setSelectedSymbol] = useState<SymbolsProps | null>();
+	const [selectedSymbol, setSelectedSymbol] = useState<SymbolsProps | null>(null);
 
 	const [symbols, setSymbols] = useState<SymbolsProps[]>(icons);
 	// Workaround for popup to show same message more that 1 time
@@ -77,8 +77,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		forceUpdate();
 
 		setInformationMessage({
-			title: 'Error',
-			message: error,
+			title: error.title,
+			message: error.message,
 			appearance: 'error',
 			refresh: update,
 		});
@@ -136,7 +136,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 		setInformationMessage({
 			title: 'Thank you',
-			message: 'Your symbol has been submit for review',
+			message: 'Your symbol has been submited for review',
 			appearance: 'success',
 		});
 	};

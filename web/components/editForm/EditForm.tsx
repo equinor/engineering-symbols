@@ -1,5 +1,5 @@
-import { FunctionComponent, useEffect } from 'react';
-import { Form, Field, ErrorMessage, FieldArray, useFormikContext, FormikErrors } from 'formik';
+import { FunctionComponent } from 'react';
+import { Form, Field, ErrorMessage, FieldArray, useFormikContext } from 'formik';
 
 import { ButtonComponent } from '../button';
 
@@ -63,7 +63,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 		},
 	];
 
-	const formConnectorElements = (i: number): FormElementsTypes[] => [
+	const getFormConnectorElements = (i: number): FormElementsTypes[] => [
 		{
 			id: `connectors[${i}].id`,
 			name: 'Id',
@@ -120,7 +120,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 							) : (
 								filteredConnectors.map(({ id }: SymbolConnector, i: number) => (
 									<EditFromElementsStyled key={id}>
-										{formConnectorElements(i).map((elems) => (
+										{getFormConnectorElements(i).map((elems) => (
 											<div key={elems.id}>
 												<EditFromElement {...elems} />
 											</div>
