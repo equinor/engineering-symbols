@@ -13,9 +13,9 @@ import {
 	useConfirm,
 } from '../../components';
 
-import { useFileUpload } from '../../helpers';
+import { hasAdminUserRole, useFileUpload } from '../../helpers';
 
-import { EditPageProps, SymbolsProps } from '../../types';
+import { EditPageProps, StatusProps, SymbolsProps } from '../../types';
 
 import {
 	PanelPresentationLinesWrapperStyled,
@@ -32,38 +32,98 @@ import {
 } from './styles';
 import { ContainerStyled } from '../../styles/styles';
 
-import allSymbols from '../../data/symbols.json';
+import {
+	ManageSymbolsStore,
+	SymbolUploadStore,
+	deleteMangeSymbolAction,
+	getMangeSymbolsQueryAction,
+	updateMangeSymbolAction,
+	updateStatusMangeSymbolAction,
+	uploadSvgFileAction,
+} from '../../store';
 
-const icons = allSymbols.map(({ key, geometry, ...rest }) => ({
-	key,
-	paths: geometry,
-	...rest,
-}));
+// const icons = allSymbols.map(({ key, geometry, ...rest }) => ({
+// 	key,
+// 	paths: geometry,
+// 	...rest,
+// }));
+
+// 'Draft', 'ReadyForReview', 'Review', 'Published', 'Rejected'
 
 const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [confirmationMessage, setConfirmationMessage] = useState('');
-	const [enableReinitialize, setEnableReinitialize] = useState<boolean>(false);
-	const [informationMessage, setInformationMessage] = useState<InformationComponentTypes>();
-	const [selectedSymbol, setSelectedSymbol] = useState<SymbolsProps | null>(null);
+	const [confirmationButtons, setConfirmationButtons] = useState<{ confirm: string; cancel: string } | null>(null);
 
-	const [symbols, setSymbols] = useState<SymbolsProps[]>(icons);
+	const [informationMessage, setInformationMessage] = useState<InformationComponentTypes>();
+
+	const [selectedSymbol, setSelectedSymbol] = useState<SymbolsProps | null>(null);
+	const [deleteSymbol, setDeleteSymbol] = useState<SymbolsProps | null>(null);
+	const [updateSymbol, setUpdateSymbol] = useState<SymbolsProps | null>(null);
+
+	const [statusSymbolId, setStatusSymbolId] = useState<string | null>(null);
+	const [symbolStatus, setSymbolStatus] = useState<StatusProps | null>(null);
+
+	const [enableReinitialize, setEnableReinitialize] = useState<boolean>(false);
+
+	const [uploadSvgFile, setSvgFile] = useState<SymbolsProps | null>(null);
+
 	// Workaround for popup to show same message more that 1 time
 	const [update, forceUpdate] = useReducer((x) => x + 1, 0);
 
 	const svgElementsRef = useRef([]);
 	const fileInputRef = useRef<HTMLInputElement>();
 
-	const [getConfirmation, ConfirmationComponent] = useConfirm(selectedSymbol, confirmationMessage);
+	const [getConfirmation, ConfirmationComponent] = useConfirm({
+		symbol: selectedSymbol,
+		message: confirmationMessage,
+		buttons: confirmationButtons,
+	});
 
 	const onPanelReset = () => setSelectedSymbol(null);
 
-	const getSymbolsFromLocalStorage = () => JSON.parse(localStorage.getItem('symbols') as string);
-
-	const hasSymbolsInLocalStorage = () => getSymbolsFromLocalStorage() !== null;
-
 	const { error, handleFileChange, svgContent, isSvgFileLoading } = useFileUpload();
 
-	useEffect(() => setSymbols(hasSymbolsInLocalStorage() ? getSymbolsFromLocalStorage() : icons), []);
+	const { manageSymbolsQuery, manageDeleteSymbolsQuery, manageUpdateSymbolsQuery } = ManageSymbolsStore.useState();
+
+	const [finishMangeSymbolsQuery] = getMangeSymbolsQueryAction.useBeckon();
+	const [finishUpdateMangeSymbolsQuery] = updateMangeSymbolAction.useBeckon({ symbol: updateSymbol });
+
+	const [finishDeleteMangeSymbolsQuery] = deleteMangeSymbolAction.useBeckon({ id: deleteSymbol?.id });
+	const [finishUpdateStatusMangeSymbolsQuery] = updateStatusMangeSymbolAction.useBeckon({ id: statusSymbolId, data: { status: symbolStatus } });
+
+	const [finishUploadSymbolsQuery] = uploadSvgFileAction.useBeckon({
+		svgFile: uploadSvgFile,
+		validationOnly: false,
+		contentType: 'application/json',
+	});
+
+	const isAdmin = hasAdminUserRole();
+	const { validateSvgQuery } = SymbolUploadStore.useState();
+	// const { status, data } = validateSvgQuery;
+
+	const hasSucceededReposnse = (status: number) => status !== undefined && (status === 200 || status === 201 || status === 204);
+
+	const isStatusDraft = ({ status }: SymbolsProps) => status === 'Draft';
+	const isStatusReadyForReview = ({ status }: SymbolsProps) => status === 'ReadyForReview';
+	const isStatusRejected = ({ status }: SymbolsProps) => status === 'Rejected';
+
+	const isReadyForReview = (symbol: SymbolsProps) => isAdmin && isStatusReadyForReview(symbol);
+
+	// const refreshMangeSymbolsQuery = () => setTimeout(() => getMangeSymbolsQueryAction.run(), 1000);
+	const refreshMangeSymbolsQuery = () => getMangeSymbolsQueryAction.run();
+
+	const concatenateErrorMessages = (data: Record<string, string[]>): string => {
+		let allErrorMessages = '';
+
+		for (const key in data) {
+			if (data.hasOwnProperty(key) && Array.isArray(data[key])) {
+				const errorMessages = data[key].join(' ');
+				allErrorMessages += errorMessages + ' ';
+			}
+		}
+
+		return allErrorMessages.trim(); // Remove trailing space before returning
+	};
 
 	useEffect(() => {
 		if (!svgContent) return;
@@ -72,17 +132,55 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	}, [svgContent]);
 
 	useEffect(() => {
-		if (!error) return;
-
-		forceUpdate();
+		if (!finishUpdateMangeSymbolsQuery && updateSymbol) return;
 
 		setInformationMessage({
-			title: error.title,
-			message: error.message,
-			appearance: 'error',
-			refresh: update,
+			title: 'Updated',
+			message: `Symbol ${selectedSymbol?.key} was updated`,
+			appearance: 'success',
 		});
-	}, [error]);
+	}, [updateSymbol]);
+
+	useEffect(() => {
+		// File upload error
+		if (!!error) {
+			forceUpdate();
+
+			setInformationMessage({
+				title: error.title,
+				message: error.message,
+				appearance: 'error',
+				refresh: update,
+			});
+		}
+
+		if (!hasSucceededReposnse(validateSvgQuery.status)) forceUpdate();
+	}, [error, validateSvgQuery.data]);
+
+	useEffect(() => {
+		if (!finishUploadSymbolsQuery) return;
+
+		if (hasSucceededReposnse(validateSvgQuery.status)) {
+			setInformationMessage({
+				title: 'New symbol',
+				message: `Symbol ${selectedSymbol?.key} was added`,
+				appearance: 'success',
+			});
+
+			refreshMangeSymbolsQuery();
+			onPanelReset();
+		}
+
+		if (!hasSucceededReposnse(validateSvgQuery.status)) {
+			setInformationMessage({
+				title: 'Error',
+				message: concatenateErrorMessages(validateSvgQuery?.data?.errors),
+				appearance: 'error',
+			});
+
+			refreshMangeSymbolsQuery();
+		}
+	}, [finishUploadSymbolsQuery]);
 
 	const onChangeFileInput = (e: ChangeEvent<HTMLInputElement>) => {
 		handleFileChange(e);
@@ -92,7 +190,22 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const onEditSymbol = (symbol: SymbolsProps) => {
 		console.log('⚡️', 'onEditSymbol:', symbol);
 		setSelectedSymbol(symbol);
-		setEnableReinitialize(true);
+		// setEnableReinitialize(true);
+
+		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
+
+		return () => {
+			clearTimeout(timer);
+
+			if (!fileInputRef.current) return;
+			fileInputRef.current.value = '';
+		};
+	};
+
+	const onUpdateSymbol = (symbol: SymbolsProps) => {
+		console.log('⚡️', 'onUpdateSymbol:', symbol);
+		setSelectedSymbol(symbol);
+		// setEnableReinitialize(true);
 
 		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
 
@@ -110,21 +223,19 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		setSelectedSymbol({ ...selectedSymbol, connectors } as SymbolsProps);
 	};
 
-	const onUpdateSymbolToDraft = (newSymbol: SymbolsProps) => {
-		const newSybolWithStatus: SymbolsProps = {
-			...newSymbol,
-			state: 'draft',
-		};
+	const onUpdateDraftSymbol = (symbol: SymbolsProps) => {
+		if (isStatusDraft(symbol)) {
+			setUpdateSymbol(symbol);
+		} else {
+			// ADD validation
+			setSvgFile(symbol);
+		}
 
-		setSymbols([...symbols, newSybolWithStatus]);
-
-		// When you click on onSubmit -> local storage updates
-		localStorage.setItem('symbols', JSON.stringify([...symbols, newSybolWithStatus]));
+		console.log(100, 'manageSymbolsQuery:', manageSymbolsQuery);
+		console.log(101, 'finishUploadSymbolsQuery:', finishUploadSymbolsQuery);
 	};
 
-	// const onFileUpload = () => fileInputRef.current && fileInputRef.current.click();
-
-	const onSubmitOnReview = async () => {
+	const onSubmitOnReview = async (symbol: SymbolsProps) => {
 		// Clear all Drafts after push
 		setConfirmationMessage('Are you sure you want to submit for review');
 		// @ts-ignore next-line
@@ -132,18 +243,46 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 		console.log('⚡️', 'onSubmitOnReview', status);
 
-		if (!status) return;
+		setSelectedSymbol(symbol);
 
-		setInformationMessage({
-			title: 'Thank you',
-			message: 'Your symbol has been submited for review',
-			appearance: 'success',
-		});
+		if (status) onSubmitReview(symbol);
 	};
+
+	const onSubmitReview = ({ key, id }: SymbolsProps) => {
+		setStatusSymbolId(id);
+		setSymbolStatus('ReadyForReview');
+	};
+
+	useEffect(() => {
+		if (!finishUpdateStatusMangeSymbolsQuery || statusSymbolId === null) return;
+
+		refreshMangeSymbolsQuery();
+
+		if (symbolStatus === 'ReadyForReview') {
+			setInformationMessage({
+				title: 'Thank you',
+				message: `Your symbol ${selectedSymbol?.key} has been submited for review`,
+				appearance: 'success',
+			});
+		}
+		if (symbolStatus === 'Published') {
+			setInformationMessage({
+				title: 'Thank you',
+				message: `Your symbol ${selectedSymbol?.key} has been approved`,
+				appearance: 'success',
+			});
+		}
+		if (symbolStatus === 'Rejected') {
+			setInformationMessage({
+				title: 'Thank you',
+				message: `Your symbol ${selectedSymbol?.key} has been rejected`,
+				appearance: 'error',
+			});
+		}
+	}, [finishUpdateStatusMangeSymbolsQuery]);
 
 	const onDeleteConfirmation = async (symbol: SymbolsProps) => {
 		setSelectedSymbol(symbol);
-
 		setConfirmationMessage('Are you sure you want to delete');
 
 		// @ts-ignore next-line
@@ -152,36 +291,90 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		if (status) onDelete(symbol);
 	};
 
-	const onDelete = ({ key, state }: SymbolsProps) => {
-		const isDraft = state === 'draft';
+	console.log(444, manageDeleteSymbolsQuery, manageDeleteSymbolsQuery.state);
 
-		if (isDraft && hasSymbolsInLocalStorage()) {
-			const updatedSymbols = getSymbolsFromLocalStorage().filter((item: SymbolsProps) => item.key !== key);
+	const onDelete = (symbol: SymbolsProps) => setDeleteSymbol(symbol);
 
-			localStorage.setItem('symbols', JSON.stringify(updatedSymbols));
-			setSymbols(updatedSymbols);
+	const onReview = async (symbol: SymbolsProps) => {
+		setConfirmationMessage('Are you sure you want to review');
+		setConfirmationButtons({ confirm: 'Approve', cancel: 'Rejected' });
+		// @ts-ignore next-line
+		const status = (await getConfirmation()) as boolean;
 
-			onPanelReset();
-		} else {
-			console.log('⚡️', 'onDelete:', 'isDraft:', isDraft, 'hasSymbolsInLocalStorage:', hasSymbolsInLocalStorage());
-		}
-		// Check if Draft or not
-		// Clear by ID
+		console.log('⚡️', 'onSubmitOnReview', status);
+
+		onSubmitAdminReview(symbol, status);
 	};
+
+	const onSubmitAdminReview = ({ id }: SymbolsProps, isApproved: boolean | null) => {
+		if (isApproved === null) return;
+
+		setConfirmationButtons(null);
+		setStatusSymbolId(id);
+		setSymbolStatus(isApproved ? 'Published' : 'Rejected');
+	};
+
+	useEffect(() => {
+		if (hasSucceededReposnse(manageDeleteSymbolsQuery.status)) {
+			refreshMangeSymbolsQuery();
+			onPanelReset();
+
+			setInformationMessage({
+				title: 'Deleted',
+				message: `Symbol ${deleteSymbol?.key} was deleted`,
+				appearance: 'success',
+			});
+		}
+
+		if (!hasSucceededReposnse(manageDeleteSymbolsQuery.status)) {
+			setInformationMessage({
+				title: 'Ops',
+				message: concatenateErrorMessages(manageDeleteSymbolsQuery?.data?.errors),
+				appearance: 'error',
+			});
+
+			console.log('⚡️', 'Something went wrong manageDeleteSymbolsQuery:', manageDeleteSymbolsQuery);
+		}
+	}, [finishDeleteMangeSymbolsQuery, manageDeleteSymbolsQuery]);
+
+	useEffect(() => {
+		if (hasSucceededReposnse(manageUpdateSymbolsQuery.status)) {
+			refreshMangeSymbolsQuery();
+			onPanelReset();
+
+			setInformationMessage({
+				title: 'Updated',
+				message: `Symbol ${updateSymbol?.key} was updated`,
+				appearance: 'success',
+			});
+		}
+
+		if (!hasSucceededReposnse(manageUpdateSymbolsQuery.status)) {
+			setInformationMessage({
+				title: 'Ops',
+				message: concatenateErrorMessages(manageUpdateSymbolsQuery?.data?.errors),
+				appearance: 'error',
+			});
+			console.log('⚡️', 'Something went wrong manageUpdateSymbolsQuery:', manageUpdateSymbolsQuery);
+		}
+	}, [manageUpdateSymbolsQuery]);
 
 	const symbolMeny = (symbol: SymbolsProps) => [
 		{
-			name: 'Edit',
-			action: () => onEditSymbol(symbol),
+			name: isStatusDraft(symbol) ? 'Update' : isReadyForReview(symbol) ? 'Show' : 'Edit',
+			action: () => (isStatusDraft(symbol) ? onUpdateSymbol(symbol) : onEditSymbol(symbol)),
+			// isDisabled: !isStatusReadyForReview(symbol) && !isAdmin,
+			isDisabled: isStatusDraft(symbol) ? false : isStatusReadyForReview(symbol) ? !isAdmin : false,
 		},
 		{
-			name: 'Submit for review',
-			action: () => onSubmitOnReview(),
-			isDisabled: symbol.state !== 'draft',
+			name: isReadyForReview(symbol) ? 'Review' : 'Submit for review',
+			action: () => (isReadyForReview(symbol) ? onReview(symbol) : onSubmitOnReview(symbol)),
+			isDisabled: !isStatusDraft(symbol) && !isReadyForReview(symbol),
 		},
 		{
 			name: 'Delete',
 			action: () => onDeleteConfirmation(symbol),
+			isDisabled: !isStatusDraft(symbol) && !isStatusRejected(symbol),
 		},
 	];
 
@@ -214,18 +407,18 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 									height={250}
 									width={250}
 									fill={theme.fill}
-									path={selectedSymbol.paths}
+									path={selectedSymbol.geometry}
 								/>
 							)}
 						</PanelPresentationContentStyled>
-						{selectedSymbol && (
+						{finishMangeSymbolsQuery && selectedSymbol && (
 							<PanelDetailsComponent
 								symbol={{ ...selectedSymbol }}
-								symbols={symbols}
+								symbols={manageSymbolsQuery}
 								onClosePanel={onPanelReset}
 								enableReinitialize={enableReinitialize}
 								updateCurrentSymbol={onChangeSymbolForDetail}
-								setUpdateSymbolToDraft={onUpdateSymbolToDraft}
+								setUpdateDraftSymbol={onUpdateDraftSymbol}
 							/>
 						)}
 					</ContainerStyled>
@@ -241,21 +434,24 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 									<input type="file" id="file" ref={fileInputRef} name="file" accept=".svg" onChange={onChangeFileInput} />
 								</UploadSvgStyled>
 							</li>
-							{symbols.map((symbol) => (
-								<li key={symbol.key}>
-									<SymbolElement
-										meny={symbolMeny(symbol)}
-										chipsStatus={symbol.state}
-										svgElementsRef={svgElementsRef}
-										width={symbol.width}
-										height={symbol.height}
-										paths={symbol.paths}
-										id={symbol.id}
-										theme={theme}
-										name={symbol.key}
-									/>
-								</li>
-							))}
+							{!finishMangeSymbolsQuery && <WeatherLoader />}
+							{finishMangeSymbolsQuery &&
+								manageSymbolsQuery &&
+								manageSymbolsQuery.map((symbol: SymbolsProps, id: number) => (
+									<li key={id}>
+										<SymbolElement
+											meny={symbolMeny(symbol)}
+											chipsStatus={symbol.status}
+											svgElementsRef={svgElementsRef}
+											width={symbol.width}
+											height={symbol.height}
+											paths={symbol.geometry}
+											id={symbol.id}
+											theme={theme}
+											name={symbol.key}
+										/>
+									</li>
+								))}
 						</PanelSymbolsListStyled>
 					</ContainerStyled>
 				</PanelSymbolsStyled>

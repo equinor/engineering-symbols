@@ -10,8 +10,8 @@ export const InformationStyled = styled.div<PreviewStyledProps>`
 	width: 400px;
 	height: 12rem;
 	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
+	top: 25rem;
+	/* transform: translateY(-50%); */
 	box-shadow: ${({ theme }) => theme.boxShadow};
 	transform: ${({ isShow }) => (isShow ? 'translateY(0)' : 'translateY(10rem)')};
 	opacity: ${({ isShow }) => (isShow ? '1' : '0')};

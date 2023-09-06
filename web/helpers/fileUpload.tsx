@@ -1,11 +1,12 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
+import { readFileSync } from 'fs';
 
 import { convertInputSvgObjectToAPIStructureObject } from './convertInputSvgObjectToAPIStructureObject';
 
 import { UploadSymbolProps } from '../types';
 
-import { validateSvgFileAction, SymbolUploadStore, ISymbolUploadStore } from '../store';
+import { uploadSvgFileAction, SymbolUploadStore, ISymbolUploadStore } from '../store';
 
 export type FileUploadErrorType = {
 	message: string;
@@ -30,27 +31,24 @@ export const useFileUpload = (): FileUploadHookResultType => {
 	const [autoUploadStatus, setAutoUploadStatus] = useState<string>('');
 	const [isSvgFileLoading, setIsSvgFileLoading] = useState<boolean>(false);
 
-	const [formData, setFormData] = useState<FormData | null>(null);
+	const [formData, setFormData] = useState<File | null>(null);
 	const { validateSvgQuery } = SymbolUploadStore.useState();
 	const { status, data } = validateSvgQuery;
 
 	const dynamicRoute = useRouter().asPath;
 
-	const [finishValidateSvgFile, el] = validateSvgFileAction.useBeckon({ query: formData });
+	const [finishValidateSvgFile, el] = uploadSvgFileAction.useBeckon({ svgFile: formData, validationOnly: true });
 
 	const uploadFile = (file: File) => {
 		setAutoUploadStatus('Uploading...');
 		setError(null);
 		setIsSvgFileLoading(true);
 
-		const formData = new FormData();
-		formData.append('svgFile', file);
-
-		setFormData(formData);
+		setFormData(file);
 	};
 
 	useEffect(() => {
-		console.log('👉', 'status:', status, finishValidateSvgFile, formData);
+		// console.log('👉', 'status:', status, finishValidateSvgFile, formData);
 		if (!finishValidateSvgFile) return;
 
 		if (status === 200 || status === 201) {
@@ -98,24 +96,28 @@ export const useFileUpload = (): FileUploadHookResultType => {
 	};
 
 	const handleChange = () => {
-		const reader = new FileReader();
-		reader.onload = ({ target }) => {
-			const contents = target?.result as string;
-			const parser = new DOMParser();
-			const svgDocument = parser.parseFromString(contents, 'image/svg+xml');
+		// const reader = new FileReader();
+		// console.log(101)
+		// reader.onload = ({ target }) => {
+		// const contents = target?.result as string;
+		// const parser = new DOMParser();
+		// const svgDocument = parser.parseFromString(contents, 'image/svg+xml');
 
-			if (selectedFile === null) return;
+		// if (selectedFile === null) return;
 
-			const keyName = selectedFile.name.replace('.svg', '');
-			const convertedSvgToObject = convertSvgToObject(svgDocument.documentElement);
-			const svgContent = convertInputSvgObjectToAPIStructureObject(convertedSvgToObject, keyName) as unknown as UploadSymbolProps;
+		// const keyName = selectedFile.name.replace('.svg', '');
+		// const convertedSvgToObject = convertSvgToObject(svgDocument.documentElement);
+		// const svgContent = convertInputSvgObjectToAPIStructureObject(convertedSvgToObject, keyName) as unknown as UploadSymbolProps;
 
-			setSvgContent(svgContent);
-		};
+		// setSvgContent(svgContent);
+		setSvgContent(data);
 
-		if (selectedFile === null) return;
+		console.log(100, data);
+		// };
 
-		reader.readAsText(selectedFile);
+		// if (selectedFile === null) return;
+
+		// reader.readAsText(selectedFile);
 	};
 
 	const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {

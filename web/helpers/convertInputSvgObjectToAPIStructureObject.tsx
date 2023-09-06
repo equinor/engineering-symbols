@@ -13,12 +13,13 @@ const extractConnectorId = (id: string) => {
 
 const transpileData = (input: any[]) => {
 	const result: any = {
-		symbol: {},
+		paths: {},
 		annotations: {},
 	};
 
-	input.forEach(({ id, children }) => {
-		if (id === 'Symbol' || id === 'Annotations') {
+	input.forEach(({ tagName, children }) => {
+		// if (id === 'g' || id === 'Annotations') {
+		if (tagName === 'g') {
 			const paths: string[] = [];
 			const annotationsArray: { id: any; x: number; y: number; r: number }[] = [];
 
@@ -31,7 +32,7 @@ const transpileData = (input: any[]) => {
 			});
 
 			if (paths.length > 0) {
-				result.symbol.paths = paths;
+				result.paths = paths;
 			}
 
 			if (annotationsArray.length > 0) {
@@ -48,7 +49,7 @@ const findObjectsByIds = (obj: any) => {
 
 	function traverse(obj: { [x: string]: any }) {
 		for (const key in obj) {
-			if (key === 'id' && (obj[key] === 'Symbol' || obj[key] === 'Annotations')) {
+			if (key === 'g') {
 				result.push(obj);
 				break; // No need to continue searching in this object
 			} else if (typeof obj[key] === 'object' && obj[key] !== null) {
@@ -64,15 +65,16 @@ const findObjectsByIds = (obj: any) => {
 
 export const convertInputSvgObjectToAPIStructureObject = (inputObject: any, key: string) => {
 	const viewBox = inputObject.viewBox.split(' ').map(parseFloat);
-	const { symbol, annotations } = findObjectsByIds(inputObject) as any;
+	// const { symbol } = findObjectsByIds(inputObject.children) as any;
+	const { paths } = transpileData(inputObject.children);
 
-	const connectors = isObjEmpty(annotations)
-		? []
-		: annotations.annotations.map(({ id, x, y }: AnnotationsConnectorProps) => ({
-				id,
-				relativePosition: { x, y },
-				direction: '90',
-		  }));
+	// const connectors = isObjEmpty(annotations)
+	// 	? []
+	// 	: annotations.annotations.map(({ id, x, y }: AnnotationsConnectorProps) => ({
+	// 			id,
+	// 			relativePosition: { x, y },
+	// 			direction: '90',
+	// 	  }));
 
 	return {
 		id: 'TBA',
@@ -81,10 +83,10 @@ export const convertInputSvgObjectToAPIStructureObject = (inputObject: any, key:
 		// dateTimeCreated: new Date(),
 		// dateTimeUpdated: new Date(),
 		// multy paths
-		paths: symbol.paths,
+		geometry: paths,
 		width: viewBox[2],
 		height: viewBox[3],
-		connectors,
+		connectors: [],
 		// connectors: inputObject.children[1].children[0].children
 		// 	.filter(({ tagName }: any) => tagName === 'circle')
 		// 	.map(({ id, cx, cy, r }: any) => ({

@@ -151,24 +151,24 @@ export const SymbolElementChipsStyled = styled.div<SymbolElementChipsProps>`
 
 		${({ status, theme }) => {
 			switch (status) {
-				case 'draft':
+				case 'Draft':
 					return `
 						content: 'Draft';
 						color: ${theme.textWhite};
 						border-color: ${theme.textGrey};
 						background: ${theme.textGrey};
 					`;
-				case 'waiting':
+				case 'ReadyForReview':
 					return `
-						content: 'Reviewing';
+						content: 'Ready for review';
 						color: ${theme.textWhite};
 						border-color: ${theme.textWarning};
 						background: ${theme.textWarning};
 					`;
 
-				case 'canceled':
+				case 'Rejected':
 					return `
-						content: 'Canceled';
+						content: 'Rejected';
 						color: ${theme.textWhite};
 						border-color: ${theme.textRed};
 						background: ${theme.textRed};

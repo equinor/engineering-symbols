@@ -1,5 +1,6 @@
 import { FunctionComponent, useRef, useState } from 'react';
 import { Formik, FormikErrors, FormikProps } from 'formik';
+import { useMsal } from '@azure/msal-react';
 
 import { ButtonComponent } from '../button';
 import { EditFormComponent } from '../editForm';
@@ -11,7 +12,7 @@ import { SymbolsProps } from '../../types';
 import { EditFromStyled, EditPanelStyled, PanelDetailsButtons, PanelDetailsStyled, PanelDetailsWrapperStyled } from './styles';
 
 type PanelDetailsComponentProps = {
-	setUpdateSymbolToDraft: (symbol: SymbolsProps) => void;
+	setUpdateDraftSymbol: (symbol: SymbolsProps) => void;
 	updateCurrentSymbol: (symbol: SymbolsProps) => void;
 	enableReinitialize: boolean;
 	onClosePanel: () => void;
@@ -21,17 +22,21 @@ type PanelDetailsComponentProps = {
 const isDivisibleBy24 = (value: number) => value % 24 === 0;
 
 export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps> = ({
-	setUpdateSymbolToDraft,
+	setUpdateDraftSymbol,
 	updateCurrentSymbol,
 	enableReinitialize,
 	onClosePanel,
 	symbols,
 	symbol,
 }): JSX.Element => {
-	const { key, description, width, height, paths, connectors } = symbol;
+	const { key, description, width, height, geometry, connectors } = symbol;
 	const [hasFormError, setHasFormError] = useState<boolean>(false);
 
 	const formRef = useRef<FormikProps<any>>(null);
+
+	const { instance } = useMsal();
+
+	const { tenantId } = instance.getActiveAccount() as any;
 
 	const onSubmitForm = () => {
 		if (!formRef.current) return;
@@ -68,16 +73,17 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 						</ButtonComponent>
 					</PanelDetailsButtons>
 					<Formik
-						enableReinitialize={enableReinitialize}
+						// enableReinitialize={enableReinitialize}
+						enableReinitialize={false}
 						innerRef={formRef}
 						initialValues={{
+							...symbol,
 							key,
 							description,
 							width,
 							height,
-							paths,
-							dateTimeUpdated: new Date(),
-							symbilId: getUniqueId(),
+							owner: tenantId,
+							geometry,
 							connectors,
 						}}
 						validate={({ width, height, key }) => {
@@ -109,7 +115,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 						onSubmit={(values, { setSubmitting }) => {
 							setTimeout(() => {
 								setSubmitting(false);
-								setUpdateSymbolToDraft(values);
+								setUpdateDraftSymbol(values);
 								console.log('⚡️', 'onSubmin value:', values);
 							}, 400);
 						}}>

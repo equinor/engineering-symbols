@@ -32,8 +32,9 @@ export const ConfirmationStyled = styled.div<PreviewStyledProps>`
 	min-width: 27rem;
 	height: 15rem;
 	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
+	top: 25rem;
+	/* top: 50%; */
+	/* transform: translateY(-50%); */
 	border: 1px solid ${({ theme }) => theme.backgroundGrey};
 	box-shadow: ${({ theme }) => theme.boxShadow};
 	transform: ${({ isShow }) => (isShow ? 'translateY(0)' : 'translateY(10rem)')};

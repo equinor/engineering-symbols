@@ -1,6 +1,7 @@
 export * from './convertInputSvgObjectToAPIStructureObject';
 export * from './getGitHubReposResponse';
 export * from './useOnClickOutside';
+export * from './hasAdminUserRole';
 export * from './capitalizeWords';
 export * from './useDebounce';
 export * from './getUniqueId';

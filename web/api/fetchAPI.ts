@@ -2,9 +2,10 @@ import axios, { AxiosResponse } from 'axios';
 import { getMsGraph } from '../utils/MsGraphApiCall';
 
 type FetchApiProps = {
-	method?: 'get' | 'post';
+	contentType?: string;
+	method?: 'get' | 'post' | 'delete' | 'put';
 	path: string;
-	formData?: {};
+	data?: any;
 };
 
 type PromiseApiProps = {
@@ -13,18 +14,18 @@ type PromiseApiProps = {
 	data?: any;
 };
 
-const fetchApi = async ({ path, method = 'get', formData }: FetchApiProps): Promise<PromiseApiProps | unknown> => {
+export const fetchApi = async ({ path, method = 'get', contentType = 'application/json' }: FetchApiProps): Promise<PromiseApiProps | unknown> => {
 	const rt = await getMsGraph();
 
 	try {
 		const options: any = {
 			headers: {
-				'Content-Type': 'multipart/form-data',
+				'Content-Type': contentType,
 				Authorization: rt?.bearer,
 			},
 		};
 
-		const response: AxiosResponse = await axios[method](path, formData, options);
+		const response: AxiosResponse = await axios[method](path, options);
 
 		return await response;
 	} catch ({ response }: any) {
@@ -32,4 +33,26 @@ const fetchApi = async ({ path, method = 'get', formData }: FetchApiProps): Prom
 	}
 };
 
-export default fetchApi;
+export const fetchFileApi = async ({
+	path,
+	data,
+	contentType = 'image/svg+xml',
+	method = 'post',
+}: FetchApiProps): Promise<PromiseApiProps | unknown> => {
+	const rt = await getMsGraph();
+
+	try {
+		const options: any = {
+			headers: {
+				'Content-Type': contentType,
+				Authorization: rt?.bearer,
+			},
+		};
+
+		const response: AxiosResponse = await axios[method](path, data, options);
+
+		return await response;
+	} catch ({ response }: any) {
+		return response;
+	}
+};
