@@ -57,12 +57,10 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 	const [isPreviewShow, setPreviewShow] = useState<boolean>(false);
 	const [appearance, setAppearance] = useState<string>(theme.fill);
 
-	const router = useRouter();
-
 	const typedElementRef = useRef<HTMLInputElement>(null);
 	const svgElementsRef = useRef([]);
 
-	const [icnsByCategory, seIcnsByCategory] = useState<IconByCategoryProps[] | []>([]);
+	// const [icnsByCategory, seIcnsByCategory] = useState<IconByCategoryProps[] | []>([]);
 	const [icns, seIcns] = useState<IconProps[] | []>([]);
 
 	const debounceSearchValue = useDebouncedCallback((value) => onSearch(value), 1000);
@@ -98,7 +96,7 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 		setSearchingValue(val);
 
 		if (val) {
-			const searchedValue = symbolsQuery.filter(({ key }) => key.toLocaleLowerCase().includes(val.toLocaleLowerCase()));
+			const searchedValue = symbolsQuery.filter(({ key }: any) => key.toLocaleLowerCase().includes(val.toLocaleLowerCase()));
 
 			seIcns(searchedValue);
 
@@ -153,7 +151,7 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 	};
 
 	const onSelectSymbol = (selectedName?: string) => {
-		const selected = symbolsQuery.filter(({ key }) => key === selectedName)[0];
+		const selected = symbolsQuery.filter(({ key }: any) => key === selectedName)[0];
 
 		setSelectedSymbol(selected);
 		setPreviewShow(true);
