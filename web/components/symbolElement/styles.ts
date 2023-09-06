@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { ChipsStatusProps } from '../../types';
+import { StatusProps } from '../../types';
 
 interface SymbolElementChipsProps {
-	status: ChipsStatusProps;
+	status: StatusProps;
 }
 
 export const SymbolElementWrapStyled = styled.div`

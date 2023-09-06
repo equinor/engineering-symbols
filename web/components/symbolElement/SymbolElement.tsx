@@ -10,7 +10,7 @@ import {
 } from './styles';
 
 import { SvgComponent } from '../svg';
-import { ChipsStatusProps, ColorThemeProps } from '../../types';
+import { StatusProps, ColorThemeProps } from '../../types';
 
 type SymbolMenyProps = {
 	name: string;
@@ -20,7 +20,7 @@ type SymbolMenyProps = {
 
 type SymbolElementProps = {
 	svgElementsRef: any;
-	chipsStatus?: ChipsStatusProps;
+	chipsStatus?: StatusProps;
 	height: number;
 	paths: string | string[];
 	width: number;
