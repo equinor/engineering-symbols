@@ -13,7 +13,7 @@ import {
 	useConfirm,
 } from '../../components';
 
-import { hasAdminUserRole, useFileUpload } from '../../helpers';
+import { useAdminUserRole, useFileUpload } from '../../helpers';
 
 import { EditPageProps, StatusProps, SymbolsProps } from '../../types';
 
@@ -97,7 +97,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		contentType: 'application/json',
 	});
 
-	const isAdmin = hasAdminUserRole();
+	const isAdmin = useAdminUserRole();
 	const { validateSvgQuery } = SymbolUploadStore.useState();
 	// const { status, data } = validateSvgQuery;
 

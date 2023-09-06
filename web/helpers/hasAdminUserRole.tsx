@@ -1,6 +1,6 @@
 import { useMsal } from '@azure/msal-react';
 
-export const hasAdminUserRole = () => {
+export const useAdminUserRole = () => {
 	const { instance } = useMsal();
 	const ADMIN_NAME = 'super_user';
 
