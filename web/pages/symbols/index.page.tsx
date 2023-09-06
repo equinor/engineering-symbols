@@ -284,15 +284,17 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 					</div>
 				</SymbolsContainerStyled>
 			</ContainerStyled>
-			<PreviewComponent
-				setPreviewColorPicked={setColorPicked}
-				setPreviewAppearance={setAppearance}
-				setPreviewShow={setPreviewShow}
-				appearance={appearance}
-				selected={selectedSymbol}
-				isShow={isPreviewShow}
-				theme={theme}
-			/>
+			{selectedSymbol !== null && (
+				<PreviewComponent
+					setPreviewColorPicked={setColorPicked}
+					setPreviewAppearance={setAppearance}
+					setPreviewShow={setPreviewShow}
+					appearance={appearance}
+					selected={selectedSymbol}
+					isShow={isPreviewShow}
+					theme={theme}
+				/>
+			)}
 			<Snackbar open={isSnackbarOpen} onClose={() => setSnackbarOpen(false)} autoHideDuration={3000}>
 				Copied!
 			</Snackbar>

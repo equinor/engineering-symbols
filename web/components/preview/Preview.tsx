@@ -51,7 +51,6 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	isShow,
 	theme,
 }): JSX.Element => {
-	if (selected === null) return <></>;
 	const { key, connectors, width, height, geometry } = selected;
 	const FIXTURE_METADATA = ['Gas', 'Oil', 'Water', 'CO2', 'Aquifer', 'Shale'];
 
