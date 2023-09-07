@@ -2,6 +2,9 @@ import { createAsyncAction, errorResult, successResult } from 'pullstate';
 import { uploadSvgFile, getSymbolsQuery, getManageSymbolsQuery, deleteSymbol, updateSymbol, updateStatusSymbol } from '../../api/API';
 
 import { IManageSymbolStore, ISymbolStore, ISymbolUploadStore, ManageSymbolsStore, SymbolUploadStore, SymbolsStore } from './SymbolsStore';
+import { concatenateErrorMessages } from '../../helpers';
+
+const hasSucceededReposnse = (status: number) => status !== undefined && (status === 200 || status === 201 || status === 204);
 
 export const uploadSvgFileAction = createAsyncAction(
 	async ({ svgFile, validationOnly, contentType }) => {
@@ -21,8 +24,17 @@ export const uploadSvgFileAction = createAsyncAction(
 		postActionHook: ({ result }) => {
 			if (result.error) return;
 
+			let errorMessage: string | null = null;
+			const { validateSvgQuery } = result.payload as any;
+
+			if (!hasSucceededReposnse(validateSvgQuery?.status)) {
+				errorMessage = concatenateErrorMessages(validateSvgQuery?.data?.errors);
+			}
+
 			SymbolUploadStore.update((s: ISymbolUploadStore) => {
-				s.validateSvgQuery = result.payload.validateSvgQuery;
+				s.validateSvgQuery = validateSvgQuery;
+				s.validateSvgErrorMessage = errorMessage;
+				s.isSymbolUploadReposnseSucceeded = hasSucceededReposnse(validateSvgQuery.status);
 			});
 		},
 		cacheBreakHook: () => true, // Always fetch fresh data from api
@@ -47,7 +59,7 @@ export const getSymbolsQueryAction = createAsyncAction(
 	}
 );
 
-export const getMangeSymbolsQueryAction = createAsyncAction(
+export const getManageSymbolsQueryAction = createAsyncAction(
 	async () => {
 		const manageSymbolsQuery = await getManageSymbolsQuery();
 
@@ -79,15 +91,24 @@ export const deleteMangeSymbolAction = createAsyncAction(
 		postActionHook: ({ result }) => {
 			if (result.error) return;
 
+			let errorMessage: string | null = null;
+			const { manageDeleteSymbolsQuery } = result.payload as any;
+
+			if (!hasSucceededReposnse(manageDeleteSymbolsQuery?.status)) {
+				errorMessage = concatenateErrorMessages(manageDeleteSymbolsQuery?.data?.errors);
+			}
+
 			ManageSymbolsStore.update((s: IManageSymbolStore) => {
-				s.manageDeleteSymbolsQuery = result.payload.manageDeleteSymbolsQuery;
+				s.manageDeleteSymbolsQuery = manageDeleteSymbolsQuery;
+				s.manageSymbolErrorMessage = errorMessage;
+				s.isDeleteSymbolReposnseSucceeded = hasSucceededReposnse(manageDeleteSymbolsQuery.status);
 			});
 		},
 		cacheBreakHook: () => true, // Always fetch fresh data from api
 	}
 );
 
-export const updateMangeSymbolAction = createAsyncAction(
+export const updateManageSymbolAction = createAsyncAction(
 	async ({ symbol }) => {
 		if (symbol === null || symbol === undefined) {
 			return errorResult([], 'Symbol');
@@ -101,8 +122,17 @@ export const updateMangeSymbolAction = createAsyncAction(
 		postActionHook: ({ result }) => {
 			if (result.error) return;
 
+			let errorMessage: string | null = null;
+			const { manageUpdateSymbolsQuery } = result.payload as any;
+
+			if (!hasSucceededReposnse(manageUpdateSymbolsQuery?.status)) {
+				errorMessage = concatenateErrorMessages(manageUpdateSymbolsQuery?.data?.errors);
+			}
+
 			ManageSymbolsStore.update((s: IManageSymbolStore) => {
-				s.manageUpdateSymbolsQuery = result.payload.manageUpdateSymbolsQuery;
+				s.manageUpdateSymbolsQuery = manageUpdateSymbolsQuery;
+				s.manageSymbolErrorMessage = errorMessage;
+				s.isUpdateSymbolReposnseSucceeded = hasSucceededReposnse(manageUpdateSymbolsQuery.status);
 			});
 		},
 		cacheBreakHook: () => true, // Always fetch fresh data from api
@@ -111,7 +141,6 @@ export const updateMangeSymbolAction = createAsyncAction(
 
 export const updateStatusMangeSymbolAction = createAsyncAction(
 	async ({ id, data }) => {
-		console.log(818, id, data);
 		if (id === null || id === undefined || data === null || data === undefined) {
 			return errorResult([], 'Symbol');
 		}

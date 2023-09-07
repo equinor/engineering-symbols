@@ -33,13 +33,13 @@ import {
 import { ContainerStyled } from '../../styles/styles';
 
 import {
+	updateStatusMangeSymbolAction,
+	getManageSymbolsQueryAction,
+	updateManageSymbolAction,
+	deleteMangeSymbolAction,
+	uploadSvgFileAction,
 	ManageSymbolsStore,
 	SymbolUploadStore,
-	deleteMangeSymbolAction,
-	getMangeSymbolsQueryAction,
-	updateMangeSymbolAction,
-	updateStatusMangeSymbolAction,
-	uploadSvgFileAction,
 } from '../../store';
 
 // const icons = allSymbols.map(({ key, geometry, ...rest }) => ({
@@ -83,13 +83,20 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const { error, handleFileChange, svgContent, isSvgFileLoading } = useFileUpload();
 
-	const { manageSymbolsQuery, manageDeleteSymbolsQuery, manageUpdateSymbolsQuery } = ManageSymbolsStore.useState();
+	const {
+		manageSymbolsQuery,
+		manageDeleteSymbolsQuery,
+		manageSymbolErrorMessage,
+		manageUpdateSymbolsQuery,
+		isUpdateSymbolReposnseSucceeded,
+		isDeleteSymbolReposnseSucceeded,
+	} = ManageSymbolsStore.useState();
 
-	const [finishMangeSymbolsQuery] = getMangeSymbolsQueryAction.useBeckon();
-	const [finishUpdateMangeSymbolsQuery] = updateMangeSymbolAction.useBeckon({ symbol: updateSymbol });
+	const [finishManageSymbolsQuery] = getManageSymbolsQueryAction.useBeckon();
+	const [finishUpdateManageSymbol] = updateManageSymbolAction.useBeckon({ symbol: updateSymbol });
 
-	const [finishDeleteMangeSymbolsQuery] = deleteMangeSymbolAction.useBeckon({ id: deleteSymbol?.id });
-	const [finishUpdateStatusMangeSymbolsQuery] = updateStatusMangeSymbolAction.useBeckon({ id: statusSymbolId, data: { status: symbolStatus } });
+	const [finishDeleteManageSymbol] = deleteMangeSymbolAction.useBeckon({ id: deleteSymbol?.id });
+	const [finishUpdateStatusSymbol] = updateStatusMangeSymbolAction.useBeckon({ id: statusSymbolId, data: { status: symbolStatus } });
 
 	const [finishUploadSymbolsQuery] = uploadSvgFileAction.useBeckon({
 		svgFile: uploadSvgFile,
@@ -98,10 +105,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	});
 
 	const isAdmin = useAdminUserRole();
-	const { validateSvgQuery } = SymbolUploadStore.useState();
-	// const { status, data } = validateSvgQuery;
-
-	const hasSucceededReposnse = (status: number) => status !== undefined && (status === 200 || status === 201 || status === 204);
+	const { validateSvgQuery, validateSvgErrorMessage, isSymbolUploadReposnseSucceeded } = SymbolUploadStore.useState();
 
 	const isStatusDraft = ({ status }: SymbolsProps) => status === 'Draft';
 	const isStatusReadyForReview = ({ status }: SymbolsProps) => status === 'ReadyForReview';
@@ -109,21 +113,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const isReadyForReview = (symbol: SymbolsProps) => isAdmin && isStatusReadyForReview(symbol);
 
-	// const refreshMangeSymbolsQuery = () => setTimeout(() => getMangeSymbolsQueryAction.run(), 1000);
-	const refreshMangeSymbolsQuery = () => getMangeSymbolsQueryAction.run();
-
-	const concatenateErrorMessages = (data: Record<string, string[]>): string => {
-		let allErrorMessages = '';
-
-		for (const key in data) {
-			if (data.hasOwnProperty(key) && Array.isArray(data[key])) {
-				const errorMessages = data[key].join(' ');
-				allErrorMessages += errorMessages + ' ';
-			}
-		}
-
-		return allErrorMessages.trim(); // Remove trailing space before returning
-	};
+	// const refreshMangeSymbolsQuery = () => setTimeout(() => getManageSymbolsQueryAction.run(), 1000);
+	const refreshMangeSymbolsQuery = () => getManageSymbolsQueryAction.run();
 
 	useEffect(() => {
 		if (!svgContent) return;
@@ -132,7 +123,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	}, [svgContent]);
 
 	useEffect(() => {
-		if (!finishUpdateMangeSymbolsQuery && updateSymbol) return;
+		if (!finishUpdateManageSymbol && updateSymbol) return;
 
 		setInformationMessage({
 			title: 'Updated',
@@ -154,13 +145,13 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 			});
 		}
 
-		if (!hasSucceededReposnse(validateSvgQuery.status)) forceUpdate();
+		if (!isSymbolUploadReposnseSucceeded) forceUpdate();
 	}, [error, validateSvgQuery.data]);
 
 	useEffect(() => {
-		if (!finishUploadSymbolsQuery) return;
+		// if (!finishUploadSymbolsQuery) return;
 
-		if (hasSucceededReposnse(validateSvgQuery.status)) {
+		if (isSymbolUploadReposnseSucceeded) {
 			setInformationMessage({
 				title: 'New symbol',
 				message: `Symbol ${selectedSymbol?.key} was added`,
@@ -171,14 +162,12 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 			onPanelReset();
 		}
 
-		if (!hasSucceededReposnse(validateSvgQuery.status)) {
+		if (!isSymbolUploadReposnseSucceeded && !!validateSvgErrorMessage) {
 			setInformationMessage({
 				title: 'Error',
-				message: concatenateErrorMessages(validateSvgQuery?.data?.errors),
+				message: validateSvgErrorMessage,
 				appearance: 'error',
 			});
-
-			refreshMangeSymbolsQuery();
 		}
 	}, [finishUploadSymbolsQuery]);
 
@@ -239,22 +228,22 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		// Clear all Drafts after push
 		setConfirmationMessage('Are you sure you want to submit for review');
 		// @ts-ignore next-line
-		const status = await getConfirmation();
+		const isApproved = await getConfirmation();
 
-		console.log('⚡️', 'onSubmitOnReview', status);
+		console.log('⚡️', 'onSubmitOnReview', isApproved);
 
 		setSelectedSymbol(symbol);
 
-		if (status) onSubmitReview(symbol);
+		if (isApproved) onSubmitReview(symbol);
 	};
 
-	const onSubmitReview = ({ key, id }: SymbolsProps) => {
+	const onSubmitReview = ({ id }: SymbolsProps) => {
 		setStatusSymbolId(id);
 		setSymbolStatus('ReadyForReview');
 	};
 
 	useEffect(() => {
-		if (!finishUpdateStatusMangeSymbolsQuery || statusSymbolId === null) return;
+		if (!finishUpdateStatusSymbol || statusSymbolId === null) return;
 
 		refreshMangeSymbolsQuery();
 
@@ -279,16 +268,16 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				appearance: 'error',
 			});
 		}
-	}, [finishUpdateStatusMangeSymbolsQuery]);
+	}, [finishUpdateStatusSymbol]);
 
 	const onDeleteConfirmation = async (symbol: SymbolsProps) => {
 		setSelectedSymbol(symbol);
 		setConfirmationMessage('Are you sure you want to delete');
 
 		// @ts-ignore next-line
-		const status = await getConfirmation();
+		const isApproved = await getConfirmation();
 
-		if (status) onDelete(symbol);
+		if (isApproved) onDelete(symbol);
 	};
 
 	console.log(444, manageDeleteSymbolsQuery, manageDeleteSymbolsQuery.state);
@@ -299,11 +288,11 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		setConfirmationMessage('Are you sure you want to review');
 		setConfirmationButtons({ confirm: 'Approve', cancel: 'Rejected' });
 		// @ts-ignore next-line
-		const status = (await getConfirmation()) as boolean;
+		const isApproved = (await getConfirmation()) as boolean;
 
-		console.log('⚡️', 'onSubmitOnReview', status);
+		console.log('⚡️', 'onSubmitOnReview', isApproved);
 
-		onSubmitAdminReview(symbol, status);
+		onSubmitAdminReview(symbol, isApproved);
 	};
 
 	const onSubmitAdminReview = ({ id }: SymbolsProps, isApproved: boolean | null) => {
@@ -315,48 +304,41 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	};
 
 	useEffect(() => {
-		if (hasSucceededReposnse(manageDeleteSymbolsQuery.status)) {
-			refreshMangeSymbolsQuery();
-			onPanelReset();
-
-			setInformationMessage({
-				title: 'Deleted',
-				message: `Symbol ${deleteSymbol?.key} was deleted`,
-				appearance: 'success',
-			});
-		}
-
-		if (!hasSucceededReposnse(manageDeleteSymbolsQuery.status)) {
-			setInformationMessage({
-				title: 'Ops',
-				message: concatenateErrorMessages(manageDeleteSymbolsQuery?.data?.errors),
-				appearance: 'error',
-			});
-
-			console.log('⚡️', 'Something went wrong manageDeleteSymbolsQuery:', manageDeleteSymbolsQuery);
-		}
-	}, [finishDeleteMangeSymbolsQuery, manageDeleteSymbolsQuery]);
+		if ((isDeleteSymbolReposnseSucceeded || isUpdateSymbolReposnseSucceeded) && !manageSymbolErrorMessage) return;
+		// Errors for update & delete actions
+		setInformationMessage({
+			title: 'Ops',
+			message: manageSymbolErrorMessage ?? '',
+			appearance: 'error',
+		});
+	}, [manageSymbolErrorMessage]);
 
 	useEffect(() => {
-		if (hasSucceededReposnse(manageUpdateSymbolsQuery.status)) {
-			refreshMangeSymbolsQuery();
-			onPanelReset();
+		if (!isDeleteSymbolReposnseSucceeded) return;
 
-			setInformationMessage({
-				title: 'Updated',
-				message: `Symbol ${updateSymbol?.key} was updated`,
-				appearance: 'success',
-			});
-		}
+		refreshMangeSymbolsQuery();
+		onPanelReset();
 
-		if (!hasSucceededReposnse(manageUpdateSymbolsQuery.status)) {
-			setInformationMessage({
-				title: 'Ops',
-				message: concatenateErrorMessages(manageUpdateSymbolsQuery?.data?.errors),
-				appearance: 'error',
-			});
-			console.log('⚡️', 'Something went wrong manageUpdateSymbolsQuery:', manageUpdateSymbolsQuery);
-		}
+		setInformationMessage({
+			title: 'Deleted',
+			message: `Symbol ${deleteSymbol?.key} was deleted`,
+			appearance: 'success',
+		});
+
+		console.log('⚡️', 'Something went wrong:', manageDeleteSymbolsQuery);
+	}, [finishDeleteManageSymbol, manageDeleteSymbolsQuery]);
+
+	useEffect(() => {
+		if (!isUpdateSymbolReposnseSucceeded) return;
+
+		refreshMangeSymbolsQuery();
+		onPanelReset();
+
+		setInformationMessage({
+			title: 'Updated',
+			message: `Symbol ${updateSymbol?.key} was updated`,
+			appearance: 'success',
+		});
 	}, [manageUpdateSymbolsQuery]);
 
 	const symbolMeny = (symbol: SymbolsProps) => [
@@ -411,7 +393,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 								/>
 							)}
 						</PanelPresentationContentStyled>
-						{finishMangeSymbolsQuery && selectedSymbol && (
+						{finishManageSymbolsQuery && selectedSymbol && (
 							<PanelDetailsComponent
 								symbol={{ ...selectedSymbol }}
 								symbols={manageSymbolsQuery}
@@ -434,8 +416,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 									<input type="file" id="file" ref={fileInputRef} name="file" accept=".svg" onChange={onChangeFileInput} />
 								</UploadSvgStyled>
 							</li>
-							{!finishMangeSymbolsQuery && <WeatherLoader />}
-							{finishMangeSymbolsQuery &&
+							{!finishManageSymbolsQuery && <WeatherLoader />}
+							{finishManageSymbolsQuery &&
 								manageSymbolsQuery &&
 								manageSymbolsQuery.map((symbol: SymbolsProps, id: number) => (
 									<li key={id}>

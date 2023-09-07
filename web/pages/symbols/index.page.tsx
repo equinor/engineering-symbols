@@ -1,31 +1,22 @@
 import type { NextPage } from 'next';
 import { useEffect, useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { useRouter } from 'next/router';
 import copyToClipboard from 'copy-to-clipboard';
 import Typed from 'typed.js';
 import { saveAs } from 'file-saver';
 import Head from 'next/head';
 
-import { Search, Icon, Autocomplete, Snackbar } from '@equinor/eds-core-react';
-import { change_history } from '@equinor/eds-icons';
+import { Search, Snackbar } from '@equinor/eds-core-react';
 
-import { NoResultComponent, PreviewComponent, SymbolElement, WeatherLoader } from '../../components';
+import { NoResultComponent, PreviewComponent, SymbolElement } from '../../components';
 
-import { SymbolsPageProps, IconProps, IconByCategoryProps, SymbolsProps } from '../../types';
+import { SymbolsPageProps, IconProps, SymbolsProps } from '../../types';
 
-import {
-	SymbolSelectWrapperStyled,
-	SymbolInputsWrapperStyled,
-	SymbolsContainerStyled,
-	SymbolsHeaderStyled,
-	SymbolCategoryName,
-	SymbolsListStyled,
-} from './styles';
+import { SymbolSelectWrapperStyled, SymbolInputsWrapperStyled, SymbolsContainerStyled, SymbolsHeaderStyled, SymbolsListStyled } from './styles';
 
-import symbols from '../../data/symbols.json';
+// import symbols from '../../data/symbols.json';
 import { ContainerStyled } from '../../styles/styles';
-import { ManageSymbolsStore, SymbolsStore, getMangeSymbolsQueryAction, getSymbolsQueryAction } from '../../store';
+import { SymbolsStore, getSymbolsQueryAction } from '../../store';
 
 // From object to array
 // const arrayIcons = Object.entries(lib).map(([name, obj]) => ({ name, ...obj }));

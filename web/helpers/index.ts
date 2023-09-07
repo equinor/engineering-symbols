@@ -1,4 +1,5 @@
 export * from './convertInputSvgObjectToAPIStructureObject';
+export * from './concatenateErrorMessages';
 export * from './getGitHubReposResponse';
 export * from './useOnClickOutside';
 export * from './useAdminUserRole';

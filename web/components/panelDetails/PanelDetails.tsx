@@ -5,7 +5,7 @@ import { useMsal } from '@azure/msal-react';
 import { ButtonComponent } from '../button';
 import { EditFormComponent } from '../editForm';
 
-import { getUniqueId, isObjEmpty } from '../../helpers';
+import { isObjEmpty } from '../../helpers';
 
 import { SymbolsProps } from '../../types';
 
@@ -74,7 +74,8 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 					</PanelDetailsButtons>
 					<Formik
 						// enableReinitialize={enableReinitialize}
-						enableReinitialize={false}
+						// For symbol swithching
+						enableReinitialize={true}
 						innerRef={formRef}
 						initialValues={{
 							...symbol,
