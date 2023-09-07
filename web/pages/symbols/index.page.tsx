@@ -1,30 +1,22 @@
 import type { NextPage } from 'next';
 import { useEffect, useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { useRouter } from 'next/router';
 import copyToClipboard from 'copy-to-clipboard';
 import Typed from 'typed.js';
 import { saveAs } from 'file-saver';
 import Head from 'next/head';
 
-import { Search, Icon, Autocomplete, Snackbar } from '@equinor/eds-core-react';
-import { change_history } from '@equinor/eds-icons';
+import { Search, Snackbar } from '@equinor/eds-core-react';
 
 import { NoResultComponent, PreviewComponent, SymbolElement } from '../../components';
 
-import { SymbolsPageProps, IconProps, IconByCategoryProps, SymbolsProps } from '../../types';
+import { SymbolsPageProps, IconProps, SymbolsProps } from '../../types';
 
-import {
-	SymbolSelectWrapperStyled,
-	SymbolInputsWrapperStyled,
-	SymbolsContainerStyled,
-	SymbolsHeaderStyled,
-	SymbolCategoryName,
-	SymbolsListStyled,
-} from './styles';
+import { SymbolSelectWrapperStyled, SymbolInputsWrapperStyled, SymbolsContainerStyled, SymbolsHeaderStyled, SymbolsListStyled } from './styles';
 
-import symbols from '../../data/symbols.json';
+// import symbols from '../../data/symbols.json';
 import { ContainerStyled } from '../../styles/styles';
+import { SymbolsStore, getSymbolsQueryAction } from '../../store';
 
 // From object to array
 // const arrayIcons = Object.entries(lib).map(([name, obj]) => ({ name, ...obj }));
@@ -33,33 +25,38 @@ import { ContainerStyled } from '../../styles/styles';
 const FIXTURE_CATEGORIES = ['Party', 'Superheroes', 'Circulation', 'Pool Party', 'Coachella', 'Isolation', 'Rainbow', 'Pop Art', 'Disco', 'Duck'];
 // Only for list of the names
 // const iconNames = Object.entries(symbols).map(([name]) => ({ name }));
-const icons = symbols.map(({ key, geometry, ...rest }) => ({
-	key,
-	// category: FIXTURE_CATEGORIES[Math.floor(Math.random() * (9 - 1))],
-	category: FIXTURE_CATEGORIES[Math.floor(Math.random() * (9 + 1))],
-	paths: geometry,
-	...rest,
-}));
+// const icons = symbols.map(({ key, geometry, ...rest }) => ({
+// 	key,
+// 	// category: FIXTURE_CATEGORIES[Math.floor(Math.random() * (9 - 1))],
+// 	category: FIXTURE_CATEGORIES[Math.floor(Math.random() * (9 + 1))],
+// 	paths: geometry,
+// 	...rest,
+// }));
 // Merge arrays based on same name key to have category value inside
 // const icons = symbols.map((v) => ({ ...v, ...iconNamesWithCategories.find((sp) => sp.name === v.key) }));
 
 const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
+	const { symbolsQuery } = SymbolsStore.useState();
+	const [finishSymbolsQuery] = getSymbolsQueryAction.useBeckon();
+
+	// !finishSymbolsQuery && return (<><WeatherLoader /></>);
+
 	const [searchingValue, setSearchingValue] = useState<string>('');
-	const [selectedSymbol, setSelectedSymbol] = useState<IconProps>(icons[0]);
+	const [selectedSymbol, setSelectedSymbol] = useState<IconProps | null>(null);
 	const [isSnackbarOpen, setSnackbarOpen] = useState<boolean>(false);
 	const [isColorPicked, setColorPicked] = useState<boolean>(false);
 	const [isPreviewShow, setPreviewShow] = useState<boolean>(false);
 	const [appearance, setAppearance] = useState<string>(theme.fill);
 
-	const router = useRouter();
-
 	const typedElementRef = useRef<HTMLInputElement>(null);
 	const svgElementsRef = useRef([]);
 
-	const [icnsByCategory, seIcnsByCategory] = useState<IconByCategoryProps[] | []>([]);
-	const [icns, seIcns] = useState<IconProps[] | []>(icons);
+	// const [icnsByCategory, seIcnsByCategory] = useState<IconByCategoryProps[] | []>([]);
+	const [icns, seIcns] = useState<IconProps[] | []>([]);
 
 	const debounceSearchValue = useDebouncedCallback((value) => onSearch(value), 1000);
+
+	console.log(8, 'finishSymbolsQuery:', finishSymbolsQuery, 'symbolsQuery:', symbolsQuery);
 
 	useEffect(() => {
 		!isColorPicked && setAppearance(theme.fill);
@@ -90,34 +87,38 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 		setSearchingValue(val);
 
 		if (val) {
-			const searchedValue = icons.filter(({ key }) => key.toLocaleLowerCase().includes(val.toLocaleLowerCase()));
+			const searchedValue = symbolsQuery.filter(({ key }: any) => key.toLocaleLowerCase().includes(val.toLocaleLowerCase()));
 
 			seIcns(searchedValue);
 
 			window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 		} else {
-			seIcns(icons);
+			seIcns(symbolsQuery);
 		}
 	};
 
+	// useEffect(() => {
+	// 	// if (icns.length <= 0) return;
+	// 	if (icns.length <= 0) seIcnsByCategory([]);
+
+	// 	const res = Object.values(
+	// 		// @ts-ignore
+	// 		icns.reduce((acc: IconByCategoryProps[], { category, ...rest }: IconProps) => {
+	// 			// @ts-ignore
+	// 			acc[category] = acc[category] || { category, icons: [] };
+	// 			// @ts-ignore
+	// 			acc[category].icons.push(rest);
+
+	// 			return acc;
+	// 		}, {})
+	// 	);
+
+	// 	seIcnsByCategory(res as IconByCategoryProps[]);
+	// }, [icns]);
+
 	useEffect(() => {
-		// if (icns.length <= 0) return;
-		if (icns.length <= 0) seIcnsByCategory([]);
-
-		const res = Object.values(
-			// @ts-ignore
-			icns.reduce((acc: IconByCategoryProps[], { category, ...rest }: IconProps) => {
-				// @ts-ignore
-				acc[category] = acc[category] || { category, icons: [] };
-				// @ts-ignore
-				acc[category].icons.push(rest);
-
-				return acc;
-			}, {})
-		);
-
-		seIcnsByCategory(res as IconByCategoryProps[]);
-	}, [icns]);
+		seIcns(symbolsQuery);
+	}, [symbolsQuery]);
 
 	// const onSelectedCategory = (val: string) => {
 	// 	if (!val || val === 'All') {
@@ -132,16 +133,16 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 	// };
 
 	const onSelectedCategory = (val: string) => {
-		if (val) {
-			router.push(`#${val}`);
-		} else {
-			router.push('');
-			window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-		}
+		// if (val) {
+		// 	router.push(`#${val}`);
+		// } else {
+		// 	router.push('');
+		// 	window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+		// }
 	};
 
 	const onSelectSymbol = (selectedName?: string) => {
-		const selected = icons.filter(({ key }) => key === selectedName)[0];
+		const selected = symbolsQuery.filter(({ key }: any) => key === selectedName)[0];
 
 		setSelectedSymbol(selected);
 		setPreviewShow(true);
@@ -227,7 +228,7 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 									onChange={({ target }) => debounceSearchValue(target.value)}
 								/>
 							</SymbolInputsWrapperStyled>
-							<SymbolInputsWrapperStyled>
+							{/* <SymbolInputsWrapperStyled>
 								<Icon data={change_history}></Icon>
 								<Autocomplete
 									label=""
@@ -235,51 +236,54 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 									placeholder="Category"
 									onOptionsChange={({ selectedItems }) => onSelectedCategory(selectedItems[0])}
 								/>
-							</SymbolInputsWrapperStyled>
+							</SymbolInputsWrapperStyled> */}
 						</SymbolSelectWrapperStyled>
 
 						<>
-							{icnsByCategory.length <= 0 && searchingValue && <NoResultComponent value={searchingValue} />}
-							{icnsByCategory.map(({ category, icons }) => {
-								if (icons.length <= 0) return;
+							{searchingValue && icns.length <= 0 && <NoResultComponent value={searchingValue} />}
+							{finishSymbolsQuery &&
+								icns.map((icon) => {
+									// if (icons.length <= 0) return;
 
-								return (
-									<>
-										<SymbolCategoryName key={category} id={category}>
+									return (
+										<>
+											{/* <SymbolCategoryName key={category} id={category}>
 											{category}
-										</SymbolCategoryName>
-										<SymbolsListStyled aria-label={category}>
-											{icons.map((icon) => (
+										</SymbolCategoryName> */}
+											<SymbolsListStyled aria-label="Hello">
+												{/* {symbolsQuery.map((icon: IconProps) => ( */}
 												<li key={icon.key}>
 													<SymbolElement
 														svgElementsRef={svgElementsRef}
 														width={icon.width}
 														meny={symbolMeny(icon)}
 														height={icon.height}
-														paths={icon.paths}
+														paths={icon.geometry}
 														id={icon.id}
 														theme={theme}
 														name={icon.key}
 													/>
 												</li>
-											))}
-										</SymbolsListStyled>
-									</>
-								);
-							})}
+												{/* ))} */}
+											</SymbolsListStyled>
+										</>
+									);
+								})}
 						</>
 					</div>
 				</SymbolsContainerStyled>
 			</ContainerStyled>
-			<PreviewComponent
-				setPreviewColorPicked={setColorPicked}
-				setPreviewAppearance={setAppearance}
-				setPreviewShow={setPreviewShow}
-				appearance={appearance}
-				selected={selectedSymbol}
-				isShow={isPreviewShow}
-				theme={theme}
-			/>
+			{selectedSymbol !== null && (
+				<PreviewComponent
+					setPreviewColorPicked={setColorPicked}
+					setPreviewAppearance={setAppearance}
+					setPreviewShow={setPreviewShow}
+					appearance={appearance}
+					selected={selectedSymbol}
+					isShow={isPreviewShow}
+					theme={theme}
+				/>
+			)}
 			<Snackbar open={isSnackbarOpen} onClose={() => setSnackbarOpen(false)} autoHideDuration={3000}>
 				Copied!
 			</Snackbar>

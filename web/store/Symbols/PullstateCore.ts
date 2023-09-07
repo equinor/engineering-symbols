@@ -1,8 +1,9 @@
 import { createPullstateCore } from 'pullstate';
 
-import { SymbolUploadStore, SymbolStore } from './SymbolsStore';
+import { SymbolUploadStore, SymbolsStore, ManageSymbolsStore } from './SymbolsStore';
 
 export const PullstateCore = createPullstateCore({
+	ManageSymbolsStore,
 	SymbolUploadStore,
-	SymbolStore,
+	SymbolsStore,
 });

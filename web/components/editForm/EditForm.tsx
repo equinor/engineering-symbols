@@ -58,8 +58,8 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 			name: 'Height',
 		},
 		{
-			id: 'paths',
-			name: 'paths',
+			id: 'geometry',
+			name: 'Geometry',
 		},
 	];
 
@@ -67,7 +67,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 		{
 			id: `connectors[${i}].id`,
 			name: 'Id',
-			type: 'number',
+			type: 'text',
 		},
 		{
 			id: `connectors[${i}].relativePosition.x`,
@@ -138,7 +138,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 									type="button"
 									onClick={() =>
 										push({
-											id: 1,
+											id: '1',
 											relativePosition: {
 												x: 0,
 												y: 0,
@@ -153,8 +153,6 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 					);
 				}}
 			</FieldArray>
-
-			{/* +++ metadata? */}
 		</Form>
 	);
 };

@@ -2,18 +2,42 @@ import { Store } from 'pullstate';
 
 interface ISymbolUploadStore {
 	validateSvgQuery: any;
+	validateSvgErrorMessage: string | null;
+	isSymbolUploadReposnseSucceeded: boolean;
 }
 
 interface ISymbolStore {
 	symbolsQuery: any;
 }
 
+interface IManageSymbolStore {
+	manageSymbolsQuery: any;
+	manageDeleteSymbolsQuery: any;
+	manageSymbolErrorMessage: string | null;
+	isDeleteSymbolReposnseSucceeded: boolean;
+	isUpdateSymbolReposnseSucceeded: boolean;
+	manageUpdateSymbolsQuery: any;
+	manageUpdateStatusSymbolsQuery: any;
+}
+
 export const SymbolUploadStore = new Store<ISymbolUploadStore>({
 	validateSvgQuery: {},
+	validateSvgErrorMessage: null,
+	isSymbolUploadReposnseSucceeded: false,
 });
 
-export const SymbolStore = new Store<ISymbolStore>({
-	symbolsQuery: {},
+export const SymbolsStore = new Store<ISymbolStore>({
+	symbolsQuery: [],
 });
 
-export type { ISymbolStore, ISymbolUploadStore };
+export const ManageSymbolsStore = new Store<IManageSymbolStore>({
+	manageSymbolsQuery: {},
+	manageDeleteSymbolsQuery: {},
+	manageUpdateSymbolsQuery: {},
+	manageSymbolErrorMessage: null,
+	isDeleteSymbolReposnseSucceeded: false,
+	isUpdateSymbolReposnseSucceeded: false,
+	manageUpdateStatusSymbolsQuery: {},
+});
+
+export type { ISymbolStore, ISymbolUploadStore, IManageSymbolStore };

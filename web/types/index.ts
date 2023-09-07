@@ -37,11 +37,12 @@ export type HomePageProps = {
 	theme: ColorThemeProps;
 };
 
-export type ChipsStatusProps = 'draft' | 'waiting' | 'canceled';
+export type StatusProps = 'Draft' | 'ReadyForReview' | 'Review' | 'Published' | 'Rejected';
 
 export interface SymbolsProps extends SymbolsDefaultProps {
 	key: string;
-	state?: ChipsStatusProps;
+	owner?: string;
+	status?: StatusProps;
 	description?: string;
 }
 
@@ -49,7 +50,7 @@ export type SymbolsDefaultProps = {
 	id: string;
 	dateTimeCreated?: string;
 	dateTimeUpdated?: string;
-	paths: string;
+	geometry: string;
 	width: number;
 	height: number;
 	connectors: ConnectorsProps[];
@@ -64,7 +65,7 @@ export type UploadSymbolProps = {
 	height: number;
 	connectors: ConnectorsProps[];
 	key: string;
-	state?: ChipsStatusProps;
+	state?: StatusProps;
 	description?: string;
 };
 

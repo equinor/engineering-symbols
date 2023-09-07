@@ -15,13 +15,24 @@ import { SymbolsProps } from '../../types';
 
 import Close from '../../svg/close.svg';
 
-export const useConfirm = (symbol: SymbolsProps | null | undefined, message: string) => {
+type useConfirmProps = {
+	symbol: SymbolsProps | null | undefined;
+	message: string;
+	buttons?: { confirm: string; cancel: string } | null;
+};
+
+export const useConfirm = ({ symbol, message, buttons }: useConfirmProps) => {
 	const [open, setOpen] = useState(false);
 	const [resolver, setResolver] = useState<any>({ resolve: null });
 
 	const onHandle = async (status: boolean) => {
 		setOpen(false);
 		resolver.resolve(status);
+	};
+
+	const onHandleClose = async () => {
+		setOpen(false);
+		resolver.resolve(null);
 	};
 
 	const createPromise = () => {
@@ -39,6 +50,9 @@ export const useConfirm = (symbol: SymbolsProps | null | undefined, message: str
 		const [promise, resolve] = await createPromise();
 
 		setOpen(true);
+		// Confirm => true
+		// Cancel => false
+		// Close => null
 		setResolver({ resolve });
 
 		return promise;
@@ -47,7 +61,7 @@ export const useConfirm = (symbol: SymbolsProps | null | undefined, message: str
 	const ConfirmationComponent: FunctionComponent = () => (
 		<ConfirmationStyled isShow={open}>
 			<ConfirmationCustomizeStyled>
-				<ConfirmationCloseButtonStyled onClick={() => onHandle(false)}>
+				<ConfirmationCloseButtonStyled onClick={() => onHandleClose()}>
 					<Close />
 				</ConfirmationCloseButtonStyled>
 				<ConfirmationWrapStyled>
@@ -56,9 +70,9 @@ export const useConfirm = (symbol: SymbolsProps | null | undefined, message: str
 						{message} <strong>{symbol && symbol.key}</strong>?
 					</ConfirmationContentStyled>
 					<ConfirmationButtonsStyled>
-						<ButtonComponent onClick={() => onHandle(true)}>Confirm</ButtonComponent>
+						<ButtonComponent onClick={() => onHandle(true)}>{buttons?.confirm ?? 'Confirm'}</ButtonComponent>
 						<ButtonComponent appearance="secondary" onClick={() => onHandle(false)}>
-							Cancel
+							{buttons?.cancel ?? 'Cancel'}
 						</ButtonComponent>
 					</ConfirmationButtonsStyled>
 				</ConfirmationWrapStyled>
