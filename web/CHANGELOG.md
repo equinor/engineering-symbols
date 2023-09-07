@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.4.0](https://github.com/equinor/engineering-symbols/compare/web-v1.3.1...web-v1.4.0) (2023-09-07)
+
+
+### Features
+
+* api ([#595](https://github.com/equinor/engineering-symbols/issues/595)) ([890ce3d](https://github.com/equinor/engineering-symbols/commit/890ce3d49306225d32a45249c4ce5d7239293ff8))
+
+
+### Miscellaneous Chores
+
+* pullstate & api ([#579](https://github.com/equinor/engineering-symbols/issues/579)) ([2793311](https://github.com/equinor/engineering-symbols/commit/27933115638c1bf5c22cda4174bae0904d880b5c))
+
+
+### Bump package
+
+* **web:** bump @azure/msal-browser from 2.38.0 to 2.38.2 in /web ([#588](https://github.com/equinor/engineering-symbols/issues/588)) ([bbc9ad2](https://github.com/equinor/engineering-symbols/commit/bbc9ad2686727d7ac4cf0a9920547a6c919fabba))
+* **web:** bump @equinor/eds-core-react from 0.32.3 to 0.32.4 in /web ([#575](https://github.com/equinor/engineering-symbols/issues/575)) ([07c8e08](https://github.com/equinor/engineering-symbols/commit/07c8e08dc83ff28ba3ec96136b993317d44d54d8))
+* **web:** bump @next/mdx from 13.4.13 to 13.4.19 in /web ([#585](https://github.com/equinor/engineering-symbols/issues/585)) ([5a88467](https://github.com/equinor/engineering-symbols/commit/5a88467d70a554eb775a2b9f03f93f0d32cb07fd))
+* **web:** bump @types/node from 20.4.8 to 20.5.1 in /web ([#571](https://github.com/equinor/engineering-symbols/issues/571)) ([e0a0740](https://github.com/equinor/engineering-symbols/commit/e0a0740e85c2bbf2f21167e017338edae75fc582))
+* **web:** bump @types/node from 20.5.1 to 20.5.9 in /web ([#594](https://github.com/equinor/engineering-symbols/issues/594)) ([77e91fc](https://github.com/equinor/engineering-symbols/commit/77e91fcee623d1a8a913969a0eed5a06a2f2acf5))
+* **web:** bump axios from 1.4.0 to 1.5.0 in /web ([#589](https://github.com/equinor/engineering-symbols/issues/589)) ([e362d0e](https://github.com/equinor/engineering-symbols/commit/e362d0ee1c4db330819131ecf7e4cfe0831158d9))
+* **web:** bump eslint-config-next from 13.4.12 to 13.4.19 in /web ([#572](https://github.com/equinor/engineering-symbols/issues/572)) ([910a341](https://github.com/equinor/engineering-symbols/commit/910a3414811846eef782671dc6f255be0b523406))
+* **web:** bump next from 13.2.4 to 13.4.19 in /web ([#574](https://github.com/equinor/engineering-symbols/issues/574)) ([342d7f4](https://github.com/equinor/engineering-symbols/commit/342d7f4bbdd6abd0dbb37177a3f5871eae7f7775))
+* **web:** bump next-transpile-modules from 10.0.0 to 10.0.1 in /web ([#573](https://github.com/equinor/engineering-symbols/issues/573)) ([e411600](https://github.com/equinor/engineering-symbols/commit/e4116008783805d5942c2792168f315a65ecc115))
+
 ## [1.3.1](https://github.com/equinor/engineering-symbols/compare/web-v1.3.0...web-v1.3.1) (2023-08-16)
 
 
