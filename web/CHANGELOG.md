@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/equinor/engineering-symbols/compare/web-v1.4.0...web-v1.4.1) (2023-09-08)
+
+
+### Bug Fixes
+
+* confirmation view ([#596](https://github.com/equinor/engineering-symbols/issues/596)) ([83037a4](https://github.com/equinor/engineering-symbols/commit/83037a4874d140fd5235290f56e2933edee3685d))
+
 ## [1.4.0](https://github.com/equinor/engineering-symbols/compare/web-v1.3.1...web-v1.4.0) (2023-09-07)
 
 
