@@ -84,12 +84,12 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const { error, handleFileChange, svgContent, isSvgFileLoading } = useFileUpload();
 
 	const {
-		manageSymbolsQuery,
+		isUpdateSymbolReposnseSucceeded,
+		isDeleteSymbolReposnseSucceeded,
 		manageDeleteSymbolsQuery,
 		manageSymbolErrorMessage,
 		manageUpdateSymbolsQuery,
-		isUpdateSymbolReposnseSucceeded,
-		isDeleteSymbolReposnseSucceeded,
+		manageSymbolsQuery,
 	} = ManageSymbolsStore.useState();
 
 	const [finishManageSymbolsQuery] = getManageSymbolsQueryAction.useBeckon();
