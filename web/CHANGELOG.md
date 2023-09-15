@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.4.2](https://github.com/equinor/engineering-symbols/compare/web-v1.4.1...web-v1.4.2) (2023-09-15)
+
+
+### Bug Fixes
+
+* formik focus ([#606](https://github.com/equinor/engineering-symbols/issues/606)) ([c9c2b3d](https://github.com/equinor/engineering-symbols/commit/c9c2b3d44f71873c9a9cce62b9f12af4247df2a4))
+
+
+### Bump package
+
+* **web:** bump @azure/msal-react from 1.5.9 to 1.5.11 in /web ([#601](https://github.com/equinor/engineering-symbols/issues/601)) ([09f9208](https://github.com/equinor/engineering-symbols/commit/09f920871a050f4b79484e594348406961a44321))
+* **web:** bump eslint from 8.47.0 to 8.49.0 in /web ([#600](https://github.com/equinor/engineering-symbols/issues/600)) ([816dd9f](https://github.com/equinor/engineering-symbols/commit/816dd9fb87ea9a9a68b736d3796f0ead2b29fd99))
+* **web:** bump formik from 2.4.2 to 2.4.4 in /web ([#598](https://github.com/equinor/engineering-symbols/issues/598)) ([5f2287e](https://github.com/equinor/engineering-symbols/commit/5f2287e76479e3a00a673de844794e1e95c595dd))
+* **web:** bump typescript from 5.0.4 to 5.2.2 in /web ([#599](https://github.com/equinor/engineering-symbols/issues/599)) ([06da05d](https://github.com/equinor/engineering-symbols/commit/06da05d71fe464df7375701ad1b5ff38526b6b19))
+
 ## [1.4.1](https://github.com/equinor/engineering-symbols/compare/web-v1.4.0...web-v1.4.1) (2023-09-08)
 
 
