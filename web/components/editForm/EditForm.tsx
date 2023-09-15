@@ -1,18 +1,12 @@
 import { FunctionComponent } from 'react';
-import { Form, Field, ErrorMessage, FieldArray, useFormikContext } from 'formik';
+import { Form, Field, FieldArray } from 'formik';
 
 import { ButtonComponent } from '../button';
 
 import { SymbolConnector } from '../svg/Svg.types';
 import { SymbolsProps } from '../../types';
 
-import {
-	EditFromRemoveConnectorStyled,
-	EditFromAddConnectorButton,
-	EditFromElementsStyled,
-	EditFromElementStyled,
-	ErrorMessageStyled,
-} from './styles';
+import { EditFromRemoveConnectorStyled, EditFromAddConnectorButton, EditFromElementsStyled, EditFromElementStyled } from './styles';
 import { isObjEmpty } from '../../helpers';
 
 // SymbolsProps
@@ -21,95 +15,34 @@ type EditFormComponentProps = {
 	formChange: () => void;
 };
 
-type FormElementsTypes = {
-	id: string;
-	name: string;
-	type?: 'number' | 'text';
-};
-
 export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ updateSymbol, formChange }): JSX.Element => {
-	const { values, setValues } = useFormikContext<any>();
-
-	const handleRemoveConnector = (id: string) => {
-		if (!values && !isObjEmpty(values.connectors)) return;
-
-		const updatedConnectors = values.connectors.filter((connector: SymbolConnector) => connector.id !== id);
-		const updatedSymbol = { ...values, connectors: updatedConnectors };
-
-		setValues(updatedSymbol);
-		updateSymbol(updatedSymbol);
-	};
-
-	const formElements: FormElementsTypes[] = [
-		{
-			id: 'key',
-			name: 'Name',
-		},
-		{
-			id: 'description',
-			name: 'Description',
-		},
-		{
-			id: 'width',
-			name: 'Width',
-		},
-		{
-			id: 'height',
-			name: 'Height',
-		},
-		{
-			id: 'geometry',
-			name: 'Geometry',
-		},
-	];
-
-	const getFormConnectorElements = (i: number): FormElementsTypes[] => [
-		{
-			id: `connectors[${i}].id`,
-			name: 'Id',
-			type: 'text',
-		},
-		{
-			id: `connectors[${i}].relativePosition.x`,
-			name: 'Position X',
-			type: 'number',
-		},
-		{
-			id: `connectors[${i}].relativePosition.y`,
-			name: 'Position Y',
-			type: 'number',
-		},
-		{
-			id: `connectors[${i}].direction`,
-			name: 'Direction',
-			type: 'number',
-		},
-	];
-
-	const EditFromElement = ({ id, name, type = 'text' }: FormElementsTypes) => {
-		return (
-			<>
-				<EditFromElementStyled>
-					<label htmlFor={id}>{name}: </label>
-					<Field type={type} id={id} name={id} required />
-				</EditFromElementStyled>
-				<ErrorMessageStyled>
-					<ErrorMessage name={id} component="div" />
-				</ErrorMessageStyled>
-			</>
-		);
-	};
-
 	return (
 		<Form onChange={formChange}>
-			{formElements.map((elems) => (
-				<div key={elems.id}>
-					<EditFromElement {...elems} />
-				</div>
-			))}
+			<EditFromElementStyled>
+				<label htmlFor="key">Name: </label>
+				<Field type="text" id="key" name="key" required />
+			</EditFromElementStyled>
+			<EditFromElementStyled>
+				<label htmlFor="description">Description: </label>
+				<Field type="text" id="description" name="description" required />
+			</EditFromElementStyled>
+			<EditFromElementStyled>
+				<label htmlFor="width">Width: </label>
+				<Field type="text" id="width" name="width" required />
+			</EditFromElementStyled>
+			<EditFromElementStyled>
+				<label htmlFor="height">Height: </label>
+				<Field type="text" id="height" name="height" required />
+			</EditFromElementStyled>
+			<EditFromElementStyled>
+				<label htmlFor="geometry">Geometry: </label>
+				<Field type="text" id="geometry" name="geometry" required />
+			</EditFromElementStyled>
+
 			<p>Connectors</p>
 			<FieldArray name="connectors">
-				{({ push }) => {
+				{({ push, form }) => {
+					const { values, setValues } = form;
 					const isConnectorsEmpty = isObjEmpty(values.connectors);
 					const filteredConnectors = !isConnectorsEmpty && values.connectors.filter((x: any) => x !== undefined);
 
@@ -119,14 +52,47 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 								<></>
 							) : (
 								filteredConnectors.map(({ id }: SymbolConnector, i: number) => (
-									<EditFromElementsStyled key={id}>
-										{getFormConnectorElements(i).map((elems) => (
-											<div key={elems.id}>
-												<EditFromElement {...elems} />
-											</div>
-										))}
+									<EditFromElementsStyled key={`connector-${i}`}>
+										<EditFromElementStyled>
+											<label htmlFor="connector-id">Id: </label>
+											<Field type="text" id="connector-id" name={`connectors[${i}].id`} required />
+										</EditFromElementStyled>
+										<EditFromElementStyled>
+											<label htmlFor={`connectors[${i}].relativePosition.x`}>Position X: </label>
+											<Field
+												type="number"
+												id={`connectors[${i}].relativePosition.x`}
+												name={`connectors[${i}].relativePosition.x`}
+												required
+											/>
+										</EditFromElementStyled>
+										<EditFromElementStyled>
+											<label htmlFor={`connectors[${i}].relativePosition.y`}>Position Y: </label>
+											<Field
+												type="number"
+												id={`connectors[${i}].relativePosition.y`}
+												name={`connectors[${i}].relativePosition.y`}
+												required
+											/>
+										</EditFromElementStyled>
+										<EditFromElementStyled>
+											<label htmlFor={`connectors[${i}].direction`}>Direction: </label>
+											<Field type="number" id={`connectors[${i}].direction`} name={`connectors[${i}].direction`} required />
+										</EditFromElementStyled>
 
-										<EditFromRemoveConnectorStyled type="button" onClick={() => handleRemoveConnector(id)}>
+										<EditFromRemoveConnectorStyled
+											type="button"
+											onClick={() => {
+												// if (form.values && isObjEmpty(form.values.connectors)) {
+												const updatedConnectors = values.connectors.filter(
+													(connector: SymbolConnector) => connector.id !== id
+												);
+												const updatedSymbol = { ...values, connectors: updatedConnectors };
+
+												setValues(updatedSymbol);
+												updateSymbol(updatedSymbol);
+												// };
+											}}>
 											Remove Connector
 										</EditFromRemoveConnectorStyled>
 									</EditFromElementsStyled>
@@ -136,16 +102,16 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 								<ButtonComponent
 									isWide
 									type="button"
-									onClick={() =>
+									onClick={() => {
 										push({
 											id: '1',
 											relativePosition: {
 												x: 0,
 												y: 0,
 											},
-											direction: '',
-										})
-									}>
+											direction: '90',
+										});
+									}}>
 									Add Connector
 								</ButtonComponent>
 							</EditFromAddConnectorButton>

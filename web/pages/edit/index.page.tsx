@@ -41,6 +41,7 @@ import {
 	ManageSymbolsStore,
 	SymbolUploadStore,
 } from '../../store';
+import React from 'react';
 
 // const icons = allSymbols.map(({ key, geometry, ...rest }) => ({
 // 	key,
@@ -79,7 +80,9 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		buttons: confirmationButtons,
 	});
 
-	const onPanelReset = () => setSelectedSymbol(null);
+	const onPanelReset = () => {
+		setSelectedSymbol(null);
+	};
 
 	const { error, handleFileChange, svgContent, isSvgFileLoading } = useFileUpload();
 
@@ -150,7 +153,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	useEffect(() => {
 		// if (!finishUploadSymbolsQuery) return;
-
 		if (isSymbolUploadReposnseSucceeded) {
 			setInformationMessage({
 				title: 'New symbol',
@@ -169,7 +171,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				appearance: 'error',
 			});
 		}
-	}, [finishUploadSymbolsQuery]);
+	}, [finishUploadSymbolsQuery, isSymbolUploadReposnseSucceeded]);
 
 	const onChangeFileInput = (e: ChangeEvent<HTMLInputElement>) => {
 		handleFileChange(e);
@@ -206,10 +208,9 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		};
 	};
 
-	const onChangeSymbolForDetail = ({ connectors }: SymbolsProps) => {
+	const onChangeSymbolForDetail = (symbol: SymbolsProps) => {
+		setSelectedSymbol(symbol);
 		console.log('⚡️', 'onChangeSymbolForDetail:');
-
-		setSelectedSymbol({ ...selectedSymbol, connectors } as SymbolsProps);
 	};
 
 	const onUpdateDraftSymbol = (symbol: SymbolsProps) => {
@@ -279,8 +280,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 		if (isApproved) onDelete(symbol);
 	};
-
-	console.log(444, manageDeleteSymbolsQuery, manageDeleteSymbolsQuery.state);
 
 	const onDelete = (symbol: SymbolsProps) => setDeleteSymbol(symbol);
 
@@ -379,6 +378,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 							<PanelPresentationMSLineStyled />
 						</PanelPresentationLinesWrapperStyled>
 						{isSvgFileLoading && <WeatherLoader />}
+
 						<PanelPresentationContentStyled>
 							{!!selectedSymbol && (
 								<SvgComponent
@@ -393,10 +393,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 								/>
 							)}
 						</PanelPresentationContentStyled>
+
 						{finishManageSymbolsQuery && selectedSymbol && (
 							<PanelDetailsComponent
 								symbol={{ ...selectedSymbol }}
-								symbols={manageSymbolsQuery}
 								onClosePanel={onPanelReset}
 								enableReinitialize={enableReinitialize}
 								updateCurrentSymbol={onChangeSymbolForDetail}

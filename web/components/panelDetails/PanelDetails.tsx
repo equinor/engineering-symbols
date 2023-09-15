@@ -1,132 +1,94 @@
-import { FunctionComponent, useRef, useState } from 'react';
-import { Formik, FormikErrors, FormikProps } from 'formik';
+import { FunctionComponent, memo, useRef } from 'react';
+import { Formik, FormikProps } from 'formik';
 import { useMsal } from '@azure/msal-react';
 
 import { ButtonComponent } from '../button';
 import { EditFormComponent } from '../editForm';
 
-import { isObjEmpty } from '../../helpers';
-
 import { SymbolsProps } from '../../types';
 
 import { EditFromStyled, EditPanelStyled, PanelDetailsButtons, PanelDetailsStyled, PanelDetailsWrapperStyled } from './styles';
+import React from 'react';
 
 type PanelDetailsComponentProps = {
 	setUpdateDraftSymbol: (symbol: SymbolsProps) => void;
 	updateCurrentSymbol: (symbol: SymbolsProps) => void;
 	enableReinitialize: boolean;
 	onClosePanel: () => void;
-	symbols: SymbolsProps[];
 	symbol: SymbolsProps;
 };
-const isDivisibleBy24 = (value: number) => value % 24 === 0;
 
-export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps> = ({
-	setUpdateDraftSymbol,
-	updateCurrentSymbol,
-	enableReinitialize,
-	onClosePanel,
-	symbols,
-	symbol,
-}): JSX.Element => {
-	const { key, description, width, height, geometry, connectors } = symbol;
-	const [hasFormError, setHasFormError] = useState<boolean>(false);
+export const PanelDetailsComponent = memo(
+	({ setUpdateDraftSymbol, updateCurrentSymbol, enableReinitialize, onClosePanel, symbol }: PanelDetailsComponentProps) => {
+		const { key, description, width, height, geometry, connectors } = symbol;
 
-	const formRef = useRef<FormikProps<any>>(null);
+		const formRef = useRef<FormikProps<any>>(null);
 
-	const { instance } = useMsal();
+		const { instance } = useMsal();
 
-	const { tenantId } = instance.getActiveAccount() as any;
+		const { tenantId } = instance.getActiveAccount() as any;
 
-	const onSubmitForm = () => {
-		if (!formRef.current) return;
-
-		formRef.current.handleSubmit();
-	};
-
-	const onFormChange = () => {
-		const timer = setTimeout(() => {
+		const onSubmitForm = () => {
 			if (!formRef.current) return;
 
-			updateCurrentSymbol(formRef.current.values);
-		}, 1);
-
-		return () => {
-			clearTimeout(timer);
+			formRef.current.handleSubmit();
 		};
-	};
 
-	const isUniqueID = (obj: any, name: string, id: string) => obj.filter((sbl: { [x: string]: string }) => sbl[name] === id).length <= 0;
+		const onFormChange = () => {
+			const timer = setTimeout(() => {
+				if (!formRef.current) return;
 
-	return (
-		<PanelDetailsStyled isShow>
-			<PanelDetailsWrapperStyled>
-				<EditPanelStyled />
+				updateCurrentSymbol(formRef.current.values);
+			}, 1);
 
-				<EditFromStyled>
-					<PanelDetailsButtons>
-						<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()} hasError={hasFormError}>
-							Save
-						</ButtonComponent>
-						<ButtonComponent size="s" onClick={() => onClosePanel()} appearance="secondary">
-							Cancel
-						</ButtonComponent>
-					</PanelDetailsButtons>
-					<Formik
-						// enableReinitialize={enableReinitialize}
-						// For symbol swithching
-						enableReinitialize={true}
-						innerRef={formRef}
-						initialValues={{
-							...symbol,
-							key,
-							description,
-							width,
-							height,
-							owner: tenantId,
-							geometry,
-							connectors,
-						}}
-						validate={({ width, height, key }) => {
-							const errors: FormikErrors<any> = {};
-							// Unique key
+			return () => {
+				clearTimeout(timer);
+			};
+		};
 
-							// Connector ID
+		// const isUniqueID = (obj: any, name: string, id: string) => obj.filter((sbl: { [x: string]: string }) => sbl[name] === id).length <= 0;
 
-							// IF no changes -> cant push save
+		return (
+			<PanelDetailsStyled isShow>
+				<PanelDetailsWrapperStyled>
+					<EditPanelStyled />
 
-							if (!isUniqueID(symbols, 'key', key)) {
-								errors.key = 'Name must be unique';
-							}
-
-							if (!isDivisibleBy24(Number(width))) {
-								errors.width = 'Width must be divisible by 24';
-							}
-
-							if (!isDivisibleBy24(Number(height))) {
-								errors.height = 'Height must be divisible by 24';
-							}
-
-							// connectors.map(({ id }) => !isUniqueID(connectors, 'id', id) ? errors.connector = 'Connector must have unique ID' : '')
-
-							setHasFormError(!isObjEmpty(errors));
-
-							return errors;
-						}}
-						onSubmit={(values, { setSubmitting }) => {
-							setTimeout(() => {
-								setSubmitting(false);
-								setUpdateDraftSymbol(values);
-								console.log('⚡️', 'onSubmin value:', values);
-							}, 400);
-						}}>
-						{/* {({ values }) => (
-              <EditFormComponent updateSymbol={updateCurrentSymbol}/>
-            )} */}
-						<EditFormComponent updateSymbol={updateCurrentSymbol} formChange={onFormChange} />
-					</Formik>
-				</EditFromStyled>
-			</PanelDetailsWrapperStyled>
-		</PanelDetailsStyled>
-	);
-};
+					<EditFromStyled>
+						<PanelDetailsButtons>
+							<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()}>
+								Save
+							</ButtonComponent>
+							<ButtonComponent size="s" onClick={() => onClosePanel()} appearance="secondary">
+								Cancel
+							</ButtonComponent>
+						</PanelDetailsButtons>
+						<Formik
+							// enableReinitialize={enableReinitialize}
+							// For symbol swithching
+							enableReinitialize={true}
+							innerRef={formRef}
+							initialValues={{
+								...symbol,
+								key,
+								description,
+								width,
+								height,
+								owner: tenantId,
+								geometry,
+								connectors,
+							}}
+							onSubmit={(values, { setSubmitting }) => {
+								setTimeout(() => {
+									setSubmitting(false);
+									setUpdateDraftSymbol(values);
+									console.log('⚡️', 'onSubmin value:', values);
+								}, 400);
+							}}>
+							<EditFormComponent updateSymbol={updateCurrentSymbol} formChange={onFormChange} />
+						</Formik>
+					</EditFromStyled>
+				</PanelDetailsWrapperStyled>
+			</PanelDetailsStyled>
+		);
+	}
+);
