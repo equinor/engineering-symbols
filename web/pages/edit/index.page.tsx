@@ -107,12 +107,14 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		contentType: 'application/json',
 	});
 
-	const isAdmin = useAdminUserRole();
 	const { validateSvgQuery, validateSvgErrorMessage, isSymbolUploadReposnseSucceeded } = SymbolUploadStore.useState();
 
-	const isStatusDraft = ({ status }: SymbolsProps) => status === 'Draft';
+	const isAdmin = useAdminUserRole();
+
 	const isStatusReadyForReview = ({ status }: SymbolsProps) => status === 'ReadyForReview';
+	const isStatusPublished = ({ status }: SymbolsProps) => status === 'Published';
 	const isStatusRejected = ({ status }: SymbolsProps) => status === 'Rejected';
+	const isStatusDraft = ({ status }: SymbolsProps) => status === 'Draft';
 
 	const isReadyForReview = (symbol: SymbolsProps) => isAdmin && isStatusReadyForReview(symbol);
 
@@ -359,6 +361,34 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		},
 	];
 
+	const getSymbolVersion = ({ key, id }: SymbolsProps) => {
+		if (manageSymbolsQuery.length <= 0) return 1;
+
+		const filteredManageSymbols = manageSymbolsQuery.filter((sbl: SymbolsProps) => sbl.key === key && isStatusPublished(sbl));
+		// @ts-ignore next-line
+		filteredManageSymbols.sort(
+			(a: SymbolsProps, b: SymbolsProps) => new Date(a.dateTimePublished).getTime() - new Date(b.dateTimePublished).getTime()
+		);
+
+		// Find the index of the object with the given id in the sorted array
+		const index = filteredManageSymbols.findIndex((sbl: { id: string }) => sbl.id === id);
+
+		// If the object with the given id is found, return its position + 1 as the version
+		// If not found, return 1 (default version)
+		return index !== -1 ? index + 1 : 1;
+	};
+
+	const getChipsStatus = (symbol: SymbolsProps) => {
+		if (isStatusPublished(symbol)) {
+			// Check publish data
+			// dateTimePublished
+
+			return getSymbolVersion(symbol);
+		} else {
+			return symbol.status;
+		}
+	};
+
 	return (
 		<AuthenticatedTemplate>
 			<Head>
@@ -418,12 +448,12 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 							</li>
 							{!finishManageSymbolsQuery && <WeatherLoader />}
 							{finishManageSymbolsQuery &&
-								manageSymbolsQuery &&
+								manageSymbolsQuery.length > 0 &&
 								manageSymbolsQuery.map((symbol: SymbolsProps, id: number) => (
 									<li key={id}>
 										<SymbolElement
 											meny={symbolMeny(symbol)}
-											chipsStatus={symbol.status}
+											chipsStatus={getChipsStatus(symbol)}
 											svgElementsRef={svgElementsRef}
 											width={symbol.width}
 											height={symbol.height}
