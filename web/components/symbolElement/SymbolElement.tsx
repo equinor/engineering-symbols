@@ -41,6 +41,7 @@ export const SymbolElement: React.FunctionComponent<SymbolElementProps> = ({
 	meny,
 	id,
 }): JSX.Element => {
+	console.log(666, 'chipsStatus:', chipsStatus);
 	return (
 		<>
 			<SymbolElementCardWrap>

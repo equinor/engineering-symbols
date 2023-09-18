@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { StatusProps } from '../../types';
 
 interface SymbolElementChipsProps {
-	status: StatusProps;
+	status: StatusProps | number;
 }
 
 export const SymbolElementWrapStyled = styled.div`
@@ -150,7 +150,18 @@ export const SymbolElementChipsStyled = styled.div<SymbolElementChipsProps>`
 		padding: 4px 8px;
 
 		${({ status, theme }) => {
+			if (Number(status) >= 2) {
+				return `
+					content: 'v. ${status}';
+					color: ${theme.textWhite};
+					border-color: ${theme.teal};
+					background: ${theme.teal};
+				`;
+			}
 			switch (status) {
+				// case status >= 2:
+				// 		return `
+				// 		`
 				case 'Draft':
 					return `
 						content: 'Draft';
