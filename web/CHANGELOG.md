@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.3](https://github.com/equinor/engineering-symbols/compare/web-v1.4.2...web-v1.4.3) (2023-09-18)
+
+
+### Miscellaneous Chores
+
+* usage of same key ([#617](https://github.com/equinor/engineering-symbols/issues/617)) ([6d6a7f1](https://github.com/equinor/engineering-symbols/commit/6d6a7f15f1e0184269716963d55a499483cab791))
+
+
+### Bump package
+
+* **web:** bump @svgr/webpack from 8.0.1 to 8.1.0 in /web ([#610](https://github.com/equinor/engineering-symbols/issues/610)) ([1904e5b](https://github.com/equinor/engineering-symbols/commit/1904e5bd39cee6e06cddc0ebccfcf4b40563dbb7))
+* **web:** bump @types/node from 20.5.1 to 20.6.2 in /web ([#611](https://github.com/equinor/engineering-symbols/issues/611)) ([4ef11eb](https://github.com/equinor/engineering-symbols/commit/4ef11eb1e158ab2555d7ad5fb21a14393c62dbf6))
+* **web:** bump formik from 2.4.4 to 2.4.5 in /web ([#608](https://github.com/equinor/engineering-symbols/issues/608)) ([a2e8df2](https://github.com/equinor/engineering-symbols/commit/a2e8df21db556cad13db8027f1e8ec53a0f825ae))
+
 ## [1.4.2](https://github.com/equinor/engineering-symbols/compare/web-v1.4.1...web-v1.4.2) (2023-09-15)
 
 
