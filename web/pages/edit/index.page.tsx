@@ -365,8 +365,9 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		if (manageSymbolsQuery.length <= 0) return 1;
 
 		const filteredManageSymbols = manageSymbolsQuery.filter((sbl: SymbolsProps) => sbl.key === key && isStatusPublished(sbl));
-		// @ts-ignore next-line
+
 		filteredManageSymbols.sort(
+			// @ts-ignore next-line
 			(a: SymbolsProps, b: SymbolsProps) => new Date(a.dateTimePublished).getTime() - new Date(b.dateTimePublished).getTime()
 		);
 
