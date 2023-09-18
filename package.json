@@ -70,7 +70,7 @@
 	},
 	"dependencies": {
 		"lint-staged": "^14.0.1",
-		"typescript": "^5.1.6"
+		"typescript": "^5.2.2"
 	},
 	"devDependencies": {
 		"@svgr/cli": "^7.0.0",
