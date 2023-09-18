@@ -31,7 +31,7 @@
 	"devDependencies": {
 		"@equinor/eds-core-react": "^0.32.4",
 		"@equinor/eds-icons": "^0.19.0",
-		"@svgr/webpack": "^8.0.1",
+		"@svgr/webpack": "^8.1.0",
 		"@types/file-saver": "^2.0.5",
 		"@types/node": "20.6.2",
 		"@types/react": "18.0.38",
