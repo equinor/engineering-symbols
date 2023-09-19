@@ -3,7 +3,7 @@ import { fetchApi, fetchFileApi } from './fetchAPI';
 export const uploadSvgFile = (svgFile: FormData, validationOnly: boolean, contentType: string) =>
 	fetchFileApi({ path: `https://dev-engsym-api.azurewebsites.net/manage/symbols?validationOnly=${validationOnly}`, data: svgFile, contentType });
 
-export const getSymbolsQuery = () => fetchApi({ path: 'https://dev-engsym-api.azurewebsites.net/symbols' });
+export const getSymbolsQuery = () => fetchApi({ path: 'https://dev-engsym-api.azurewebsites.net/symbols?onlyLatestVersion=false' });
 
 export const getManageSymbolsQuery = () => fetchApi({ path: 'https://dev-engsym-api.azurewebsites.net/manage/symbols?onlyLatestVersion=false' });
 
