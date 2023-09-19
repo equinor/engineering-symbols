@@ -195,6 +195,24 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 		},
 	];
 
+	const getSymbolVersion = ({ key, id }: SymbolsProps) => {
+		if (icns.length <= 0) return 1;
+
+		const filteredIcons = icns.filter((sbl: SymbolsProps) => sbl.key === key);
+
+		filteredIcons.sort(
+			// @ts-ignore next-line
+			(a: SymbolsProps, b: SymbolsProps) => new Date(a.dateTimePublished).getTime() - new Date(b.dateTimePublished).getTime()
+		);
+
+		// Find the index of the object with the given id in the sorted array
+		const index = filteredIcons.findIndex((sbl: { id: string }) => sbl.id === id);
+
+		// If the object with the given id is found, return its position + 1 as the version
+		// If not found, return 1 (default version)
+		return index !== -1 ? index + 1 : 1;
+	};
+
 	return (
 		<>
 			<Head>
@@ -241,19 +259,20 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 
 						<>
 							{searchingValue && icns.length <= 0 && <NoResultComponent value={searchingValue} />}
-							{finishSymbolsQuery &&
-								icns.map((icon) => {
-									// if (icons.length <= 0) return;
 
-									return (
-										<>
-											{/* <SymbolCategoryName key={category} id={category}>
+							<SymbolsListStyled aria-label="Hello">
+								{finishSymbolsQuery &&
+									icns.map((icon) => {
+										// if (icons.length <= 0) return;
+										return (
+											<>
+												{/* <SymbolCategoryName key={category} id={category}>
 											{category}
 										</SymbolCategoryName> */}
-											<SymbolsListStyled aria-label="Hello">
 												{/* {symbolsQuery.map((icon: IconProps) => ( */}
 												<li key={icon.key}>
 													<SymbolElement
+														chipsStatus={getSymbolVersion(icon)}
 														svgElementsRef={svgElementsRef}
 														width={icon.width}
 														meny={symbolMeny(icon)}
@@ -265,10 +284,10 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 													/>
 												</li>
 												{/* ))} */}
-											</SymbolsListStyled>
-										</>
-									);
-								})}
+											</>
+										);
+									})}
+							</SymbolsListStyled>
 						</>
 					</div>
 				</SymbolsContainerStyled>
