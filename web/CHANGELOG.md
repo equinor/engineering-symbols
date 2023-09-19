@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.4](https://github.com/equinor/engineering-symbols/compare/web-v1.4.3...web-v1.4.4) (2023-09-19)
+
+
+### Bug Fixes
+
+* symbols onlyLatestVersion false ([#619](https://github.com/equinor/engineering-symbols/issues/619)) ([a4035d2](https://github.com/equinor/engineering-symbols/commit/a4035d2094bb6e389706d1f115cc709854379910))
+
+
+### Bump package
+
+* **web:** bump @types/react from 18.0.38 to 18.2.21 in /web ([#607](https://github.com/equinor/engineering-symbols/issues/607)) ([5d88f1b](https://github.com/equinor/engineering-symbols/commit/5d88f1b2cf562e453d33be265048fe29341fbc14))
+
 ## [1.4.3](https://github.com/equinor/engineering-symbols/compare/web-v1.4.2...web-v1.4.3) (2023-09-18)
 
 
