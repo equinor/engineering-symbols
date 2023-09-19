@@ -37,7 +37,7 @@ export type HomePageProps = {
 	theme: ColorThemeProps;
 };
 
-export type StatusProps = 'Draft' | 'ReadyForReview' | 'Review' | 'Published' | 'Rejected';
+export type StatusProps = 'Draft' | 'ReadyForReview' | 'Review' | 'Published' | 'Rejected' | number;
 
 export interface SymbolsProps extends SymbolsDefaultProps {
 	key: string;
