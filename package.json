@@ -73,7 +73,7 @@
 		"typescript": "^5.2.2"
 	},
 	"devDependencies": {
-		"@svgr/cli": "^7.0.0",
+		"@svgr/cli": "^8.1.0",
 		"@types/jest": "^29.5.5",
 		"eslint": "^8.49.0",
 		"husky": "^8.0.3",
