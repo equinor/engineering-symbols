@@ -42,6 +42,9 @@ import {
 	SymbolUploadStore,
 } from '../../store';
 import React from 'react';
+import EngineeringSymbolEditor from '../../components/symbolEditor/EngineeringSymbolEditor';
+import { SymbolEditorEvent } from '../../components/symbolEditor/models/EditorEvent';
+import { EditorCommandMessage } from '../../components/symbolEditor/models/EditorCommand';
 
 // const icons = allSymbols.map(({ key, geometry, ...rest }) => ({
 // 	key,
@@ -186,6 +189,20 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		// setEnableReinitialize(true);
 
 		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
+
+		// Load symbol into editor
+		setCommand({
+			type: 'Symbol',
+			action: 'Load',
+			data: {
+				name: symbol.id,
+				path: symbol.geometry,
+				width: symbol.width,
+				height: symbol.height,
+				centerOfRotation: { x: symbol.width / 2, y: symbol.height / 2 }, // We don't have CoR in API yet,
+				connectors: symbol.connectors,
+			},
+		});
 
 		return () => {
 			clearTimeout(timer);
@@ -390,6 +407,20 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		},
 	];
 
+	const onEditorEvent = (event: SymbolEditorEvent) => {
+		console.log(`EDITOR-EVENT:${event.type}:${event.reason}`);
+		console.log(event.data);
+	};
+
+	const editorStyle: React.CSSProperties = {
+		position: 'relative',
+		height: '100%',
+		width: '100%',
+		background: '#e7e5e4',
+	};
+
+	const [command, setCommand] = useState<EditorCommandMessage | undefined>();
+
 	return (
 		<AuthenticatedTemplate>
 			<Head>
@@ -411,18 +442,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						{isSvgFileLoading && <WeatherLoader />}
 
 						<PanelPresentationContentStyled>
-							{!!selectedSymbol && (
-								<SvgComponent
-									renderConnectors
-									viewBoxHeight={selectedSymbol.height}
-									viewBoxWidth={selectedSymbol.width}
-									connectors={selectedSymbol.connectors}
-									height={250}
-									width={250}
-									fill={theme.fill}
-									path={selectedSymbol.geometry}
-								/>
-							)}
+							{!!selectedSymbol && <EngineeringSymbolEditor editorEventHandler={onEditorEvent} style={editorStyle} command={command} />}
 						</PanelPresentationContentStyled>
 
 						{finishManageSymbolsQuery && selectedSymbol && (
