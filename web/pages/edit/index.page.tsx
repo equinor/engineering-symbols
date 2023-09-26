@@ -409,7 +409,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onEditorEvent = (event: SymbolEditorEvent) => {
 		console.log(`EDITOR-EVENT:${event.type}:${event.reason}`);
-		console.log(event.data);
+		console.log('Event data: ', event.data);
+		console.log('Symbol state: ', event.symbolState);
 	};
 
 	const editorStyle: React.CSSProperties = {
