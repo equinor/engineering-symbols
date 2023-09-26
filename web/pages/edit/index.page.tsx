@@ -409,13 +409,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		console.log(`EDITOR-EVENT:${event.type}:${event.reason}`);
 		console.log('Event data: ', event.data);
 		console.log('Symbol state: ', event.symbolState);
-	};
 
-	const editorStyle: React.CSSProperties = {
-		position: 'relative',
-		height: '100%',
-		width: '100%',
-		background: '#e7e5e4',
+		// Add a switch statement on 'event.type'...
 	};
 
 	const [command, setCommand] = useState<EditorCommandMessage | undefined>();
@@ -441,7 +436,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						{isSvgFileLoading && <WeatherLoader />}
 
 						<PanelPresentationContentStyled>
-							{!!selectedSymbol && <EngineeringSymbolEditor editorEventHandler={onEditorEvent} style={editorStyle} command={command} />}
+							{!!selectedSymbol && <EngineeringSymbolEditor editorEventHandler={onEditorEvent} command={command} />}
 						</PanelPresentationContentStyled>
 
 						{finishManageSymbolsQuery && selectedSymbol && (

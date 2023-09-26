@@ -12,12 +12,10 @@ export type SymbolEditorProps = {
 };
 
 const defaultStyle: React.CSSProperties = {
-	position: 'absolute',
-	top: 0,
-	left: 0,
-	right: 0,
-	bottom: 0,
-	background: 'grey',
+	position: 'relative',
+	height: '100%',
+	width: '100%',
+	background: '#e7e5e4',
 };
 
 export const EngineeringSymbolEditor: FC<SymbolEditorProps> = ({ editorEventHandler, command, style }: SymbolEditorProps) => {
