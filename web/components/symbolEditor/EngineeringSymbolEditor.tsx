@@ -1,5 +1,6 @@
+'use client'
+
 import { FC, useEffect, useRef } from "react";
-import "./main.css";
 import { SymbolEditorEvent } from "./models/EditorEvent";
 import { EditorCommandMessage } from "./models/EditorCommand";
 import { World } from "./World";
@@ -51,7 +52,7 @@ const EngineeringSymbolEditor: FC<SymbolEditorProps> = ({
 
   return (
     <div ref={containerRef} style={containerStyle}>
-      <canvas ref={canvasRef}></canvas>
+      <canvas ref={canvasRef} style={{display: "block", width: "100%", height: "100%"}}></canvas>
     </div>
   );
 };

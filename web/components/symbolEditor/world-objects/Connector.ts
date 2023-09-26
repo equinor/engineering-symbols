@@ -8,7 +8,6 @@ import { resetScale } from "../utils/context2d";
 const arrowUp =
   "M13,6.83l0.88,0.88c0.39,0.39,1.02,0.39,1.41,0c0.39-0.39,0.39-1.02,0-1.41l-2.59-2.59c-0.39-0.39-1.02-0.39-1.41,0 L8.71,6.29c-0.39,0.39-0.39,1.02,0,1.41c0.39,0.39,1.02,0.39,1.41,0L11,6.83V20c0,0.55,0.45,1,1,1h0c0.55,0,1-0.45,1-1V6.83 L13,6.83z";
 
-const arrowPath = new Path2D(arrowUp);
 const arrowSize = [24, 24];
 const arrowScale = 2.4;
 const arrowDx = -(arrowSize[0] / 2) * arrowScale;
@@ -19,6 +18,7 @@ export class Connector extends WorldObject {
   r = 6;
   direction = 0;
   zoomLevel = 1;
+  arrowPath = new Path2D(arrowUp);
 
   constructor(connector: SymbolConnectorInternal) {
     super(connector.id);
@@ -83,7 +83,7 @@ export class Connector extends WorldObject {
     ctx.scale(arrowScale, arrowScale);
     ctx.globalAlpha = 1.0;
     ctx.fillStyle = color;
-    ctx.fill(arrowPath);
+    ctx.fill(this.arrowPath);
     resetScale(ctx);
   }
 }
