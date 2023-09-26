@@ -42,6 +42,7 @@ import {
 	SymbolUploadStore,
 } from '../../store';
 import React from 'react';
+import { EditorCommandMessage, EngineeringSymbolEditor, SymbolEditorEvent } from '../../components/symbolEditor';
 
 // const icons = allSymbols.map(({ key, geometry, ...rest }) => ({
 // 	key,
@@ -186,6 +187,20 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		// setEnableReinitialize(true);
 
 		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
+
+		// Load symbol into editor
+		setCommand({
+			type: 'Symbol',
+			action: 'Load',
+			data: {
+				name: symbol.id,
+				path: symbol.geometry,
+				width: symbol.width,
+				height: symbol.height,
+				centerOfRotation: { x: symbol.width / 2, y: symbol.height / 2 }, // We don't have CoR in API yet,
+				connectors: symbol.connectors,
+			},
+		});
 
 		return () => {
 			clearTimeout(timer);
@@ -390,6 +405,16 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		},
 	];
 
+	const onEditorEvent = (event: SymbolEditorEvent) => {
+		console.log(`EDITOR-EVENT:${event.type}:${event.reason}`);
+		console.log('Event data: ', event.data);
+		console.log('Symbol state: ', event.symbolState);
+
+		// Add a switch statement on 'event.type'...
+	};
+
+	const [command, setCommand] = useState<EditorCommandMessage | undefined>();
+
 	return (
 		<AuthenticatedTemplate>
 			<Head>
@@ -411,18 +436,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						{isSvgFileLoading && <WeatherLoader />}
 
 						<PanelPresentationContentStyled>
-							{!!selectedSymbol && (
-								<SvgComponent
-									renderConnectors
-									viewBoxHeight={selectedSymbol.height}
-									viewBoxWidth={selectedSymbol.width}
-									connectors={selectedSymbol.connectors}
-									height={250}
-									width={250}
-									fill={theme.fill}
-									path={selectedSymbol.geometry}
-								/>
-							)}
+							{!!selectedSymbol && <EngineeringSymbolEditor editorEventHandler={onEditorEvent} command={command} />}
 						</PanelPresentationContentStyled>
 
 						{finishManageSymbolsQuery && selectedSymbol && (

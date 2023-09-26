@@ -13,21 +13,37 @@ export const PanelPresentationStyled = styled.div`
 `;
 
 export const PanelPresentationContentStyled = styled.div`
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+	position: relative;
+	top: 0;
+	left: 0;
+	width: 1000px;
+	height: ${HEIGHT}px;
 
-	svg {
-		width: 250px;
-		height: auto;
-		fill: ${({ theme }) => theme.fill};
-	}
+	background: green;
 
-	#Annotations > * {
-		fill: ${({ theme }) => theme.textRed};
+	canvas {
+		display: block;
+		width: 100%;
+		height: 100%;
 	}
 `;
+
+// export const PanelPresentationContentStyled = styled.div`
+// 	position: absolute;
+// 	top: 50%;
+// 	left: 50%;
+// 	transform: translate(-50%, -50%);
+
+// 	svg {
+// 		width: 250px;
+// 		height: auto;
+// 		fill: ${({ theme }) => theme.fill};
+// 	}
+
+// 	#Annotations > * {
+// 		fill: ${({ theme }) => theme.textRed};
+// 	}
+// `;
 
 export const PanelSymbolsStyled = styled.div`
 	padding: 80px 0 0;

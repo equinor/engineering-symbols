@@ -12,15 +12,13 @@ export type SymbolEditorProps = {
 };
 
 const defaultStyle: React.CSSProperties = {
-	position: 'absolute',
-	top: 0,
-	left: 0,
-	right: 0,
-	bottom: 0,
-	background: 'grey',
+	position: 'relative',
+	height: '100%',
+	width: '100%',
+	background: '#e7e5e4',
 };
 
-const EngineeringSymbolEditor: FC<SymbolEditorProps> = ({ editorEventHandler, command, style }: SymbolEditorProps) => {
+export const EngineeringSymbolEditor: FC<SymbolEditorProps> = ({ editorEventHandler, command, style }: SymbolEditorProps) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const editorRef = useRef<World | null>(null);
@@ -52,5 +50,3 @@ const EngineeringSymbolEditor: FC<SymbolEditorProps> = ({ editorEventHandler, co
 		</div>
 	);
 };
-
-export default EngineeringSymbolEditor;
