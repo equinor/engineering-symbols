@@ -342,25 +342,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		});
 	}, [manageUpdateSymbolsQuery]);
 
-	const symbolMeny = (symbol: SymbolsProps) => [
-		{
-			name: isStatusDraft(symbol) ? 'Update' : isReadyForReview(symbol) ? 'Show' : 'Edit',
-			action: () => (isStatusDraft(symbol) ? onUpdateSymbol(symbol) : onEditSymbol(symbol)),
-			// isDisabled: !isStatusReadyForReview(symbol) && !isAdmin,
-			isDisabled: isStatusDraft(symbol) ? false : isStatusReadyForReview(symbol) ? !isAdmin : false,
-		},
-		{
-			name: isReadyForReview(symbol) ? 'Review' : 'Submit for review',
-			action: () => (isReadyForReview(symbol) ? onReview(symbol) : onSubmitOnReview(symbol)),
-			isDisabled: !isStatusDraft(symbol) && !isReadyForReview(symbol),
-		},
-		{
-			name: 'Delete',
-			action: () => onDeleteConfirmation(symbol),
-			isDisabled: !isStatusDraft(symbol) && !isStatusRejected(symbol),
-		},
-	];
-
 	const getSymbolVersion = ({ key, id }: SymbolsProps) => {
 		if (manageSymbolsQuery.length <= 0) return 1;
 
@@ -389,6 +370,25 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 			return symbol.status;
 		}
 	};
+
+	const symbolMeny = (symbol: SymbolsProps) => [
+		{
+			name: isStatusDraft(symbol) ? 'Update' : isReadyForReview(symbol) ? 'Show' : 'Edit',
+			action: () => (isStatusDraft(symbol) ? onUpdateSymbol(symbol) : onEditSymbol(symbol)),
+			// isDisabled: !isStatusReadyForReview(symbol) && !isAdmin,
+			isDisabled: isStatusDraft(symbol) ? false : isStatusReadyForReview(symbol) ? !isAdmin : false,
+		},
+		{
+			name: isReadyForReview(symbol) ? 'Review' : 'Submit for review',
+			action: () => (isReadyForReview(symbol) ? onReview(symbol) : onSubmitOnReview(symbol)),
+			isDisabled: !isStatusDraft(symbol) && !isReadyForReview(symbol),
+		},
+		{
+			name: 'Delete',
+			action: () => onDeleteConfirmation(symbol),
+			isDisabled: !isStatusDraft(symbol) && !isStatusRejected(symbol),
+		},
+	];
 
 	return (
 		<AuthenticatedTemplate>
