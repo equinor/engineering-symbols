@@ -20,7 +20,7 @@ const defaultStyle: React.CSSProperties = {
 	background: 'grey',
 };
 
-const EngineeringSymbolEditor: FC<SymbolEditorProps> = ({ editorEventHandler, command, style }: SymbolEditorProps) => {
+export const EngineeringSymbolEditor: FC<SymbolEditorProps> = ({ editorEventHandler, command, style }: SymbolEditorProps) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const editorRef = useRef<World | null>(null);
@@ -52,5 +52,3 @@ const EngineeringSymbolEditor: FC<SymbolEditorProps> = ({ editorEventHandler, co
 		</div>
 	);
 };
-
-export default EngineeringSymbolEditor;

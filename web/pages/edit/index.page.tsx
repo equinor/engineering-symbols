@@ -42,9 +42,7 @@ import {
 	SymbolUploadStore,
 } from '../../store';
 import React from 'react';
-import EngineeringSymbolEditor from '../../components/symbolEditor/EngineeringSymbolEditor';
-import { SymbolEditorEvent } from '../../components/symbolEditor/models/EditorEvent';
-import { EditorCommandMessage } from '../../components/symbolEditor/models/EditorCommand';
+import { EditorCommandMessage, EngineeringSymbolEditor, SymbolEditorEvent } from '../../components/symbolEditor';
 
 // const icons = allSymbols.map(({ key, geometry, ...rest }) => ({
 // 	key,
