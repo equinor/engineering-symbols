@@ -1,62 +1,60 @@
-import { World } from "../World";
-import { Vec2 } from "../models/Vec2";
-import { WorldObject, WorldObjectRect } from "../models/WorldObject";
+import { World } from '../World';
+import { Vec2 } from '../models/Vec2';
+import { WorldObject, WorldObjectRect } from '../models/WorldObject';
 
 export class Info extends WorldObject {
-  zoom = "100 %";
-  mousePosFrame = "0, 0";
-  size = "w: 0 , h: 0 (1:1)";
-  sizeRatio = "1:1";
+	zoom = '100 %';
+	mousePosFrame = '0, 0';
+	size = 'w: 0 , h: 0 (1:1)';
+	sizeRatio = '1:1';
 
-  constructor() {
-    super("Info");
-  }
+	constructor() {
+		super('Info');
+	}
 
-  isInsideHitBox(pos: Vec2): boolean {
-    return false;
-  }
+	isInsideHitBox(pos: Vec2): boolean {
+		return false;
+	}
 
-  toExternalModel(): object {
-    throw new Error("Method not implemented.");
-  }
+	toExternalModel(): object {
+		throw new Error('Method not implemented.');
+	}
 
-  getBoundingBoxRect(): WorldObjectRect {
-    throw new Error("Method not implemented.");
-  }
+	getBoundingBoxRect(): WorldObjectRect {
+		throw new Error('Method not implemented.');
+	}
 
-  onUpdate(w: Readonly<World>): void {
-    this.zoom = `${w.zoomLevel * 100} %`;
-    this.mousePosFrame = `${w.mouse.posFrame.x.toFixed(
-      1
-    )}, ${w.mouse.posFrame.y.toFixed(1)}`;
+	onUpdate(w: Readonly<World>): void {
+		this.zoom = `${w.zoomLevel * 100} %`;
+		this.mousePosFrame = `${w.mouse.posFrame.x.toFixed(1)}, ${w.mouse.posFrame.y.toFixed(1)}`;
 
-    const width = w.symbol?.size.x ?? 0;
-    const height = w.symbol?.size.y ?? 0;
+		const width = w.symbol?.size.x ?? 0;
+		const height = w.symbol?.size.y ?? 0;
 
-    const a = width / height;
+		const a = width / height;
 
-    let rw = 1;
-    let rh = 1;
+		let rw = 1;
+		let rh = 1;
 
-    if (a < 1) {
-      rh = 1 / a;
-    } else if (a > 1) {
-      rw = a;
-    }
+		if (a < 1) {
+			rh = 1 / a;
+		} else if (a > 1) {
+			rw = a;
+		}
 
-    this.sizeRatio = `${rw}:${rh}`;
-    this.size = `W: ${width} H: ${height} (${this.sizeRatio})`;
-  }
+		this.sizeRatio = `${rw}:${rh}`;
+		this.size = `W: ${width} H: ${height} (${this.sizeRatio})`;
+	}
 
-  onDraw(ctx: CanvasRenderingContext2D): void {
-    if (this.hidden) return;
+	onDraw(ctx: CanvasRenderingContext2D): void {
+		if (this.hidden) return;
 
-    ctx.fillStyle = "#16a34a";
-    ctx.font = "25px Roboto";
+		ctx.fillStyle = '#16a34a';
+		ctx.font = '25px Roboto';
 
-    ctx.fillText(this.zoom, 20, 40);
+		ctx.fillText(this.zoom, 20, 40);
 
-    ctx.fillText(this.size, 20, 40 + 30);
-    ctx.fillText(this.mousePosFrame, 20, 40 + 30 * 2);
-  }
+		ctx.fillText(this.size, 20, 40 + 30);
+		ctx.fillText(this.mousePosFrame, 20, 40 + 30 * 2);
+	}
 }
