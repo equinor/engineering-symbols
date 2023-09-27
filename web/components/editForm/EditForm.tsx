@@ -1,10 +1,10 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { Form, Field, FieldArray } from 'formik';
 
 import { ButtonComponent } from '../button';
 
 import { SymbolConnector } from '../svg/Svg.types';
-import { SymbolsProps } from '../../types';
+import { ConnectorsProps, SymbolsProps } from '../../types';
 
 import { EditFromRemoveConnectorStyled, EditFromAddConnectorButton, EditFromElementsStyled, EditFromElementStyled } from './styles';
 import { isObjEmpty } from '../../helpers';
@@ -16,6 +16,14 @@ type EditFormComponentProps = {
 };
 
 export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ updateSymbol, formChange }): JSX.Element => {
+	const [currentConnectorId, setCurrentConnectorId] = useState<number>(0);
+
+	// const getConnectorIdWithHighestNumber = (connectors: ConnectorsProps[]) => {
+	// 	const sortedConnectors = connectors.sort((a, b) => parseInt(a.id, 10) - parseInt(b.id, 10));
+
+	// 	return Number(sortedConnectors[sortedConnectors.length - 1].id);
+	// }
+
 	return (
 		<Form onChange={formChange}>
 			<EditFromElementStyled>
@@ -26,25 +34,13 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 				<label htmlFor="description">Description: </label>
 				<Field type="text" id="description" name="description" required />
 			</EditFromElementStyled>
-			<EditFromElementStyled>
-				<label htmlFor="width">Width: </label>
-				<Field type="text" id="width" name="width" required />
-			</EditFromElementStyled>
-			<EditFromElementStyled>
-				<label htmlFor="height">Height: </label>
-				<Field type="text" id="height" name="height" required />
-			</EditFromElementStyled>
-			<EditFromElementStyled>
-				<label htmlFor="geometry">Geometry: </label>
-				<Field type="text" id="geometry" name="geometry" required />
-			</EditFromElementStyled>
 
 			<p>Connectors</p>
 			<FieldArray name="connectors">
 				{({ push, form }) => {
 					const { values, setValues } = form;
 					const isConnectorsEmpty = isObjEmpty(values.connectors);
-					const filteredConnectors = !isConnectorsEmpty && values.connectors.filter((x: any) => x !== undefined);
+					const filteredConnectors = !isConnectorsEmpty && (values.connectors.filter((x: ConnectorsProps) => x !== undefined) as any);
 
 					return (
 						<>
@@ -57,7 +53,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 											<label htmlFor="connector-id">Id: </label>
 											<Field type="text" id="connector-id" name={`connectors[${i}].id`} required />
 										</EditFromElementStyled>
-										<EditFromElementStyled>
+										{/* <EditFromElementStyled>
 											<label htmlFor={`connectors[${i}].relativePosition.x`}>Position X: </label>
 											<Field
 												type="number"
@@ -78,7 +74,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 										<EditFromElementStyled>
 											<label htmlFor={`connectors[${i}].direction`}>Direction: </label>
 											<Field type="number" id={`connectors[${i}].direction`} name={`connectors[${i}].direction`} required />
-										</EditFromElementStyled>
+										</EditFromElementStyled> */}
 
 										<EditFromRemoveConnectorStyled
 											type="button"
@@ -103,13 +99,14 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 									isWide
 									type="button"
 									onClick={() => {
+										setCurrentConnectorId(currentConnectorId + 1);
 										push({
-											id: '1',
+											id: currentConnectorId.toString(),
 											relativePosition: {
 												x: 0,
 												y: 0,
 											},
-											direction: '90',
+											direction: 0,
 										});
 									}}>
 									Add Connector
