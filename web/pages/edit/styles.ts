@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const HEIGHT = 500;
+const HEIGHT = 445;
 
 export const PanelContainerStyled = styled.div``;
 
@@ -16,15 +16,16 @@ export const PanelPresentationContentStyled = styled.div`
 	position: relative;
 	top: 0;
 	left: 0;
-	width: 1000px;
+	/* width: 1000px; */
 	height: ${HEIGHT}px;
 
-	background: green;
+	/* background: green; */
 
 	canvas {
 		display: block;
 		width: 100%;
-		height: 100%;
+		/* height: 100%; */
+		height: ${HEIGHT}px !important;
 	}
 `;
 

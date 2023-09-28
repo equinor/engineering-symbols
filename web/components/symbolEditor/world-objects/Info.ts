@@ -51,6 +51,8 @@ export class Info extends WorldObject {
 
 		ctx.fillStyle = '#16a34a';
 		ctx.font = '25px Roboto';
+		// ctx.shadowBlur = 10;
+		// ctx.shadowColor = '#44403c';
 
 		ctx.fillText(this.zoom, 20, 40);
 

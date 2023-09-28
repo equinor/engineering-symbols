@@ -42,7 +42,7 @@ import {
 	SymbolUploadStore,
 } from '../../store';
 import React from 'react';
-import { EditorCommandMessage, EngineeringSymbolEditor, SymbolEditorEvent } from '../../components/symbolEditor';
+import { EditorCommandMessage, SymbolEditor, SymbolEditorEvent } from '../../components/symbolEditor';
 
 // const icons = allSymbols.map(({ key, geometry, ...rest }) => ({
 // 	key,
@@ -68,6 +68,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [enableReinitialize, setEnableReinitialize] = useState<boolean>(false);
 
 	const [uploadSvgFile, setSvgFile] = useState<SymbolsProps | null>(null);
+
+	const [editorCommand, setEditorCommand] = useState<EditorCommandMessage | undefined>();
 
 	// Workaround for popup to show same message more that 1 time
 	const [update, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -122,10 +124,27 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	// const refreshMangeSymbolsQuery = () => setTimeout(() => getManageSymbolsQueryAction.run(), 1000);
 	const refreshMangeSymbolsQuery = () => getManageSymbolsQueryAction.run();
 
+	const loadEditorCommand = ({ id, geometry, width, height, connectors }: SymbolsProps) => {
+		// Load symbol into editor
+		setEditorCommand({
+			type: 'Symbol',
+			action: 'Load',
+			data: {
+				name: id,
+				path: geometry,
+				width,
+				height,
+				centerOfRotation: { x: width / 2, y: height / 2 }, // We don't have CoR in API yet,
+				connectors,
+			},
+		});
+	};
+
 	useEffect(() => {
 		if (!svgContent) return;
 
 		setSelectedSymbol(svgContent);
+		loadEditorCommand(svgContent);
 	}, [svgContent]);
 
 	useEffect(() => {
@@ -189,18 +208,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
 
 		// Load symbol into editor
-		setCommand({
-			type: 'Symbol',
-			action: 'Load',
-			data: {
-				name: symbol.id,
-				path: symbol.geometry,
-				width: symbol.width,
-				height: symbol.height,
-				centerOfRotation: { x: symbol.width / 2, y: symbol.height / 2 }, // We don't have CoR in API yet,
-				connectors: symbol.connectors,
-			},
-		});
+		loadEditorCommand(symbol);
 
 		return () => {
 			clearTimeout(timer);
@@ -213,6 +221,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const onUpdateSymbol = (symbol: SymbolsProps) => {
 		console.log('⚡️', 'onUpdateSymbol:', symbol);
 		setSelectedSymbol(symbol);
+		loadEditorCommand(symbol);
 		// setEnableReinitialize(true);
 
 		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
@@ -227,7 +236,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onChangeSymbolForDetail = (symbol: SymbolsProps) => {
 		setSelectedSymbol(symbol);
-		console.log('⚡️', 'onChangeSymbolForDetail:');
+		console.log('⚡️', 'onChangeSymbolForDetail:', symbol);
 	};
 
 	const onUpdateDraftSymbol = (symbol: SymbolsProps) => {
@@ -410,10 +419,56 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		console.log('Event data: ', event.data);
 		console.log('Symbol state: ', event.symbolState);
 
-		// Add a switch statement on 'event.type'...
-	};
+		switch (event.type) {
+			case 'Symbol':
+				switch (event.reason) {
+					case 'Loaded':
+						// setConnectors(event.symbolState?.connectors ?? []);
+						break;
 
-	const [command, setCommand] = useState<EditorCommandMessage | undefined>();
+					default:
+						break;
+				}
+				break;
+			case 'Connector':
+				{
+					switch (event.reason) {
+						case 'Updated':
+							{
+								setSelectedSymbol({ ...selectedSymbol, connectors: event.symbolState?.connectors } as SymbolsProps);
+							}
+
+							break;
+
+						default:
+							break;
+					}
+				}
+				break;
+			case 'Selection':
+				switch (event.reason) {
+					case 'Changed':
+						{
+							const changedConnectors = event.data.filter((d) => d.type === 'Connector');
+							if (changedConnectors.length === 0) {
+								// setSelectedConnector(null);
+							} else {
+								// setSelectedConnector(
+								//   (changedConnectors[0].data as SymbolConnector).id
+								// );
+							}
+						}
+						break;
+
+					default:
+						break;
+				}
+				break;
+
+			default:
+				break;
+		}
+	};
 
 	return (
 		<AuthenticatedTemplate>
@@ -436,7 +491,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						{isSvgFileLoading && <WeatherLoader />}
 
 						<PanelPresentationContentStyled>
-							{!!selectedSymbol && <EngineeringSymbolEditor editorEventHandler={onEditorEvent} command={command} />}
+							{!!selectedSymbol && <SymbolEditor editorEventHandler={onEditorEvent} command={editorCommand} />}
 						</PanelPresentationContentStyled>
 
 						{finishManageSymbolsQuery && selectedSymbol && (

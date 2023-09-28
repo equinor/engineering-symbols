@@ -25,7 +25,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 	onClosePanel,
 	symbol,
 }): JSX.Element => {
-	const { key, description, width, height, geometry, connectors } = symbol;
+	const { key, description, geometry, connectors } = symbol;
 
 	const formRef = useRef<FormikProps<any>>(null);
 
@@ -76,8 +76,6 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 							...symbol,
 							key,
 							description,
-							width,
-							height,
 							owner: tenantId,
 							geometry,
 							connectors,

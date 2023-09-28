@@ -1,9 +1,7 @@
 import { World } from '../World';
 import { WorldObject, WorldObjectRect } from '../models/WorldObject';
 import { Vec2 } from '../models/Vec2';
-import { SymbolConnector, SymbolConnectorInternal } from '../models/SymbolData';
 import { Connector } from './Connector';
-import { resetScale } from '../utils/context2d';
 
 export class ConnectorLabel extends WorldObject {
 	readonly key: string;
