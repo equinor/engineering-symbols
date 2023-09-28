@@ -35,7 +35,7 @@ export class ConnectorLayer extends WorldObject {
 				});
 			} else {
 				if (w.events.connector.updated.length > 0 && w.events.connector.updated.includes(sc.id)) {
-					//existing.body.id = sc.id; // Add and remove if id changes?
+					existing.body.name = sc.name;
 					existing.body.direction = sc.direction;
 					existing.body.posFrame = sc.posFrame;
 				}

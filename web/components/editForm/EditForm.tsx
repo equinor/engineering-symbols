@@ -33,12 +33,12 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 	return (
 		<Form onChange={formChange}>
 			<EditFromElementStyled>
-				<label htmlFor="key">Name: </label>
+				<label htmlFor="key">Name</label>
 				<Field type="text" id="key" name="key" required />
 			</EditFromElementStyled>
 
 			<EditFromElementStyled>
-				<label htmlFor="description">Description: </label>
+				<label htmlFor="description">Description</label>
 				<Field type="text" id="description" name="description" required />
 			</EditFromElementStyled>
 
@@ -49,7 +49,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 					const isConnectorsEmpty = isObjEmpty(values.connectors);
 					const filteredConnectors = !isConnectorsEmpty && (values.connectors.filter((x: ConnectorsProps) => x !== undefined) as any);
 
-					console.log(100, 'errors:', errors);
+					//console.log(100, 'errors:', errors);
 
 					return (
 						<>
@@ -60,18 +60,18 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 									<EditFromElementsStyled key={`connector-${i}`}>
 										{/* ConnectorId */}
 										<EditFromElementStyled>
-											<label htmlFor={`connectors[${i}].id`}>Id: </label>
-											<Field type="text" id={`connectors[${i}].id`} name={`connectors[${i}].id`} required />
+											<label htmlFor={`connectors[${i}].id`}>Name</label>
+											<Field type="text" id={`connectors[${i}].name`} name={`connectors[${i}].name`} required />
 										</EditFromElementStyled>
 										<ErrorMessageStyled>
-											{/* Workaraund, cayse ErrorMessage can't handel name in `connectors[${i}].id` format */}
+											{/* Workaraund, cayse ErrorMessage can't handel name in `connectors[${i}].name` format */}
 											{/* @ts-ignore next-line */}
-											{errors[`connectors[${i}].id`]}
+											{errors[`connectors[${i}].name`]}
 										</ErrorMessageStyled>
 
 										{/* RelativePosition X */}
 										<EditFromElementStyled>
-											<label htmlFor={`connectors[${i}].relativePosition.x`}>Position X: </label>
+											<label htmlFor={`connectors[${i}].relativePosition.x`}>Position X</label>
 											<Field
 												type="number"
 												id={`connectors[${i}].relativePosition.x`}
@@ -86,7 +86,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 
 										{/* RelativePosition Y */}
 										<EditFromElementStyled>
-											<label htmlFor={`connectors[${i}].relativePosition.y`}>Position Y: </label>
+											<label htmlFor={`connectors[${i}].relativePosition.y`}>Position Y</label>
 											<Field
 												type="number"
 												id={`connectors[${i}].relativePosition.y`}
@@ -101,7 +101,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 
 										{/* Direction */}
 										<EditFromElementStyled>
-											<label htmlFor={`connectors[${i}].direction`}>Direction: </label>
+											<label htmlFor={`connectors[${i}].direction`}>Direction</label>
 											<Field type="number" id={`connectors[${i}].direction`} name={`connectors[${i}].direction`} required />
 										</EditFromElementStyled>
 
@@ -128,7 +128,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 									</EditFromElementsStyled>
 								))
 							)}
-							<EditFromAddConnectorButton>
+							{/* <EditFromAddConnectorButton>
 								<ButtonComponent
 									isWide
 									type="button"
@@ -145,7 +145,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 									}}>
 									Add Connector
 								</ButtonComponent>
-							</EditFromAddConnectorButton>
+							</EditFromAddConnectorButton> */}
 						</>
 					);
 				}}

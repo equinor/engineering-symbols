@@ -15,6 +15,7 @@ type PanelDetailsComponentProps = {
 	updateCurrentSymbol: (symbol: SymbolsProps) => void;
 	enableReinitialize: boolean;
 	onClosePanel: () => void;
+	onAddConnector: () => void;
 	symbol: SymbolsProps;
 };
 
@@ -23,6 +24,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 	updateCurrentSymbol,
 	enableReinitialize,
 	onClosePanel,
+	onAddConnector,
 	symbol,
 }): JSX.Element => {
 	const { key, description, geometry, connectors } = symbol;
@@ -59,7 +61,10 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 		<PanelDetailsStyled isShow>
 			<PanelDetailsWrapperStyled>
 				<EditPanelStyled />
-
+				{/* Temporary "Add connector" button, should not be placed here! */}
+				<ButtonComponent type="button" onClick={() => onAddConnector()}>
+					Add Connector
+				</ButtonComponent>
 				<EditFromStyled>
 					<PanelDetailsButtons>
 						<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()} hasError={hasFormError}>

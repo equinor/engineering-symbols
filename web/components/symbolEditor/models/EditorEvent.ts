@@ -16,6 +16,7 @@ type SymbolEvent = BaseEditorEvent<
 	'Symbol',
 	{
 		Loaded: undefined;
+		Updated: SymbolData;
 		Unloaded: undefined;
 	}
 >;

@@ -62,13 +62,18 @@ function handleWindowResize(w: World) {
 
 function handleDocumentKeyDown(w: World) {
 	return function (e: KeyboardEvent) {
+		if (w.mouse.isInCanvas) {
+			e.preventDefault();
+		}
 		w.handleKeyUpOrDown(e);
 	};
 }
 
 function handleDocumentKeyUp(w: World) {
 	return function (e: KeyboardEvent) {
-		e.preventDefault();
+		if (w.mouse.isInCanvas) {
+			e.preventDefault();
+		}
 		w.handleKeyUpOrDown(e);
 	};
 }
