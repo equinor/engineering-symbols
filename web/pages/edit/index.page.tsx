@@ -3,27 +3,14 @@ import { AuthenticatedTemplate } from '@azure/msal-react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
-import {
-	InformationComponentTypes,
-	PanelDetailsComponent,
-	InformationComponent,
-	SymbolElement,
-	WeatherLoader,
-	SvgComponent,
-	useConfirm,
-} from '../../components';
+import { InformationComponentTypes, PanelDetailsComponent, InformationComponent, SymbolElement, WeatherLoader, useConfirm } from '../../components';
 
 import { useAdminUserRole, useFileUpload } from '../../helpers';
 
 import { EditPageProps, StatusProps, SymbolsProps } from '../../types';
 
 import {
-	PanelPresentationLinesWrapperStyled,
 	PanelPresentationContentStyled,
-	PanelPresentationMHLineStyled,
-	PanelPresentationMRLineStyled,
-	PanelPresentationMSLineStyled,
-	PanelPresentationMVLineStyled,
 	PanelPresentationStyled,
 	PanelSymbolsListStyled,
 	PanelContainerStyled,
@@ -135,7 +122,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				path: geometry,
 				width,
 				height,
-				centerOfRotation: { x: width / 2, y: height / 2 }, // We don't have CoR in API yet,
+				centerOfRotation: { x: width / 2, y: height / 2 }, // TODO: We don't have CoR in API yet,
 				connectors: connectors,
 			},
 		});
@@ -442,7 +429,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 					case 'Loaded':
 						// setConnectors(event.symbolState?.connectors ?? []);
 						break;
-
 					default:
 						break;
 				}
@@ -452,12 +438,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 					switch (event.reason) {
 						case 'Added':
 						case 'Updated':
-							{
-								setSelectedSymbol({ ...selectedSymbol, connectors: event.symbolState?.connectors } as SymbolsProps);
-							}
-
+							setSelectedSymbol({ ...selectedSymbol, connectors: event.symbolState?.connectors } as SymbolsProps);
 							break;
-
 						default:
 							break;
 					}
