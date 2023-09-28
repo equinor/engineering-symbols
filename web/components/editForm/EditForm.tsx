@@ -6,7 +6,13 @@ import { ButtonComponent } from '../button';
 import { SymbolConnector } from '../svg/Svg.types';
 import { ConnectorsProps, SymbolsProps } from '../../types';
 
-import { EditFromRemoveConnectorStyled, EditFromAddConnectorButton, EditFromElementsStyled, EditFromElementStyled } from './styles';
+import {
+	EditFromRemoveConnectorStyled,
+	EditFromAddConnectorButton,
+	EditFromElementsStyled,
+	EditFromElementStyled,
+	ErrorMessageStyled,
+} from './styles';
 import { isObjEmpty } from '../../helpers';
 
 // SymbolsProps
@@ -30,6 +36,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 				<label htmlFor="key">Name: </label>
 				<Field type="text" id="key" name="key" required />
 			</EditFromElementStyled>
+
 			<EditFromElementStyled>
 				<label htmlFor="description">Description: </label>
 				<Field type="text" id="description" name="description" required />
@@ -38,9 +45,11 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 			<p>Connectors</p>
 			<FieldArray name="connectors">
 				{({ push, form }) => {
-					const { values, setValues } = form;
+					const { values, setValues, errors } = form;
 					const isConnectorsEmpty = isObjEmpty(values.connectors);
 					const filteredConnectors = !isConnectorsEmpty && (values.connectors.filter((x: ConnectorsProps) => x !== undefined) as any);
+
+					console.log(100, 'errors:', errors);
 
 					return (
 						<>
@@ -49,11 +58,19 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 							) : (
 								filteredConnectors.map(({ id }: SymbolConnector, i: number) => (
 									<EditFromElementsStyled key={`connector-${i}`}>
+										{/* ConnectorId */}
 										<EditFromElementStyled>
-											<label htmlFor="connector-id">Id: </label>
-											<Field type="text" id="connector-id" name={`connectors[${i}].id`} required />
+											<label htmlFor={`connectors[${i}].id`}>Id: </label>
+											<Field type="text" id={`connectors[${i}].id`} name={`connectors[${i}].id`} required />
 										</EditFromElementStyled>
-										{/* <EditFromElementStyled>
+										<ErrorMessageStyled>
+											{/* Workaraund, cayse ErrorMessage can't handel name in `connectors[${i}].id` format */}
+											{/* @ts-ignore next-line */}
+											{errors[`connectors[${i}].id`]}
+										</ErrorMessageStyled>
+
+										{/* RelativePosition X */}
+										<EditFromElementStyled>
 											<label htmlFor={`connectors[${i}].relativePosition.x`}>Position X: </label>
 											<Field
 												type="number"
@@ -62,6 +79,12 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 												required
 											/>
 										</EditFromElementStyled>
+										<ErrorMessageStyled>
+											{/* @ts-ignore next-line */}
+											{errors[`connectors[${i}].relativePosition.x`]}
+										</ErrorMessageStyled>
+
+										{/* RelativePosition Y */}
 										<EditFromElementStyled>
 											<label htmlFor={`connectors[${i}].relativePosition.y`}>Position Y: </label>
 											<Field
@@ -71,10 +94,21 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 												required
 											/>
 										</EditFromElementStyled>
+										<ErrorMessageStyled>
+											{/* @ts-ignore next-line */}
+											{errors[`connectors[${i}].relativePosition.y`]}
+										</ErrorMessageStyled>
+
+										{/* Direction */}
 										<EditFromElementStyled>
 											<label htmlFor={`connectors[${i}].direction`}>Direction: </label>
 											<Field type="number" id={`connectors[${i}].direction`} name={`connectors[${i}].direction`} required />
-										</EditFromElementStyled> */}
+										</EditFromElementStyled>
+
+										<ErrorMessageStyled>
+											{/* @ts-ignore next-line */}
+											{errors[`connectors[${i}].direction`]}
+										</ErrorMessageStyled>
 
 										<EditFromRemoveConnectorStyled
 											type="button"

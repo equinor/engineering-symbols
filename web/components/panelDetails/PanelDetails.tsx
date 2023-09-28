@@ -1,14 +1,14 @@
-import { FunctionComponent, useRef } from 'react';
-import { Formik, FormikProps } from 'formik';
+import { FunctionComponent, useRef, useState } from 'react';
+import { Formik, FormikErrors, FormikProps } from 'formik';
 import { useMsal } from '@azure/msal-react';
 
 import { ButtonComponent } from '../button';
 import { EditFormComponent } from '../editForm';
 
-import { SymbolsProps } from '../../types';
+import { ConnectorsProps, SymbolsProps } from '../../types';
+import { isObjEmpty } from '../../helpers';
 
 import { EditFromStyled, EditPanelStyled, PanelDetailsButtons, PanelDetailsStyled, PanelDetailsWrapperStyled } from './styles';
-import React from 'react';
 
 type PanelDetailsComponentProps = {
 	setUpdateDraftSymbol: (symbol: SymbolsProps) => void;
@@ -26,6 +26,8 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 	symbol,
 }): JSX.Element => {
 	const { key, description, geometry, connectors } = symbol;
+
+	const [hasFormError, setHasFormError] = useState<boolean>(false);
 
 	const formRef = useRef<FormikProps<any>>(null);
 
@@ -51,7 +53,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 		};
 	};
 
-	// const isUniqueID = (obj: any, name: string, id: string) => obj.filter((sbl: { [x: string]: string }) => sbl[name] === id).length <= 0;
+	const isUniqueID = (obj: any, name: string, id: string) => obj.filter((sbl: { [x: string]: string }) => sbl[name] === id).length <= 0;
 
 	return (
 		<PanelDetailsStyled isShow>
@@ -60,7 +62,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 
 				<EditFromStyled>
 					<PanelDetailsButtons>
-						<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()}>
+						<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()} hasError={hasFormError}>
 							Save
 						</ButtonComponent>
 						<ButtonComponent size="s" onClick={() => onClosePanel()} appearance="secondary">
@@ -71,6 +73,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 						// enableReinitialize={enableReinitialize}
 						// For symbol swithching
 						enableReinitialize={true}
+						initialTouched={{ key: true }}
 						innerRef={formRef}
 						initialValues={{
 							...symbol,
@@ -79,6 +82,29 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 							owner: tenantId,
 							geometry,
 							connectors,
+						}}
+						validate={({ connectors }) => {
+							const errors: FormikErrors<any> = {};
+
+							// Validate each item in the array
+							connectors.forEach((item: ConnectorsProps, i: number) => {
+								if (!item.id) {
+									errors[`connectors[${i}].id`] = 'ID is required';
+								}
+								if (item.relativePosition.x > 0) {
+									errors[`connectors[${i}].relativePosition.x`] = 'Position X is required';
+								}
+								if (item.relativePosition.y > 0) {
+									errors[`connectors[${i}].relativePosition.y`] = 'Position Y is required';
+								}
+								if (item.direction > 0) {
+									errors[`connectors[${i}].direction`] = 'Direction is required';
+								}
+							});
+
+							setHasFormError(!isObjEmpty(errors));
+
+							return errors;
 						}}
 						onSubmit={(values, { setSubmitting }) => {
 							setTimeout(() => {
