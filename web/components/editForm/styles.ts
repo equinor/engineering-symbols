@@ -9,6 +9,7 @@ export const ErrorMessageStyled = styled.div`
 	font-family: 'Equinor';
 	font-size: 12px;
 	padding: 0 0 12px;
+	transition: all 0.5s ease;
 	text-align: right;
 `;
 
