@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useEffect, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { SymbolEditorEvent } from './models/EditorEvent';
 import { EditorCommandMessage } from './models/EditorCommand';
 import { World } from './World';
