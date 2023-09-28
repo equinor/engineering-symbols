@@ -61,10 +61,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 		<PanelDetailsStyled isShow>
 			<PanelDetailsWrapperStyled>
 				<EditPanelStyled />
-				{/* Temporary "Add connector" button, should not be placed here! */}
-				<ButtonComponent type="button" onClick={() => onAddConnector()}>
-					Add Connector
-				</ButtonComponent>
+
 				<EditFromStyled>
 					<PanelDetailsButtons>
 						<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()} hasError={hasFormError}>
@@ -118,7 +115,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 								console.log('⚡️', 'onSubmin value:', values);
 							}, 400);
 						}}>
-						<EditFormComponent updateSymbol={updateCurrentSymbol} formChange={onFormChange} />
+						<EditFormComponent updateSymbol={updateCurrentSymbol} formChange={onFormChange} addNewConnector={onAddConnector} />
 					</Formik>
 				</EditFromStyled>
 			</PanelDetailsWrapperStyled>

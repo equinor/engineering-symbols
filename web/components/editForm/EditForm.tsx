@@ -18,10 +18,11 @@ import { isObjEmpty } from '../../helpers';
 // SymbolsProps
 type EditFormComponentProps = {
 	updateSymbol: (symbol: SymbolsProps) => void;
+	addNewConnector: () => void;
 	formChange: () => void;
 };
 
-export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ updateSymbol, formChange }): JSX.Element => {
+export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ updateSymbol, formChange, addNewConnector }): JSX.Element => {
 	const [currentConnectorId, setCurrentConnectorId] = useState<number>(0);
 
 	// const getConnectorIdWithHighestNumber = (connectors: ConnectorsProps[]) => {
@@ -128,24 +129,11 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 									</EditFromElementsStyled>
 								))
 							)}
-							{/* <EditFromAddConnectorButton>
-								<ButtonComponent
-									isWide
-									type="button"
-									onClick={() => {
-										setCurrentConnectorId(currentConnectorId + 1);
-										push({
-											id: currentConnectorId.toString(),
-											relativePosition: {
-												x: 0,
-												y: 0,
-											},
-											direction: 0,
-										});
-									}}>
+							<EditFromAddConnectorButton>
+								<ButtonComponent isWide type="button" onClick={() => addNewConnector()}>
 									Add Connector
 								</ButtonComponent>
-							</EditFromAddConnectorButton> */}
+							</EditFromAddConnectorButton>
 						</>
 					);
 				}}
