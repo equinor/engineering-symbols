@@ -238,20 +238,17 @@ export class World {
 		//this.symbol.path = new Path2D(symbolDto.path);
 		this.symbol.centerOfRotation = new Vec2(symbolDto.centerOfRotation.x, symbolDto.centerOfRotation.y);
 		this.symbol.connectors = symbolDto.connectors.map((c) => ({
-			id: c.id,
-			name: c.name,
+			...c,
 			posFrame: new Vec2(c.relativePosition.x, c.relativePosition.y),
-			direction: c.direction,
 		}));
 
 		this.events.connector.updated = symbolDto.connectors.map((c) => c.id);
-		//this.selectedWorldObjects = [];
 
 		this.notifyListeners({
 			type: 'Symbol',
 			reason: 'Updated',
-			data: this.getSymbolState()!,
-			symbolState: this.getSymbolState(),
+			data: symbolDto,
+			symbolState: symbolDto,
 		});
 	}
 
@@ -276,12 +273,6 @@ export class World {
 
 	zoomToFit() {
 		if (!this.symbol) return;
-
-		// console.log(this.canvasSize);
-		// console.log(this.clientSize);
-		// console.log(this.symbol.size);
-		// console.log(this.frame);
-
 		const z = this.clientSize.scale(0.6).div(this.symbol.size);
 		this.zoomLevel = Math.round(z.min() * 2) / 2;
 	}
@@ -304,7 +295,7 @@ export class World {
 
 		const newConnector = {
 			id: generateRandomString(15),
-			name: generateRandomString(15),
+			name: generateRandomString(10),
 			posFrame: spawnPos,
 			direction: 0,
 		};
