@@ -48,6 +48,12 @@ export class ConnectorLayer extends WorldObject {
 		for (const id of currentConnectors) {
 			const index = this.connectors.findIndex((c) => c.body.id === id);
 			this.connectors.splice(index, 1);
+
+			const selectedIndex = w.selectedWorldObjects.findIndex((c) => c.type === 'Connector' && (c as Connector).id === id);
+
+			if (selectedIndex > -1) {
+				w.selectedWorldObjects.splice(selectedIndex, 1);
+			}
 		}
 
 		for (const connector of this.connectors) {
