@@ -112,10 +112,10 @@ export class World {
 			new SymbolGraphic(),
 			new CenterCross(),
 			new FrameBorder(),
+			new Info(),
 			new CenterOfRotation(),
 			new ConnectorLayer(),
 			//new GeekInfo(),
-			new Info(),
 			new Cursor()
 		);
 

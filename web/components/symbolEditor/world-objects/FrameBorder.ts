@@ -36,7 +36,7 @@ export class FrameBorder extends WorldObject {
 
 		ctx.strokeStyle = this.color;
 		ctx.setLineDash([15, 5]);
-		ctx.strokeRect(this.frameOrigin.x, this.frameOrigin.y, this.frameScreenSize.x, this.frameScreenSize.x);
+		ctx.strokeRect(this.frameOrigin.x, this.frameOrigin.y, this.frameScreenSize.x, this.frameScreenSize.y);
 
 		ctx.beginPath();
 		ctx.arc(this.frameOrigin.x, this.frameOrigin.y, 3, 0, 2 * Math.PI);
