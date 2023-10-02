@@ -50,7 +50,8 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 					const isConnectorsEmpty = isObjEmpty(values.connectors);
 					const filteredConnectors = !isConnectorsEmpty && (values.connectors.filter((x: ConnectorsProps) => x !== undefined) as any);
 
-					//console.log(100, 'errors:', errors);
+					// console.log(100, 'errors:', errors);
+					// console.log(101, 'touched:', touched);
 
 					return (
 						<>
@@ -64,11 +65,13 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 											<label htmlFor={`connectors[${i}].id`}>Name</label>
 											<Field type="text" id={`connectors[${i}].name`} name={`connectors[${i}].name`} required />
 										</EditFromElementStyled>
-										<ErrorMessageStyled>
-											{/* Workaraund, cayse ErrorMessage can't handel name in `connectors[${i}].name` format */}
-											{/* @ts-ignore next-line */}
-											{errors[`connectors[${i}].name`]}
-										</ErrorMessageStyled>
+										{errors[`connectors[${i}].name`] && (
+											<ErrorMessageStyled>
+												{/* Workaraund, cayse ErrorMessage can't handel name in `connectors[${i}].name` format */}
+												{/* @ts-ignore next-line */}
+												{errors[`connectors[${i}].name`]}
+											</ErrorMessageStyled>
+										)}
 
 										{/* RelativePosition X */}
 										<EditFromElementStyled>
@@ -80,10 +83,13 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 												required
 											/>
 										</EditFromElementStyled>
-										<ErrorMessageStyled>
-											{/* @ts-ignore next-line */}
-											{errors[`connectors[${i}].relativePosition.x`]}
-										</ErrorMessageStyled>
+
+										{errors[`connectors[${i}].relativePosition.x`] && (
+											<ErrorMessageStyled>
+												{/* @ts-ignore next-line */}
+												{errors[`connectors[${i}].relativePosition.x`]}
+											</ErrorMessageStyled>
+										)}
 
 										{/* RelativePosition Y */}
 										<EditFromElementStyled>
@@ -95,21 +101,24 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 												required
 											/>
 										</EditFromElementStyled>
-										<ErrorMessageStyled>
-											{/* @ts-ignore next-line */}
-											{errors[`connectors[${i}].relativePosition.y`]}
-										</ErrorMessageStyled>
+										{errors[`connectors[${i}].relativePosition.y`] && (
+											<ErrorMessageStyled>
+												{/* @ts-ignore next-line */}
+												{errors[`connectors[${i}].relativePosition.y`]}
+											</ErrorMessageStyled>
+										)}
 
 										{/* Direction */}
 										<EditFromElementStyled>
 											<label htmlFor={`connectors[${i}].direction`}>Direction</label>
 											<Field type="number" id={`connectors[${i}].direction`} name={`connectors[${i}].direction`} required />
 										</EditFromElementStyled>
-
-										<ErrorMessageStyled>
-											{/* @ts-ignore next-line */}
-											{errors[`connectors[${i}].direction`]}
-										</ErrorMessageStyled>
+										{errors[`connectors[${i}].direction`] && (
+											<ErrorMessageStyled>
+												{/* @ts-ignore next-line */}
+												{errors[`connectors[${i}].direction`]}
+											</ErrorMessageStyled>
+										)}
 
 										<EditFromRemoveConnectorStyled
 											type="button"
