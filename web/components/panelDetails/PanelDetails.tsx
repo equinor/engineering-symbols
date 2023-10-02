@@ -90,16 +90,17 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 
 							// Validate each item in the array
 							connectors.forEach((item: ConnectorsProps, i: number) => {
-								if (!item.id) {
-									errors[`connectors[${i}].id`] = 'ID is required';
+								console.log(8771, 'item:', Number(item.relativePosition.x), Number(item.relativePosition.x) < 0);
+								if (!item.name) {
+									errors[`connectors[${i}].name`] = 'Name is required';
 								}
-								if (item.relativePosition.x > 0) {
+								if (!item.relativePosition.x) {
 									errors[`connectors[${i}].relativePosition.x`] = 'Position X is required';
 								}
-								if (item.relativePosition.y > 0) {
+								if (!item.relativePosition.y) {
 									errors[`connectors[${i}].relativePosition.y`] = 'Position Y is required';
 								}
-								if (item.direction > 0) {
+								if (item.direction < 0) {
 									errors[`connectors[${i}].direction`] = 'Direction is required';
 								}
 							});
