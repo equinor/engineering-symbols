@@ -15,6 +15,7 @@ const arrowDy = -arrowSize[1] * arrowScale;
 
 export class Connector extends WorldObject {
 	id: string;
+	name: string;
 	r = 6;
 	direction = 0;
 	zoomLevel = 1;
@@ -24,6 +25,7 @@ export class Connector extends WorldObject {
 		super(connector.id);
 		this.type = 'Connector';
 		this.id = connector.id;
+		this.name = connector.name;
 		this.posFrame = connector.posFrame;
 		this.direction = connector.direction;
 		this.isSelectable = true;
@@ -46,6 +48,7 @@ export class Connector extends WorldObject {
 	toExternalModel(): SymbolConnector {
 		return {
 			id: this.id,
+			name: this.name,
 			relativePosition: {
 				x: this.posFrame.x,
 				y: this.posFrame.y,

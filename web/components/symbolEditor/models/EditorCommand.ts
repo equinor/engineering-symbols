@@ -1,6 +1,7 @@
+import { EditorSettings } from './EditorSettings';
 import { SymbolConnector, SymbolData } from './SymbolData';
 
-export type CommandType = 'Symbol' | 'Connector' | 'Visibility';
+export type CommandType = 'Symbol' | 'Connector' | 'Visibility' | 'Settings';
 
 type BaseEditorCommandMessage<T extends CommandType, A> = {
 	[K in keyof A]: {
@@ -14,6 +15,7 @@ type SymbolCommand = BaseEditorCommandMessage<
 	'Symbol',
 	{
 		Load: SymbolData;
+		Update: SymbolData;
 		Unload: undefined;
 	}
 >;
@@ -21,6 +23,7 @@ type SymbolCommand = BaseEditorCommandMessage<
 type ConnectorCommand = BaseEditorCommandMessage<
 	'Connector',
 	{
+		New: undefined;
 		Add: SymbolConnector;
 		Remove: string;
 		Update: SymbolConnector;
@@ -28,11 +31,12 @@ type ConnectorCommand = BaseEditorCommandMessage<
 	}
 >;
 
-type VisibilityCommand = BaseEditorCommandMessage<
-	'Visibility',
+type SettingsCommand = BaseEditorCommandMessage<
+	'Settings',
 	{
-		ShowGrid: boolean;
+		Update: EditorSettings;
+		Reset: boolean;
 	}
 >;
 
-export type EditorCommandMessage = SymbolCommand | ConnectorCommand | VisibilityCommand;
+export type EditorCommandMessage = SymbolCommand | ConnectorCommand | SettingsCommand;

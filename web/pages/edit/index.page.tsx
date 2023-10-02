@@ -3,27 +3,14 @@ import { AuthenticatedTemplate } from '@azure/msal-react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
-import {
-	InformationComponentTypes,
-	PanelDetailsComponent,
-	InformationComponent,
-	SymbolElement,
-	WeatherLoader,
-	SvgComponent,
-	useConfirm,
-} from '../../components';
+import { InformationComponentTypes, PanelDetailsComponent, InformationComponent, SymbolElement, WeatherLoader, useConfirm } from '../../components';
 
 import { useAdminUserRole, useFileUpload } from '../../helpers';
 
 import { EditPageProps, StatusProps, SymbolsProps } from '../../types';
 
 import {
-	PanelPresentationLinesWrapperStyled,
 	PanelPresentationContentStyled,
-	PanelPresentationMHLineStyled,
-	PanelPresentationMRLineStyled,
-	PanelPresentationMSLineStyled,
-	PanelPresentationMVLineStyled,
 	PanelPresentationStyled,
 	PanelSymbolsListStyled,
 	PanelContainerStyled,
@@ -130,12 +117,13 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 			type: 'Symbol',
 			action: 'Load',
 			data: {
-				name: id,
+				id: id,
+				key: id,
 				path: geometry,
 				width,
 				height,
-				centerOfRotation: { x: width / 2, y: height / 2 }, // We don't have CoR in API yet,
-				connectors,
+				centerOfRotation: { x: width / 2, y: height / 2 }, // TODO: We don't have CoR in API yet,
+				connectors: connectors,
 			},
 		});
 	};
@@ -202,13 +190,16 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onEditSymbol = (symbol: SymbolsProps) => {
 		console.log('⚡️', 'onEditSymbol:', symbol);
-		setSelectedSymbol(symbol);
+
+		const editorSymbol = { ...symbol, connectors: symbol.connectors.map((c) => ({ ...c, name: c.id })) };
+
+		setSelectedSymbol(editorSymbol);
 		// setEnableReinitialize(true);
 
 		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
 
 		// Load symbol into editor
-		loadEditorCommand(symbol);
+		loadEditorCommand(editorSymbol);
 
 		return () => {
 			clearTimeout(timer);
@@ -236,6 +227,19 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onChangeSymbolForDetail = (symbol: SymbolsProps) => {
 		setSelectedSymbol(symbol);
+		setEditorCommand({
+			type: 'Symbol',
+			action: 'Update',
+			data: {
+				id: symbol.id,
+				key: symbol.key,
+				path: symbol.geometry,
+				width: symbol.width,
+				height: symbol.height,
+				connectors: symbol.connectors,
+				centerOfRotation: { x: symbol.width / 2, y: symbol.height / 2 },
+			},
+		});
 		console.log('⚡️', 'onChangeSymbolForDetail:', symbol);
 	};
 
@@ -425,7 +429,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 					case 'Loaded':
 						// setConnectors(event.symbolState?.connectors ?? []);
 						break;
-
 					default:
 						break;
 				}
@@ -433,13 +436,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 			case 'Connector':
 				{
 					switch (event.reason) {
+						case 'Added':
 						case 'Updated':
-							{
-								setSelectedSymbol({ ...selectedSymbol, connectors: event.symbolState?.connectors } as SymbolsProps);
-							}
-
+							setSelectedSymbol({ ...selectedSymbol, connectors: event.symbolState?.connectors } as SymbolsProps);
 							break;
-
 						default:
 							break;
 					}
@@ -470,6 +470,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		}
 	};
 
+	const addNewConnector = () => {
+		setEditorCommand({ type: 'Connector', action: 'New', data: undefined });
+	};
+
 	return (
 		<AuthenticatedTemplate>
 			<Head>
@@ -482,12 +486,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 			<PanelContainerStyled>
 				<PanelPresentationStyled>
 					<ContainerStyled>
-						<PanelPresentationLinesWrapperStyled>
-							<PanelPresentationMHLineStyled />
-							<PanelPresentationMVLineStyled />
-							<PanelPresentationMRLineStyled />
-							<PanelPresentationMSLineStyled />
-						</PanelPresentationLinesWrapperStyled>
 						{isSvgFileLoading && <WeatherLoader />}
 
 						<PanelPresentationContentStyled>
@@ -500,6 +498,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 								onClosePanel={onPanelReset}
 								enableReinitialize={enableReinitialize}
 								updateCurrentSymbol={onChangeSymbolForDetail}
+								onAddConnector={addNewConnector}
 								setUpdateDraftSymbol={onUpdateDraftSymbol}
 							/>
 						)}

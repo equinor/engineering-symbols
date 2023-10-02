@@ -2,6 +2,7 @@ import { World } from '../World';
 import { WorldObject, WorldObjectRect } from '../models/WorldObject';
 import { Vec2 } from '../models/Vec2';
 import { Connector } from './Connector';
+import { drawRoundedRectangle } from '../utils/context2d';
 
 export class ConnectorLabel extends WorldObject {
 	readonly key: string;
@@ -25,7 +26,7 @@ export class ConnectorLabel extends WorldObject {
 	onDraw(ctx: CanvasRenderingContext2D): void {
 		if (this.hidden) return;
 
-		const text = this.connector.id;
+		const text = this.connector.name;
 
 		const coordText = `x: ${this.connector.posFrame.x.toFixed(1)}  y: ${this.connector.posFrame.y.toFixed(1)}`;
 
@@ -45,14 +46,8 @@ export class ConnectorLabel extends WorldObject {
 		// Draw rectangle
 		const rectWidth = textWidth + 2 * padding;
 		const rectHeight = 80;
-		ctx.fillStyle = '#d6d3d1';
-		ctx.fillRect(cx, cy, rectWidth, rectHeight);
 
-		// Draw border
-		ctx.strokeStyle = '#44403c';
-		ctx.lineWidth = 1;
-		ctx.setLineDash([]);
-		ctx.strokeRect(cx, cy, rectWidth, rectHeight);
+		drawRoundedRectangle(ctx, cx, cy, rectWidth, rectHeight, 10, 'white', 'lightgrey');
 
 		// Draw text
 		ctx.fillStyle = '#000';
@@ -60,9 +55,7 @@ export class ConnectorLabel extends WorldObject {
 
 		ctx.font = '15px Roboto';
 
-		// x coord
 		ctx.fillText(coordText, cx + padding, cy + padding + textHeight / 0.9 + 20);
-
 		ctx.fillText(`${this.connector.direction}°`, cx + padding, cy + padding + textHeight / 0.9 + 40);
 	}
 

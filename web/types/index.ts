@@ -5,6 +5,7 @@ export type RelativePositionProps = {
 
 export type ConnectorsProps = {
 	id: string;
+	name: string;
 	relativePosition: RelativePositionProps;
 	direction: number;
 };

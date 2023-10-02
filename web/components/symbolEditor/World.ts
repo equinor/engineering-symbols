@@ -14,6 +14,7 @@ import { Info } from './world-objects/Info';
 import { CenterOfRotation } from './world-objects/CenterOfRotation';
 import { InternalEvents, getResetEvents } from './models/InternalEditorEvents';
 import { Cursor } from './world-objects/Cursor';
+import { EditorSettings } from './models/EditorSettings';
 
 export class World {
 	t = 0;
@@ -65,6 +66,7 @@ export class World {
 	showGuides = true;
 	listeners: EditorEventHandler[] = [];
 	eventHandlers: InternalEditorEventHandlers;
+	readonly = false;
 
 	constructor(canvas: HTMLCanvasElement) {
 		this.canvas = canvas;
@@ -110,12 +112,16 @@ export class World {
 			new SymbolGraphic(),
 			new CenterCross(),
 			new FrameBorder(),
+			new Info(),
 			new CenterOfRotation(),
 			new ConnectorLayer(),
 			//new GeekInfo(),
-			new Info(),
 			new Cursor()
 		);
+
+		// Settings
+
+		this.setDefaultSettings();
 
 		this.eventHandlers = createWorldEventHandlers(this);
 		addWorldEventListeners(this);
@@ -159,6 +165,7 @@ export class World {
 			reason: 'Updated',
 			data: {
 				id: connector.id,
+				name: connector.name,
 				relativePosition: { x: connector.posFrame.x, y: connector.posFrame.y },
 				direction: connector.direction,
 			},
@@ -182,12 +189,15 @@ export class World {
 
 	private loadSymbol(symbolDto: SymbolData) {
 		this.symbol = {
-			id: symbolDto.name,
+			id: symbolDto.id,
+			key: symbolDto.key,
 			size: new Vec2(symbolDto.width, symbolDto.height),
+			pathString: symbolDto.path,
 			path: new Path2D(symbolDto.path),
 			centerOfRotation: new Vec2(symbolDto.centerOfRotation.x, symbolDto.centerOfRotation.y),
 			connectors: symbolDto.connectors.map((c) => ({
 				id: c.id,
+				name: c.name,
 				posFrame: new Vec2(c.relativePosition.x, c.relativePosition.y),
 				direction: c.direction,
 			})),
@@ -218,17 +228,43 @@ export class World {
 		});
 	}
 
+	private updateSymbol(symbolDto: SymbolData) {
+		if (!this.symbol) return;
+
+		//this.symbol.id = symbolDto.id;
+		this.symbol.key = symbolDto.key;
+		//this.symbol.size = new Vec2(symbolDto.width, symbolDto.height);
+		//this.symbol.pathString = symbolDto.path;
+		//this.symbol.path = new Path2D(symbolDto.path);
+		this.symbol.centerOfRotation = new Vec2(symbolDto.centerOfRotation.x, symbolDto.centerOfRotation.y);
+		this.symbol.connectors = symbolDto.connectors.map((c) => ({
+			...c,
+			posFrame: new Vec2(c.relativePosition.x, c.relativePosition.y),
+		}));
+
+		this.events.connector.updated = symbolDto.connectors.map((c) => c.id);
+
+		this.notifyListeners({
+			type: 'Symbol',
+			reason: 'Updated',
+			data: symbolDto,
+			symbolState: symbolDto,
+		});
+	}
+
 	private getSymbolState(): SymbolData | undefined {
 		return !this.symbol
 			? undefined
 			: {
-					name: this.symbol.id,
-					path: '',
+					id: this.symbol.id,
+					key: this.symbol.key,
+					path: this.symbol.pathString,
 					width: this.symbol.size.x,
 					height: this.symbol.size.y,
 					centerOfRotation: this.symbol.centerOfRotation,
 					connectors: this.symbol.connectors.map((c) => ({
 						id: c.id,
+						name: c.name,
 						relativePosition: { x: c.posFrame.x, y: c.posFrame.y },
 						direction: c.direction,
 					})),
@@ -237,18 +273,12 @@ export class World {
 
 	zoomToFit() {
 		if (!this.symbol) return;
-
-		// console.log(this.canvasSize);
-		// console.log(this.clientSize);
-		// console.log(this.symbol.size);
-		// console.log(this.frame);
-
 		const z = this.clientSize.scale(0.6).div(this.symbol.size);
 		this.zoomLevel = Math.round(z.min() * 2) / 2;
 	}
 
-	private addConnector(connector: SymbolConnector) {
-		if (!this.symbol) return;
+	private addNewConnector() {
+		if (!this.symbol || this.readOnly) return;
 
 		const offset = 5;
 		let spawnPos = new Vec2(0, -offset);
@@ -264,9 +294,10 @@ export class World {
 		}
 
 		const newConnector = {
-			id: generateRandomString(10),
+			id: generateRandomString(15),
+			name: generateRandomString(10),
 			posFrame: spawnPos,
-			direction: connector.direction,
+			direction: 0,
 		};
 
 		this.symbol.connectors.push(newConnector);
@@ -276,6 +307,7 @@ export class World {
 			reason: 'Added',
 			data: {
 				id: newConnector.id,
+				name: newConnector.name,
 				relativePosition: {
 					x: newConnector.posFrame.x,
 					y: newConnector.posFrame.y,
@@ -286,8 +318,19 @@ export class World {
 		});
 	}
 
+	private addConnector(connector: SymbolConnector) {
+		if (!this.symbol || this.readOnly) return;
+		this.symbol.connectors.push({ ...connector, posFrame: new Vec2(connector.relativePosition.x, connector.relativePosition.y) });
+		this.notifyListeners({
+			type: 'Connector',
+			reason: 'Added',
+			data: connector,
+			symbolState: this.getSymbolState(),
+		});
+	}
+
 	private removeConnector(connectorId: string) {
-		if (!this.symbol) return;
+		if (!this.symbol || this.readOnly) return;
 		const index = this.symbol.connectors.findIndex((c) => c.id === connectorId);
 		if (index > -1) {
 			this.symbol.connectors.splice(index, 1);
@@ -304,7 +347,7 @@ export class World {
 	}
 
 	private updateConnector(connector: SymbolConnector) {
-		if (!this.symbol) return;
+		if (!this.symbol || this.readOnly) return;
 		const c = this.symbol.connectors.find((c) => c.id === connector.id);
 		if (!c) return;
 		c.posFrame.x = connector.relativePosition.x;
@@ -312,6 +355,18 @@ export class World {
 		c.direction = connector.direction;
 		this.events.connector.updated.push(c.id);
 		this.notifyConnectorUpdated(c.id);
+	}
+
+	private setDefaultSettings() {
+		this.updateSettings({
+			readOnly: false,
+			showGrid: true,
+		});
+	}
+
+	private updateSettings(settings: EditorSettings) {
+		this.readOnly = settings.readOnly;
+		this.showGuides = settings.showGrid;
 	}
 
 	private loadDefaultSettings() {
@@ -409,6 +464,9 @@ export class World {
 					case 'Load':
 						this.loadSymbol(command.data);
 						break;
+					case 'Update':
+						this.updateSymbol(command.data);
+						break;
 					case 'Unload':
 						this.unloadSymbol();
 						break;
@@ -416,6 +474,9 @@ export class World {
 				break;
 			case 'Connector':
 				switch (command.action) {
+					case 'New':
+						this.addNewConnector();
+						break;
 					case 'Add':
 						this.addConnector(command.data);
 						break;
@@ -430,12 +491,14 @@ export class World {
 					// break;
 				}
 				break;
-			case 'Visibility':
+			case 'Settings':
 				switch (command.action) {
-					case 'ShowGrid':
-						this.showGuides = command.data;
+					case 'Update':
+						this.updateSettings(command.data);
 						break;
-
+					case 'Reset':
+						this.setDefaultSettings();
+						break;
 					default:
 						break;
 				}

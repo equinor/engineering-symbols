@@ -162,7 +162,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 								path={geometry}
 							/>
 							{hasConnectors &&
-								rotatedConnectors.map(({ relativePosition }: ConnectorsProps, id: number) => {
+								rotatedConnectors.map(({ relativePosition }: SymbolConnector, id: number) => {
 									if (!relativePosition) return;
 									const scaleRate = height > width ? ICON_FRAME_HEIGHT / height : ICON_FRAME_WIDTH / width;
 									const DISTANCE_FOR_TRIANGLE = 30;

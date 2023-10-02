@@ -15,6 +15,7 @@ type PanelDetailsComponentProps = {
 	updateCurrentSymbol: (symbol: SymbolsProps) => void;
 	enableReinitialize: boolean;
 	onClosePanel: () => void;
+	onAddConnector: () => void;
 	symbol: SymbolsProps;
 };
 
@@ -23,6 +24,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 	updateCurrentSymbol,
 	enableReinitialize,
 	onClosePanel,
+	onAddConnector,
 	symbol,
 }): JSX.Element => {
 	const { key, description, geometry, connectors } = symbol;
@@ -113,7 +115,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 								console.log('⚡️', 'onSubmin value:', values);
 							}, 400);
 						}}>
-						<EditFormComponent updateSymbol={updateCurrentSymbol} formChange={onFormChange} />
+						<EditFormComponent updateSymbol={updateCurrentSymbol} formChange={onFormChange} addNewConnector={onAddConnector} />
 					</Formik>
 				</EditFromStyled>
 			</PanelDetailsWrapperStyled>

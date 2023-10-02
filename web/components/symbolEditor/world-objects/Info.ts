@@ -43,7 +43,7 @@ export class Info extends WorldObject {
 		}
 
 		this.sizeRatio = `${rw}:${rh}`;
-		this.size = `W: ${width} H: ${height} (${this.sizeRatio})`;
+		this.size = `W ${width} H ${height} (${this.sizeRatio})`;
 	}
 
 	onDraw(ctx: CanvasRenderingContext2D): void {
@@ -57,6 +57,7 @@ export class Info extends WorldObject {
 		ctx.fillText(this.zoom, 20, 40);
 
 		ctx.fillText(this.size, 20, 40 + 30);
+		ctx.font = '18px Roboto';
 		ctx.fillText(this.mousePosFrame, 20, 40 + 30 * 2);
 	}
 }
