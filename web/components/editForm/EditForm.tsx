@@ -50,7 +50,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 					const isConnectorsEmpty = isObjEmpty(values.connectors);
 					const filteredConnectors = !isConnectorsEmpty && (values.connectors.filter((x: ConnectorsProps) => x !== undefined) as any);
 
-					console.log(100, 'errors:', errors);
+					// console.log(100, 'errors:', errors);
 					// console.log(101, 'touched:', touched);
 
 					return (
