@@ -119,7 +119,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				action: 'Update',
 				data: {
 					showGrid: true,
-					readOnly: true,
+					readOnly: false,
 				},
 			},
 			{
@@ -220,7 +220,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		const editorSymbol = { ...symbol, connectors: symbol.connectors.map((c) => ({ ...c, name: c.id })) };
 
 		setSelectedSymbol(editorSymbol);
-
 		loadEditorCommand(editorSymbol);
 
 		return () => {
@@ -231,9 +230,11 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onUpdateSymbol = (symbol: SymbolsProps) => {
 		console.log('⚡️', 'onUpdateSymbol:', symbol);
-		setSelectedSymbol(symbol);
 
-		loadEditorCommand(symbol);
+		const editorSymbol = { ...symbol, connectors: symbol.connectors.map((c) => ({ ...c, name: c.id })) };
+
+		setSelectedSymbol(editorSymbol);
+		loadEditorCommand(editorSymbol);
 
 		return () => {
 			if (!fileInputRef.current) return;
