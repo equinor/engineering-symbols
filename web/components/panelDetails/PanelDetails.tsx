@@ -92,17 +92,18 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 
 							// Validate each item in the array
 							connectors.forEach((item: ConnectorsProps, i: number) => {
-								if (!item.name) {
+								// TODO: we must also check that the name is unique and contains only alpha characters
+								if (item.name === undefined || item.name === '') {
 									errors[`connectors[${i}].name`] = 'Name is required';
 								}
-								if (!item.relativePosition.x) {
+								if (typeof item.relativePosition.x !== 'number') {
 									errors[`connectors[${i}].relativePosition.x`] = 'Position X is required';
 								}
-								if (!item.relativePosition.y) {
+								if (typeof item.relativePosition.y !== 'number') {
 									errors[`connectors[${i}].relativePosition.y`] = 'Position Y is required';
 								}
-								if (item.direction < 0) {
-									errors[`connectors[${i}].direction`] = 'Direction is required';
+								if (typeof item.direction !== 'number' || item.direction < 0 || item.direction > 360) {
+									errors[`connectors[${i}].direction`] = 'Direction is required and must be between 0 and 360';
 								}
 							});
 
