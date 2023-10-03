@@ -132,30 +132,33 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({
 											</ErrorMessageStyled>
 										)}
 
-										<EditFromRemoveConnectorStyled
-											type="button"
-											disabled={hasDisabled}
-											onClick={() => {
-												// if (form.values && isObjEmpty(form.values.connectors)) {
-												const updatedConnectors = values.connectors.filter(
-													(connector: SymbolConnector) => connector.id !== id
-												);
-												const updatedSymbol = { ...values, connectors: updatedConnectors };
+										{!hasDisabled && (
+											<EditFromRemoveConnectorStyled
+												type="button"
+												onClick={() => {
+													// if (form.values && isObjEmpty(form.values.connectors)) {
+													const updatedConnectors = values.connectors.filter(
+														(connector: SymbolConnector) => connector.id !== id
+													);
+													const updatedSymbol = { ...values, connectors: updatedConnectors };
 
-												setValues(updatedSymbol);
-												updateSymbol(updatedSymbol);
-												// };
-											}}>
-											Remove Connector
-										</EditFromRemoveConnectorStyled>
+													setValues(updatedSymbol);
+													updateSymbol(updatedSymbol);
+													// };
+												}}>
+												Remove Connector
+											</EditFromRemoveConnectorStyled>
+										)}
 									</EditFromElementsStyled>
 								))
 							)}
-							<EditFromAddConnectorButton>
-								<ButtonComponent isWide type="button" onClick={() => addNewConnector()} disabled={hasDisabled}>
-									Add Connector
-								</ButtonComponent>
-							</EditFromAddConnectorButton>
+							{!hasDisabled && (
+								<EditFromAddConnectorButton>
+									<ButtonComponent isWide type="button" onClick={() => addNewConnector()}>
+										Add Connector
+									</ButtonComponent>
+								</EditFromAddConnectorButton>
+							)}
 						</>
 					);
 				}}

@@ -380,7 +380,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		if (!isUpdateSymbolReposnseSucceeded) return;
 
 		refreshMangeSymbolsQuery();
-		onPanelReset();
+		// onPanelReset();
 
 		setInformationMessage({
 			title: 'Updated',

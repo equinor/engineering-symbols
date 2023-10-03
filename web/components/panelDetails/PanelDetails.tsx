@@ -64,15 +64,17 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 			<PanelDetailsWrapperStyled>
 				<EditPanelStyled />
 
-				<EditFromStyled>
-					<PanelDetailsButtons>
-						<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()} hasError={hasFormError} disabled={disabledForm}>
-							Save
-						</ButtonComponent>
-						<ButtonComponent size="s" onClick={() => onClosePanel()} appearance="secondary" disabled={disabledForm}>
-							Cancel
-						</ButtonComponent>
-					</PanelDetailsButtons>
+				<EditFromStyled disabled={disabledForm}>
+					{!disabledForm && (
+						<PanelDetailsButtons>
+							<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()} hasError={hasFormError}>
+								Save
+							</ButtonComponent>
+							<ButtonComponent size="s" onClick={() => onClosePanel()} appearance="secondary">
+								Cancel
+							</ButtonComponent>
+						</PanelDetailsButtons>
+					)}
 					<Formik
 						// enableReinitialize={enableReinitialize}
 						// For symbol swithching
