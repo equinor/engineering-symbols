@@ -111,7 +111,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	// const refreshMangeSymbolsQuery = () => setTimeout(() => getManageSymbolsQueryAction.run(), 1000);
 	const refreshMangeSymbolsQuery = () => getManageSymbolsQueryAction.run();
 
-	const loadEditorCommand = ({ id, geometry, width, height, connectors }: SymbolsProps) => {
+	const loadEditorCommand = ({ id, geometry, width, height, connectors }: SymbolsProps, readOnly = false) => {
 		setEditorCommands([
 			{ type: 'Symbol', action: 'Unload', data: undefined },
 			{
@@ -119,7 +119,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				action: 'Update',
 				data: {
 					showGrid: true,
-					readOnly: false,
+					readOnly,
 				},
 			},
 			{
@@ -208,10 +208,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		// Load symbol into editor
 		loadEditorCommand(editorSymbol);
 
-		return () => {
-			if (!fileInputRef.current) return;
-			fileInputRef.current.value = '';
-		};
+		// return () => {
+		// 	if (!fileInputRef.current) return;
+		// 	fileInputRef.current.value = '';
+		// };
 	};
 
 	const onShowSymbol = (symbol: SymbolsProps) => {
@@ -220,7 +220,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		const editorSymbol = { ...symbol, connectors: symbol.connectors.map((c) => ({ ...c, name: c.id })) };
 
 		setSelectedSymbol(editorSymbol);
-		loadEditorCommand(editorSymbol);
+		loadEditorCommand(editorSymbol, true);
 
 		return () => {
 			if (!fileInputRef.current) return;
@@ -420,10 +420,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const symbolMeny = (symbol: SymbolsProps) => [
 		{
-			name: isStatusDraft(symbol) ? 'Update' : isReadyForReview(symbol) ? 'Show' : 'Edit',
+			name: isStatusDraft(symbol) ? 'Edit' : isReadyForReview(symbol) ? 'View' : 'Revise',
 			action: () => (isStatusDraft(symbol) ? onUpdateSymbol(symbol) : isReadyForReview(symbol) ? onShowSymbol(symbol) : onEditSymbol(symbol)),
 			// isDisabled: !isStatusReadyForReview(symbol) && !isAdmin,
-			isDisabled: isStatusDraft(symbol) ? false : isStatusReadyForReview(symbol) ? !isAdmin : false,
+			// isDisabled: isStatusDraft(symbol) ? false : isStatusReadyForReview(symbol) ? !isAdmin : false,
 		},
 		{
 			name: isReadyForReview(symbol) ? 'Review' : 'Submit for review',
@@ -515,6 +515,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 							<PanelDetailsComponent
 								symbol={{ ...selectedSymbol }}
 								onClosePanel={onPanelReset}
+								disabledForm={isReadyForReview(selectedSymbol) || false}
 								enableReinitialize={enableReinitialize}
 								updateCurrentSymbol={onChangeSymbolForDetail}
 								onAddConnector={addNewConnector}

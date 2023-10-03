@@ -14,8 +14,9 @@ type PanelDetailsComponentProps = {
 	setUpdateDraftSymbol: (symbol: SymbolsProps) => void;
 	updateCurrentSymbol: (symbol: SymbolsProps) => void;
 	enableReinitialize: boolean;
-	onClosePanel: () => void;
 	onAddConnector: () => void;
+	onClosePanel: () => void;
+	disabledForm: boolean;
 	symbol: SymbolsProps;
 };
 
@@ -23,8 +24,9 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 	setUpdateDraftSymbol,
 	updateCurrentSymbol,
 	enableReinitialize,
-	onClosePanel,
 	onAddConnector,
+	onClosePanel,
+	disabledForm,
 	symbol,
 }): JSX.Element => {
 	const { key, description, geometry, connectors } = symbol;
@@ -64,10 +66,10 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 
 				<EditFromStyled>
 					<PanelDetailsButtons>
-						<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()} hasError={hasFormError}>
+						<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()} hasError={hasFormError} disabled={disabledForm}>
 							Save
 						</ButtonComponent>
-						<ButtonComponent size="s" onClick={() => onClosePanel()} appearance="secondary">
+						<ButtonComponent size="s" onClick={() => onClosePanel()} appearance="secondary" disabled={disabledForm}>
 							Cancel
 						</ButtonComponent>
 					</PanelDetailsButtons>
@@ -115,7 +117,12 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 								console.log('⚡️', 'onSubmin value:', values);
 							}, 400);
 						}}>
-						<EditFormComponent updateSymbol={updateCurrentSymbol} formChange={onFormChange} addNewConnector={onAddConnector} />
+						<EditFormComponent
+							addNewConnector={onAddConnector}
+							updateSymbol={updateCurrentSymbol}
+							hasDisabled={disabledForm}
+							formChange={onFormChange}
+						/>
 					</Formik>
 				</EditFromStyled>
 			</PanelDetailsWrapperStyled>

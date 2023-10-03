@@ -25,7 +25,12 @@ export const ButtonStyled = styled.button<ButtonProps>`
 	cursor: pointer;
 	transition: transform 0.3s ease;
 
-	&:hover {
+	&:disabled {
+		opacity: 0.8;
+		cursor: default;
+	}
+
+	&:hover:not([disabled]) {
 		transform: scale(1.05);
 	}
 `;
