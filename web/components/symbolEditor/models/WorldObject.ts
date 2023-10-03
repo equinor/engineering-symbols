@@ -39,7 +39,7 @@ export abstract class WorldObject {
 	abstract getBoundingBoxRect(): WorldObjectRect;
 
 	update(w: Readonly<World>): void {
-		if (this.isSelectable && this.isDraggable) {
+		if (this.isSelectable && this.isDraggable && !w.readOnly) {
 			this.moveOnGrab(w);
 		}
 

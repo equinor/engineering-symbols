@@ -216,7 +216,6 @@ export class World {
 	}
 
 	private unloadSymbol() {
-		console.log('Unload symbol');
 		this.symbol = undefined;
 		this.events.symbol.unload = true;
 		this.loadDefaultSettings();
@@ -229,7 +228,7 @@ export class World {
 	}
 
 	private updateSymbol(symbolDto: SymbolData) {
-		if (!this.symbol) return;
+		if (!this.symbol || this.readOnly) return;
 
 		//this.symbol.id = symbolDto.id;
 		this.symbol.key = symbolDto.key;
@@ -455,6 +454,10 @@ export class World {
 			this.mouse.posFrameNearestPx = this.mouse.posFrame.round();
 			this.mouse.posFrameNearestPx05 = this.mouse.posFrame.round(2);
 		}
+	}
+
+	dispatchCommands(commands: EditorCommandMessage[]) {
+		commands.forEach((c) => this.dispatchCommand(c));
 	}
 
 	dispatchCommand(command: EditorCommandMessage) {

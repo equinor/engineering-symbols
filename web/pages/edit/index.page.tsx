@@ -56,7 +56,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const [uploadSvgFile, setSvgFile] = useState<SymbolsProps | null>(null);
 
-	const [editorCommand, setEditorCommand] = useState<EditorCommandMessage | undefined>();
+	const [editorCommands, setEditorCommands] = useState<EditorCommandMessage[]>([]);
 
 	// Workaround for popup to show same message more that 1 time
 	const [update, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -112,31 +112,30 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const refreshMangeSymbolsQuery = () => getManageSymbolsQueryAction.run();
 
 	const loadEditorCommand = ({ id, geometry, width, height, connectors }: SymbolsProps) => {
-		setEditorCommand({ type: 'Symbol', action: 'Unload', data: undefined });
-
-		// Temporery fix
-		// Load symbol into editor
-		const timer = setTimeout(
-			() =>
-				setEditorCommand({
-					type: 'Symbol',
-					action: 'Load',
-					data: {
-						id,
-						key: id,
-						path: geometry,
-						width,
-						height,
-						centerOfRotation: { x: width / 2, y: height / 2 }, // TODO: We don't have CoR in API yet,
-						connectors: connectors,
-					},
-				}),
-			500
-		);
-
-		return () => {
-			clearTimeout(timer);
-		};
+		setEditorCommands([
+			{ type: 'Symbol', action: 'Unload', data: undefined },
+			{
+				type: 'Settings',
+				action: 'Update',
+				data: {
+					showGrid: true,
+					readOnly: true,
+				},
+			},
+			{
+				type: 'Symbol',
+				action: 'Load',
+				data: {
+					id,
+					key: id,
+					path: geometry,
+					width,
+					height,
+					centerOfRotation: { x: width / 2, y: height / 2 }, // TODO: We don't have CoR in API yet,
+					connectors: connectors,
+				},
+			},
+		]);
 	};
 
 	useEffect(() => {
@@ -222,16 +221,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 		setSelectedSymbol(editorSymbol);
 
-		// loadEditorCommand(editorSymbol)
-		// Load symbol into editor
-		setEditorCommand({
-			type: 'Settings',
-			action: 'Update',
-			data: {
-				showGrid: true,
-				readOnly: true,
-			},
-		});
 		loadEditorCommand(editorSymbol);
 
 		return () => {
@@ -254,19 +243,21 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onChangeSymbolForDetail = (symbol: SymbolsProps) => {
 		setSelectedSymbol(symbol);
-		setEditorCommand({
-			type: 'Symbol',
-			action: 'Update',
-			data: {
-				id: symbol.id,
-				key: symbol.key,
-				path: symbol.geometry,
-				width: symbol.width,
-				height: symbol.height,
-				connectors: symbol.connectors,
-				centerOfRotation: { x: symbol.width / 2, y: symbol.height / 2 },
+		setEditorCommands([
+			{
+				type: 'Symbol',
+				action: 'Update',
+				data: {
+					id: symbol.id,
+					key: symbol.key,
+					path: symbol.geometry,
+					width: symbol.width,
+					height: symbol.height,
+					connectors: symbol.connectors,
+					centerOfRotation: { x: symbol.width / 2, y: symbol.height / 2 },
+				},
 			},
-		});
+		]);
 		console.log('⚡️', 'onChangeSymbolForDetail:', symbol);
 	};
 
@@ -498,7 +489,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	};
 
 	const addNewConnector = () => {
-		setEditorCommand({ type: 'Connector', action: 'New', data: undefined });
+		setEditorCommands([{ type: 'Connector', action: 'New', data: undefined }]);
 	};
 
 	return (
@@ -516,7 +507,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						{isSvgFileLoading && <WeatherLoader />}
 
 						<PanelPresentationContentStyled>
-							{!!selectedSymbol && <SymbolEditor editorEventHandler={onEditorEvent} command={editorCommand} />}
+							{!!selectedSymbol && <SymbolEditor editorEventHandler={onEditorEvent} commands={editorCommands} />}
 						</PanelPresentationContentStyled>
 
 						{finishManageSymbolsQuery && selectedSymbol && (
