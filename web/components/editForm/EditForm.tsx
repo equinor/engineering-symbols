@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent } from 'react';
 import { Form, Field, FieldArray } from 'formik';
 
 import { ButtonComponent } from '../button';
@@ -17,30 +17,28 @@ import { isObjEmpty } from '../../helpers';
 
 // SymbolsProps
 type EditFormComponentProps = {
-	updateSymbol: (symbol: SymbolsProps) => void;
 	addNewConnector: () => void;
+	updateSymbol: (symbol: SymbolsProps) => void;
+	hasDisabled: boolean;
 	formChange: () => void;
 };
 
-export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ updateSymbol, formChange, addNewConnector }): JSX.Element => {
-	const [currentConnectorId, setCurrentConnectorId] = useState<number>(0);
-
-	// const getConnectorIdWithHighestNumber = (connectors: ConnectorsProps[]) => {
-	// 	const sortedConnectors = connectors.sort((a, b) => parseInt(a.id, 10) - parseInt(b.id, 10));
-
-	// 	return Number(sortedConnectors[sortedConnectors.length - 1].id);
-	// }
-
+export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({
+	addNewConnector,
+	updateSymbol,
+	hasDisabled,
+	formChange,
+}): JSX.Element => {
 	return (
 		<Form onChange={formChange}>
 			<EditFromElementStyled>
 				<label htmlFor="key">Name</label>
-				<Field type="text" id="key" name="key" required />
+				<Field type="text" id="key" name="key" required disabled={hasDisabled} />
 			</EditFromElementStyled>
 
 			<EditFromElementStyled>
 				<label htmlFor="description">Description</label>
-				<Field type="text" id="description" name="description" required />
+				<Field type="text" id="description" name="description" require disabled={hasDisabled} />
 			</EditFromElementStyled>
 
 			<p>Connectors</p>
@@ -63,7 +61,13 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 										{/* ConnectorId */}
 										<EditFromElementStyled>
 											<label htmlFor={`connectors[${i}].id`}>Name</label>
-											<Field type="text" id={`connectors[${i}].name`} name={`connectors[${i}].name`} required />
+											<Field
+												type="text"
+												id={`connectors[${i}].name`}
+												name={`connectors[${i}].name`}
+												required
+												disabled={hasDisabled}
+											/>
 										</EditFromElementStyled>
 										{errors[`connectors[${i}].name`] && (
 											<ErrorMessageStyled>
@@ -81,6 +85,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 												id={`connectors[${i}].relativePosition.x`}
 												name={`connectors[${i}].relativePosition.x`}
 												required
+												disabled={hasDisabled}
 											/>
 										</EditFromElementStyled>
 
@@ -99,6 +104,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 												id={`connectors[${i}].relativePosition.y`}
 												name={`connectors[${i}].relativePosition.y`}
 												required
+												disabled={hasDisabled}
 											/>
 										</EditFromElementStyled>
 										{errors[`connectors[${i}].relativePosition.y`] && (
@@ -111,7 +117,13 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 										{/* Direction */}
 										<EditFromElementStyled>
 											<label htmlFor={`connectors[${i}].direction`}>Direction</label>
-											<Field type="number" id={`connectors[${i}].direction`} name={`connectors[${i}].direction`} required />
+											<Field
+												type="number"
+												id={`connectors[${i}].direction`}
+												name={`connectors[${i}].direction`}
+												required
+												disabled={hasDisabled}
+											/>
 										</EditFromElementStyled>
 										{errors[`connectors[${i}].direction`] && (
 											<ErrorMessageStyled>
@@ -120,29 +132,33 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({ u
 											</ErrorMessageStyled>
 										)}
 
-										<EditFromRemoveConnectorStyled
-											type="button"
-											onClick={() => {
-												// if (form.values && isObjEmpty(form.values.connectors)) {
-												const updatedConnectors = values.connectors.filter(
-													(connector: SymbolConnector) => connector.id !== id
-												);
-												const updatedSymbol = { ...values, connectors: updatedConnectors };
+										{!hasDisabled && (
+											<EditFromRemoveConnectorStyled
+												type="button"
+												onClick={() => {
+													// if (form.values && isObjEmpty(form.values.connectors)) {
+													const updatedConnectors = values.connectors.filter(
+														(connector: SymbolConnector) => connector.id !== id
+													);
+													const updatedSymbol = { ...values, connectors: updatedConnectors };
 
-												setValues(updatedSymbol);
-												updateSymbol(updatedSymbol);
-												// };
-											}}>
-											Remove Connector
-										</EditFromRemoveConnectorStyled>
+													setValues(updatedSymbol);
+													updateSymbol(updatedSymbol);
+													// };
+												}}>
+												Remove Connector
+											</EditFromRemoveConnectorStyled>
+										)}
 									</EditFromElementsStyled>
 								))
 							)}
-							<EditFromAddConnectorButton>
-								<ButtonComponent isWide type="button" onClick={() => addNewConnector()}>
-									Add Connector
-								</ButtonComponent>
-							</EditFromAddConnectorButton>
+							{!hasDisabled && (
+								<EditFromAddConnectorButton>
+									<ButtonComponent isWide type="button" onClick={() => addNewConnector()}>
+										Add Connector
+									</ButtonComponent>
+								</EditFromAddConnectorButton>
+							)}
 						</>
 					);
 				}}

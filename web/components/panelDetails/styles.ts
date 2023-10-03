@@ -4,6 +4,10 @@ interface PanelDetailsStyledProps {
 	isShow: boolean;
 }
 
+interface EditFromStyledProps {
+	disabled: boolean;
+}
+
 export const PanelDetailsWrapperStyled = styled.div`
 	/* overflow: scroll; */
 `;
@@ -69,10 +73,12 @@ export const PanelDetailsButtons = styled.div`
 
 export const EditPanelStyled = styled.div``;
 
-export const EditFromStyled = styled.div`
-	margin: -5rem 0 -2rem;
+export const EditFromStyled = styled.div<EditFromStyledProps>`
+	margin: ${({ disabled }) => (disabled ? '0' : '-5rem 0 -2rem')};
+	/* margin: -5rem 0 -2rem; */
 
 	form {
-		padding: 0 0 6rem;
+		padding: ${({ disabled }) => (disabled ? '0' : '0 0 6rem')};
+		/* padding: 0 0 6rem; */
 	}
 `;

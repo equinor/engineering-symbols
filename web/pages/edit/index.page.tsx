@@ -56,7 +56,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const [uploadSvgFile, setSvgFile] = useState<SymbolsProps | null>(null);
 
-	const [editorCommand, setEditorCommand] = useState<EditorCommandMessage | undefined>();
+	const [editorCommands, setEditorCommands] = useState<EditorCommandMessage[]>([]);
 
 	// Workaround for popup to show same message more that 1 time
 	const [update, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -111,21 +111,31 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	// const refreshMangeSymbolsQuery = () => setTimeout(() => getManageSymbolsQueryAction.run(), 1000);
 	const refreshMangeSymbolsQuery = () => getManageSymbolsQueryAction.run();
 
-	const loadEditorCommand = ({ id, geometry, width, height, connectors }: SymbolsProps) => {
-		// Load symbol into editor
-		setEditorCommand({
-			type: 'Symbol',
-			action: 'Load',
-			data: {
-				id: id,
-				key: id,
-				path: geometry,
-				width,
-				height,
-				centerOfRotation: { x: width / 2, y: height / 2 }, // TODO: We don't have CoR in API yet,
-				connectors: connectors,
+	const loadEditorCommand = ({ id, geometry, width, height, connectors }: SymbolsProps, readOnly = false) => {
+		setEditorCommands([
+			{ type: 'Symbol', action: 'Unload', data: undefined },
+			{
+				type: 'Settings',
+				action: 'Update',
+				data: {
+					showGrid: true,
+					readOnly,
+				},
 			},
-		});
+			{
+				type: 'Symbol',
+				action: 'Load',
+				data: {
+					id,
+					key: id,
+					path: geometry,
+					width,
+					height,
+					centerOfRotation: { x: width / 2, y: height / 2 }, // TODO: We don't have CoR in API yet,
+					connectors: connectors,
+				},
+			},
+		]);
 	};
 
 	useEffect(() => {
@@ -191,19 +201,18 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const onEditSymbol = (symbol: SymbolsProps) => {
 		console.log('⚡️', 'onEditSymbol:', symbol);
 
-		const editorSymbol = { ...symbol, connectors: symbol.connectors.map((c) => ({ ...c, name: c.id })) };
-
-		setSelectedSymbol(editorSymbol);
-		// setEnableReinitialize(true);
-
-		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
-
+		setSelectedSymbol(symbol);
 		// Load symbol into editor
-		loadEditorCommand(editorSymbol);
+		loadEditorCommand(symbol);
+	};
+
+	const onShowSymbol = (symbol: SymbolsProps) => {
+		console.log('⚡️', 'onShowSymbol:', symbol);
+
+		setSelectedSymbol(symbol);
+		loadEditorCommand(symbol, true);
 
 		return () => {
-			clearTimeout(timer);
-
 			if (!fileInputRef.current) return;
 			fileInputRef.current.value = '';
 		};
@@ -213,13 +222,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		console.log('⚡️', 'onUpdateSymbol:', symbol);
 		setSelectedSymbol(symbol);
 		loadEditorCommand(symbol);
-		// setEnableReinitialize(true);
-
-		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
 
 		return () => {
-			clearTimeout(timer);
-
 			if (!fileInputRef.current) return;
 			fileInputRef.current.value = '';
 		};
@@ -227,19 +231,21 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onChangeSymbolForDetail = (symbol: SymbolsProps) => {
 		setSelectedSymbol(symbol);
-		setEditorCommand({
-			type: 'Symbol',
-			action: 'Update',
-			data: {
-				id: symbol.id,
-				key: symbol.key,
-				path: symbol.geometry,
-				width: symbol.width,
-				height: symbol.height,
-				connectors: symbol.connectors,
-				centerOfRotation: { x: symbol.width / 2, y: symbol.height / 2 },
+		setEditorCommands([
+			{
+				type: 'Symbol',
+				action: 'Update',
+				data: {
+					id: symbol.id,
+					key: symbol.key,
+					path: symbol.geometry,
+					width: symbol.width,
+					height: symbol.height,
+					connectors: symbol.connectors,
+					centerOfRotation: { x: symbol.width / 2, y: symbol.height / 2 },
+				},
 			},
-		});
+		]);
 		console.log('⚡️', 'onChangeSymbolForDetail:', symbol);
 	};
 
@@ -361,7 +367,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		if (!isUpdateSymbolReposnseSucceeded) return;
 
 		refreshMangeSymbolsQuery();
-		onPanelReset();
+		// onPanelReset();
 
 		setInformationMessage({
 			title: 'Updated',
@@ -401,10 +407,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const symbolMeny = (symbol: SymbolsProps) => [
 		{
-			name: isStatusDraft(symbol) ? 'Update' : isReadyForReview(symbol) ? 'Show' : 'Edit',
-			action: () => (isStatusDraft(symbol) ? onUpdateSymbol(symbol) : onEditSymbol(symbol)),
+			name: isStatusDraft(symbol) ? 'Edit' : isReadyForReview(symbol) ? 'View' : 'Revise',
+			action: () => (isStatusDraft(symbol) ? onUpdateSymbol(symbol) : isReadyForReview(symbol) ? onShowSymbol(symbol) : onEditSymbol(symbol)),
 			// isDisabled: !isStatusReadyForReview(symbol) && !isAdmin,
-			isDisabled: isStatusDraft(symbol) ? false : isStatusReadyForReview(symbol) ? !isAdmin : false,
+			// isDisabled: isStatusDraft(symbol) ? false : isStatusReadyForReview(symbol) ? !isAdmin : false,
 		},
 		{
 			name: isReadyForReview(symbol) ? 'Review' : 'Submit for review',
@@ -471,7 +477,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	};
 
 	const addNewConnector = () => {
-		setEditorCommand({ type: 'Connector', action: 'New', data: undefined });
+		setEditorCommands([{ type: 'Connector', action: 'New', data: undefined }]);
 	};
 
 	return (
@@ -489,13 +495,14 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						{isSvgFileLoading && <WeatherLoader />}
 
 						<PanelPresentationContentStyled>
-							{!!selectedSymbol && <SymbolEditor editorEventHandler={onEditorEvent} command={editorCommand} />}
+							{!!selectedSymbol && <SymbolEditor editorEventHandler={onEditorEvent} commands={editorCommands} />}
 						</PanelPresentationContentStyled>
 
 						{finishManageSymbolsQuery && selectedSymbol && (
 							<PanelDetailsComponent
 								symbol={{ ...selectedSymbol }}
 								onClosePanel={onPanelReset}
+								disabledForm={isReadyForReview(selectedSymbol) || false}
 								enableReinitialize={enableReinitialize}
 								updateCurrentSymbol={onChangeSymbolForDetail}
 								onAddConnector={addNewConnector}

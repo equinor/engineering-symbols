@@ -14,8 +14,9 @@ type PanelDetailsComponentProps = {
 	setUpdateDraftSymbol: (symbol: SymbolsProps) => void;
 	updateCurrentSymbol: (symbol: SymbolsProps) => void;
 	enableReinitialize: boolean;
-	onClosePanel: () => void;
 	onAddConnector: () => void;
+	onClosePanel: () => void;
+	disabledForm: boolean;
 	symbol: SymbolsProps;
 };
 
@@ -23,8 +24,9 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 	setUpdateDraftSymbol,
 	updateCurrentSymbol,
 	enableReinitialize,
-	onClosePanel,
 	onAddConnector,
+	onClosePanel,
+	disabledForm,
 	symbol,
 }): JSX.Element => {
 	const { key, description, geometry, connectors } = symbol;
@@ -62,15 +64,17 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 			<PanelDetailsWrapperStyled>
 				<EditPanelStyled />
 
-				<EditFromStyled>
-					<PanelDetailsButtons>
-						<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()} hasError={hasFormError}>
-							Save
-						</ButtonComponent>
-						<ButtonComponent size="s" onClick={() => onClosePanel()} appearance="secondary">
-							Cancel
-						</ButtonComponent>
-					</PanelDetailsButtons>
+				<EditFromStyled disabled={disabledForm}>
+					{!disabledForm && (
+						<PanelDetailsButtons>
+							<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()} hasError={hasFormError}>
+								Save
+							</ButtonComponent>
+							<ButtonComponent size="s" onClick={() => onClosePanel()} appearance="secondary">
+								Cancel
+							</ButtonComponent>
+						</PanelDetailsButtons>
+					)}
 					<Formik
 						// enableReinitialize={enableReinitialize}
 						// For symbol swithching
@@ -90,17 +94,18 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 
 							// Validate each item in the array
 							connectors.forEach((item: ConnectorsProps, i: number) => {
-								if (!item.name) {
+								// TODO: we must also check that the name is unique and contains only alpha characters
+								if (item.name === undefined || item.name === '') {
 									errors[`connectors[${i}].name`] = 'Name is required';
 								}
-								if (!item.relativePosition.x) {
+								if (typeof item.relativePosition.x !== 'number') {
 									errors[`connectors[${i}].relativePosition.x`] = 'Position X is required';
 								}
-								if (!item.relativePosition.y) {
+								if (typeof item.relativePosition.y !== 'number') {
 									errors[`connectors[${i}].relativePosition.y`] = 'Position Y is required';
 								}
-								if (item.direction < 0) {
-									errors[`connectors[${i}].direction`] = 'Direction is required';
+								if (typeof item.direction !== 'number' || item.direction < 0 || item.direction > 360) {
+									errors[`connectors[${i}].direction`] = 'Direction is required and must be between 0 and 360';
 								}
 							});
 
@@ -115,7 +120,12 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 								console.log('⚡️', 'onSubmin value:', values);
 							}, 400);
 						}}>
-						<EditFormComponent updateSymbol={updateCurrentSymbol} formChange={onFormChange} addNewConnector={onAddConnector} />
+						<EditFormComponent
+							addNewConnector={onAddConnector}
+							updateSymbol={updateCurrentSymbol}
+							hasDisabled={disabledForm}
+							formChange={onFormChange}
+						/>
 					</Formik>
 				</EditFromStyled>
 			</PanelDetailsWrapperStyled>

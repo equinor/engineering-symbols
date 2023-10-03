@@ -6,10 +6,10 @@ import { SymbolEditorStyles } from './styles';
 
 export type SymbolEditorProps = {
 	editorEventHandler: (event: SymbolEditorEvent) => void;
-	command?: EditorCommandMessage;
+	commands?: EditorCommandMessage[];
 };
 
-export const SymbolEditor: FC<SymbolEditorProps> = ({ editorEventHandler, command }) => {
+export const SymbolEditor: FC<SymbolEditorProps> = ({ editorEventHandler, commands }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const editorRef = useRef<World | null>(null);
@@ -29,10 +29,10 @@ export const SymbolEditor: FC<SymbolEditorProps> = ({ editorEventHandler, comman
 	}, []);
 
 	useEffect(() => {
-		if (editorRef.current && command) {
-			editorRef.current.dispatchCommand(command);
+		if (editorRef.current && commands) {
+			editorRef.current.dispatchCommands(commands);
 		}
-	}, [command]);
+	}, [commands]);
 
 	return (
 		<div ref={containerRef}>

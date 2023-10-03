@@ -21,7 +21,7 @@ export class SymbolGraphic extends WorldObject {
 			return;
 		}
 
-		if (!this.symbolPath) this.symbolPath = new Path2D(w.symbol.path);
+		if (!this.symbolPath || w.events.symbol.load) this.symbolPath = new Path2D(w.symbol.path);
 	}
 
 	onDraw(ctx: CanvasRenderingContext2D): void {

@@ -38,6 +38,12 @@ export type HomePageProps = {
 	theme: ColorThemeProps;
 };
 
+export type RunEditorCommandProps = {
+	symbol: SymbolsProps | undefined;
+	type: 'Symbol' | 'Connector' | 'Settings';
+	action: 'Update' | 'Load' | 'New';
+};
+
 export type StatusProps = 'Draft' | 'ReadyForReview' | 'Review' | 'Published' | 'Rejected' | number;
 
 export interface SymbolsProps extends SymbolsDefaultProps {

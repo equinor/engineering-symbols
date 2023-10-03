@@ -34,6 +34,10 @@ export const EditFromElementStyled = styled.div`
 		width: 100%;
 		border-radius: 5px;
 		background: transparent;
+
+		&:disabled {
+			opacity: 0.8;
+		}
 	}
 `;
 
@@ -55,4 +59,9 @@ export const EditFromRemoveConnectorStyled = styled.button`
 	cursor: pointer;
 	margin: 0 0 0 auto;
 	display: flex;
+
+	&:disabled {
+		opacity: 0.8;
+		cursor: default;
+	}
 `;

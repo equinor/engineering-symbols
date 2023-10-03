@@ -1,4 +1,5 @@
 import { Store } from 'pullstate';
+import { SymbolsProps } from '../../types';
 
 interface ISymbolUploadStore {
 	validateSvgQuery: any;
@@ -11,7 +12,7 @@ interface ISymbolStore {
 }
 
 interface IManageSymbolStore {
-	manageSymbolsQuery: any;
+	manageSymbolsQuery: SymbolsProps[];
 	manageDeleteSymbolsQuery: any;
 	manageSymbolErrorMessage: string | null;
 	isDeleteSymbolReposnseSucceeded: boolean;
@@ -31,7 +32,7 @@ export const SymbolsStore = new Store<ISymbolStore>({
 });
 
 export const ManageSymbolsStore = new Store<IManageSymbolStore>({
-	manageSymbolsQuery: {},
+	manageSymbolsQuery: [],
 	manageDeleteSymbolsQuery: {},
 	manageUpdateSymbolsQuery: {},
 	manageSymbolErrorMessage: null,
