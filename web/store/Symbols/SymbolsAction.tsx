@@ -3,6 +3,7 @@ import { uploadSvgFile, getSymbolsQuery, getManageSymbolsQuery, deleteSymbol, up
 
 import { IManageSymbolStore, ISymbolStore, ISymbolUploadStore, ManageSymbolsStore, SymbolUploadStore, SymbolsStore } from './SymbolsStore';
 import { concatenateErrorMessages } from '../../helpers';
+import { SymbolsProps } from '../../types';
 
 const hasSucceededReposnse = (status: number) => status !== undefined && (status === 200 || status === 201 || status === 204);
 
@@ -70,7 +71,10 @@ export const getManageSymbolsQueryAction = createAsyncAction(
 			if (result.error) return;
 
 			ManageSymbolsStore.update((s: IManageSymbolStore) => {
-				s.manageSymbolsQuery = result.payload.manageSymbolsQuery.data;
+				s.manageSymbolsQuery = result.payload.manageSymbolsQuery.data.map((symbol: any) => ({
+					...symbol,
+					connectors: symbol.connectors.map((connector: any) => ({ ...connector, name: connector.id })),
+				}));
 			});
 		},
 		cacheBreakHook: () => true, // Always fetch fresh data from api
@@ -114,7 +118,11 @@ export const updateManageSymbolAction = createAsyncAction(
 			return errorResult([], 'Symbol');
 		}
 
-		const manageUpdateSymbolsQuery = await updateSymbol(symbol.id, symbol);
+		// TODO: Remove this hack
+		const s = symbol as SymbolsProps;
+		const a = { ...s, connectors: s.connectors.map((c) => ({ ...c, id: c.name })) };
+
+		const manageUpdateSymbolsQuery = await updateSymbol(symbol.id, JSON.stringify(a));
 
 		return successResult({ manageUpdateSymbolsQuery });
 	},

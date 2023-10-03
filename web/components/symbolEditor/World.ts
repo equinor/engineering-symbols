@@ -292,9 +292,11 @@ export class World {
 			}
 		}
 
+		const uid = generateRandomString(10);
+
 		const newConnector = {
-			id: generateRandomString(15),
-			name: generateRandomString(10),
+			id: uid,
+			name: uid,
 			posFrame: spawnPos,
 			direction: 0,
 		};

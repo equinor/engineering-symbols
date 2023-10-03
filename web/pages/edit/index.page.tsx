@@ -201,26 +201,16 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const onEditSymbol = (symbol: SymbolsProps) => {
 		console.log('⚡️', 'onEditSymbol:', symbol);
 
-		const editorSymbol = { ...symbol, connectors: symbol.connectors.map((c) => ({ ...c, name: c.id })) };
-
-		setSelectedSymbol(editorSymbol);
-
+		setSelectedSymbol(symbol);
 		// Load symbol into editor
-		loadEditorCommand(editorSymbol);
-
-		// return () => {
-		// 	if (!fileInputRef.current) return;
-		// 	fileInputRef.current.value = '';
-		// };
+		loadEditorCommand(symbol);
 	};
 
 	const onShowSymbol = (symbol: SymbolsProps) => {
 		console.log('⚡️', 'onShowSymbol:', symbol);
 
-		const editorSymbol = { ...symbol, connectors: symbol.connectors.map((c) => ({ ...c, name: c.id })) };
-
-		setSelectedSymbol(editorSymbol);
-		loadEditorCommand(editorSymbol, true);
+		setSelectedSymbol(symbol);
+		loadEditorCommand(symbol, true);
 
 		return () => {
 			if (!fileInputRef.current) return;
@@ -230,11 +220,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onUpdateSymbol = (symbol: SymbolsProps) => {
 		console.log('⚡️', 'onUpdateSymbol:', symbol);
-
-		const editorSymbol = { ...symbol, connectors: symbol.connectors.map((c) => ({ ...c, name: c.id })) };
-
-		setSelectedSymbol(editorSymbol);
-		loadEditorCommand(editorSymbol);
+		setSelectedSymbol(symbol);
+		loadEditorCommand(symbol);
 
 		return () => {
 			if (!fileInputRef.current) return;
