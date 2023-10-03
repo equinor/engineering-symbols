@@ -112,20 +112,31 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const refreshMangeSymbolsQuery = () => getManageSymbolsQueryAction.run();
 
 	const loadEditorCommand = ({ id, geometry, width, height, connectors }: SymbolsProps) => {
+		setEditorCommand({ type: 'Symbol', action: 'Unload', data: undefined });
+
+		// Temporery fix
 		// Load symbol into editor
-		setEditorCommand({
-			type: 'Symbol',
-			action: 'Load',
-			data: {
-				id: id,
-				key: id,
-				path: geometry,
-				width,
-				height,
-				centerOfRotation: { x: width / 2, y: height / 2 }, // TODO: We don't have CoR in API yet,
-				connectors: connectors,
-			},
-		});
+		const timer = setTimeout(
+			() =>
+				setEditorCommand({
+					type: 'Symbol',
+					action: 'Load',
+					data: {
+						id,
+						key: id,
+						path: geometry,
+						width,
+						height,
+						centerOfRotation: { x: width / 2, y: height / 2 }, // TODO: We don't have CoR in API yet,
+						connectors: connectors,
+					},
+				}),
+			500
+		);
+
+		return () => {
+			clearTimeout(timer);
+		};
 	};
 
 	useEffect(() => {
@@ -194,16 +205,36 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		const editorSymbol = { ...symbol, connectors: symbol.connectors.map((c) => ({ ...c, name: c.id })) };
 
 		setSelectedSymbol(editorSymbol);
-		// setEnableReinitialize(true);
-
-		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
 
 		// Load symbol into editor
 		loadEditorCommand(editorSymbol);
 
 		return () => {
-			clearTimeout(timer);
+			if (!fileInputRef.current) return;
+			fileInputRef.current.value = '';
+		};
+	};
 
+	const onShowSymbol = (symbol: SymbolsProps) => {
+		console.log('⚡️', 'onShowSymbol:', symbol);
+
+		const editorSymbol = { ...symbol, connectors: symbol.connectors.map((c) => ({ ...c, name: c.id })) };
+
+		setSelectedSymbol(editorSymbol);
+
+		// loadEditorCommand(editorSymbol)
+		// Load symbol into editor
+		setEditorCommand({
+			type: 'Settings',
+			action: 'Update',
+			data: {
+				showGrid: true,
+				readOnly: true,
+			},
+		});
+		loadEditorCommand(editorSymbol);
+
+		return () => {
 			if (!fileInputRef.current) return;
 			fileInputRef.current.value = '';
 		};
@@ -212,14 +243,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const onUpdateSymbol = (symbol: SymbolsProps) => {
 		console.log('⚡️', 'onUpdateSymbol:', symbol);
 		setSelectedSymbol(symbol);
-		loadEditorCommand(symbol);
-		// setEnableReinitialize(true);
 
-		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
+		loadEditorCommand(symbol);
 
 		return () => {
-			clearTimeout(timer);
-
 			if (!fileInputRef.current) return;
 			fileInputRef.current.value = '';
 		};
@@ -402,7 +429,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const symbolMeny = (symbol: SymbolsProps) => [
 		{
 			name: isStatusDraft(symbol) ? 'Update' : isReadyForReview(symbol) ? 'Show' : 'Edit',
-			action: () => (isStatusDraft(symbol) ? onUpdateSymbol(symbol) : onEditSymbol(symbol)),
+			action: () => (isStatusDraft(symbol) ? onUpdateSymbol(symbol) : isReadyForReview(symbol) ? onShowSymbol(symbol) : onEditSymbol(symbol)),
 			// isDisabled: !isStatusReadyForReview(symbol) && !isAdmin,
 			isDisabled: isStatusDraft(symbol) ? false : isStatusReadyForReview(symbol) ? !isAdmin : false,
 		},
