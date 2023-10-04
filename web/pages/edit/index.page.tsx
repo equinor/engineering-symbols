@@ -5,7 +5,7 @@ import Head from 'next/head';
 
 import { InformationComponentTypes, PanelDetailsComponent, InformationComponent, SymbolElement, WeatherLoader, useConfirm } from '../../components';
 
-import { useAdminUserRole, useFileUpload } from '../../helpers';
+import { isObjEmpty, useAdminUserRole, useFileUpload } from '../../helpers';
 
 import { EditPageProps, StatusProps, SymbolsProps } from '../../types';
 
@@ -173,15 +173,15 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	useEffect(() => {
 		// if (!finishUploadSymbolsQuery) return;
-		if (isSymbolUploadReposnseSucceeded) {
+		if (isSymbolUploadReposnseSucceeded && !isObjEmpty(validateSvgQuery)) {
 			setInformationMessage({
 				title: 'New symbol',
-				message: `Symbol ${selectedSymbol?.key} was added`,
+				message: `Symbol ${validateSvgQuery.data.key} was added`,
 				appearance: 'success',
 			});
 
-			refreshMangeSymbolsQuery();
 			onPanelReset();
+			refreshMangeSymbolsQuery();
 		}
 
 		if (!isSymbolUploadReposnseSucceeded && !!validateSvgErrorMessage) {
