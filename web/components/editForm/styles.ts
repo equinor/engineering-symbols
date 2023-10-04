@@ -48,7 +48,8 @@ export const EditFromAddConnectorButton = styled.div`
 `;
 
 export const EditFromElementsStyled = styled.div`
-	padding: 0 0 2rem;
+	/* padding: 0 0 2rem; */
+	padding: 1rem 0;
 `;
 
 export const EditFromRemoveConnectorStyled = styled.button`

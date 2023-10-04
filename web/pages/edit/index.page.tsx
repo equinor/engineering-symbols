@@ -58,6 +58,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const [editorCommands, setEditorCommands] = useState<EditorCommandMessage[]>([]);
 
+	const connectorsToScroll = useRef<{ [key: string]: HTMLDivElement | null }>({});
+
 	// Workaround for popup to show same message more that 1 time
 	const [update, forceUpdate] = useReducer((x) => x + 1, 0);
 
@@ -424,14 +426,26 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		},
 	];
 
-	const onEditorEvent = (event: SymbolEditorEvent) => {
-		console.log(`EDITOR-EVENT:${event.type}:${event.reason}`);
-		console.log('Event data: ', event.data);
-		console.log('Symbol state: ', event.symbolState);
+	const scrollToElement = (id: string) => {
+		const elementRef = connectorsToScroll.current[id];
 
-		switch (event.type) {
+		if (!elementRef) return;
+
+		elementRef.scrollIntoView({
+			behavior: 'smooth',
+			block: 'start',
+			inline: 'nearest',
+		});
+	};
+
+	const onEditorEvent = ({ symbolState, data, reason, type }: SymbolEditorEvent) => {
+		console.log(`EDITOR-EVENT:${type}:${reason}`);
+		console.log('Event data: ', data);
+		console.log('Symbol state: ', symbolState);
+
+		switch (type) {
 			case 'Symbol':
-				switch (event.reason) {
+				switch (reason) {
 					case 'Loaded':
 						// setConnectors(event.symbolState?.connectors ?? []);
 						break;
@@ -441,10 +455,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				break;
 			case 'Connector':
 				{
-					switch (event.reason) {
+					switch (reason) {
 						case 'Added':
 						case 'Updated':
-							setSelectedSymbol({ ...selectedSymbol, connectors: event.symbolState?.connectors } as SymbolsProps);
+							setSelectedSymbol({ ...selectedSymbol, connectors: symbolState?.connectors } as SymbolsProps);
 							break;
 						default:
 							break;
@@ -452,10 +466,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				}
 				break;
 			case 'Selection':
-				switch (event.reason) {
+				switch (reason) {
 					case 'Changed':
 						{
-							const changedConnectors = event.data.filter((d) => d.type === 'Connector');
+							const changedConnectors = data.filter(({ type }) => type === 'Connector');
 							if (changedConnectors.length === 0) {
 								// setSelectedConnector(null);
 							} else {
@@ -473,6 +487,14 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 			default:
 				break;
+		}
+
+		// @ts-ignore next-line
+		if (data && data.length > 0) {
+			// @ts-ignore next-line
+			const { id } = data[0].data;
+
+			scrollToElement(id);
 		}
 	};
 
@@ -500,13 +522,14 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 						{finishManageSymbolsQuery && selectedSymbol && (
 							<PanelDetailsComponent
-								symbol={{ ...selectedSymbol }}
-								onClosePanel={onPanelReset}
-								disabledForm={isReadyForReview(selectedSymbol) || false}
-								enableReinitialize={enableReinitialize}
-								updateCurrentSymbol={onChangeSymbolForDetail}
-								onAddConnector={addNewConnector}
 								setUpdateDraftSymbol={onUpdateDraftSymbol}
+								updateCurrentSymbol={onChangeSymbolForDetail}
+								enableReinitialize={enableReinitialize}
+								onAddConnector={addNewConnector}
+								disabledForm={isReadyForReview(selectedSymbol) || false}
+								onClosePanel={onPanelReset}
+								elementRefs={connectorsToScroll}
+								symbol={{ ...selectedSymbol }}
 							/>
 						)}
 					</ContainerStyled>

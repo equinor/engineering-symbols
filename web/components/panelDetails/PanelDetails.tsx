@@ -1,4 +1,4 @@
-import { FunctionComponent, useRef, useState } from 'react';
+import { FunctionComponent, MutableRefObject, useRef, useState } from 'react';
 import { Formik, FormikErrors, FormikProps } from 'formik';
 import { useMsal } from '@azure/msal-react';
 
@@ -17,6 +17,7 @@ type PanelDetailsComponentProps = {
 	onAddConnector: () => void;
 	onClosePanel: () => void;
 	disabledForm: boolean;
+	elementRefs: MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
 	symbol: SymbolsProps;
 };
 
@@ -25,6 +26,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 	updateCurrentSymbol,
 	enableReinitialize,
 	onAddConnector,
+	elementRefs,
 	onClosePanel,
 	disabledForm,
 	symbol,
@@ -125,6 +127,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 							updateSymbol={updateCurrentSymbol}
 							hasDisabled={disabledForm}
 							formChange={onFormChange}
+							refs={elementRefs}
 						/>
 					</Formik>
 				</EditFromStyled>

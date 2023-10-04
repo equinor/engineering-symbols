@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, MutableRefObject } from 'react';
 import { Form, Field, FieldArray } from 'formik';
 
 import { ButtonComponent } from '../button';
@@ -21,6 +21,7 @@ type EditFormComponentProps = {
 	updateSymbol: (symbol: SymbolsProps) => void;
 	hasDisabled: boolean;
 	formChange: () => void;
+	refs: MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
 };
 
 export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({
@@ -28,6 +29,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({
 	updateSymbol,
 	hasDisabled,
 	formChange,
+	refs,
 }): JSX.Element => {
 	return (
 		<Form onChange={formChange}>
@@ -57,7 +59,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({
 								<></>
 							) : (
 								filteredConnectors.map(({ id }: SymbolConnector, i: number) => (
-									<EditFromElementsStyled key={`connector-${i}`}>
+									<EditFromElementsStyled key={`connector-${i}`} ref={(ref) => (refs.current[id] = ref)}>
 										{/* ConnectorId */}
 										<EditFromElementStyled>
 											<label htmlFor={`connectors[${i}].id`}>Name</label>
