@@ -1,10 +1,5 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
-import { readFileSync } from 'fs';
-
-import { convertInputSvgObjectToAPIStructureObject } from './convertInputSvgObjectToAPIStructureObject';
-
-import { UploadSymbolProps } from '../types';
 
 import { uploadSvgFileAction, SymbolUploadStore, ISymbolUploadStore } from '../store';
 
@@ -142,6 +137,7 @@ export const useFileUpload = (): FileUploadHookResultType => {
 		// Dynamic router to reset the state of validateSvgQuery
 		SymbolUploadStore.update((s: ISymbolUploadStore) => {
 			s.validateSvgQuery = {};
+			s.validateSvgErrorMessage = '';
 		});
 	}, [dynamicRoute]);
 
