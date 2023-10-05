@@ -1,5 +1,46 @@
 # Changelog
 
+## [1.5.0](https://github.com/equinor/engineering-symbols/compare/web-v1.4.4...web-v1.5.0) (2023-10-05)
+
+
+### Features
+
+* add EngineeringSymbolEditor component [skip ci] ([50dd2a9](https://github.com/equinor/engineering-symbols/commit/50dd2a94656e5600b730aa114cc64ba0132b0d61))
+* add symbol editor component ([247a609](https://github.com/equinor/engineering-symbols/commit/247a60970140b7c79be1fd86768c9173019a9914))
+* basic integration of EngineeringSymbolEditor [skip ci] ([311d118](https://github.com/equinor/engineering-symbols/commit/311d11803507bce3af60e7d13183095d4285f024))
+* Integrate metadata editor in the Symbol Editor ([#633](https://github.com/equinor/engineering-symbols/issues/633)) ([80ca18a](https://github.com/equinor/engineering-symbols/commit/80ca18a563a6f14ef3c97299ef2b4425d1baa8e9))
+* symbol update command ([#640](https://github.com/equinor/engineering-symbols/issues/640)) ([62e7f67](https://github.com/equinor/engineering-symbols/commit/62e7f670be3542ee711c875098c65eb52f7d8a3f))
+
+
+### Bug Fixes
+
+* Position of "Save" | "Cancel" buttons in form ([#654](https://github.com/equinor/engineering-symbols/issues/654)) ([80da775](https://github.com/equinor/engineering-symbols/commit/80da77528fbf067bf993c00aacf056959400c348))
+* prettier ([e45c529](https://github.com/equinor/engineering-symbols/commit/e45c52909131e7d74161153ed519d05cbf8430f4))
+* show mode for reviewers ([#648](https://github.com/equinor/engineering-symbols/issues/648)) ([dfe7be2](https://github.com/equinor/engineering-symbols/commit/dfe7be29b7bb434ae498fc7ff5ea9cbe2bbc4c38))
+* symbol editor nextjs bugs ([1bb4b97](https://github.com/equinor/engineering-symbols/commit/1bb4b9758caced86d96d2102217baf92b715734b))
+* upload svg conformation ([#650](https://github.com/equinor/engineering-symbols/issues/650)) ([afe8898](https://github.com/equinor/engineering-symbols/commit/afe88985d6125cc582c5113a37d6d96c557cea40))
+* validation ([#646](https://github.com/equinor/engineering-symbols/issues/646)) ([59de198](https://github.com/equinor/engineering-symbols/commit/59de19820622e15207a2469d5e875388bc757c06))
+
+
+### Miscellaneous Chores
+
+* click & scroll ([#652](https://github.com/equinor/engineering-symbols/issues/652)) ([48ae10e](https://github.com/equinor/engineering-symbols/commit/48ae10e014ce9fc8ba70ac0dc09525ada3603592))
+* documentation ([#630](https://github.com/equinor/engineering-symbols/issues/630)) ([dd839ac](https://github.com/equinor/engineering-symbols/commit/dd839acf1920f7a0cfc5e01c53f3e103b9fe1de0))
+* ID | Name - unique ([#656](https://github.com/equinor/engineering-symbols/issues/656)) ([951a095](https://github.com/equinor/engineering-symbols/commit/951a09561e14783a3c96f19d2a57d91776e8c2ed))
+* validation for inputs ([#639](https://github.com/equinor/engineering-symbols/issues/639)) ([284c445](https://github.com/equinor/engineering-symbols/commit/284c44586dd08c30159b97a71f08f6f6c083a6dc))
+
+
+### Bump package
+
+* **web:** bump @next/mdx from 13.4.19 to 13.5.2 in /web ([#623](https://github.com/equinor/engineering-symbols/issues/623)) ([61e8bc8](https://github.com/equinor/engineering-symbols/commit/61e8bc89608361c25f3679e3b52406073b4455ed))
+* **web:** bump @next/mdx from 13.5.2 to 13.5.3 in /web ([#645](https://github.com/equinor/engineering-symbols/issues/645)) ([0ef40d0](https://github.com/equinor/engineering-symbols/commit/0ef40d0188f6d428b5de4b76f0b721801901e6cc))
+* **web:** bump @types/node from 20.6.2 to 20.8.0 in /web ([#644](https://github.com/equinor/engineering-symbols/issues/644)) ([c1b28a5](https://github.com/equinor/engineering-symbols/commit/c1b28a5eaba2b779c4bd6f2b1fa5ac5cb6040e86))
+* **web:** bump @types/react from 18.2.21 to 18.2.24 in /web ([#643](https://github.com/equinor/engineering-symbols/issues/643)) ([39c3348](https://github.com/equinor/engineering-symbols/commit/39c3348af3ba9e67a856d14b85cb90f14870a1d1))
+* **web:** bump eslint from 8.49.0 to 8.50.0 in /web ([#621](https://github.com/equinor/engineering-symbols/issues/621)) ([7f218b3](https://github.com/equinor/engineering-symbols/commit/7f218b3067a4e624e9ab0b4e03de1d4400add590))
+* **web:** bump eslint-config-next from 13.4.19 to 13.5.2 in /web ([#624](https://github.com/equinor/engineering-symbols/issues/624)) ([76db990](https://github.com/equinor/engineering-symbols/commit/76db990b13ccf0de67390b6ecd5fcfbfc4f9bb56))
+* **web:** bump eslint-config-next from 13.5.2 to 13.5.3 in /web ([#642](https://github.com/equinor/engineering-symbols/issues/642)) ([44fdff9](https://github.com/equinor/engineering-symbols/commit/44fdff9715948e271edcb2033ed0cb7aa437aa0b))
+* **web:** bump next from 13.4.19 to 13.5.2 in /web ([#622](https://github.com/equinor/engineering-symbols/issues/622)) ([e8023a8](https://github.com/equinor/engineering-symbols/commit/e8023a87c813ce9ddec287a9b32674885583eefc))
+
 ## [1.4.4](https://github.com/equinor/engineering-symbols/compare/web-v1.4.3...web-v1.4.4) (2023-09-19)
 
 
