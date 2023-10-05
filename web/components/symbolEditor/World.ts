@@ -292,7 +292,7 @@ export class World {
 			}
 		}
 
-		const uid = generateRandomString(10);
+		const uid = generateRandomString(10, this.symbol.connectors);
 
 		const newConnector = {
 			id: uid,
