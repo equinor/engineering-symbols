@@ -52,7 +52,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	theme,
 }): JSX.Element => {
 	const { key, connectors, width, height, geometry } = selected;
-	const FIXTURE_METADATA = ['Gas', 'Oil', 'Water', 'CO2', 'Aquifer', 'Shale'];
+	// const FIXTURE_METADATA = ['Gas', 'Oil', 'Water', 'CO2', 'Aquifer', 'Shale'];
 
 	const [presentConnectors, setPresentConnectors] = useState<boolean>(false);
 	const [isSnackbarOpen, setSnackbarOpen] = useState<boolean>(false);
@@ -165,7 +165,8 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 								rotatedConnectors.map(({ relativePosition }: SymbolConnector, id: number) => {
 									if (!relativePosition) return;
 									const scaleRate = height > width ? ICON_FRAME_HEIGHT / height : ICON_FRAME_WIDTH / width;
-									const DISTANCE_FOR_TRIANGLE = 30;
+									// const DISTANCE_FOR_TRIANGLE = 30;
+									const DISTANCE_FOR_TRIANGLE = 6.5;
 									const PADDING = 32;
 
 									const top =
@@ -177,7 +178,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 
 									return (
 										<AnnotationWrapStyled key={`annnotaion-${id}`} presentConnectors={presentConnectors} top={top} left={left}>
-											<AnnotationTooltipStyled>{FIXTURE_METADATA[id]}</AnnotationTooltipStyled>
+											{/* <AnnotationTooltipStyled>{FIXTURE_METADATA[id]}</AnnotationTooltipStyled> */}
 											<AnnotationTooltipDotStyled />
 										</AnnotationWrapStyled>
 									);
