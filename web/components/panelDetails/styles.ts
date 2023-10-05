@@ -35,19 +35,19 @@ export const PanelDetailsStyled = styled.div<PanelDetailsStyledProps>`
 	border-radius: 12px;
 	padding: 1.5rem 1.5rem;
 	overflow-x: hidden;
-	overflow-y: scroll;
+	overflow-y: hidden;
 `;
 
 export const PanelDetailsButtons = styled.div`
 	display: grid;
-	position: sticky;
-	z-index: 10;
+	/* position: absolute; */
+	/* z-index: 10; */
 	width: 100%;
 	/* bottom: 0.5rem; */
-	top: 21.5rem;
-	background-color: ${({ theme }) => theme.body};
+	/* top: 21.5rem; */
+	/* background-color: ${({ theme }) => theme.body}; */
 	/* padding-left: 0; */
-	padding: 0.8rem 0;
+	/* padding: 0.8rem 0; */
 	margin: 0;
 	/* grid-template-rows: repeat(fit-content(150px)); */
 	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -73,12 +73,27 @@ export const PanelDetailsButtons = styled.div`
 
 export const EditPanelStyled = styled.div``;
 
+export const EditFromWrapper = styled.div`
+	position: relative;
+	z-index: 10;
+	height: 335px;
+	overflow: scroll;
+`;
+
+export const EditFromButtonsWrapper = styled.div`
+	background-color: ${({ theme }) => theme.body};
+	padding: 0.8rem 0;
+	position: relative;
+	height: 100px;
+	z-index: 10;
+`;
+
 export const EditFromStyled = styled.div<EditFromStyledProps>`
-	margin: ${({ disabled }) => (disabled ? '0' : '-5rem 0 -2rem')};
+	/* margin: ${({ disabled }) => (disabled ? '0' : '-5rem 0 -2rem')}; */
 	/* margin: -5rem 0 -2rem; */
 
 	form {
-		padding: ${({ disabled }) => (disabled ? '0' : '0 0 6rem')};
+		padding: ${({ disabled }) => (disabled ? '0' : '0 0 1rem')};
 		/* padding: 0 0 6rem; */
 	}
 `;

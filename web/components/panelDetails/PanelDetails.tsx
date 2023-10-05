@@ -8,7 +8,15 @@ import { EditFormComponent } from '../editForm';
 import { ConnectorsProps, SymbolsProps } from '../../types';
 import { isObjEmpty } from '../../helpers';
 
-import { EditFromStyled, EditPanelStyled, PanelDetailsButtons, PanelDetailsStyled, PanelDetailsWrapperStyled } from './styles';
+import {
+	EditFromButtonsWrapper,
+	EditFromStyled,
+	EditFromWrapper,
+	EditPanelStyled,
+	PanelDetailsButtons,
+	PanelDetailsStyled,
+	PanelDetailsWrapperStyled,
+} from './styles';
 
 type PanelDetailsComponentProps = {
 	setUpdateDraftSymbol: (symbol: SymbolsProps) => void;
@@ -67,69 +75,73 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 				<EditPanelStyled />
 
 				<EditFromStyled disabled={disabledForm}>
-					{!disabledForm && (
-						<PanelDetailsButtons>
-							<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()} hasError={hasFormError}>
-								Save
-							</ButtonComponent>
-							<ButtonComponent size="s" onClick={() => onClosePanel()} appearance="secondary">
-								Cancel
-							</ButtonComponent>
-						</PanelDetailsButtons>
-					)}
-					<Formik
-						// enableReinitialize={enableReinitialize}
-						// For symbol swithching
-						enableReinitialize={true}
-						initialTouched={{ key: true }}
-						innerRef={formRef}
-						initialValues={{
-							...symbol,
-							key,
-							description,
-							owner: tenantId,
-							geometry,
-							connectors,
-						}}
-						validate={({ connectors }) => {
-							const errors: FormikErrors<any> = {};
+					<EditFromWrapper>
+						<Formik
+							// enableReinitialize={enableReinitialize}
+							// For symbol swithching
+							enableReinitialize={true}
+							initialTouched={{ key: true }}
+							innerRef={formRef}
+							initialValues={{
+								...symbol,
+								key,
+								description,
+								owner: tenantId,
+								geometry,
+								connectors,
+							}}
+							validate={({ connectors }) => {
+								const errors: FormikErrors<any> = {};
 
-							// Validate each item in the array
-							connectors.forEach((item: ConnectorsProps, i: number) => {
-								// TODO: we must also check that the name is unique and contains only alpha characters
-								if (item.name === undefined || item.name === '') {
-									errors[`connectors[${i}].name`] = 'Name is required';
-								}
-								if (typeof item.relativePosition.x !== 'number') {
-									errors[`connectors[${i}].relativePosition.x`] = 'Position X is required';
-								}
-								if (typeof item.relativePosition.y !== 'number') {
-									errors[`connectors[${i}].relativePosition.y`] = 'Position Y is required';
-								}
-								if (typeof item.direction !== 'number' || item.direction < 0 || item.direction > 360) {
-									errors[`connectors[${i}].direction`] = 'Direction is required and must be between 0 and 360';
-								}
-							});
+								// Validate each item in the array
+								connectors.forEach((item: ConnectorsProps, i: number) => {
+									// TODO: we must also check that the name is unique and contains only alpha characters
+									if (item.name === undefined || item.name === '') {
+										errors[`connectors[${i}].name`] = 'Name is required';
+									}
+									if (typeof item.relativePosition.x !== 'number') {
+										errors[`connectors[${i}].relativePosition.x`] = 'Position X is required';
+									}
+									if (typeof item.relativePosition.y !== 'number') {
+										errors[`connectors[${i}].relativePosition.y`] = 'Position Y is required';
+									}
+									if (typeof item.direction !== 'number' || item.direction < 0 || item.direction > 360) {
+										errors[`connectors[${i}].direction`] = 'Direction is required and must be between 0 and 360';
+									}
+								});
 
-							setHasFormError(!isObjEmpty(errors));
+								setHasFormError(!isObjEmpty(errors));
 
-							return errors;
-						}}
-						onSubmit={(values, { setSubmitting }) => {
-							setTimeout(() => {
-								setSubmitting(false);
-								setUpdateDraftSymbol(values);
-								console.log('⚡️', 'onSubmin value:', values);
-							}, 400);
-						}}>
-						<EditFormComponent
-							addNewConnector={onAddConnector}
-							updateSymbol={updateCurrentSymbol}
-							hasDisabled={disabledForm}
-							formChange={onFormChange}
-							refs={elementRefs}
-						/>
-					</Formik>
+								return errors;
+							}}
+							onSubmit={(values, { setSubmitting }) => {
+								setTimeout(() => {
+									setSubmitting(false);
+									setUpdateDraftSymbol(values);
+									console.log('⚡️', 'onSubmin value:', values);
+								}, 400);
+							}}>
+							<EditFormComponent
+								addNewConnector={onAddConnector}
+								updateSymbol={updateCurrentSymbol}
+								hasDisabled={disabledForm}
+								formChange={onFormChange}
+								refs={elementRefs}
+							/>
+						</Formik>
+					</EditFromWrapper>
+					<EditFromButtonsWrapper>
+						{!disabledForm && (
+							<PanelDetailsButtons>
+								<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()} hasError={hasFormError}>
+									Save
+								</ButtonComponent>
+								<ButtonComponent size="s" onClick={() => onClosePanel()} appearance="secondary">
+									Cancel
+								</ButtonComponent>
+							</PanelDetailsButtons>
+						)}
+					</EditFromButtonsWrapper>
 				</EditFromStyled>
 			</PanelDetailsWrapperStyled>
 		</PanelDetailsStyled>
