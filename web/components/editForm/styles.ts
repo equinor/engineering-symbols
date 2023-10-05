@@ -42,6 +42,7 @@ export const EditFromElementStyled = styled.div`
 `;
 
 export const EditFromAddConnectorButton = styled.div`
+	margin-top: 1rem;
 	button {
 		margin: 0;
 	}
