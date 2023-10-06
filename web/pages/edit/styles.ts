@@ -46,6 +46,22 @@ export const PanelPresentationContentStyled = styled.div`
 // 	}
 // `;
 
+export const PanelSymbolsSearchWrapperStyled = styled.div`
+	margin-bottom: 2rem;
+
+	/* Fix EDS styling */
+	& > div > div {
+		background: transparent;
+		box-shadow: none;
+	}
+
+	input {
+		border: 1px solid ${({ theme }) => theme.backgroundGrey};
+		border-radius: 12px;
+		appearance: none;
+	}
+`;
+
 export const PanelSymbolsStyled = styled.div`
 	padding: 80px 0 0;
 	border-top: 2px solid ${({ theme }) => theme.backgroundGrey};

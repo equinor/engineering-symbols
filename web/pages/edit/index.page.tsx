@@ -1,6 +1,7 @@
 import { useRef, useState, ChangeEvent, useEffect, useReducer } from 'react';
 import { AuthenticatedTemplate } from '@azure/msal-react';
 import type { NextPage } from 'next';
+import { Search } from '@equinor/eds-core-react';
 import Head from 'next/head';
 
 import { InformationComponentTypes, PanelDetailsComponent, InformationComponent, SymbolElement, WeatherLoader, useConfirm } from '../../components';
@@ -16,6 +17,7 @@ import {
 	PanelContainerStyled,
 	PanelSymbolsStyled,
 	UploadSvgStyled,
+	PanelSymbolsSearchWrapperStyled,
 } from './styles';
 import { ContainerStyled } from '../../styles/styles';
 
@@ -30,6 +32,7 @@ import {
 } from '../../store';
 import React from 'react';
 import { EditorCommandMessage, SymbolEditor, SymbolEditorEvent } from '../../components/symbolEditor';
+import { useDebouncedCallback } from 'use-debounce';
 
 // const icons = allSymbols.map(({ key, geometry, ...rest }) => ({
 // 	key,
@@ -57,6 +60,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [uploadSvgFile, setSvgFile] = useState<SymbolsProps | null>(null);
 
 	const [editorCommands, setEditorCommands] = useState<EditorCommandMessage[]>([]);
+	const [searchingValue, setSearchingValue] = useState<string>('');
 
 	const connectorsToScroll = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
@@ -86,6 +90,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		manageUpdateSymbolsQuery,
 		manageSymbolsQuery,
 	} = ManageSymbolsStore.useState();
+
+	const [icns, seIcns] = useState<SymbolsProps[] | []>([]);
 
 	const [finishManageSymbolsQuery] = getManageSymbolsQueryAction.useBeckon();
 	const [finishUpdateManageSymbol] = updateManageSymbolAction.useBeckon({ symbol: updateSymbol });
@@ -502,6 +508,26 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		setEditorCommands([{ type: 'Connector', action: 'New', data: undefined }]);
 	};
 
+	const onSearch = (val: string) => {
+		setSearchingValue(val);
+
+		if (val) {
+			const searchedValue = manageSymbolsQuery.filter(({ key }: any) => key.toLocaleLowerCase().includes(val.toLocaleLowerCase()));
+
+			seIcns(searchedValue);
+
+			// window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+		} else {
+			seIcns(manageSymbolsQuery);
+		}
+	};
+
+	useEffect(() => {
+		seIcns(manageSymbolsQuery);
+	}, [finishManageSymbolsQuery]);
+
+	const debounceSearchValue = useDebouncedCallback((value) => onSearch(value), 1000);
+
 	return (
 		<AuthenticatedTemplate>
 			<Head>
@@ -537,6 +563,14 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 				<PanelSymbolsStyled theme={theme}>
 					<ContainerStyled>
+						<PanelSymbolsSearchWrapperStyled>
+							<Search
+								aria-label="sitewide"
+								id="search-normal"
+								placeholder="Search"
+								onChange={({ target }) => debounceSearchValue(target.value)}
+							/>
+						</PanelSymbolsSearchWrapperStyled>
 						<PanelSymbolsListStyled>
 							<li>
 								<UploadSvgStyled>
@@ -547,8 +581,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 							</li>
 							{!finishManageSymbolsQuery && <WeatherLoader />}
 							{finishManageSymbolsQuery &&
-								manageSymbolsQuery.length > 0 &&
-								manageSymbolsQuery.map((symbol: SymbolsProps, id: number) => (
+								icns.length > 0 &&
+								icns.map((symbol: SymbolsProps, id: number) => (
 									<li key={id}>
 										<SymbolElement
 											meny={symbolMeny(symbol)}
