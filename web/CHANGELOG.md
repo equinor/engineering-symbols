@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.1](https://github.com/equinor/engineering-symbols/compare/web-v1.5.0...web-v1.5.1) (2023-10-06)
+
+
+### Miscellaneous Chores
+
+* Implement search on edit page ([#661](https://github.com/equinor/engineering-symbols/issues/661)) ([f7360e9](https://github.com/equinor/engineering-symbols/commit/f7360e9837cbd03f848d5d81b63e4b9c94cef0b2))
+* remove connectors name from presentation ([#658](https://github.com/equinor/engineering-symbols/issues/658)) ([2bb0767](https://github.com/equinor/engineering-symbols/commit/2bb0767e9ec303df643cca3d345bdf3b0abb3740))
+
 ## [1.5.0](https://github.com/equinor/engineering-symbols/compare/web-v1.4.4...web-v1.5.0) (2023-10-05)
 
 
