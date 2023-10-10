@@ -270,12 +270,6 @@ export class World {
 			  };
 	}
 
-	zoomToFit() {
-		if (!this.symbol) return;
-		const z = this.clientSize.scale(0.6).div(this.symbol.size);
-		this.zoomLevel = Math.round(z.min() * 2) / 2;
-	}
-
 	private addNewConnector() {
 		if (!this.symbol || this.readOnly) return;
 
@@ -424,6 +418,12 @@ export class World {
 		this.zoomLevel = Math.max(0.5, Math.min(40.0, newZoomLevel));
 	}
 
+	zoomToFit() {
+		if (!this.symbol) return;
+		const z = this.clientSize.scale(0.6).div(this.symbol.size);
+		this.zoomLevel = Math.round(z.min() * 2) / 2;
+	}
+
 	setMousePos(clientX: number, clientY: number) {
 		const rect = this.canvas.getBoundingClientRect();
 		this.mouse.pos.x = clientX - rect.left;
@@ -503,6 +503,9 @@ export class World {
 						break;
 					case 'Reset':
 						this.setDefaultSettings();
+						break;
+					case 'ZoomInOrOut':
+						this.setZoomLevel(command.data);
 						break;
 					default:
 						break;

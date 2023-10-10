@@ -15,7 +15,9 @@ export const PanelDetailsWrapperStyled = styled.div`
 export const PanelDetailsStyled = styled.div<PanelDetailsStyledProps>`
 	max-width: 30rem;
 	/* max-width: 90%; */
-	width: calc(50% - 7rem);
+	/* width: calc(50% - 7rem); */
+	/* HOTFIX, same value in zoomButtons.ts */
+	width: 520px;
 	min-width: 7rem;
 	height: 445px;
 	/* max-height: 28rem; */
