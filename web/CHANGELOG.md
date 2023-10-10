@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.3](https://github.com/equinor/engineering-symbols/compare/web-v1.5.2...web-v1.5.3) (2023-10-10)
+
+
+### Bug Fixes
+
+* info tex italic ([#677](https://github.com/equinor/engineering-symbols/issues/677)) ([038e23b](https://github.com/equinor/engineering-symbols/commit/038e23b498c5babf0567279bc57e52b605d9a7f6))
+
 ## [1.5.2](https://github.com/equinor/engineering-symbols/compare/web-v1.5.1...web-v1.5.2) (2023-10-10)
 
 
