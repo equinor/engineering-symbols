@@ -36,7 +36,8 @@ type SettingsCommand = BaseEditorCommandMessage<
 	{
 		Update: EditorSettings;
 		Reset: boolean;
-		ZoomLevel: number;
+		/** Adjust zoom level by one step. 1 = Zoom In, -1 = Zoom Out */
+		ZoomInOrOut: number;
 	}
 >;
 

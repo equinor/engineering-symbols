@@ -504,7 +504,7 @@ export class World {
 					case 'Reset':
 						this.setDefaultSettings();
 						break;
-					case 'ZoomLevel':
+					case 'ZoomInOrOut':
 						this.setZoomLevel(command.data);
 						break;
 					default:
