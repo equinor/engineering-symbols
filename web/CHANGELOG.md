@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.5.2](https://github.com/equinor/engineering-symbols/compare/web-v1.5.1...web-v1.5.2) (2023-10-10)
+
+
+### Miscellaneous Chores
+
+* implement drag information window ("press & hold") ([#675](https://github.com/equinor/engineering-symbols/issues/675)) ([b5c6e14](https://github.com/equinor/engineering-symbols/commit/b5c6e14caf1c61218dc27539de5ea5d3c2c5f3a8))
+* zoom buttons for editor ([#673](https://github.com/equinor/engineering-symbols/issues/673)) ([ebb752f](https://github.com/equinor/engineering-symbols/commit/ebb752f4e9df49e3f14dcbbe3b95bb06fa66da63))
+
+
+### Bump package
+
+* **web:** bump @equinor/eds-core-react from 0.32.4 to 0.33.0 in /web ([#669](https://github.com/equinor/engineering-symbols/issues/669)) ([00f520f](https://github.com/equinor/engineering-symbols/commit/00f520fd2495682d3f322e8da2269f0c45b79051))
+* **web:** bump axios from 1.5.0 to 1.5.1 in /web ([#671](https://github.com/equinor/engineering-symbols/issues/671)) ([4ada5f9](https://github.com/equinor/engineering-symbols/commit/4ada5f98325c5f079bc129e3a92d43a20ead5eb0))
+* **web:** bump eslint from 8.50.0 to 8.51.0 in /web ([#670](https://github.com/equinor/engineering-symbols/issues/670)) ([3e66487](https://github.com/equinor/engineering-symbols/commit/3e664871947a0acd7f954c3a005e611132c14235))
+* **web:** bump eslint-config-next from 13.5.3 to 13.5.4 in /web ([#672](https://github.com/equinor/engineering-symbols/issues/672)) ([4639b8c](https://github.com/equinor/engineering-symbols/commit/4639b8c5e919a9f2417699c54992f9b36e80b962))
+
 ## [1.5.1](https://github.com/equinor/engineering-symbols/compare/web-v1.5.0...web-v1.5.1) (2023-10-06)
 
 
