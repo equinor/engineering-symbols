@@ -44,10 +44,17 @@ export class Zoom extends WorldObject {
 	}
 
 	onClick(w: Readonly<World>): void {
-		const { width } = w.canvas;
+		const { clientWidth } = w.canvas;
 		const { x, y }: { x: number; y: number } = w.mouse.leftButtonClicked as Vec2;
-		const containerPadding = (window.innerWidth - width) / 2;
-		const left = containerPadding + (width - this.popupWidth) - this.popupShift;
+		const containerPadding = (window.innerWidth - clientWidth) / 2;
+		const left = containerPadding + (clientWidth - this.popupWidth) - this.popupShift;
+
+		console.log('w, ===>>>', w);
+		console.log('clientWidth, ===>>>', clientWidth);
+		console.log('window.innerWidth, ===>>>', window.innerWidth);
+		console.log('containerPadding, ===>>>', containerPadding);
+
+		console.log('left ===>>>', left);
 
 		// Check if the click is inside the Zoom In button
 		if (x >= left && x <= left + this.buttonWidth && y >= this.zoomInY && y <= this.zoomInY + this.buttonHeight) {
@@ -66,13 +73,13 @@ export class Zoom extends WorldObject {
 
 	onDraw(ctx: CanvasRenderingContext2D): void {
 		// Draw Zoom In button
-		const { width } = ctx.canvas;
+		const { clientWidth } = ctx.canvas;
 		const borderColor = '#BEC2C5';
 		const backgroundColor = '#BEC2C5';
 		const fontColor = '#ffffff';
 
-		const containerPadding = (window.innerWidth - width) / 2;
-		const left = containerPadding + (width - this.popupWidth) - this.popupShift;
+		const containerPadding = (window.innerWidth - clientWidth) / 2;
+		const left = containerPadding + (clientWidth - this.popupWidth) - this.popupShift;
 
 		const zoomOutX = left;
 
