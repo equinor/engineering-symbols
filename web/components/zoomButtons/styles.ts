@@ -9,13 +9,12 @@ export const ZoomButtonsContainer = styled.div`
 `;
 
 export const ZoomButton = styled.button`
-	background: transparent;
 	border: 1.5px solid ${({ theme }) => theme.backgroundGrey};
+	background: ${({ theme }) => theme.body};
 	box-shadow: ${({ theme }) => theme.boxShadow};
 	appearance: none;
 	border-radius: 12px;
 	padding: 0.4rem;
-	background: transparent;
 	transition: background 0.2s ease;
 	cursor: pointer;
 

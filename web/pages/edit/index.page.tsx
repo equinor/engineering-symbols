@@ -1,10 +1,11 @@
 import { useRef, useState, ChangeEvent, useEffect, useReducer } from 'react';
 import { AuthenticatedTemplate } from '@azure/msal-react';
 import type { NextPage } from 'next';
-import { Button, Search } from '@equinor/eds-core-react';
+import { Search } from '@equinor/eds-core-react';
 import Head from 'next/head';
 
 import {
+	PanelDetailsInformationComponent,
 	InformationComponentTypes,
 	PanelDetailsComponent,
 	InformationComponent,
@@ -19,13 +20,13 @@ import { isObjEmpty, useAdminUserRole, useFileUpload } from '../../helpers';
 import { EditPageProps, StatusProps, SymbolsProps } from '../../types';
 
 import {
+	PanelSymbolsSearchWrapperStyled,
 	PanelPresentationContentStyled,
 	PanelPresentationStyled,
 	PanelSymbolsListStyled,
 	PanelContainerStyled,
 	PanelSymbolsStyled,
 	UploadSvgStyled,
-	PanelSymbolsSearchWrapperStyled,
 } from './styles';
 import { ContainerStyled } from '../../styles/styles';
 
@@ -558,6 +559,9 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 						{finishManageSymbolsQuery && selectedSymbol && (
 							<>
+								<PanelDetailsInformationComponent
+									content={`<i>To move the symbol, <b>"press & hold"</b> the space key</i> while navigating`}
+								/>
 								<ZoomButtonsComponent onZoomClick={onZoom} />
 								<PanelDetailsComponent
 									setUpdateDraftSymbol={onUpdateDraftSymbol}

@@ -75,10 +75,10 @@ export const PanelDetailsButtons = styled.div`
 
 export const EditPanelStyled = styled.div``;
 
-export const EditFromWrapper = styled.div`
+export const EditFromWrapper = styled.div<EditFromStyledProps>`
 	position: relative;
 	z-index: 10;
-	height: 335px;
+	height: ${({ disabled }) => (disabled ? '395px' : '335px')};
 	overflow: scroll;
 `;
 

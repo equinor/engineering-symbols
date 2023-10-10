@@ -1,3 +1,4 @@
+export * from './panelDetailsInformation';
 export * from './symbolElement';
 export * from './weatherLoader';
 export * from './panelDetails';

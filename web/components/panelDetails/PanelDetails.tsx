@@ -75,7 +75,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 				<EditPanelStyled />
 
 				<EditFromStyled disabled={disabledForm}>
-					<EditFromWrapper>
+					<EditFromWrapper disabled={disabledForm}>
 						<Formik
 							// enableReinitialize={enableReinitialize}
 							// For symbol swithching

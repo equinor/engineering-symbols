@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 
-const HEIGHT = 445;
+const HEIGHT = 60;
+const MIN_HEIGHT = 550;
 
 export const PanelContainerStyled = styled.div``;
 
 export const PanelPresentationStyled = styled.div`
 	/* min-height: 50vh; */
-	height: ${HEIGHT}px;
+	height: ${HEIGHT}vh;
+	min-height: ${MIN_HEIGHT}px;
 	/* height: 100%; */
 	width: 100%;
 	position: relative;
@@ -17,7 +19,8 @@ export const PanelPresentationContentStyled = styled.div`
 	top: 0;
 	left: 0;
 	/* width: 1000px; */
-	height: ${HEIGHT}px;
+	height: ${HEIGHT}vh;
+	min-height: ${MIN_HEIGHT}px;
 
 	/* background: green; */
 
@@ -25,7 +28,7 @@ export const PanelPresentationContentStyled = styled.div`
 		display: block;
 		width: 100%;
 		/* height: 100%; */
-		height: ${HEIGHT}px !important;
+		height: ${HEIGHT}vh !important;
 	}
 `;
 
@@ -63,7 +66,8 @@ export const PanelSymbolsSearchWrapperStyled = styled.div`
 `;
 
 export const PanelSymbolsStyled = styled.div`
-	padding: 80px 0 0;
+	/* padding: 80px 0 0; */
+	padding: 40px 0 0;
 	border-top: 2px solid ${({ theme }) => theme.backgroundGrey};
 `;
 
