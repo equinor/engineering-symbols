@@ -3,9 +3,6 @@ import { WorldObject, WorldObjectRect } from '../models/WorldObject';
 import { Vec2 } from '../models/Vec2';
 
 export class CenterCross extends WorldObject {
-	onClick(w: Readonly<World>): void {
-		// console.log('Method not implemented.');
-	}
 	frameCenter = new Vec2(0, 0);
 	canvasSize = new Vec2(0, 0);
 

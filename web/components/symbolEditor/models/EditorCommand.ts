@@ -17,6 +17,7 @@ type SymbolCommand = BaseEditorCommandMessage<
 		Load: SymbolData;
 		Update: SymbolData;
 		Unload: undefined;
+		ZoomLevel: number;
 	}
 >;
 

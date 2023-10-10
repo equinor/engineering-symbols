@@ -4,9 +4,6 @@ import { Vec2 } from '../models/Vec2';
 import { resetScale } from '../utils/context2d';
 
 export class SymbolGraphic extends WorldObject {
-	onClick(w: Readonly<World>): void {
-		// console.log('Method not implemented.');
-	}
 	protected symbolPath?: Path2D;
 	hidden = false;
 	frameOrigin = new Vec2(0, 0);

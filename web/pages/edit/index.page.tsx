@@ -1,10 +1,18 @@
 import { useRef, useState, ChangeEvent, useEffect, useReducer } from 'react';
 import { AuthenticatedTemplate } from '@azure/msal-react';
 import type { NextPage } from 'next';
-import { Search } from '@equinor/eds-core-react';
+import { Button, Search } from '@equinor/eds-core-react';
 import Head from 'next/head';
 
-import { InformationComponentTypes, PanelDetailsComponent, InformationComponent, SymbolElement, WeatherLoader, useConfirm } from '../../components';
+import {
+	InformationComponentTypes,
+	PanelDetailsComponent,
+	InformationComponent,
+	SymbolElement,
+	WeatherLoader,
+	useConfirm,
+	ZoomButtonsComponent,
+} from '../../components';
 
 import { isObjEmpty, useAdminUserRole, useFileUpload } from '../../helpers';
 
@@ -522,6 +530,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		}
 	};
 
+	const onZoom = (data: number) => setEditorCommands([{ type: 'Symbol', action: 'ZoomLevel', data }]);
+
 	useEffect(() => {
 		seIcns(manageSymbolsQuery);
 	}, [finishManageSymbolsQuery]);
@@ -547,16 +557,19 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						</PanelPresentationContentStyled>
 
 						{finishManageSymbolsQuery && selectedSymbol && (
-							<PanelDetailsComponent
-								setUpdateDraftSymbol={onUpdateDraftSymbol}
-								updateCurrentSymbol={onChangeSymbolForDetail}
-								enableReinitialize={enableReinitialize}
-								onAddConnector={addNewConnector}
-								disabledForm={isReadyForReview(selectedSymbol) || false}
-								onClosePanel={onPanelReset}
-								elementRefs={connectorsToScroll}
-								symbol={{ ...selectedSymbol }}
-							/>
+							<>
+								<ZoomButtonsComponent onZoomClick={onZoom} />
+								<PanelDetailsComponent
+									setUpdateDraftSymbol={onUpdateDraftSymbol}
+									updateCurrentSymbol={onChangeSymbolForDetail}
+									enableReinitialize={enableReinitialize}
+									onAddConnector={addNewConnector}
+									disabledForm={isReadyForReview(selectedSymbol) || false}
+									onClosePanel={onPanelReset}
+									elementRefs={connectorsToScroll}
+									symbol={{ ...selectedSymbol }}
+								/>
+							</>
 						)}
 					</ContainerStyled>
 				</PanelPresentationStyled>

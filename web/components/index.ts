@@ -3,6 +3,7 @@ export * from './weatherLoader';
 export * from './panelDetails';
 export * from './confirmation';
 export * from './information';
+export * from './zoomButtons';
 export * from './signButton';
 export * from './editForm';
 export * from './noResult';

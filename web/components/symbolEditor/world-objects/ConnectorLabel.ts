@@ -5,9 +5,6 @@ import { Connector } from './Connector';
 import { drawRoundedRectangle } from '../utils/context2d';
 
 export class ConnectorLabel extends WorldObject {
-	onClick(w: Readonly<World>): void {
-		// console.log('Method not implemented.');
-	}
 	readonly key: string;
 	readonly type = 'Label';
 	hidden = false;

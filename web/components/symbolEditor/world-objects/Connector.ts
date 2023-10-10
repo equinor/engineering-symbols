@@ -14,9 +14,6 @@ const arrowDx = -(arrowSize[0] / 2) * arrowScale;
 const arrowDy = -arrowSize[1] * arrowScale;
 
 export class Connector extends WorldObject {
-	onClick(w: Readonly<World>): void {
-		console.log('Method not implemented.');
-	}
 	id: string;
 	name: string;
 	r = 6;

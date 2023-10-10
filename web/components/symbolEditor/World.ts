@@ -11,7 +11,6 @@ import { generateRandomString } from './utils/strings';
 import { EditorCommandMessage } from './models/EditorCommand';
 import { InternalEditorEventHandlers, addWorldEventListeners, createWorldEventHandlers, removeWorldEventListeners } from './event';
 import { Info } from './world-objects/Info';
-import { Zoom } from './world-objects/Zoom';
 import { CenterOfRotation } from './world-objects/CenterOfRotation';
 import { InternalEvents, getResetEvents } from './models/InternalEditorEvents';
 import { Cursor } from './world-objects/Cursor';
@@ -114,7 +113,6 @@ export class World {
 			new CenterCross(),
 			new FrameBorder(),
 			new Info(),
-			new Zoom(),
 			new CenterOfRotation(),
 			new ConnectorLayer(),
 			//new GeekInfo(),
@@ -227,6 +225,11 @@ export class World {
 			reason: 'Unloaded',
 			data: undefined,
 		});
+	}
+
+	private zoomSymbol(data: number) {
+		console.log('zoomSymbol ===>>>', data);
+		this.setZoomLevel(data);
 	}
 
 	private updateSymbol(symbolDto: SymbolData) {
@@ -476,6 +479,9 @@ export class World {
 						break;
 					case 'Unload':
 						this.unloadSymbol();
+						break;
+					case 'ZoomLevel':
+						this.zoomSymbol(command.data);
 						break;
 				}
 				break;
