@@ -1,0 +1,1 @@
+export { PanelDetailsInformationComponent } from './PanelDetailsInformation';
