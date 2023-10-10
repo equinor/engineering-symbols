@@ -3,6 +3,9 @@ import { WorldObject, WorldObjectRect } from '../models/WorldObject';
 import { Vec2 } from '../models/Vec2';
 
 export class FrameBorder extends WorldObject {
+	onClick(w: Readonly<World>): void {
+		// console.log('Method not implemented.');
+	}
 	frameOrigin = new Vec2(0, 0);
 	frameScreenSize = new Vec2(0, 0);
 

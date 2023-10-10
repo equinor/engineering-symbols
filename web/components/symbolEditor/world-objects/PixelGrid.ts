@@ -4,6 +4,9 @@ import { WorldObject, WorldObjectRect } from '../models/WorldObject';
 import { Vec2 } from '../models/Vec2';
 
 export class PixelGrid extends WorldObject {
+	onClick(w: Readonly<World>): void {
+		// console.log('Method not implemented.');
+	}
 	offset = new Vec2(0, 0);
 	clientSize = new Vec2(0, 0);
 	zoomLevel = 1;

@@ -13,6 +13,9 @@ const corW = 24;
 const corPathScale = 1.5;
 
 export class CenterOfRotation extends WorldObject {
+	onClick(w: Readonly<World>): void {
+		console.log('Method not implemented.');
+	}
 	posFrame: Vec2;
 	r = 6;
 	corPath = new Path2D(corGeo);

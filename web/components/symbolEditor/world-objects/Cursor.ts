@@ -3,6 +3,9 @@ import { WorldObject, WorldObjectRect } from '../models/WorldObject';
 import { Vec2 } from '../models/Vec2';
 
 export class Cursor extends WorldObject {
+	onClick(w: Readonly<World>): void {
+		// console.log('Method not implemented.');
+	}
 	mousePos = new Vec2(0, 0);
 	isSpaceDown = false;
 	isLeftButtonDown = false;

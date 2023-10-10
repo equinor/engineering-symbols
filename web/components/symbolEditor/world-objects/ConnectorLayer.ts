@@ -10,6 +10,9 @@ type ConnectorParts = {
 };
 
 export class ConnectorLayer extends WorldObject {
+	onClick(w: Readonly<World>): void {
+		// console.log('Method not implemented.');
+	}
 	connectors: ConnectorParts[] = [];
 	constructor() {
 		super('ConnectorLayer');

@@ -3,6 +3,9 @@ import { Vec2 } from '../models/Vec2';
 import { WorldObject, WorldObjectRect } from '../models/WorldObject';
 
 export class GeekInfo extends WorldObject {
+	onClick(w: Readonly<World>): void {
+		// console.log('Method not implemented.');
+	}
 	lines: string[] = [];
 
 	constructor() {
