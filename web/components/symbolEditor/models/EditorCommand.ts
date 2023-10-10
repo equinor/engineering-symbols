@@ -17,7 +17,6 @@ type SymbolCommand = BaseEditorCommandMessage<
 		Load: SymbolData;
 		Update: SymbolData;
 		Unload: undefined;
-		ZoomLevel: number;
 	}
 >;
 
@@ -37,6 +36,7 @@ type SettingsCommand = BaseEditorCommandMessage<
 	{
 		Update: EditorSettings;
 		Reset: boolean;
+		ZoomLevel: number;
 	}
 >;
 

@@ -530,7 +530,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		}
 	};
 
-	const onZoom = (data: number) => setEditorCommands([{ type: 'Symbol', action: 'ZoomLevel', data }]);
+	const onZoom = (data: number) => setEditorCommands([{ type: 'Settings', action: 'ZoomLevel', data }]);
 
 	useEffect(() => {
 		seIcns(manageSymbolsQuery);

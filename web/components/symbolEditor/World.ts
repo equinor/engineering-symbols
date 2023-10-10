@@ -227,10 +227,6 @@ export class World {
 		});
 	}
 
-	private zoomSymbol(data: number) {
-		this.setZoomLevel(data);
-	}
-
 	private updateSymbol(symbolDto: SymbolData) {
 		if (!this.symbol || this.readOnly) return;
 
@@ -272,12 +268,6 @@ export class World {
 						direction: c.direction,
 					})),
 			  };
-	}
-
-	zoomToFit() {
-		if (!this.symbol) return;
-		const z = this.clientSize.scale(0.6).div(this.symbol.size);
-		this.zoomLevel = Math.round(z.min() * 2) / 2;
 	}
 
 	private addNewConnector() {
@@ -428,6 +418,12 @@ export class World {
 		this.zoomLevel = Math.max(0.5, Math.min(40.0, newZoomLevel));
 	}
 
+	zoomToFit() {
+		if (!this.symbol) return;
+		const z = this.clientSize.scale(0.6).div(this.symbol.size);
+		this.zoomLevel = Math.round(z.min() * 2) / 2;
+	}
+
 	setMousePos(clientX: number, clientY: number) {
 		const rect = this.canvas.getBoundingClientRect();
 		this.mouse.pos.x = clientX - rect.left;
@@ -479,9 +475,6 @@ export class World {
 					case 'Unload':
 						this.unloadSymbol();
 						break;
-					case 'ZoomLevel':
-						this.zoomSymbol(command.data);
-						break;
 				}
 				break;
 			case 'Connector':
@@ -510,6 +503,9 @@ export class World {
 						break;
 					case 'Reset':
 						this.setDefaultSettings();
+						break;
+					case 'ZoomLevel':
+						this.setZoomLevel(command.data);
 						break;
 					default:
 						break;
