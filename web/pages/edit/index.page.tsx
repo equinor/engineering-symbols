@@ -8,10 +8,10 @@ import {
 	InformationComponentTypes,
 	PanelDetailsComponent,
 	InformationComponent,
+	ZoomButtonsComponent,
 	SymbolElement,
 	WeatherLoader,
 	useConfirm,
-	ZoomButtonsComponent,
 } from '../../components';
 
 import { isObjEmpty, useAdminUserRole, useFileUpload } from '../../helpers';

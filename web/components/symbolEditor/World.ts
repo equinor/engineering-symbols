@@ -228,7 +228,6 @@ export class World {
 	}
 
 	private zoomSymbol(data: number) {
-		console.log('zoomSymbol ===>>>', data);
 		this.setZoomLevel(data);
 	}
 

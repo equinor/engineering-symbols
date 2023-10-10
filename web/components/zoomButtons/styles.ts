@@ -12,7 +12,6 @@ export const ZoomButton = styled.button`
 	background: transparent;
 	border: 1.5px solid ${({ theme }) => theme.backgroundGrey};
 	box-shadow: ${({ theme }) => theme.boxShadow};
-	/* border: none; */
 	appearance: none;
 	border-radius: 12px;
 	padding: 0.4rem;
