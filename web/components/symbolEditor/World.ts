@@ -11,6 +11,7 @@ import { generateRandomString } from './utils/strings';
 import { EditorCommandMessage } from './models/EditorCommand';
 import { InternalEditorEventHandlers, addWorldEventListeners, createWorldEventHandlers, removeWorldEventListeners } from './event';
 import { Info } from './world-objects/Info';
+import { Zoom } from './world-objects/Zoom';
 import { CenterOfRotation } from './world-objects/CenterOfRotation';
 import { InternalEvents, getResetEvents } from './models/InternalEditorEvents';
 import { Cursor } from './world-objects/Cursor';
@@ -113,6 +114,7 @@ export class World {
 			new CenterCross(),
 			new FrameBorder(),
 			new Info(),
+			new Zoom(),
 			new CenterOfRotation(),
 			new ConnectorLayer(),
 			//new GeekInfo(),

@@ -33,6 +33,7 @@ export abstract class WorldObject {
 	}
 
 	abstract onUpdate(w: Readonly<World>): void;
+	abstract onClick(w: Readonly<World>): void;
 	abstract onDraw(ctx: CanvasRenderingContext2D): void;
 	abstract isInsideHitBox(pos: Vec2): boolean;
 	abstract toExternalModel(w: Readonly<World>): object;
@@ -52,6 +53,10 @@ export abstract class WorldObject {
 		}
 
 		this.onUpdate(w);
+
+		if (w.mouse.leftButtonClicked !== null && typeof this.onClick !== 'undefined') {
+			this.onClick(w);
+		}
 
 		this.posFrameLast = this.posFrame.clone();
 	}
