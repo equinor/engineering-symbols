@@ -560,7 +560,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						{finishManageSymbolsQuery && selectedSymbol && (
 							<>
 								<PanelDetailsInformationComponent
-									content={`<i>To move the symbol, <b>"press & hold"</b> the space key</i> while navigating`}
+									content={`<i>To move the symbol, <b>"press & hold"</b> the space key <br/>while navigating</i>`}
 								/>
 								<ZoomButtonsComponent onZoomClick={onZoom} />
 								<PanelDetailsComponent
