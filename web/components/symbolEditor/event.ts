@@ -81,7 +81,7 @@ function handleDocumentKeyUp(w: World) {
 function handleCanvasWheel(w: World) {
 	return function (e: WheelEvent) {
 		e.preventDefault();
-		w.setZoomLevel(e.deltaY);
+		w.events.mouse.wheelDelta = e.deltaY;
 	};
 }
 

@@ -2,6 +2,7 @@ export type InternalEvents = {
 	mouse: {
 		up: boolean;
 		down: boolean;
+		wheelDelta: number;
 	};
 	worldObjects: {
 		selectionChanged: boolean;
@@ -23,6 +24,7 @@ export function getResetEvents(): InternalEvents {
 		mouse: {
 			up: false,
 			down: false,
+			wheelDelta: 0,
 		},
 		symbol: {
 			load: false,

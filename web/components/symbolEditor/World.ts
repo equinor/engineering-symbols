@@ -212,7 +212,7 @@ export class World {
 			symbolState: this.getSymbolState(),
 		});
 
-		this.zoomToFit();
+		this.zoomToDefault();
 	}
 
 	private unloadSymbol() {
@@ -413,14 +413,22 @@ export class World {
 		}
 	}
 
-	setZoomLevel(deltaY: number) {
+	private setZoomLevel(deltaY: number) {
 		const newZoomLevel = this.zoomLevel + Math.sign(deltaY) * this.zoomStep;
 		this.zoomLevel = Math.max(0.5, Math.min(40.0, newZoomLevel));
 	}
 
+	zoomToDefault() {
+		this.zoomToMargin(0.4);
+	}
+
 	zoomToFit() {
+		this.zoomToMargin(0.1);
+	}
+
+	private zoomToMargin(margin: number) {
 		if (!this.symbol) return;
-		const z = this.clientSize.scale(0.6).div(this.symbol.size);
+		const z = this.clientSize.scale(1 - margin).div(this.symbol.size);
 		this.zoomLevel = Math.round(z.min() * 2) / 2;
 	}
 
@@ -444,6 +452,18 @@ export class World {
 		// Update the frame position on pan
 		if (this.panActive) {
 			this.frame.center = this.frame.center.add(this.mouse.pos.sub(this.mouse.posLast));
+		} else if (this.symbol && this.events.mouse.wheelDelta !== 0) {
+			// Zoom to mouse position
+			const rf = this.mouse.posFrame.div(this.symbol.size);
+			this.setZoomLevel(this.events.mouse.wheelDelta);
+			this.frame.center = this.mouse.pos.sub(this.symbol.size.scale(this.zoomLevel).mul(rf.sub(new Vec2(0.5, 0.5)))).round(2);
+
+			// For info: verbose version
+			// const newSize = this.symbol.size.scale(this.zoomLevel);
+			// const centerOffset = newSize.scale(0.5);
+			// const frameOffset = newSize.mul(rf);
+			// const offset = centerOffset.sub(frameOffset);
+			// this.frame.center = this.mouse.pos.add(offset);
 		}
 
 		// Update symbol and connectors
@@ -506,6 +526,12 @@ export class World {
 						break;
 					case 'ZoomInOrOut':
 						this.setZoomLevel(command.data);
+						break;
+					case 'ZoomToFit':
+						this.zoomToFit();
+						break;
+					case 'ZoomToDefault':
+						this.zoomToDefault();
 						break;
 					default:
 						break;

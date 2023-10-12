@@ -38,6 +38,9 @@ type SettingsCommand = BaseEditorCommandMessage<
 		Reset: boolean;
 		/** Adjust zoom level by one step. 1 = Zoom In, -1 = Zoom Out */
 		ZoomInOrOut: number;
+		/** Zoom to fit the symbol in the viewport */
+		ZoomToFit: null;
+		ZoomToDefault: null;
 	}
 >;
 
