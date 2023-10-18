@@ -51,6 +51,10 @@ export abstract class WorldObject {
 			this.handleLeftButtonClicked(w, w.mouse.leftButtonClicked);
 		}
 
+		if (this.isSelectable && (this.isMouseOver || this.isSelected)) {
+			w.events.worldObjects.hoverChanged = true;
+		}
+
 		this.onUpdate(w);
 
 		this.posFrameLast = this.posFrame.clone();
@@ -89,6 +93,10 @@ export abstract class WorldObject {
 		if (this.isMoving) {
 			this.posFrame = w.mouse.posFrameNearestPx05.clone();
 		}
+
+		// if (w.mouse.isMoving && this.isSelectable && (this.isMouseOver || this.isSelected)) {
+		// 	console.log(90, 3)
+		// }
 
 		if (w.events.mouse.up && this.isSelected) {
 			if (this.posDragStart?.equals(this.posFrame)) {
