@@ -243,10 +243,18 @@ export class World {
 
 		this.events.connector.updated = symbolDto.connectors.map((c) => c.id);
 
+		console.log('this:', this);
+		console.log('frameOrigin:', this.frame.origin);
+		console.log('zoomLevel:', this.zoomLevel);
+		console.log('selectedWorldObjects:', this.selectedWorldObjects[0]);
+
 		this.notifyListeners({
 			type: 'Symbol',
 			reason: 'Updated',
-			data: symbolDto,
+			data: {
+				...symbolDto,
+				position: this.selectedWorldObjects[0].posClient,
+			},
 			symbolState: symbolDto,
 		});
 	}
@@ -559,11 +567,36 @@ export class World {
 						data: o.toExternalModel(this),
 					} as SelectedObject)
 			);
-
+			// console.log(202, this)
 			this.notifyListeners({
 				type: 'Selection',
 				reason: 'Changed',
-				data: selected,
+				data: {
+					selected,
+					position: this.selectedWorldObjects[0] && this.selectedWorldObjects[0].posClient,
+				},
+				symbolState: this.getSymbolState(),
+			});
+		}
+
+		if (this.events.worldObjects.hoverChanged) {
+			const selected: SelectedObjects = this.selectedWorldObjects.map(
+				(o) =>
+					({
+						type: o.type,
+						data: o.toExternalModel(this),
+					} as SelectedObject)
+			);
+
+			// console.log(301, this.selectedWorldObjects[0])
+
+			this.notifyListeners({
+				type: 'Hover',
+				reason: 'Changed',
+				data: {
+					selected,
+					position: this.selectedWorldObjects[0] && this.selectedWorldObjects[0].posClient,
+				},
 				symbolState: this.getSymbolState(),
 			});
 		}

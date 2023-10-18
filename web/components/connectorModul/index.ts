@@ -1,0 +1,1 @@
+export { ConnectorModulComponent } from './ConnectorModul';

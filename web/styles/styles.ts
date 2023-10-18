@@ -417,6 +417,7 @@ export const FooterLicenseStyled = styled.div`
 
 /* Page */
 export const ContainerStyled = styled.div`
+	position: relative;
 	max-width: 1440px;
 	width: 100%;
 	margin: 0 auto;

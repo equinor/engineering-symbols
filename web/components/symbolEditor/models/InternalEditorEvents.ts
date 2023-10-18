@@ -6,6 +6,7 @@ export type InternalEvents = {
 	};
 	worldObjects: {
 		selectionChanged: boolean;
+		hoverChanged: boolean;
 	};
 	symbol: {
 		load: boolean;
@@ -32,6 +33,7 @@ export function getResetEvents(): InternalEvents {
 		},
 		worldObjects: {
 			selectionChanged: false,
+			hoverChanged: false,
 		},
 		connector: {
 			updated: [] as string[],
