@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.6.0](https://github.com/equinor/engineering-symbols/compare/web-v1.5.3...web-v1.6.0) (2023-10-20)
+
+
+### Features
+
+* add "zoom to mouse position" feature ([2a75c1d](https://github.com/equinor/engineering-symbols/commit/2a75c1d1da93e7d92ee1dea2405ccbab83d0f900))
+* Filter for status + edit panel to right ([#691](https://github.com/equinor/engineering-symbols/issues/691)) ([c3f1b4e](https://github.com/equinor/engineering-symbols/commit/c3f1b4ecfb3eb44db2fd2e4a6a092b071930adb5))
+
+
+### Bump package
+
+* **web:** bump @types/react from 18.2.24 to 18.2.30 in /web ([#692](https://github.com/equinor/engineering-symbols/issues/692)) ([ddd5691](https://github.com/equinor/engineering-symbols/commit/ddd569194118c2bde6f88b2ce511a014f6403866))
+* **web:** bump @types/react-copy-to-clipboard in /web ([#686](https://github.com/equinor/engineering-symbols/issues/686)) ([99615bd](https://github.com/equinor/engineering-symbols/commit/99615bd0141bc5ee063c7a04745586cf9d58ee2b))
+* **web:** bump @types/react-dom from 18.2.7 to 18.2.14 in /web ([#693](https://github.com/equinor/engineering-symbols/issues/693)) ([4dc880c](https://github.com/equinor/engineering-symbols/commit/4dc880c1c7936f0324ba60a31ae4098ffea0aa14))
+* **web:** bump nanoid from 5.0.1 to 5.0.2 in /web ([#685](https://github.com/equinor/engineering-symbols/issues/685)) ([95ff3ba](https://github.com/equinor/engineering-symbols/commit/95ff3ba4c398ca8f24af039bdc569803f70a217a))
+* **web:** bump styled-components from 5.3.9 to 6.1.0 in /web ([#684](https://github.com/equinor/engineering-symbols/issues/684)) ([503cd15](https://github.com/equinor/engineering-symbols/commit/503cd15c2b6d29a4605e4e843903cece8990e2a6))
+
 ## [1.5.3](https://github.com/equinor/engineering-symbols/compare/web-v1.5.2...web-v1.5.3) (2023-10-10)
 
 
