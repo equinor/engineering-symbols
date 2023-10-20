@@ -4,8 +4,8 @@ export const ZoomButtonsContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	position: absolute;
-	top: 2rem;
-	right: 520px;
+	top: 0;
+	right: 345px;
 `;
 
 export const ZoomButton = styled.button`
@@ -23,7 +23,7 @@ export const ZoomButton = styled.button`
 	}
 
 	& + button {
-		margin-top: 0.5rem;
+		margin-top: 0.25rem;
 	}
 
 	svg {

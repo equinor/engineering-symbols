@@ -130,7 +130,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 							/>
 						</Formik>
 					</EditFromWrapper>
-					<EditFromButtonsWrapper>
+					<EditFromButtonsWrapper disabled={disabledForm}>
 						{!disabledForm && (
 							<PanelDetailsButtons>
 								<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()} hasError={hasFormError}>

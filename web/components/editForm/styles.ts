@@ -15,16 +15,18 @@ export const ErrorMessageStyled = styled.div`
 
 export const EditFromElementStyled = styled.div`
 	/* padding: 0 0 1rem; */
-	display: grid;
-	grid-template-rows: 40px 10px;
-	grid-template-columns: 110px 1fr;
+	// display: grid;
+	// grid-template-rows: 40px 10px;
+	// grid-template-columns: 110px 1fr;
+	padding-bottom: 1rem;
 
 	label {
 		display: flex;
 		align-items: center;
-		font-size: 16px;
+		font-size: 14px;
 		color: ${({ theme }) => theme.textBlackGrey};
 		font-family: 'Equinor';
+		padding-bottom: 0.4rem;
 	}
 
 	input {
