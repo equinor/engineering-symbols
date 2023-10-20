@@ -77,9 +77,9 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const DEFAULT_STATUSES = {
 		all: true,
-    ready: false,
-    draft: false,
-    reject: false,
+		ready: false,
+		draft: false,
+		reject: false,
 	};
 
 	const [statuses, setStatuses] = useState(DEFAULT_STATUSES);
@@ -553,17 +553,16 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const filterSymbolsByStatus = () => {
 		if (statuses.all) {
 			seIcns(manageSymbolsQuery);
-		} else if(!statuses.draft && !statuses.ready && !statuses.reject) {
+		} else if (!statuses.draft && !statuses.ready && !statuses.reject) {
 			seIcns(manageSymbolsQuery);
-			setStatuses(DEFAULT_STATUSES)
+			setStatuses(DEFAULT_STATUSES);
 		} else {
 			const filteredValue = manageSymbolsQuery.filter((symbol: any) => {
-
 				const dr = statuses.draft && isStatusDraft(symbol);
 				const rd = statuses.ready && isStatusReadyForReview(symbol);
 				const rj = statuses.reject && isStatusRejected(symbol);
 
-				return dr || rd || rj
+				return dr || rd || rj;
 			});
 
 			seIcns(filteredValue);
@@ -571,16 +570,16 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	};
 
 	const handleCheckboxChange = (status: FilterStatusProps) => {
-    if (status.includes('all')) {
-      setStatuses(DEFAULT_STATUSES);
-    } else {
+		if (status.includes('all')) {
+			setStatuses(DEFAULT_STATUSES);
+		} else {
 			setStatuses({
 				...statuses,
 				all: false,
-        [status]: !statuses[status],
+				[status]: !statuses[status],
 			});
-    }
-  };
+		}
+	};
 
 	useEffect(() => {
 		filterSymbolsByStatus();
@@ -627,7 +626,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 				<PanelSymbolsStyled theme={theme}>
 					<ContainerStyled>
-
 						<PanelSymbolsSearchWrapperStyled>
 							<Search
 								aria-label="sitewide"
@@ -639,35 +637,19 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						<PanelSymbolsFilterWrapperStyled>
 							<p>Show:</p>
 							<SymbolsFilterLabelStyled checked={statuses.all}>
-								<input
-									type="checkbox"
-									checked={statuses.all}
-									onChange={() => handleCheckboxChange('all')}
-								/>
+								<input type="checkbox" checked={statuses.all} onChange={() => handleCheckboxChange('all')} />
 								All
 							</SymbolsFilterLabelStyled>
 							<SymbolsFilterLabelStyled checked={statuses.ready}>
-								<input
-									type="checkbox"
-									checked={statuses.ready}
-									onChange={() => handleCheckboxChange('ready')}
-								/>
+								<input type="checkbox" checked={statuses.ready} onChange={() => handleCheckboxChange('ready')} />
 								Ready for review
 							</SymbolsFilterLabelStyled>
 							<SymbolsFilterLabelStyled checked={statuses.draft}>
-								<input
-									type="checkbox"
-									checked={statuses.draft}
-									onChange={() => handleCheckboxChange('draft')}
-								/>
+								<input type="checkbox" checked={statuses.draft} onChange={() => handleCheckboxChange('draft')} />
 								Draft
 							</SymbolsFilterLabelStyled>
 							<SymbolsFilterLabelStyled checked={statuses.reject}>
-								<input
-									type="checkbox"
-									checked={statuses.reject}
-									onChange={() => handleCheckboxChange('reject')}
-								/>
+								<input type="checkbox" checked={statuses.reject} onChange={() => handleCheckboxChange('reject')} />
 								Reject
 							</SymbolsFilterLabelStyled>
 						</PanelSymbolsFilterWrapperStyled>
