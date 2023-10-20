@@ -37,7 +37,7 @@
 		"@types/node": "20.8.0",
 		"@types/react": "18.2.30",
 		"@types/react-copy-to-clipboard": "^5.0.5",
-		"@types/react-dom": "18.2.7",
+		"@types/react-dom": "18.2.14",
 		"@types/styled-components": "^5.1.26",
 		"axios": "^1.5.1",
 		"eslint": "8.51.0",
