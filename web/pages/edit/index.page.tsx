@@ -453,15 +453,13 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	];
 
 	const scrollToElement = (id: string) => {
-		const elementRef = connectorsToScroll.current[id];
-
-		if (!elementRef) return;
-
-		elementRef.scrollIntoView({
-			behavior: 'smooth',
-			block: 'start',
-			inline: 'nearest',
-		});
+		// const elementRef = connectorsToScroll.current[id];
+		// if (!elementRef) return;
+		// elementRef.scrollIntoView({
+		// 	behavior: 'smooth',
+		// 	block: 'start',
+		// 	inline: 'nearest',
+		// });
 	};
 
 	const onEditorEvent = ({ symbolState, data, reason, type }: SymbolEditorEvent) => {
