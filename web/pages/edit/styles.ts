@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface PanelSymbolsFilterProps {
+	checked: boolean;
+}
+
 const HEIGHT = 60;
 const MIN_HEIGHT = 550;
 
@@ -50,7 +54,7 @@ export const PanelPresentationContentStyled = styled.div`
 // `;
 
 export const PanelSymbolsSearchWrapperStyled = styled.div`
-	margin-bottom: 2rem;
+	margin-bottom: 1rem;
 
 	/* Fix EDS styling */
 	& > div > div {
@@ -62,6 +66,48 @@ export const PanelSymbolsSearchWrapperStyled = styled.div`
 		border: 1px solid ${({ theme }) => theme.backgroundGrey};
 		border-radius: 12px;
 		appearance: none;
+	}
+`;
+
+export const SymbolsFilterLabelStyled = styled.div<PanelSymbolsFilterProps>`
+	margin: 0 0.3rem;
+	font-family: 'Equinor';
+	appearance: none;
+	border: none;
+	font-size: 13px;
+	padding: 0.6rem 1rem;
+	position: relative;
+
+	border-radius: 0.5rem;
+	background: ${({ theme, checked }) => (checked ? theme.text : theme.backgroundGrey)};
+	color: ${({ theme, checked }) => (checked ? theme.textWhite : theme.text)};
+	cursor: pointer;
+	transition: transform 0.3s ease, background 0.3s ease;
+
+	&:hover {
+		transform: scale(1.05);
+	}
+
+	input {
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+		height: 100%;
+		width: 100%;
+		top: 0;
+		left: 0;
+	}
+`;
+
+export const PanelSymbolsFilterWrapperStyled = styled.div`
+	margin-bottom: 2rem;
+	display: inline-flex;
+	align-items: baseline;
+
+	p {
+		font-family: 'Equinor';
+		fort-size: 13px;
+		margin-right: 0.7rem;
 	}
 `;
 

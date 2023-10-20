@@ -46,6 +46,8 @@ export type RunEditorCommandProps = {
 
 export type StatusProps = 'Draft' | 'ReadyForReview' | 'Review' | 'Published' | 'Rejected' | number;
 
+export type FilterStatusProps = 'draft' | 'ready' | 'draft' | 'reject' | 'all';
+
 export interface SymbolsProps extends SymbolsDefaultProps {
 	key: string;
 	owner?: string;
