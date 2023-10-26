@@ -21,13 +21,13 @@ export const SvgComponent: React.FunctionComponent<SvgComponentProps> = ({
 				<g id="Symbol">{getSymbolPath()}</g>
 				{hasConnectors && (
 					<g id="Annotations">
-						{connectors.map(({ relativePosition, id }) => {
+						{connectors.map(({ position, identifier }) => {
 							return (
 								<circle
-									key={`annotation-connector-${id}`}
-									id={`annotation-connector-${id}`}
-									cx={relativePosition.x}
-									cy={relativePosition.y}
+									key={`annotation-connector-${identifier}`}
+									id={`annotation-connector-${identifier}`}
+									cx={position.x}
+									cy={position.y}
 									r="0.5"
 								/>
 							);

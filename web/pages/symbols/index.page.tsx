@@ -17,6 +17,7 @@ import { SymbolSelectWrapperStyled, SymbolInputsWrapperStyled, SymbolsContainerS
 // import symbols from '../../data/symbols.json';
 import { ContainerStyled } from '../../styles/styles';
 import { SymbolsStore, getSymbolsQueryAction } from '../../store';
+import { getPaths } from '../../helpers';
 
 // From object to array
 // const arrayIcons = Object.entries(lib).map(([name, obj]) => ({ name, ...obj }));
@@ -195,10 +196,10 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 		},
 	];
 
-	const getSymbolVersion = ({ key, id }: SymbolsProps) => {
+	const getSymbolVersion = ({ identifier, id }: SymbolsProps) => {
 		if (icns.length <= 0) return 1;
 
-		const filteredIcons = icns.filter((sbl: SymbolsProps) => sbl.key === key);
+		const filteredIcons = icns.filter((sbl: SymbolsProps) => sbl.identifier === identifier);
 
 		filteredIcons.sort(
 			// @ts-ignore next-line
@@ -270,17 +271,17 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 											{category}
 										</SymbolCategoryName> */}
 												{/* {symbolsQuery.map((icon: IconProps) => ( */}
-												<li key={icon.key}>
+												<li key={icon.identifier}>
 													<SymbolElement
 														chipsStatus={getSymbolVersion(icon)}
 														svgElementsRef={svgElementsRef}
 														width={icon.width}
 														meny={symbolMeny(icon)}
 														height={icon.height}
-														paths={icon.geometry}
+														paths={getPaths(icon.shape)}
 														id={icon.id}
 														theme={theme}
-														name={icon.key}
+														name={icon.identifier}
 													/>
 												</li>
 												{/* ))} */}

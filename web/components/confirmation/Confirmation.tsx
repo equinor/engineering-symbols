@@ -67,7 +67,7 @@ export const useConfirm = ({ symbol, message, buttons }: useConfirmProps) => {
 				<ConfirmationWrapStyled>
 					<ConfirmationTitleStyled>Conformation</ConfirmationTitleStyled>
 					<ConfirmationContentStyled>
-						{message} <strong>{symbol && symbol.key}</strong>?
+						{message} <strong>{symbol && symbol.identifier}</strong>?
 					</ConfirmationContentStyled>
 					<ConfirmationButtonsStyled>
 						<ButtonComponent onClick={() => onHandle(true)}>{buttons?.confirm ?? 'Confirm'}</ButtonComponent>

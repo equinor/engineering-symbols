@@ -3,7 +3,7 @@ import { SymbolGraphic } from './world-objects/SymbolGraphic';
 import { PixelGrid } from './world-objects/PixelGrid';
 import { WorldObject } from './models/WorldObject';
 import { Vec2 } from './models/Vec2';
-import { SymbolConnector, SymbolData, SymbolDataInternal } from './models/SymbolData';
+import { SymbolData, SymbolDataInternal } from './models/SymbolData';
 import { FrameBorder } from './world-objects/FrameBorder';
 import { ConnectorLayer } from './world-objects/ConnectorLayer';
 import { EditorEventHandler, SelectedObject, SelectedObjects, SymbolEditorEvent } from './models/EditorEvent';
@@ -156,7 +156,7 @@ export class World {
 	}
 
 	notifyConnectorUpdated(id: string) {
-		const connector = this.symbol?.connectors.find((c) => c.id === id);
+		const connector = this.symbol?.connectionPoints.find((c) => c.id === id);
 
 		if (!connector) return;
 
@@ -164,9 +164,8 @@ export class World {
 			type: 'Connector',
 			reason: 'Updated',
 			data: {
-				id: connector.id,
-				name: connector.name,
-				relativePosition: { x: connector.posFrame.x, y: connector.posFrame.y },
+				id: connector.identifier,
+				position: { x: connector.posFrame.x, y: connector.posFrame.y },
 				direction: connector.direction,
 			},
 			symbolState: this.getSymbolState(),
@@ -188,23 +187,26 @@ export class World {
 	}
 
 	private loadSymbol(symbolDto: SymbolData) {
+		console.log(6, symbolDto);
 		this.symbol = {
 			id: symbolDto.id,
-			key: symbolDto.key,
+			identifier: symbolDto.identifier,
 			size: new Vec2(symbolDto.width, symbolDto.height),
 			pathString: symbolDto.path,
 			path: new Path2D(symbolDto.path),
 			centerOfRotation: new Vec2(symbolDto.centerOfRotation.x, symbolDto.centerOfRotation.y),
-			connectors: symbolDto.connectors.map((c) => ({
-				id: c.id,
-				name: c.name,
-				posFrame: new Vec2(c.relativePosition.x, c.relativePosition.y),
-				direction: c.direction,
-			})),
+			connectionPoints:
+				symbolDto.connectionPoints.length > 0
+					? symbolDto.connectionPoints.map((c) => ({
+							identifier: c.identifier,
+							posFrame: new Vec2(c.position.x, c.position.y),
+							direction: c.direction,
+					  }))
+					: [],
 		};
 
 		this.events.symbol.load = true;
-
+		console.log(9, this.getSymbolState());
 		this.notifyListeners({
 			type: 'Symbol',
 			reason: 'Loaded',
@@ -231,17 +233,17 @@ export class World {
 		if (!this.symbol || this.readOnly) return;
 
 		//this.symbol.id = symbolDto.id;
-		this.symbol.key = symbolDto.key;
+		this.symbol.identifier = symbolDto.identifier;
 		//this.symbol.size = new Vec2(symbolDto.width, symbolDto.height);
 		//this.symbol.pathString = symbolDto.path;
 		//this.symbol.path = new Path2D(symbolDto.path);
 		this.symbol.centerOfRotation = new Vec2(symbolDto.centerOfRotation.x, symbolDto.centerOfRotation.y);
-		this.symbol.connectors = symbolDto.connectors.map((c) => ({
+		this.symbol.connectionPoints = symbolDto.connectionPoints.map((c) => ({
 			...c,
-			posFrame: new Vec2(c.relativePosition.x, c.relativePosition.y),
+			posFrame: new Vec2(c.position.x, c.position.y),
 		}));
 
-		this.events.connector.updated = symbolDto.connectors.map((c) => c.id);
+		this.events.connector.updated = symbolDto.connectionPoints.map((c) => c.identifier);
 
 		this.notifyListeners({
 			type: 'Symbol',
@@ -256,17 +258,18 @@ export class World {
 			? undefined
 			: {
 					id: this.symbol.id,
-					key: this.symbol.key,
+					identifier: this.symbol.identifier,
 					path: this.symbol.pathString,
 					width: this.symbol.size.x,
 					height: this.symbol.size.y,
 					centerOfRotation: this.symbol.centerOfRotation,
-					connectors: this.symbol.connectors.map((c) => ({
-						id: c.id,
-						name: c.name,
-						relativePosition: { x: c.posFrame.x, y: c.posFrame.y },
-						direction: c.direction,
-					})),
+					connectionPoints:
+						this.symbol.connectionPoints &&
+						this.symbol.connectionPoints.map((c) => ({
+							identifier: c.identifier,
+							position: { x: c.posFrame.x, y: c.posFrame.y },
+							direction: c.direction,
+						})),
 			  };
 	}
 
@@ -279,31 +282,29 @@ export class World {
 		let occupied = true;
 
 		while (occupied) {
-			if (this.symbol.connectors.find((c) => c.posFrame.equals(spawnPos))) {
+			if (this.symbol.connectionPoints.find((c) => c.posFrame.equals(spawnPos))) {
 				spawnPos = spawnPos.add(new Vec2(offset, 0));
 			} else {
 				occupied = false;
 			}
 		}
 
-		const uid = generateRandomString(10, this.symbol.connectors);
+		const uid = generateRandomString(10, this.symbol.connectionPoints);
 
 		const newConnector = {
-			id: uid,
-			name: uid,
+			identifier: uid,
 			posFrame: spawnPos,
 			direction: 0,
 		};
 
-		this.symbol.connectors.push(newConnector);
+		this.symbol.connectionPoints.push(newConnector);
 
 		this.notifyListeners({
 			type: 'Connector',
 			reason: 'Added',
 			data: {
-				id: newConnector.id,
-				name: newConnector.name,
-				relativePosition: {
+				identifier: newConnector.id,
+				position: {
 					x: newConnector.posFrame.x,
 					y: newConnector.posFrame.y,
 				},
@@ -315,7 +316,7 @@ export class World {
 
 	private addConnector(connector: SymbolConnector) {
 		if (!this.symbol || this.readOnly) return;
-		this.symbol.connectors.push({ ...connector, posFrame: new Vec2(connector.relativePosition.x, connector.relativePosition.y) });
+		this.symbol.connectionPoints.push({ ...connector, posFrame: new Vec2(connector.position.x, connector.position.y) });
 		this.notifyListeners({
 			type: 'Connector',
 			reason: 'Added',
@@ -326,9 +327,9 @@ export class World {
 
 	private removeConnector(connectorId: string) {
 		if (!this.symbol || this.readOnly) return;
-		const index = this.symbol.connectors.findIndex((c) => c.id === connectorId);
+		const index = this.symbol.connectionPoints.findIndex((c) => c.id === connectorId);
 		if (index > -1) {
-			this.symbol.connectors.splice(index, 1);
+			this.symbol.connectionPoints.splice(index, 1);
 
 			this.selectedWorldObjects = [];
 
@@ -343,10 +344,10 @@ export class World {
 
 	private updateConnector(connector: SymbolConnector) {
 		if (!this.symbol || this.readOnly) return;
-		const c = this.symbol.connectors.find((c) => c.id === connector.id);
+		const c = this.symbol.connectionPoints.find((c) => c.id === connector.id);
 		if (!c) return;
-		c.posFrame.x = connector.relativePosition.x;
-		c.posFrame.y = connector.relativePosition.y;
+		c.posFrame.x = connector.position.x;
+		c.posFrame.y = connector.position.y;
 		c.direction = connector.direction;
 		this.events.connector.updated.push(c.id);
 		this.notifyConnectorUpdated(c.id);
@@ -487,6 +488,7 @@ export class World {
 			case 'Symbol':
 				switch (command.action) {
 					case 'Load':
+						console.log(8, command.data);
 						this.loadSymbol(command.data);
 						break;
 					case 'Update':

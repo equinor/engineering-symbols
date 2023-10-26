@@ -10,26 +10,26 @@ type ConnectorParts = {
 };
 
 export class ConnectorLayer extends WorldObject {
-	connectors: ConnectorParts[] = [];
+	connectionPoints: ConnectorParts[] = [];
 	constructor() {
 		super('ConnectorLayer');
 	}
 
 	onUpdate(w: Readonly<World>): void {
 		if (!w.symbol) {
-			if (this.connectors.length > 0) this.connectors = [];
+			if (this.connectionPoints.length > 0) this.connectionPoints = [];
 			return;
 		}
 
-		const currentConnectors = this.connectors.map((c) => c.body.id);
+		const currentConnectors = this.connectionPoints.map((c) => c.body.id);
 
 		// Add or update connectors
-		for (let j = 0; j < w.symbol.connectors.length; j++) {
-			const sc = w.symbol.connectors[j];
-			const existing = this.connectors.find((c) => c.body.id === sc.id);
+		for (let j = 0; j < w.symbol.connectionPoints.length; j++) {
+			const sc = w.symbol.connectionPoints[j];
+			const existing = this.connectionPoints.find((c) => c.body.id === sc.id);
 			if (!existing) {
 				const newConnector = new Connector(sc);
-				this.connectors.push({
+				this.connectionPoints.push({
 					body: newConnector,
 					label: new ConnectorLabel(newConnector),
 				});
@@ -46,8 +46,8 @@ export class ConnectorLayer extends WorldObject {
 
 		// Remove connectors
 		for (const id of currentConnectors) {
-			const index = this.connectors.findIndex((c) => c.body.id === id);
-			this.connectors.splice(index, 1);
+			const index = this.connectionPoints.findIndex((c) => c.body.id === id);
+			this.connectionPoints.splice(index, 1);
 
 			const selectedIndex = w.selectedWorldObjects.findIndex((c) => c.type === 'Connector' && (c as Connector).id === id);
 
@@ -56,7 +56,7 @@ export class ConnectorLayer extends WorldObject {
 			}
 		}
 
-		for (const connector of this.connectors) {
+		for (const connector of this.connectionPoints) {
 			connector.body.update(w);
 			connector.label.update(w);
 		}
@@ -89,12 +89,12 @@ export class ConnectorLayer extends WorldObject {
 	onDraw(ctx: CanvasRenderingContext2D): void {
 		if (this.hidden) return;
 
-		for (const connector of this.connectors) {
+		for (const connector of this.connectionPoints) {
 			connector.body.draw(ctx);
 		}
 
 		// Draw labels on top of connectors
-		for (const connector of this.connectors) {
+		for (const connector of this.connectionPoints) {
 			connector.label.draw(ctx);
 		}
 	}

@@ -1,14 +1,10 @@
-export interface SymbolConnector {
-	relativePosition: { x: number; y: number };
-	direction: number;
-	id: string;
-}
+import { ConnectorsProps } from '../../types';
 
 export type SvgComponentProps = {
 	renderConnectors?: boolean;
 	viewBoxHeight: number;
 	viewBoxWidth: number;
-	connectors?: SymbolConnector[];
+	connectors?: ConnectorsProps[];
 	height: number;
 	rotate?: number;
 	width: number;

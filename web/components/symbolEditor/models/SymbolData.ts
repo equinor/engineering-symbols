@@ -1,39 +1,34 @@
+import { ConnectorsProps } from '../../../types';
 import { Vec2 } from './Vec2';
 
 // External models
 
 export type Point = { x: number; y: number };
 
-export type SymbolConnector = {
-	id: string;
-	name: string;
-	relativePosition: Point;
-	direction: number;
-};
-
 export type SymbolData = {
 	id: string;
-	key: string;
+	identifier: string;
 	path: string;
 	width: number;
 	height: number;
 	centerOfRotation: Point;
-	connectors: SymbolConnector[];
+	connectionPoints: ConnectorsProps[];
 };
 
 // Internal models
 
 export type SymbolDataInternal = {
 	id: string;
-	key: string;
+	identifier: string;
 	size: Vec2;
 	pathString: string;
 	path: Path2D;
 	centerOfRotation: Vec2;
-	connectors: SymbolConnectorInternal[];
+	connectionPoints: SymbolConnectorInternal[];
 };
 
 export type SymbolConnectorInternal = {
+	identifier: any;
 	id: string;
 	name: string;
 	posFrame: Vec2;

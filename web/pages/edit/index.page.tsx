@@ -15,7 +15,7 @@ import {
 	useConfirm,
 } from '../../components';
 
-import { isObjEmpty, useAdminUserRole, useFileUpload } from '../../helpers';
+import { getPaths, isObjEmpty, useAdminUserRole, useFileUpload } from '../../helpers';
 
 import { EditPageProps, StatusProps, SymbolsProps, FilterStatusProps } from '../../types';
 
@@ -139,7 +139,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	// const refreshMangeSymbolsQuery = () => setTimeout(() => getManageSymbolsQueryAction.run(), 1000);
 	const refreshMangeSymbolsQuery = () => getManageSymbolsQueryAction.run();
 
-	const loadEditorCommand = ({ id, geometry, width, height, connectors }: SymbolsProps, readOnly = false) => {
+	const loadEditorCommand = ({ id, shape, width, height, connectionPoints, identifier }: SymbolsProps, readOnly = false) => {
+		console.log(888, connectionPoints);
 		setEditorCommands([
 			{ type: 'Symbol', action: 'Unload', data: undefined },
 			{
@@ -155,12 +156,12 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				action: 'Load',
 				data: {
 					id,
-					key: id,
-					path: geometry,
+					identifier,
+					path: getPaths(shape),
 					width,
 					height,
 					centerOfRotation: { x: width / 2, y: height / 2 }, // TODO: We don't have CoR in API yet,
-					connectors: connectors,
+					connectionPoints,
 				},
 			},
 		]);
@@ -178,7 +179,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 		setInformationMessage({
 			title: 'Updated',
-			message: `Symbol ${selectedSymbol?.key} was updated`,
+			message: `Symbol ${selectedSymbol?.identifier} was updated`,
 			appearance: 'success',
 		});
 	}, [updateSymbol]);
@@ -204,7 +205,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		if (isSymbolUploadReposnseSucceeded && !isObjEmpty(validateSvgQuery)) {
 			setInformationMessage({
 				title: 'New symbol',
-				message: `Symbol ${validateSvgQuery.data.key} was added`,
+				message: `Symbol ${validateSvgQuery.data.identifier} was added`,
 				appearance: 'success',
 			});
 
@@ -265,11 +266,11 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				action: 'Update',
 				data: {
 					id: symbol.id,
-					key: symbol.key,
-					path: symbol.geometry,
+					identifier: symbol.identifier,
+					path: getPaths(symbol.shape),
 					width: symbol.width,
 					height: symbol.height,
-					connectors: symbol.connectors,
+					connectionPoints: symbol.connectionPoints,
 					centerOfRotation: { x: symbol.width / 2, y: symbol.height / 2 },
 				},
 			},
@@ -315,21 +316,21 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		if (symbolStatus === 'ReadyForReview') {
 			setInformationMessage({
 				title: 'Thank you',
-				message: `Your symbol ${selectedSymbol?.key} has been submited for review`,
+				message: `Your symbol ${selectedSymbol?.identifier} has been submited for review`,
 				appearance: 'success',
 			});
 		}
 		if (symbolStatus === 'Published') {
 			setInformationMessage({
 				title: 'Thank you',
-				message: `Your symbol ${selectedSymbol?.key} has been approved`,
+				message: `Your symbol ${selectedSymbol?.identifier} has been approved`,
 				appearance: 'success',
 			});
 		}
 		if (symbolStatus === 'Rejected') {
 			setInformationMessage({
 				title: 'Thank you',
-				message: `Your symbol ${selectedSymbol?.key} has been rejected`,
+				message: `Your symbol ${selectedSymbol?.identifier} has been rejected`,
 				appearance: 'error',
 			});
 		}
@@ -384,7 +385,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 		setInformationMessage({
 			title: 'Deleted',
-			message: `Symbol ${deleteSymbol?.key} was deleted`,
+			message: `Symbol ${deleteSymbol?.identifier} was deleted`,
 			appearance: 'success',
 		});
 
@@ -399,15 +400,15 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 		setInformationMessage({
 			title: 'Updated',
-			message: `Symbol ${updateSymbol?.key} was updated`,
+			message: `Symbol ${updateSymbol?.identifier} was updated`,
 			appearance: 'success',
 		});
 	}, [manageUpdateSymbolsQuery]);
 
-	const getSymbolVersion = ({ key, id }: SymbolsProps) => {
+	const getSymbolVersion = ({ identifier, id }: SymbolsProps) => {
 		if (manageSymbolsQuery.length <= 0) return 1;
 
-		const filteredManageSymbols = manageSymbolsQuery.filter((sbl: SymbolsProps) => sbl.key === key && isStatusPublished(sbl));
+		const filteredManageSymbols = manageSymbolsQuery.filter((sbl: SymbolsProps) => sbl.identifier === identifier && isStatusPublished(sbl));
 
 		filteredManageSymbols.sort(
 			// @ts-ignore next-line
@@ -482,7 +483,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 					switch (reason) {
 						case 'Added':
 						case 'Updated':
-							setSelectedSymbol({ ...selectedSymbol, connectors: symbolState?.connectors } as SymbolsProps);
+							setSelectedSymbol({ ...selectedSymbol, connectionPoints: symbolState?.connectionPoints } as SymbolsProps);
 							break;
 						default:
 							break;
@@ -671,10 +672,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 											svgElementsRef={svgElementsRef}
 											width={symbol.width}
 											height={symbol.height}
-											paths={symbol.geometry}
+											paths={getPaths(symbol.shape)}
 											id={symbol.id}
 											theme={theme}
-											name={symbol.key}
+											name={symbol.identifier}
 										/>
 									</li>
 								))}

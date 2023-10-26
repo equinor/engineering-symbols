@@ -39,7 +39,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 	disabledForm,
 	symbol,
 }): JSX.Element => {
-	const { key, description, geometry, connectors } = symbol;
+	const { identifier, description, shape, connectionPoints } = symbol;
 
 	const [hasFormError, setHasFormError] = useState<boolean>(false);
 
@@ -84,25 +84,27 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 							innerRef={formRef}
 							initialValues={{
 								...symbol,
-								key,
+								identifier,
 								description,
 								owner: tenantId,
-								geometry,
-								connectors,
+								shape,
+								connectionPoints,
 							}}
-							validate={({ connectors }) => {
+							validate={({ connectionPoints }) => {
 								const errors: FormikErrors<any> = {};
 
+								console.log(101, connectionPoints);
+
 								// Validate each item in the array
-								connectors.forEach((item: ConnectorsProps, i: number) => {
+								connectionPoints.forEach((item: ConnectorsProps, i: number) => {
 									// TODO: we must also check that the name is unique and contains only alpha characters
-									if (item.name === undefined || item.name === '') {
+									if (item.identifier === undefined || item.identifier === '') {
 										errors[`connectors[${i}].name`] = 'Name is required';
 									}
-									if (typeof item.relativePosition.x !== 'number') {
+									if (typeof item.position.x !== 'number') {
 										errors[`connectors[${i}].relativePosition.x`] = 'Position X is required';
 									}
-									if (typeof item.relativePosition.y !== 'number') {
+									if (typeof item.position.y !== 'number') {
 										errors[`connectors[${i}].relativePosition.y`] = 'Position Y is required';
 									}
 									if (typeof item.direction !== 'number' || item.direction < 0 || item.direction > 360) {

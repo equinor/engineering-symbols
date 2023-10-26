@@ -33,7 +33,7 @@ import { PreviewComponentProps } from './Preview.types';
 import { SymbolConnector } from '../svg/Svg.types';
 import { ConnectorsProps } from '../../types';
 
-import { rotatePoint, useOnClickOutside } from '../../helpers';
+import { getPaths, rotatePoint, useOnClickOutside } from '../../helpers';
 import { SvgComponent } from '../svg';
 
 import Close from '../../svg/close.svg';
@@ -51,7 +51,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	isShow,
 	theme,
 }): JSX.Element => {
-	const { key, connectors, width, height, geometry } = selected;
+	const { identifier, connectionPoints, width, height, shape } = selected;
 	// const FIXTURE_METADATA = ['Gas', 'Oil', 'Water', 'CO2', 'Aquifer', 'Shale'];
 
 	const [presentConnectors, setPresentConnectors] = useState<boolean>(false);
@@ -60,7 +60,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	const [isPopoverOpen, setPopoverOpen] = useState<boolean>(false);
 
 	const [showCustomizeColor, setShowCustomizeColor] = useState<boolean>(false);
-	const [rotatedConnectors, setRotatedConnectors] = useState<SymbolConnector[]>(connectors);
+	const [rotatedConnectors, setRotatedConnectors] = useState<ConnectorsProps[]>(connectionPoints);
 
 	const [rotate, setRotate] = useState<number>(0);
 
@@ -74,7 +74,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	const ICON_FRAME_WIDTH = 140;
 	const ICON_FRAME_HEIGHT = 140;
 
-	const hasConnectors = connectors.length > 0;
+	const hasConnectors = connectionPoints.length > 0;
 
 	console.log('👉', 'selected:', selected);
 
@@ -103,7 +103,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	const onDownloadSvg = () => {
 		const url = new Blob([getSvgString()], { type: 'image/svg+xml' });
 
-		saveAs(url, `${key}.svg`);
+		saveAs(url, `${identifier}.svg`);
 	};
 
 	const onColorPicker = (color: string) => {
@@ -128,13 +128,13 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 	useEffect(() => {
 		if (!hasConnectors) return;
 
-		const updtConnectors = connectors.map((connector) => {
-			const { relativePosition } = connector;
-			const updtRelativePosition = rotatePoint(relativePosition, rotate, width, height);
+		const updtConnectors = connectionPoints.map((connector) => {
+			const { position } = connector;
+			const updtRelativePosition = rotatePoint(position, rotate, width, height);
 			// Avoid mutation
 			const cloneConnector = { ...connector };
 
-			cloneConnector.relativePosition = updtRelativePosition;
+			cloneConnector.position = updtRelativePosition;
 
 			return cloneConnector;
 		});
@@ -155,26 +155,23 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 								renderConnectors={presentConnectors}
 								viewBoxHeight={height}
 								viewBoxWidth={width}
-								connectors={connectors}
+								connectors={connectionPoints}
 								height={ICON_FRAME_HEIGHT}
 								width={ICON_FRAME_WIDTH}
 								fill={appearance}
-								path={geometry}
+								path={getPaths(shape)}
 							/>
 							{hasConnectors &&
-								rotatedConnectors.map(({ relativePosition }: SymbolConnector, id: number) => {
-									if (!relativePosition) return;
+								rotatedConnectors.map(({ position }: ConnectorsProps, id: number) => {
+									if (!position) return;
 									const scaleRate = height > width ? ICON_FRAME_HEIGHT / height : ICON_FRAME_WIDTH / width;
 									// const DISTANCE_FOR_TRIANGLE = 30;
 									const DISTANCE_FOR_TRIANGLE = 6.5;
 									const PADDING = 32;
 
 									const top =
-										relativePosition.y * scaleRate +
-										(ICON_FRAME_HEIGHT - height * scaleRate) / 2 -
-										DISTANCE_FOR_TRIANGLE +
-										PADDING;
-									const left = relativePosition.x * scaleRate + (ICON_FRAME_WIDTH - width * scaleRate) / 2;
+										position.y * scaleRate + (ICON_FRAME_HEIGHT - height * scaleRate) / 2 - DISTANCE_FOR_TRIANGLE + PADDING;
+									const left = position.x * scaleRate + (ICON_FRAME_WIDTH - width * scaleRate) / 2;
 
 									return (
 										<AnnotationWrapStyled key={`annnotaion-${id}`} presentConnectors={presentConnectors} top={top} left={left}>
@@ -191,7 +188,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 				</PreviewWrapStyled>
 
 				<CustomizeElementsStyled>
-					<Typography variant="h2">{key}</Typography>
+					<Typography variant="h2">{identifier}</Typography>
 
 					<CustomizeDetailsStyled>
 						<CustomizeSliderStyled value={rotate} min={SLIDER_MIN_VALUE} max={SLIDER_MAX_VALUE}>
@@ -260,10 +257,10 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 							onClose={() => setPopoverOpen(false)}>
 							<Popover.Content>
 								<PopoverWrapStyled>
-									<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(geometry)}>
+									<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(getPaths(shape))}>
 										<Icon data={copy}></Icon>Copy geometry string
 									</Button>
-									<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(key)}>
+									<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(identifier)}>
 										<Icon data={copy}></Icon>Copy icon name
 									</Button>
 									<Button fullWidth variant="outlined" onClick={() => onCopyToClipboard(getSvgString())}>

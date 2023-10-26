@@ -16,6 +16,7 @@ const arrowDy = -arrowSize[1] * arrowScale;
 export class Connector extends WorldObject {
 	id: string;
 	name: string;
+	identifier: string;
 	r = 6;
 	direction = 0;
 	zoomLevel = 1;
@@ -26,6 +27,7 @@ export class Connector extends WorldObject {
 		this.type = 'Connector';
 		this.id = connector.id;
 		this.name = connector.name;
+		this.identifier = connector.identifier;
 		this.posFrame = connector.posFrame;
 		this.direction = connector.direction;
 		this.isSelectable = true;
@@ -47,9 +49,8 @@ export class Connector extends WorldObject {
 
 	toExternalModel(): SymbolConnector {
 		return {
-			id: this.id,
-			name: this.name,
-			relativePosition: {
+			identifier: this.identifier,
+			position: {
 				x: this.posFrame.x,
 				y: this.posFrame.y,
 			},
@@ -62,7 +63,7 @@ export class Connector extends WorldObject {
 		// Update connector pos when connector move ends
 		if (this.wasDragged) {
 			//console.log("wasDragged");
-			const connector = w.symbol?.connectors.find((c) => c.id === this.id);
+			const connector = w.symbol?.connectionPoints.find((c) => c.id === this.id);
 			if (connector) connector.posFrame = this.posFrame.clone();
 			w.notifyConnectorUpdated(this.id);
 		}
