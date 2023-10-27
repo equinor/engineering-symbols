@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.6.1](https://github.com/equinor/engineering-symbols/compare/web-v1.6.0...web-v1.6.1) (2023-10-27)
+
+
+### Bug Fixes
+
+* LD:json ([#707](https://github.com/equinor/engineering-symbols/issues/707)) ([e9f77dc](https://github.com/equinor/engineering-symbols/commit/e9f77dce203ab49839136022ac8d307f894ca914))
+
+
+### Bump package
+
+* **web:** bump @next/mdx from 13.5.3 to 13.5.6 in /web ([#703](https://github.com/equinor/engineering-symbols/issues/703)) ([96b8f1f](https://github.com/equinor/engineering-symbols/commit/96b8f1fd68c402035495af5dcce065f74c766a2e))
+* **web:** bump @types/react from 18.2.30 to 18.2.31 in /web ([#702](https://github.com/equinor/engineering-symbols/issues/702)) ([f06726c](https://github.com/equinor/engineering-symbols/commit/f06726c0008787d58400ed630c1df0cc03d55529))
+* **web:** bump @types/react-copy-to-clipboard in /web ([#700](https://github.com/equinor/engineering-symbols/issues/700)) ([fff42be](https://github.com/equinor/engineering-symbols/commit/fff42be17b7adb6e48a534821eaffe0339237c63))
+* **web:** bump @types/styled-components from 5.1.26 to 5.1.29 in /web ([#701](https://github.com/equinor/engineering-symbols/issues/701)) ([0ce2a09](https://github.com/equinor/engineering-symbols/commit/0ce2a09b9b48ceb4626d099b121b89b7d97e8f06))
+* **web:** bump next from 13.5.4 to 13.5.6 in /web ([#704](https://github.com/equinor/engineering-symbols/issues/704)) ([8c01f8a](https://github.com/equinor/engineering-symbols/commit/8c01f8a14da4d1673e472422b5cc8defaa1b8be9))
+
 ## [1.6.0](https://github.com/equinor/engineering-symbols/compare/web-v1.5.3...web-v1.6.0) (2023-10-20)
 
 
