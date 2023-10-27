@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2](https://github.com/equinor/engineering-symbols/compare/web-v1.6.1...web-v1.6.2) (2023-10-27)
+
+
+### Bug Fixes
+
+* updateSymbol API ([#710](https://github.com/equinor/engineering-symbols/issues/710)) ([16bc84b](https://github.com/equinor/engineering-symbols/commit/16bc84b7a51d3d3b3edf9857a4a872186316a0f5))
+
 ## [1.6.1](https://github.com/equinor/engineering-symbols/compare/web-v1.6.0...web-v1.6.1) (2023-10-27)
 
 
