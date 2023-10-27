@@ -169,7 +169,7 @@ export const SymbolElementChipsStyled = styled.div<SymbolElementChipsProps>`
 						border-color: ${theme.textGrey};
 						background: ${theme.textGrey};
 					`;
-				case 'ReadyForReview':
+				case 'Review':
 					return `
 						content: 'Ready for review';
 						color: ${theme.textWhite};

@@ -9,8 +9,9 @@ export const getManageSymbolsQuery = () => fetchApi({ path: 'https://dev-engsym-
 
 export const deleteSymbol = (id: string) => fetchApi({ path: `https://dev-engsym-api.azurewebsites.net/manage/symbols/${id}`, method: 'delete' });
 
+// New svg only (?)
 export const updateSymbol = (id: string, data: string) =>
-	fetchFileApi({ path: `https://dev-engsym-api.azurewebsites.net/manage/symbols/${id}`, data, contentType: 'application/json', method: 'put' });
+	fetchFileApi({ path: `https://dev-engsym-api.azurewebsites.net/manage/symbols`, data, contentType: 'application/json', method: 'post' });
 
 export const updateStatusSymbol = (id: string, data: string) =>
 	fetchFileApi({

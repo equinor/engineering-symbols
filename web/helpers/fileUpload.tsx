@@ -106,8 +106,6 @@ export const useFileUpload = (): FileUploadHookResultType => {
 
 		// setSvgContent(svgContent);
 		setSvgContent(data);
-
-		console.log(100, data);
 		// };
 
 		// if (selectedFile === null) return;

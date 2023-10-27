@@ -5,7 +5,7 @@ export type RelativePositionProps = {
 
 export type ConnectorsProps = {
 	id: string;
-	name: string;
+	name?: string;
 	relativePosition: RelativePositionProps;
 	direction: number;
 };
@@ -44,15 +44,18 @@ export type RunEditorCommandProps = {
 	action: 'Update' | 'Load' | 'New';
 };
 
-export type StatusProps = 'Draft' | 'ReadyForReview' | 'Review' | 'Published' | 'Rejected' | number;
+export type StatusProps = 'Draft' | 'Review' | 'Review' | 'Issued' | 'Rejected' | number;
 
 export type FilterStatusProps = 'draft' | 'ready' | 'draft' | 'reject' | 'all';
 
 export interface SymbolsProps extends SymbolsDefaultProps {
 	key: string;
-	owner?: string;
+	iri: string;
 	status?: StatusProps;
+	version: number;
+	creators?: string;
 	description?: string;
+	isRevisionOf?: string;
 }
 
 export type SymbolsDefaultProps = {
