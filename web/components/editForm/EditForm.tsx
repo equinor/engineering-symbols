@@ -62,17 +62,17 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({
 												<label htmlFor={`connectors[${i}].id`}>Name</label>
 												<Field
 													type="text"
-													id={`connectors[${i}].name`}
-													name={`connectors[${i}].name`}
+													id={`connectors[${i}].id`}
+													name={`connectors[${i}].id`}
 													required
 													disabled={hasDisabled}
 												/>
 											</EditFromElementStyled>
-											{errors[`connectors[${i}].name`] && (
+											{errors[`connectors[${i}].id`] && (
 												<ErrorMessageStyled>
 													{/* Workaraund, cayse ErrorMessage can't handel name in `connectors[${i}].name` format */}
 													{/* @ts-ignore next-line */}
-													{errors[`connectors[${i}].name`]}
+													{errors[`connectors[${i}].id`]}
 												</ErrorMessageStyled>
 											)}
 

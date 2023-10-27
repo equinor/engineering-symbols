@@ -6,7 +6,7 @@ export type Point = { x: number; y: number };
 
 export type SymbolConnector = {
 	id: string;
-	name: string;
+	name?: string;
 	relativePosition: Point;
 	direction: number;
 };

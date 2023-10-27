@@ -165,7 +165,7 @@ export class World {
 			reason: 'Updated',
 			data: {
 				id: connector.id,
-				name: connector.name,
+				name: connector.id,
 				relativePosition: { x: connector.posFrame.x, y: connector.posFrame.y },
 				direction: connector.direction,
 			},
@@ -197,7 +197,7 @@ export class World {
 			centerOfRotation: new Vec2(symbolDto.centerOfRotation.x, symbolDto.centerOfRotation.y),
 			connectors: symbolDto.connectors.map((c) => ({
 				id: c.id,
-				name: c.name,
+				name: c.id,
 				posFrame: new Vec2(c.relativePosition.x, c.relativePosition.y),
 				direction: c.direction,
 			})),
@@ -263,7 +263,7 @@ export class World {
 					centerOfRotation: this.symbol.centerOfRotation,
 					connectors: this.symbol.connectors.map((c) => ({
 						id: c.id,
-						name: c.name,
+						name: c.id,
 						relativePosition: { x: c.posFrame.x, y: c.posFrame.y },
 						direction: c.direction,
 					})),
@@ -302,7 +302,7 @@ export class World {
 			reason: 'Added',
 			data: {
 				id: newConnector.id,
-				name: newConnector.name,
+				name: newConnector.id,
 				relativePosition: {
 					x: newConnector.posFrame.x,
 					y: newConnector.posFrame.y,

@@ -1,16 +1,3 @@
-import { isObjEmpty } from './isObjEmpty';
-
-type AnnotationsConnectorProps = {
-	id: number;
-	x: number;
-	y: number;
-};
-
-const extractConnectorId = (id: string) => {
-	const matches = id.match(/\d+$/);
-	return matches ? matches[0] : '';
-};
-
 const transpileData = (input: any[]) => {
 	const result: any = {
 		paths: {},

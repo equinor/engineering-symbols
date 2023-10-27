@@ -26,7 +26,7 @@ export class ConnectorLabel extends WorldObject {
 	onDraw(ctx: CanvasRenderingContext2D): void {
 		if (this.hidden) return;
 
-		const text = this.connector.name;
+		const text = this.connector.id;
 
 		const coordText = `x: ${this.connector.posFrame.x.toFixed(1)}  y: ${this.connector.posFrame.y.toFixed(1)}`;
 

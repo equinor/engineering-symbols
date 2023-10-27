@@ -2,8 +2,8 @@ import { createAsyncAction, errorResult, successResult } from 'pullstate';
 import { uploadSvgFile, getSymbolsQuery, getManageSymbolsQuery, deleteSymbol, updateSymbol, updateStatusSymbol } from '../../api/API';
 
 import { IManageSymbolStore, ISymbolStore, ISymbolUploadStore, ManageSymbolsStore, SymbolUploadStore, SymbolsStore } from './SymbolsStore';
-import { concatenateErrorMessages } from '../../helpers';
-import { SymbolsProps } from '../../types';
+import { ConnectionPoint, concatenateErrorMessages, getApiStructure, jsonLdResponseToDto } from '../../helpers';
+import { ConnectorsProps, SymbolsProps } from '../../types';
 
 const hasSucceededReposnse = (status: number) => status !== undefined && (status === 200 || status === 201 || status === 204);
 
@@ -19,6 +19,8 @@ export const uploadSvgFileAction = createAsyncAction(
 
 		const validateSvgQuery = await uploadSvgFile(svgFile, validationOnly, contentType);
 
+		console.log(339, validateSvgQuery, svgFile);
+
 		return successResult({ validateSvgQuery });
 	},
 	{
@@ -32,8 +34,64 @@ export const uploadSvgFileAction = createAsyncAction(
 				errorMessage = concatenateErrorMessages(validateSvgQuery?.data?.errors);
 			}
 
+			const { data, ...rest } = validateSvgQuery;
+			const { id, shape, identifier, connectionPoints, ...rst } = data;
+			console.log(112, data);
+			const updValidateSvgQuery = {
+				...rst,
+				key: id,
+				id: identifier,
+				geometry: shape.serializations.map(({ value }: any) => value),
+				connectors:
+					connectionPoints.length > 0
+						? connectionPoints.map(({ identifier, position, direction }: ConnectionPoint) => ({
+								id: identifier,
+								relativePosition: position,
+								direction,
+						  }))
+						: [],
+			};
+
 			SymbolUploadStore.update((s: ISymbolUploadStore) => {
-				s.validateSvgQuery = validateSvgQuery;
+				s.validateSvgQuery = { data: updValidateSvgQuery, ...rest };
+				s.validateSvgErrorMessage = errorMessage;
+				s.isSymbolUploadReposnseSucceeded = hasSucceededReposnse(validateSvgQuery.status);
+			});
+		},
+		cacheBreakHook: () => true, // Always fetch fresh data from api
+	}
+);
+
+export const updateSymbolAction = createAsyncAction(
+	async ({ svgFile, validationOnly, contentType }) => {
+		if (svgFile === null || svgFile === undefined) {
+			return errorResult([], 'Missing query');
+		}
+
+		if (validationOnly === null || validationOnly === undefined) {
+			return errorResult([], 'Missing onlyLatestVersion');
+		}
+
+		const validateSvgQuery = await uploadSvgFile(getApiStructure(svgFile), validationOnly, contentType);
+		console.log(338, validateSvgQuery);
+
+		return successResult({ validateSvgQuery });
+	},
+	{
+		postActionHook: ({ result }) => {
+			if (result.error) return;
+
+			let errorMessage: string | null = null;
+			const { validateSvgQuery } = result.payload as any;
+
+			if (!hasSucceededReposnse(validateSvgQuery?.status)) {
+				errorMessage = concatenateErrorMessages(validateSvgQuery?.data?.errors);
+			}
+
+			const { data, ...rest } = validateSvgQuery;
+
+			SymbolUploadStore.update((s: ISymbolUploadStore) => {
+				s.validateSvgQuery = { data: jsonLdResponseToDto(data), ...rest };
 				s.validateSvgErrorMessage = errorMessage;
 				s.isSymbolUploadReposnseSucceeded = hasSucceededReposnse(validateSvgQuery.status);
 			});
@@ -53,7 +111,7 @@ export const getSymbolsQueryAction = createAsyncAction(
 			if (result.error) return;
 
 			SymbolsStore.update((s: ISymbolStore) => {
-				s.symbolsQuery = result.payload.symbolsQuery.data;
+				s.symbolsQuery = jsonLdResponseToDto(result.payload.symbolsQuery.data);
 			});
 		},
 		cacheBreakHook: () => true, // Always fetch fresh data from api
@@ -71,10 +129,11 @@ export const getManageSymbolsQueryAction = createAsyncAction(
 			if (result.error) return;
 
 			ManageSymbolsStore.update((s: IManageSymbolStore) => {
-				s.manageSymbolsQuery = result.payload.manageSymbolsQuery.data.map((symbol: any) => ({
-					...symbol,
-					connectors: symbol.connectors.map((connector: any) => ({ ...connector, name: connector.id })),
-				}));
+				s.manageSymbolsQuery = jsonLdResponseToDto(result.payload.manageSymbolsQuery.data);
+				// s.manageSymbolsQuery = result.payload.manageSymbolsQuery.data.map((symbol: any) => ({
+				// 	...symbol,
+				// 	connectors: symbol.connectors.map((connector: any) => ({ ...connector, name: connector.id })),
+				// }));
 			});
 		},
 		cacheBreakHook: () => true, // Always fetch fresh data from api
@@ -122,7 +181,10 @@ export const updateManageSymbolAction = createAsyncAction(
 		const s = symbol as SymbolsProps;
 		const a = { ...s, connectors: s.connectors.map((c) => ({ ...c, id: c.name })) };
 
-		const manageUpdateSymbolsQuery = await updateSymbol(symbol.id, JSON.stringify(a));
+		console.log(818, a);
+		console.log(819, symbol);
+
+		const manageUpdateSymbolsQuery = await updateSymbol(symbol.id, JSON.stringify(getApiStructure(a)));
 
 		return successResult({ manageUpdateSymbolsQuery });
 	},

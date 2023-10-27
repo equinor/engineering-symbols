@@ -40,6 +40,7 @@ import {
 	uploadSvgFileAction,
 	ManageSymbolsStore,
 	SymbolUploadStore,
+	updateSymbolAction,
 } from '../../store';
 import React from 'react';
 import { EditorCommandMessage, SymbolEditor, SymbolEditorEvent } from '../../components/symbolEditor';
@@ -51,7 +52,7 @@ import { useDebouncedCallback } from 'use-debounce';
 // 	...rest,
 // }));
 
-// 'Draft', 'ReadyForReview', 'Review', 'Published', 'Rejected'
+// 'Draft', 'Review', 'Review', 'Issued', 'Rejected'
 
 const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [confirmationMessage, setConfirmationMessage] = useState('');
@@ -68,7 +69,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const [enableReinitialize, setEnableReinitialize] = useState<boolean>(false);
 
-	const [uploadSvgFile, setSvgFile] = useState<SymbolsProps | null>(null);
+	// const [uploadSvgFile, setSvgFile] = useState<SymbolsProps | null>(null);
+	const [updateSymbolRevision, setUpdateSymbolRevision] = useState<SymbolsProps | null>(null);
 
 	const [editorCommands, setEditorCommands] = useState<EditorCommandMessage[]>([]);
 	const [searchingValue, setSearchingValue] = useState<string>('');
@@ -119,8 +121,14 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [finishDeleteManageSymbol] = deleteMangeSymbolAction.useBeckon({ id: deleteSymbol?.id });
 	const [finishUpdateStatusSymbol] = updateStatusMangeSymbolAction.useBeckon({ id: statusSymbolId, data: { status: symbolStatus } });
 
-	const [finishUploadSymbolsQuery] = uploadSvgFileAction.useBeckon({
-		svgFile: uploadSvgFile,
+	// const [finishUploadSymbolsQuery] = uploadSvgFileAction.useBeckon({
+	// 	svgFile: uploadSvgFile,
+	// 	validationOnly: false,
+	// 	contentType: 'application/json',
+	// });
+
+	const [finishUpdateSymbolQuery] = updateSymbolAction.useBeckon({
+		svgFile: updateSymbolRevision,
 		validationOnly: false,
 		contentType: 'application/json',
 	});
@@ -129,8 +137,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const isAdmin = useAdminUserRole();
 
-	const isStatusReadyForReview = ({ status }: SymbolsProps) => status === 'ReadyForReview';
-	const isStatusPublished = ({ status }: SymbolsProps) => status === 'Published';
+	const isStatusReadyForReview = ({ status }: SymbolsProps) => status === 'Review';
+	const isStatusPublished = ({ status }: SymbolsProps) => status === 'Issued';
 	const isStatusRejected = ({ status }: SymbolsProps) => status === 'Rejected';
 	const isStatusDraft = ({ status }: SymbolsProps) => status === 'Draft';
 
@@ -160,7 +168,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 					width,
 					height,
 					centerOfRotation: { x: width / 2, y: height / 2 }, // TODO: We don't have CoR in API yet,
-					connectors: connectors,
+					connectors,
 				},
 			},
 		]);
@@ -201,10 +209,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	useEffect(() => {
 		// if (!finishUploadSymbolsQuery) return;
-		if (isSymbolUploadReposnseSucceeded && !isObjEmpty(validateSvgQuery)) {
+		if (isSymbolUploadReposnseSucceeded && selectedSymbol) {
 			setInformationMessage({
 				title: 'New symbol',
-				message: `Symbol ${validateSvgQuery.data.key} was added`,
+				message: `Symbol ${selectedSymbol?.key} was added`,
 				appearance: 'success',
 			});
 
@@ -219,7 +227,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				appearance: 'error',
 			});
 		}
-	}, [finishUploadSymbolsQuery, isSymbolUploadReposnseSucceeded]);
+	}, [finishUpdateSymbolQuery, isSymbolUploadReposnseSucceeded]);
 
 	const onChangeFileInput = (e: ChangeEvent<HTMLInputElement>) => {
 		handleFileChange(e);
@@ -232,6 +240,13 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		setSelectedSymbol(symbol);
 		// Load symbol into editor
 		loadEditorCommand(symbol);
+		setEnableReinitialize(true);
+
+		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
+
+		return () => {
+			clearTimeout(timer);
+		};
 	};
 
 	const onShowSymbol = (symbol: SymbolsProps) => {
@@ -250,8 +265,12 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		console.log('⚡️', 'onUpdateSymbol:', symbol);
 		setSelectedSymbol(symbol);
 		loadEditorCommand(symbol);
+		setEnableReinitialize(true);
+
+		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
 
 		return () => {
+			clearTimeout(timer);
 			if (!fileInputRef.current) return;
 			fileInputRef.current.value = '';
 		};
@@ -278,15 +297,15 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	};
 
 	const onUpdateDraftSymbol = (symbol: SymbolsProps) => {
+		console.log(18, symbol);
 		if (isStatusDraft(symbol)) {
 			setUpdateSymbol(symbol);
 		} else {
-			// ADD validation
-			setSvgFile(symbol);
+			setUpdateSymbolRevision({ ...symbol, isRevisionOf: symbol.iri });
 		}
 
 		console.log(100, 'manageSymbolsQuery:', manageSymbolsQuery);
-		console.log(101, 'finishUploadSymbolsQuery:', finishUploadSymbolsQuery);
+		console.log(101, 'finishUpdateSymbolQuery:', finishUpdateSymbolQuery);
 	};
 
 	const onSubmitOnReview = async (symbol: SymbolsProps) => {
@@ -304,7 +323,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onSubmitReview = ({ id }: SymbolsProps) => {
 		setStatusSymbolId(id);
-		setSymbolStatus('ReadyForReview');
+		setSymbolStatus('Review');
 	};
 
 	useEffect(() => {
@@ -312,14 +331,14 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 		refreshMangeSymbolsQuery();
 
-		if (symbolStatus === 'ReadyForReview') {
+		if (symbolStatus === 'Review') {
 			setInformationMessage({
 				title: 'Thank you',
 				message: `Your symbol ${selectedSymbol?.key} has been submited for review`,
 				appearance: 'success',
 			});
 		}
-		if (symbolStatus === 'Published') {
+		if (symbolStatus === 'Issued') {
 			setInformationMessage({
 				title: 'Thank you',
 				message: `Your symbol ${selectedSymbol?.key} has been approved`,
@@ -363,7 +382,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 		setConfirmationButtons(null);
 		setStatusSymbolId(id);
-		setSymbolStatus(isApproved ? 'Published' : 'Rejected');
+		setSymbolStatus(isApproved ? 'Issued' : 'Rejected');
 	};
 
 	useEffect(() => {
@@ -377,7 +396,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	}, [manageSymbolErrorMessage]);
 
 	useEffect(() => {
-		if (!isDeleteSymbolReposnseSucceeded) return;
+		if (!isDeleteSymbolReposnseSucceeded || !deleteSymbol) return;
+		console.log(100, deleteSymbol, !deleteSymbol);
 
 		refreshMangeSymbolsQuery();
 		onPanelReset();
@@ -392,7 +412,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	}, [finishDeleteManageSymbol, manageDeleteSymbolsQuery]);
 
 	useEffect(() => {
-		if (!isUpdateSymbolReposnseSucceeded) return;
+		if (!isUpdateSymbolReposnseSucceeded || !updateSymbol) return;
 
 		refreshMangeSymbolsQuery();
 		// onPanelReset();
@@ -423,11 +443,12 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	};
 
 	const getChipsStatus = (symbol: SymbolsProps) => {
+		console.log(8777, symbol);
 		if (isStatusPublished(symbol)) {
 			// Check publish data
 			// dateTimePublished
 
-			return getSymbolVersion(symbol);
+			return symbol.version;
 		} else {
 			return symbol.status;
 		}

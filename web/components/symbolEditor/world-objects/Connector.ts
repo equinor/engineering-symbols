@@ -25,7 +25,7 @@ export class Connector extends WorldObject {
 		super(connector.id);
 		this.type = 'Connector';
 		this.id = connector.id;
-		this.name = connector.name;
+		this.name = connector.id;
 		this.posFrame = connector.posFrame;
 		this.direction = connector.direction;
 		this.isSelectable = true;
@@ -48,7 +48,7 @@ export class Connector extends WorldObject {
 	toExternalModel(): SymbolConnector {
 		return {
 			id: this.id,
-			name: this.name,
+			name: this.id,
 			relativePosition: {
 				x: this.posFrame.x,
 				y: this.posFrame.y,

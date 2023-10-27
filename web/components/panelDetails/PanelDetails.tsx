@@ -47,7 +47,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 
 	const { instance } = useMsal();
 
-	const { tenantId } = instance.getActiveAccount() as any;
+	const { name, username } = instance.getActiveAccount() as any;
 
 	const onSubmitForm = () => {
 		if (!formRef.current) return;
@@ -79,14 +79,15 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 						<Formik
 							// enableReinitialize={enableReinitialize}
 							// For symbol swithching
-							enableReinitialize={true}
+							// Workaround for eble to switch between svgs & keeping name value
+							enableReinitialize={enableReinitialize}
 							initialTouched={{ key: true }}
 							innerRef={formRef}
 							initialValues={{
 								...symbol,
 								key,
 								description,
-								owner: tenantId,
+								creators: [{ name, email: username }],
 								geometry,
 								connectors,
 							}}
@@ -96,8 +97,8 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 								// Validate each item in the array
 								connectors.forEach((item: ConnectorsProps, i: number) => {
 									// TODO: we must also check that the name is unique and contains only alpha characters
-									if (item.name === undefined || item.name === '') {
-										errors[`connectors[${i}].name`] = 'Name is required';
+									if (item.id === undefined || item.id === '') {
+										errors[`connectors[${i}].id`] = 'Name is required';
 									}
 									if (typeof item.relativePosition.x !== 'number') {
 										errors[`connectors[${i}].relativePosition.x`] = 'Position X is required';
