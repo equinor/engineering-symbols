@@ -19,8 +19,6 @@ export const uploadSvgFileAction = createAsyncAction(
 
 		const validateSvgQuery = await uploadSvgFile(svgFile, validationOnly, contentType);
 
-		console.log(339, validateSvgQuery, svgFile);
-
 		return successResult({ validateSvgQuery });
 	},
 	{
@@ -36,7 +34,6 @@ export const uploadSvgFileAction = createAsyncAction(
 
 			const { data, ...rest } = validateSvgQuery;
 			const { id, shape, identifier, connectionPoints, ...rst } = data;
-			console.log(112, data);
 			const updValidateSvgQuery = {
 				...rst,
 				key: id,
@@ -73,7 +70,6 @@ export const updateSymbolAction = createAsyncAction(
 		}
 
 		const validateSvgQuery = await uploadSvgFile(getApiStructure(svgFile), validationOnly, contentType);
-		console.log(338, validateSvgQuery);
 
 		return successResult({ validateSvgQuery });
 	},
@@ -129,7 +125,7 @@ export const getManageSymbolsQueryAction = createAsyncAction(
 			if (result.error) return;
 
 			ManageSymbolsStore.update((s: IManageSymbolStore) => {
-				s.manageSymbolsQuery = jsonLdResponseToDto(result.payload.manageSymbolsQuery.data);
+				s.manageSymbolsQuery = jsonLdResponseToDto(result.payload.manageSymbolsQuery.data) as unknown as SymbolsProps[];
 				// s.manageSymbolsQuery = result.payload.manageSymbolsQuery.data.map((symbol: any) => ({
 				// 	...symbol,
 				// 	connectors: symbol.connectors.map((connector: any) => ({ ...connector, name: connector.id })),
@@ -180,9 +176,6 @@ export const updateManageSymbolAction = createAsyncAction(
 		// TODO: Remove this hack
 		const s = symbol as SymbolsProps;
 		const a = { ...s, connectors: s.connectors.map((c) => ({ ...c, id: c.name })) };
-
-		console.log(818, a);
-		console.log(819, symbol);
 
 		const manageUpdateSymbolsQuery = await updateSymbol(symbol.id, JSON.stringify(getApiStructure(a)));
 

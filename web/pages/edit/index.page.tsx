@@ -297,15 +297,13 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	};
 
 	const onUpdateDraftSymbol = (symbol: SymbolsProps) => {
-		console.log(18, symbol);
 		if (isStatusDraft(symbol)) {
 			setUpdateSymbol(symbol);
 		} else {
 			setUpdateSymbolRevision({ ...symbol, isRevisionOf: symbol.iri });
 		}
 
-		console.log(100, 'manageSymbolsQuery:', manageSymbolsQuery);
-		console.log(101, 'finishUpdateSymbolQuery:', finishUpdateSymbolQuery);
+		console.log('⚡️', 'manageSymbolsQuery:', manageSymbolsQuery);
 	};
 
 	const onSubmitOnReview = async (symbol: SymbolsProps) => {
@@ -397,7 +395,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	useEffect(() => {
 		if (!isDeleteSymbolReposnseSucceeded || !deleteSymbol) return;
-		console.log(100, deleteSymbol, !deleteSymbol);
 
 		refreshMangeSymbolsQuery();
 		onPanelReset();
@@ -443,7 +440,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	};
 
 	const getChipsStatus = (symbol: SymbolsProps) => {
-		console.log(8777, symbol);
 		if (isStatusPublished(symbol)) {
 			// Check publish data
 			// dateTimePublished

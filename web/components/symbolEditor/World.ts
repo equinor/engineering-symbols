@@ -239,7 +239,7 @@ export class World {
 		this.symbol.connectors = symbolDto.connectors.map((c) => ({
 			...c,
 			posFrame: new Vec2(c.relativePosition.x, c.relativePosition.y),
-		}));
+		})) as any;
 
 		this.events.connector.updated = symbolDto.connectors.map((c) => c.id);
 
@@ -315,7 +315,7 @@ export class World {
 
 	private addConnector(connector: SymbolConnector) {
 		if (!this.symbol || this.readOnly) return;
-		this.symbol.connectors.push({ ...connector, posFrame: new Vec2(connector.relativePosition.x, connector.relativePosition.y) });
+		this.symbol.connectors.push({ ...connector, posFrame: new Vec2(connector.relativePosition.x, connector.relativePosition.y) } as any);
 		this.notifyListeners({
 			type: 'Connector',
 			reason: 'Added',

@@ -1,9 +1,11 @@
 import { ConnectorsProps } from '../types';
 
+// HOTFIX
 export const getApiStructure: any = ({ id, key, iri, geometry, connectors, ...rest }: any) => {
 	return {
 		...Object.entries(rest).reduce((acc, [key, value]) => {
 			if (key !== 'version' && key !== 'status' && key !== 'name') {
+				// @ts-ignore
 				acc[key] = value;
 			}
 			return acc;

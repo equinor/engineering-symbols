@@ -3,20 +3,22 @@ import { ConnectorsProps } from '../types';
 export type EngineeringSymbolDto = {
 	id: string;
 	iri: string;
+	key: string;
+	name: string;
 	status?: string;
 	version: number;
 	previousVersion?: string | null;
 	previousVersionIri?: string | null;
-	dateTimeCreated: string;
-	dateTimeModified: string;
-	dateTimeIssued: string;
+	dateTimeCreated?: string;
+	dateTimeModified?: string;
+	dateTimeIssued?: string;
 } & Omit<EngineeringSymbolPutDto, 'isRevisionOf'>;
 
 /** Model for CREATING and UPDATING a symbol */
 export type EngineeringSymbolPutDto = {
-	identifier: string;
+	identifier?: string;
 	isRevisionOf?: string;
-	label: string;
+	label?: string;
 	description: string;
 	sources?: string[] | null;
 	subjects?: string[] | null;
@@ -39,7 +41,6 @@ export type EngineeringSymbolPutDto = {
 		x: number;
 		y: number;
 	};
-	connectionPoints: ConnectionPoint[];
 };
 
 export type ConnectionPoint = {
@@ -74,8 +75,8 @@ function jsonLdSymbolToDto(obj: object): EngineeringSymbolDto {
 	if (!id) throw new Error('jsonLdSymbolToDto: id is null or undefined');
 
 	const result: EngineeringSymbolDto = {
-		id: id,
-		iri: iri,
+		id,
+		iri,
 		version: parseInt(valueOrDefault<string>(obj, ['pav:version'])),
 		// previousVersion: null,
 		// previousVersionIri: null,

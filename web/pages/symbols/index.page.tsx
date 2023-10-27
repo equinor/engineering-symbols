@@ -56,8 +56,6 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 
 	const debounceSearchValue = useDebouncedCallback((value) => onSearch(value), 1000);
 
-	console.log(8, 'finishSymbolsQuery:', finishSymbolsQuery, 'symbolsQuery:', symbolsQuery);
-
 	useEffect(() => {
 		!isColorPicked && setAppearance(theme.fill);
 	}, [theme.fill]);

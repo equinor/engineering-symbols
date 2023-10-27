@@ -12,7 +12,7 @@ export const SignButtonComponent = () => {
 
 	const user = instance.getActiveAccount();
 
-	console.log(1234, 'roles:', user?.idTokenClaims?.roles);
+	console.log('👉', 'roles:', user?.idTokenClaims?.roles);
 
 	const isAuthenticated = useIsAuthenticated();
 
