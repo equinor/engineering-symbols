@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.6.3](https://github.com/equinor/engineering-symbols/compare/web-v1.6.2...web-v1.6.3) (2023-10-30)
+
+
+### Bump package
+
+* **web:** bump @next/mdx from 13.5.6 to 14.0.0 in /web ([#714](https://github.com/equinor/engineering-symbols/issues/714)) ([bdd862e](https://github.com/equinor/engineering-symbols/commit/bdd862ea6f3103b2525b44f3111f41b22ce0d7ae))
+* **web:** bump @types/file-saver from 2.0.5 to 2.0.6 in /web ([#717](https://github.com/equinor/engineering-symbols/issues/717)) ([7b294db](https://github.com/equinor/engineering-symbols/commit/7b294dbeb3229f559a041f46be48fca841e1cb02))
+* **web:** bump @types/react from 18.2.31 to 18.2.33 in /web ([#715](https://github.com/equinor/engineering-symbols/issues/715)) ([a556566](https://github.com/equinor/engineering-symbols/commit/a556566e43c154499fc6726cb6161a8ae33d037c))
+* **web:** bump eslint from 8.51.0 to 8.52.0 in /web ([#713](https://github.com/equinor/engineering-symbols/issues/713)) ([75bfae1](https://github.com/equinor/engineering-symbols/commit/75bfae1e4f71fc6a34adf3826c22ccb716076dd8))
+
 ## [1.6.2](https://github.com/equinor/engineering-symbols/compare/web-v1.6.1...web-v1.6.2) (2023-10-27)
 
 
