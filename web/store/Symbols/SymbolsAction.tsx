@@ -36,7 +36,7 @@ export const uploadSvgFileAction = createAsyncAction(
 			const { id, shape, identifier, connectionPoints, ...rst } = data;
 			const updValidateSvgQuery = {
 				...rst,
-				key: id,
+				key: validateSvgQuery.config.data.name.replace('.svg', ''),
 				// HOTFIX: no ID -> PUT
 				// id: identifier,
 				geometry: shape.serializations.map(({ value }: any) => value),
