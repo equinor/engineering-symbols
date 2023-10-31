@@ -1,13 +1,16 @@
 import styled from 'styled-components';
 
-interface PanelSymbolsFilterProps {
-	checked: boolean;
+interface PanelActionProps {
+	isShow: boolean;
 }
 
-const HEIGHT = 60;
+const HEIGHT = 82;
 const MIN_HEIGHT = 550;
 
-export const PanelContainerStyled = styled.div``;
+export const PanelContainerStyled = styled.div`
+	overflow-x: visible;
+	overflow-y: hidden;
+`;
 
 export const PanelPresentationStyled = styled.div`
 	/* min-height: 50vh; */
@@ -16,6 +19,31 @@ export const PanelPresentationStyled = styled.div`
 	/* height: 100%; */
 	width: 100%;
 	position: relative;
+`;
+
+export const LogoWrapperStyled = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	opacity: 0.1;
+	user-select: none;
+
+	& > div {
+		width: 350px;
+	}
+
+	p {
+		font-family: 'Equinor';
+		font-size: 75px;
+		padding: 0 0 0 0.3rem;
+		font-weight: 600;
+		white-space: nowrap;
+		color: ${({ theme }) => theme.text};
+	}
 `;
 
 export const PanelPresentationContentStyled = styled.div`
@@ -53,137 +81,30 @@ export const PanelPresentationContentStyled = styled.div`
 // 	}
 // `;
 
-export const PanelSymbolsSearchWrapperStyled = styled.div`
-	margin-bottom: 1rem;
-
-	/* Fix EDS styling */
-	& > div > div {
-		background: transparent;
-		box-shadow: none;
-	}
-
-	input {
-		border: 1px solid ${({ theme }) => theme.backgroundGrey};
-		border-radius: 12px;
-		appearance: none;
-	}
-`;
-
-export const SymbolsFilterLabelStyled = styled.div<PanelSymbolsFilterProps>`
-	margin: 0 0.3rem;
-	font-family: 'Equinor';
-	appearance: none;
-	border: none;
-	font-size: 13px;
-	padding: 0.6rem 1rem;
-	position: relative;
-
-	border-radius: 0.5rem;
-	background: ${({ theme, checked }) => (checked ? theme.text : theme.backgroundGrey)};
-	color: ${({ theme, checked }) => (checked ? theme.textWhite : theme.text)};
-	cursor: pointer;
-	transition: transform 0.3s ease, background 0.3s ease;
-
-	&:hover {
-		transform: scale(1.05);
-	}
-
-	input {
-		position: absolute;
-		opacity: 0;
-		cursor: pointer;
-		height: 100%;
-		width: 100%;
-		top: 0;
-		left: 0;
-	}
-`;
-
-export const PanelSymbolsFilterWrapperStyled = styled.div`
-	margin-bottom: 2rem;
-	display: inline-flex;
-	align-items: baseline;
-
-	p {
-		font-family: 'Equinor';
-		fort-size: 13px;
-		margin-right: 0.7rem;
-	}
-`;
-
 export const PanelSymbolsStyled = styled.div`
 	/* padding: 80px 0 0; */
 	padding: 40px 0 0;
 	border-top: 2px solid ${({ theme }) => theme.backgroundGrey};
 `;
 
-export const PanelSymbolsListStyled = styled.ul`
-	list-style: none;
-	display: grid;
-	padding-left: 0;
-	margin: 0;
-	grid-template-rows: repeat(fit-content(150px));
-	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-	gap: 1rem;
+export const PanelActionsStyled = styled.div<PanelActionProps>`
+	position: absolute;
+	top: 0;
+	right: ${({ isShow }) => (isShow ? '22.7rem' : '1rem')};
+	transition: 0.5s right ease;
+	display: flex;
+	flex-direction: column;
 
-	li {
-		transition: transform 0.3s ease;
-		cursor: pointer;
-
-		&:hover {
-			transform: scale(1.05);
-		}
+	button {
+		margin-bottom: 0.35rem;
 	}
 `;
 
-export const UploadSvgStyled = styled.div`
-	height: 170px;
-	width: 100%;
-	background: ${({ theme }) => theme.body};
-	border: 1px solid #f2f2f2;
-	border-radius: 12px;
-	padding: 1rem;
-	overflow: hidden;
-	position: relative;
-
-	input {
-		display: none;
-		visibility: hidden;
-	}
-
-	label {
-		word-wrap: break-word;
-		width: 100%;
-		display: block;
-		/* height: 40px; */
-		text-align: center;
-		/* padding: 0.2rem 0 0; */
-		font-size: 18px;
-		color: ${({ theme }) => theme.textBlackGrey};
-		font-family: 'Equinor';
-		padding-top: 90px;
-		cursor: pointer;
-
-		&:before,
-		&:after {
-			content: '';
-			position: absolute;
-			top: 33%;
-			left: 50%;
-			transform: translateX(-50%);
-			width: 35%;
-			height: 3px;
-			background: ${({ theme }) => theme.backgroundGrey};
-		}
-
-		&:after {
-			transform: rotate(90deg);
-			left: calc(50% - 29px);
-		}
-
-		&:before {
-		}
-	}
+export const ListActionStyled = styled.div<PanelActionProps>`
+	position: absolute;
+	top: 0;
+	left: ${({ isShow }) => (isShow ? '26.4rem' : '1rem')};
+	transition: 0.5s left ease;
 `;
 
 export const PanelPresentationLinesWrapperStyled = styled.div`

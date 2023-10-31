@@ -1,7 +1,5 @@
-import ZoomOut from '../../svg/zoom-out.svg';
-import ZoomIn from '../../svg/zoom-in.svg';
-
-import { ZoomButtonsContainer, ZoomButton } from './styles';
+import { ZoomButtonsContainer } from './styles';
+import { IconButtonComponent } from '../iconButton';
 
 type ZoomButtonsProps = {
 	onZoomClick: (n: number) => void;
@@ -10,12 +8,8 @@ type ZoomButtonsProps = {
 export const ZoomButtonsComponent = ({ onZoomClick }: ZoomButtonsProps) => {
 	return (
 		<ZoomButtonsContainer>
-			<ZoomButton onClick={() => onZoomClick(-1)}>
-				<ZoomOut />
-			</ZoomButton>
-			<ZoomButton onClick={() => onZoomClick(1)}>
-				<ZoomIn />
-			</ZoomButton>
+			<IconButtonComponent name="zoomOut" onClick={() => onZoomClick(-1)} />
+			<IconButtonComponent name="zoomIn" onClick={() => onZoomClick(1)} />
 		</ZoomButtonsContainer>
 	);
 };

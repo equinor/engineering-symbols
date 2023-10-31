@@ -176,9 +176,9 @@ export const updateManageSymbolAction = createAsyncAction(
 
 		// TODO: Remove this hack
 		const s = symbol as SymbolsProps;
-		const a = { ...s, connectors: s.connectors.map((c) => ({ ...c, id: c.name })) };
+		// const a = { ...s, connectors: s.connectors.map((c) => ({ ...c, id: c.name })) };
 
-		const manageUpdateSymbolsQuery = await updateSymbol(symbol.id, JSON.stringify(getApiStructure(a)));
+		const manageUpdateSymbolsQuery = await updateSymbol(symbol.id, JSON.stringify(getApiStructure(s)));
 
 		return successResult({ manageUpdateSymbolsQuery });
 	},

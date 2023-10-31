@@ -1,7 +1,7 @@
-import { useRef, useState, ChangeEvent, useEffect, useReducer } from 'react';
+import React, { useRef, useState, ChangeEvent, useEffect, useReducer } from 'react';
 import { AuthenticatedTemplate } from '@azure/msal-react';
+import { useDebouncedCallback } from 'use-debounce';
 import type { NextPage } from 'next';
-import { Search } from '@equinor/eds-core-react';
 import Head from 'next/head';
 
 import {
@@ -10,25 +10,24 @@ import {
 	PanelDetailsComponent,
 	InformationComponent,
 	ZoomButtonsComponent,
-	SymbolElement,
+	IconButtonComponent,
+	ListComponent,
+	LogoComponent,
 	WeatherLoader,
 	useConfirm,
 } from '../../components';
 
-import { isObjEmpty, useAdminUserRole, useFileUpload } from '../../helpers';
+import { isStatusDraft, isStatusReadyForReview, isStatusRejected, useAdminUserRole, useFileUpload } from '../../helpers';
 
 import { EditPageProps, StatusProps, SymbolsProps, FilterStatusProps } from '../../types';
 
 import {
-	PanelSymbolsSearchWrapperStyled,
-	PanelSymbolsFilterWrapperStyled,
 	PanelPresentationContentStyled,
-	SymbolsFilterLabelStyled,
 	PanelPresentationStyled,
-	PanelSymbolsListStyled,
 	PanelContainerStyled,
-	PanelSymbolsStyled,
-	UploadSvgStyled,
+	ListActionStyled,
+	LogoWrapperStyled,
+	PanelActionsStyled,
 } from './styles';
 import { ContainerStyled } from '../../styles/styles';
 
@@ -37,14 +36,12 @@ import {
 	getManageSymbolsQueryAction,
 	updateManageSymbolAction,
 	deleteMangeSymbolAction,
-	uploadSvgFileAction,
 	ManageSymbolsStore,
 	SymbolUploadStore,
 	updateSymbolAction,
 } from '../../store';
-import React from 'react';
-import { EditorCommandMessage, SymbolEditor, SymbolEditorEvent } from '../../components/symbolEditor';
-import { useDebouncedCallback } from 'use-debounce';
+
+import { EditorCommandMessage, SymbolConnector, SymbolEditor, SymbolEditorEvent } from '../../components/symbolEditor';
 
 // const icons = allSymbols.map(({ key, geometry, ...rest }) => ({
 // 	key,
@@ -53,6 +50,13 @@ import { useDebouncedCallback } from 'use-debounce';
 // }));
 
 // 'Draft', 'Review', 'Review', 'Issued', 'Rejected'
+
+export type DefaultStatusesTypes = {
+	all: boolean;
+	ready: boolean;
+	draft: boolean;
+	reject: boolean;
+};
 
 const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [confirmationMessage, setConfirmationMessage] = useState('');
@@ -67,6 +71,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [statusSymbolId, setStatusSymbolId] = useState<string | null>(null);
 	const [symbolStatus, setSymbolStatus] = useState<StatusProps | null>(null);
 
+	const [selectedConnector, setSelectedConnector] = useState<SymbolConnector | null>(null);
+
 	const [enableReinitialize, setEnableReinitialize] = useState<boolean>(false);
 
 	// const [uploadSvgFile, setSvgFile] = useState<SymbolsProps | null>(null);
@@ -75,9 +81,12 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [editorCommands, setEditorCommands] = useState<EditorCommandMessage[]>([]);
 	const [searchingValue, setSearchingValue] = useState<string>('');
 
+	const [panelShow, setPanelShow] = useState<boolean>(true);
+	const [listShow, setListShow] = useState<boolean>(true);
+
 	const connectorsToScroll = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
-	const DEFAULT_STATUSES = {
+	const DEFAULT_STATUSES: DefaultStatusesTypes = {
 		all: true,
 		ready: false,
 		draft: false,
@@ -89,7 +98,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	// Workaround for popup to show same message more that 1 time
 	const [update, forceUpdate] = useReducer((x) => x + 1, 0);
 
-	const svgElementsRef = useRef([]);
 	const fileInputRef = useRef<HTMLInputElement>();
 
 	const [getConfirmation, ConfirmationComponent] = useConfirm({
@@ -136,11 +144,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const { validateSvgQuery, validateSvgErrorMessage, isSymbolUploadReposnseSucceeded } = SymbolUploadStore.useState();
 
 	const isAdmin = useAdminUserRole();
-
-	const isStatusReadyForReview = ({ status }: SymbolsProps) => status === 'Review';
-	const isStatusPublished = ({ status }: SymbolsProps) => status === 'Issued';
-	const isStatusRejected = ({ status }: SymbolsProps) => status === 'Rejected';
-	const isStatusDraft = ({ status }: SymbolsProps) => status === 'Draft';
 
 	const isReadyForReview = (symbol: SymbolsProps) => isAdmin && isStatusReadyForReview(symbol);
 
@@ -421,53 +424,23 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		});
 	}, [manageUpdateSymbolsQuery]);
 
-	const getSymbolVersion = ({ key, id }: SymbolsProps) => {
-		if (manageSymbolsQuery.length <= 0) return 1;
+	// const getSymbolVersion = ({ key, id }: SymbolsProps) => {
+	// 	if (manageSymbolsQuery.length <= 0) return 1;
 
-		const filteredManageSymbols = manageSymbolsQuery.filter((sbl: SymbolsProps) => sbl.key === key && isStatusPublished(sbl));
+	// 	const filteredManageSymbols = manageSymbolsQuery.filter((sbl: SymbolsProps) => sbl.key === key && isStatusPublished(sbl));
 
-		filteredManageSymbols.sort(
-			// @ts-ignore next-line
-			(a: SymbolsProps, b: SymbolsProps) => new Date(a.dateTimePublished).getTime() - new Date(b.dateTimePublished).getTime()
-		);
+	// 	filteredManageSymbols.sort(
+	// 		// @ts-ignore next-line
+	// 		(a: SymbolsProps, b: SymbolsProps) => new Date(a.dateTimePublished).getTime() - new Date(b.dateTimePublished).getTime()
+	// 	);
 
-		// Find the index of the object with the given id in the sorted array
-		const index = filteredManageSymbols.findIndex((sbl: { id: string }) => sbl.id === id);
+	// 	// Find the index of the object with the given id in the sorted array
+	// 	const index = filteredManageSymbols.findIndex((sbl: { id: string }) => sbl.id === id);
 
-		// If the object with the given id is found, return its position + 1 as the version
-		// If not found, return 1 (default version)
-		return index !== -1 ? index + 1 : 1;
-	};
-
-	const getChipsStatus = (symbol: SymbolsProps) => {
-		if (isStatusPublished(symbol)) {
-			// Check publish data
-			// dateTimePublished
-
-			return symbol.version;
-		} else {
-			return symbol.status;
-		}
-	};
-
-	const symbolMeny = (symbol: SymbolsProps) => [
-		{
-			name: isStatusDraft(symbol) ? 'Edit' : isReadyForReview(symbol) ? 'View' : 'Revise',
-			action: () => (isStatusDraft(symbol) ? onUpdateSymbol(symbol) : isReadyForReview(symbol) ? onShowSymbol(symbol) : onEditSymbol(symbol)),
-			// isDisabled: !isStatusReadyForReview(symbol) && !isAdmin,
-			// isDisabled: isStatusDraft(symbol) ? false : isStatusReadyForReview(symbol) ? !isAdmin : false,
-		},
-		{
-			name: isReadyForReview(symbol) ? 'Review' : 'Submit for review',
-			action: () => (isReadyForReview(symbol) ? onReview(symbol) : onSubmitOnReview(symbol)),
-			isDisabled: !isStatusDraft(symbol) && !isReadyForReview(symbol),
-		},
-		{
-			name: 'Delete',
-			action: () => onDeleteConfirmation(symbol),
-			isDisabled: !isStatusDraft(symbol) && !isStatusRejected(symbol),
-		},
-	];
+	// 	// If the object with the given id is found, return its position + 1 as the version
+	// 	// If not found, return 1 (default version)
+	// 	return index !== -1 ? index + 1 : 1;
+	// };
 
 	const scrollToElement = (id: string) => {
 		// const elementRef = connectorsToScroll.current[id];
@@ -500,6 +473,13 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						case 'Added':
 						case 'Updated':
 							setSelectedSymbol({ ...selectedSymbol, connectors: symbolState?.connectors } as SymbolsProps);
+							setEnableReinitialize(true);
+
+							const timer = setTimeout(() => setEnableReinitialize(false), 1000);
+
+							return () => {
+								clearTimeout(timer);
+							};
 							break;
 						default:
 							break;
@@ -511,12 +491,11 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 					case 'Changed':
 						{
 							const changedConnectors = data.filter(({ type }) => type === 'Connector');
-							if (changedConnectors.length === 0) {
-								// setSelectedConnector(null);
+
+							if (changedConnectors.length <= 0) {
+								setSelectedConnector(null);
 							} else {
-								// setSelectedConnector(
-								//   (changedConnectors[0].data as SymbolConnector).id
-								// );
+								setSelectedConnector(changedConnectors[0].data as SymbolConnector);
 							}
 						}
 						break;
@@ -540,7 +519,31 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	};
 
 	const addNewConnector = () => {
+		setEnableReinitialize(true);
+
 		setEditorCommands([{ type: 'Connector', action: 'New', data: undefined }]);
+		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
+
+		return () => {
+			clearTimeout(timer);
+		};
+	};
+
+	const removeConnector = () => {
+		selectedConnector;
+		if (!selectedSymbol || !selectedConnector) return;
+
+		setEnableReinitialize(true);
+		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
+
+		const updatedConnectors = selectedSymbol.connectors.filter((connector: SymbolConnector) => connector.id !== selectedConnector.id);
+
+		onChangeSymbolForDetail({ ...selectedSymbol, connectors: updatedConnectors });
+		setSelectedConnector(null);
+
+		return () => {
+			clearTimeout(timer);
+		};
 	};
 
 	const onSearch = (val: string) => {
@@ -584,7 +587,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		}
 	};
 
-	const handleCheckboxChange = (status: FilterStatusProps) => {
+	const handleStatusChange = (status: FilterStatusProps) => {
 		if (status.includes('all')) {
 			setStatuses(DEFAULT_STATUSES);
 		} else {
@@ -608,23 +611,38 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				<link rel="icon" href="/favicon.ico" />
 				<meta name="robots" content="noindex,nofollow" />
 			</Head>
-
+			<PanelDetailsInformationComponent content={`<i>To move the symbol, <b>"press & hold"</b> the space key <br/>while navigating</i>`} />
 			<PanelContainerStyled>
 				<PanelPresentationStyled>
 					<ContainerStyled>
 						{isSvgFileLoading && <WeatherLoader />}
 
 						<PanelPresentationContentStyled>
-							{!!selectedSymbol && <SymbolEditor editorEventHandler={onEditorEvent} commands={editorCommands} />}
+							{!!selectedSymbol ? (
+								<SymbolEditor editorEventHandler={onEditorEvent} commands={editorCommands} />
+							) : (
+								<LogoWrapperStyled>
+									<LogoComponent fill="backgroundGrey" />
+									<p>Engineering symbols</p>
+								</LogoWrapperStyled>
+							)}
 						</PanelPresentationContentStyled>
 
 						{finishManageSymbolsQuery && selectedSymbol && (
 							<>
-								<PanelDetailsInformationComponent
-									content={`<i>To move the symbol, <b>"press & hold"</b> the space key <br/>while navigating</i>`}
-								/>
-								<ZoomButtonsComponent onZoomClick={onZoom} />
+								<PanelActionsStyled isShow={panelShow}>
+									<ZoomButtonsComponent onZoomClick={onZoom} />
+									<IconButtonComponent name="wrench" onClick={() => setPanelShow(!panelShow)} />
+									<IconButtonComponent name="lensPlus" onClick={addNewConnector} disabled={isReadyForReview(selectedSymbol)} />
+									<IconButtonComponent
+										name="lensMinus"
+										onClick={removeConnector}
+										disabled={isReadyForReview(selectedSymbol) || !selectedConnector}
+									/>
+								</PanelActionsStyled>
+
 								<PanelDetailsComponent
+									show={panelShow}
 									setUpdateDraftSymbol={onUpdateDraftSymbol}
 									updateCurrentSymbol={onChangeSymbolForDetail}
 									enableReinitialize={enableReinitialize}
@@ -636,68 +654,29 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 								/>
 							</>
 						)}
+						<ListActionStyled isShow={listShow}>
+							<IconButtonComponent name="face3d" onClick={() => setListShow(!listShow)} />
+						</ListActionStyled>
+						<ListComponent
+							fileRef={fileInputRef}
+							onChangeFile={onChangeFileInput}
+							finishManageSymbols={finishManageSymbolsQuery}
+							icons={icns}
+							theme={theme}
+							onUpdate={onUpdateSymbol}
+							onShow={onShowSymbol}
+							onEdit={onEditSymbol}
+							onReview={onReview}
+							onSubmit={onSubmitOnReview}
+							onDelete={onDeleteConfirmation}
+							show={listShow}
+							searchValue={debounceSearchValue}
+							statuses={statuses}
+							handleCheckboxChange={handleStatusChange}
+						/>
 					</ContainerStyled>
 				</PanelPresentationStyled>
 
-				<PanelSymbolsStyled theme={theme}>
-					<ContainerStyled>
-						<PanelSymbolsSearchWrapperStyled>
-							<Search
-								aria-label="sitewide"
-								id="search-normal"
-								placeholder="Search"
-								onChange={({ target }) => debounceSearchValue(target.value)}
-							/>
-						</PanelSymbolsSearchWrapperStyled>
-						<PanelSymbolsFilterWrapperStyled>
-							<p>Show:</p>
-							<SymbolsFilterLabelStyled checked={statuses.all}>
-								<input type="checkbox" checked={statuses.all} onChange={() => handleCheckboxChange('all')} />
-								All
-							</SymbolsFilterLabelStyled>
-							<SymbolsFilterLabelStyled checked={statuses.ready}>
-								<input type="checkbox" checked={statuses.ready} onChange={() => handleCheckboxChange('ready')} />
-								Ready for review
-							</SymbolsFilterLabelStyled>
-							<SymbolsFilterLabelStyled checked={statuses.draft}>
-								<input type="checkbox" checked={statuses.draft} onChange={() => handleCheckboxChange('draft')} />
-								Draft
-							</SymbolsFilterLabelStyled>
-							<SymbolsFilterLabelStyled checked={statuses.reject}>
-								<input type="checkbox" checked={statuses.reject} onChange={() => handleCheckboxChange('reject')} />
-								Reject
-							</SymbolsFilterLabelStyled>
-						</PanelSymbolsFilterWrapperStyled>
-
-						<PanelSymbolsListStyled>
-							<li>
-								<UploadSvgStyled>
-									<label htmlFor="file">Choose file to upload</label>
-									{/* @ts-ignore next-line */}
-									<input type="file" id="file" ref={fileInputRef} name="file" accept=".svg" onChange={onChangeFileInput} />
-								</UploadSvgStyled>
-							</li>
-							{!finishManageSymbolsQuery && <WeatherLoader />}
-							{finishManageSymbolsQuery &&
-								icns.length > 0 &&
-								icns.map((symbol: SymbolsProps, id: number) => (
-									<li key={id}>
-										<SymbolElement
-											meny={symbolMeny(symbol)}
-											chipsStatus={getChipsStatus(symbol)}
-											svgElementsRef={svgElementsRef}
-											width={symbol.width}
-											height={symbol.height}
-											paths={symbol.geometry}
-											id={symbol.id}
-											theme={theme}
-											name={symbol.key}
-										/>
-									</li>
-								))}
-						</PanelSymbolsListStyled>
-					</ContainerStyled>
-				</PanelSymbolsStyled>
 				<InformationComponent {...informationMessage} />
 				{/* @ts-ignore next-line */}
 				<ConfirmationComponent />

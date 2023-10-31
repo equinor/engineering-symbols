@@ -27,6 +27,7 @@ type PanelDetailsComponentProps = {
 	disabledForm: boolean;
 	elementRefs: MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
 	symbol: SymbolsProps;
+	show: boolean;
 };
 
 export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps> = ({
@@ -38,6 +39,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 	onClosePanel,
 	disabledForm,
 	symbol,
+	show,
 }): JSX.Element => {
 	const { key, description, geometry, connectors } = symbol;
 
@@ -70,7 +72,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 	const isUniqueID = (obj: any, name: string, id: string) => obj.filter((sbl: { [x: string]: string }) => sbl[name] === id).length <= 0;
 
 	return (
-		<PanelDetailsStyled isShow>
+		<PanelDetailsStyled isShow={show}>
 			<PanelDetailsWrapperStyled>
 				<EditPanelStyled />
 
