@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://github.com/equinor/engineering-symbols/compare/web-v1.6.3...web-v1.7.0) (2023-10-31)
+
+
+### Features
+
+* new editor UX ([#723](https://github.com/equinor/engineering-symbols/issues/723)) ([892694f](https://github.com/equinor/engineering-symbols/commit/892694fd66f40d480932ff9d022369e7c9e8b90f))
+
+
+### Miscellaneous Chores
+
+* Update README.md updated URL ([0448281](https://github.com/equinor/engineering-symbols/commit/0448281d0c49cd058690a82636050e939a3ac695))
+
 ## [1.6.3](https://github.com/equinor/engineering-symbols/compare/web-v1.6.2...web-v1.6.3) (2023-10-30)
 
 
