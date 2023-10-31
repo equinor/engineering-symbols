@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import type { AppProps } from 'next/app';
+import { useRouter } from 'next/router';
 import { ThemeProvider } from 'styled-components';
 import { useState } from 'react';
 import { PublicClientApplication } from '@azure/msal-browser';
@@ -35,6 +36,8 @@ const instance = PullstateCore.instantiate({ ssr: true });
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const [themeName, setThemeName] = useState('light');
+
+	const { pathname } = useRouter();
 
 	const themeToggler = () => setThemeName(themeName === 'light' ? 'dark' : 'light');
 	const theme = themeName === 'light' ? lightTheme : darkTheme;
@@ -76,72 +79,74 @@ function MyApp({ Component, pageProps }: AppProps) {
 							<Component {...pageProps} theme={theme} />
 						</main>
 					</>
-					<FooterStyled>
-						<ContainerStyled>
-							<FooterWrapperStyled>
-								<FooterLogoWrapperStyled>
-									<LogoComponent fill="backgroundGrey" />
-									<p>Engineering symbols</p>
-								</FooterLogoWrapperStyled>
-								<FooterMenuWrapperStyled>
-									<FooterMenuStyled>
-										<FooterMenuTitleStyled>Project</FooterMenuTitleStyled>
-										<FooterMenuListStyled>
-											<li>
-												<Link href="./contribution">Contribute</Link>
-											</li>
-										</FooterMenuListStyled>
-									</FooterMenuStyled>
+					{pathname !== '/edit' && (
+						<FooterStyled>
+							<ContainerStyled>
+								<FooterWrapperStyled>
+									<FooterLogoWrapperStyled>
+										<LogoComponent fill="backgroundGrey" />
+										<p>Engineering symbols</p>
+									</FooterLogoWrapperStyled>
+									<FooterMenuWrapperStyled>
+										<FooterMenuStyled>
+											<FooterMenuTitleStyled>Project</FooterMenuTitleStyled>
+											<FooterMenuListStyled>
+												<li>
+													<Link href="./contribution">Contribute</Link>
+												</li>
+											</FooterMenuListStyled>
+										</FooterMenuStyled>
 
-									<FooterMenuStyled>
-										<FooterMenuTitleStyled>Suport</FooterMenuTitleStyled>
-										<FooterMenuListStyled>
-											<li>
-												<Link href="./license">License</Link>
-											</li>
-											<li>
-												<Link href="https://github.com/equinor/engineering-symbols/" target="_blank">
-													GitHub Repository
-												</Link>
-											</li>
-											<li>
-												<Link href="./documentation">Documentation</Link>
-											</li>
-										</FooterMenuListStyled>
-									</FooterMenuStyled>
+										<FooterMenuStyled>
+											<FooterMenuTitleStyled>Suport</FooterMenuTitleStyled>
+											<FooterMenuListStyled>
+												<li>
+													<Link href="./license">License</Link>
+												</li>
+												<li>
+													<Link href="https://github.com/equinor/engineering-symbols/" target="_blank">
+														GitHub Repository
+													</Link>
+												</li>
+												<li>
+													<Link href="./documentation">Documentation</Link>
+												</li>
+											</FooterMenuListStyled>
+										</FooterMenuStyled>
 
-									<FooterMenuStyled>
-										<FooterMenuTitleStyled>Developers</FooterMenuTitleStyled>
-										<FooterMenuListStyled>
-											<li>
-												<Link href="https://github.com/equinor/engineering-symbols/releases" target="_blank">
-													Changelogs
-												</Link>
-											</li>
-											<li>
-												<Link href="https://www.npmjs.com/package/@equinor/engineering-symbols" target="_blank">
-													React and React Native
-												</Link>
-											</li>
-											<li>
-												<Link href="./documentation#figma">Figma plugin</Link>
-											</li>
-											<li>
-												<Link href="./documentation#css">CSS</Link>
-											</li>
-										</FooterMenuListStyled>
-									</FooterMenuStyled>
-								</FooterMenuWrapperStyled>
-								<FooterLicenseStyled>
-									<p>
-										Parts of this content are ©2023 by individual Engineering symbols contributors. Content available under a{' '}
-										<Link href="https://www.npmjs.com/package/@equinor/engineering-symbols">MIT License</Link>
-									</p>
-									<Link href="https://www.npmjs.com/package/@equinor/engineering-symbols">Privacy.</Link>
-								</FooterLicenseStyled>
-							</FooterWrapperStyled>
-						</ContainerStyled>
-					</FooterStyled>
+										<FooterMenuStyled>
+											<FooterMenuTitleStyled>Developers</FooterMenuTitleStyled>
+											<FooterMenuListStyled>
+												<li>
+													<Link href="https://github.com/equinor/engineering-symbols/releases" target="_blank">
+														Changelogs
+													</Link>
+												</li>
+												<li>
+													<Link href="https://www.npmjs.com/package/@equinor/engineering-symbols" target="_blank">
+														React and React Native
+													</Link>
+												</li>
+												<li>
+													<Link href="./documentation#figma">Figma plugin</Link>
+												</li>
+												<li>
+													<Link href="./documentation#css">CSS</Link>
+												</li>
+											</FooterMenuListStyled>
+										</FooterMenuStyled>
+									</FooterMenuWrapperStyled>
+									<FooterLicenseStyled>
+										<p>
+											Parts of this content are ©2023 by individual Engineering symbols contributors. Content available under a{' '}
+											<Link href="https://www.npmjs.com/package/@equinor/engineering-symbols">MIT License</Link>
+										</p>
+										<Link href="https://www.npmjs.com/package/@equinor/engineering-symbols">Privacy.</Link>
+									</FooterLicenseStyled>
+								</FooterWrapperStyled>
+							</ContainerStyled>
+						</FooterStyled>
+					)}
 				</ThemeProvider>
 			</PullstateProvider>
 		</MsalProvider>

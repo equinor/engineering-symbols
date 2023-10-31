@@ -14,4 +14,5 @@ export const PanelDetailsInformationContainer = styled.p`
 	box-shadow: ${({ theme }) => theme.boxShadow};
 	background: ${({ theme }) => theme.body};
 	text-align: center;
+	z-index: 10;
 `;
