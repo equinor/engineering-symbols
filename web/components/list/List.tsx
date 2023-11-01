@@ -1,56 +1,59 @@
 import { ChangeEvent, FunctionComponent, useRef } from 'react';
-
-import {
-	ListStyled,
-	ListWrapperStyled,
-	PanelSymbolsListStyled,
-	SymbolsFilterLabelStyled,
-	SymbolsFilterWrapperStyled,
-	SymbolsSearchWrapperStyled,
-	UploadSvgStyled,
-} from './styles';
-import { WeatherLoader } from '../weatherLoader';
-import { SymbolElement } from '../symbolElement';
-import { ColorThemeProps, FilterStatusProps, SymbolsProps } from '../../types';
-import { isStatusDraft, isStatusRejected, isStatusPublished, isStatusReadyForReview } from '../../helpers';
 import { Search } from '@equinor/eds-core-react';
 import { DebouncedState } from 'use-debounce';
+
+import { WeatherLoader } from '../weatherLoader';
+import { SymbolElement } from '../symbolElement';
+
+import { isStatusDraft, isStatusRejected, isStatusPublished, isStatusReadyForReview } from '../../helpers';
+
+import {
+	SymbolsFilterWrapperStyled,
+	SymbolsSearchWrapperStyled,
+	SymbolsFilterLabelStyled,
+	PanelSymbolsListStyled,
+	ListWrapperStyled,
+	UploadSvgStyled,
+	ListStyled,
+} from './styles';
+
+import { ColorThemeProps, FilterStatusProps, SymbolsProps } from '../../types';
 import { DefaultStatusesTypes } from '../../pages/edit/index.page';
 
 type ListComponentProps = {
-	fileRef: any;
-	theme: ColorThemeProps;
+	handleCheckboxChange: (status: FilterStatusProps) => void;
 	finishManageSymbols: boolean;
-	icons: SymbolsProps[];
 	onChangeFile: (e: ChangeEvent<HTMLInputElement>) => void;
-	onUpdate: (symbol: SymbolsProps) => () => void;
-	onShow: (symbol: SymbolsProps) => () => void;
-	onEdit: (symbol: SymbolsProps) => () => void;
+	searchValue: DebouncedState<(value: any) => void>;
 	onReview: (symbol: SymbolsProps) => Promise<void>;
 	onSubmit: (symbol: SymbolsProps) => Promise<void>;
 	onDelete: (symbol: SymbolsProps) => Promise<void>;
-	searchValue: DebouncedState<(value: any) => void>;
-	show: boolean;
+	onUpdate: (symbol: SymbolsProps) => () => void;
 	statuses: DefaultStatusesTypes;
-	handleCheckboxChange: (status: FilterStatusProps) => void;
+	onShow: (symbol: SymbolsProps) => () => void;
+	onEdit: (symbol: SymbolsProps) => () => void;
+	fileRef: any;
+	theme: ColorThemeProps;
+	icons: SymbolsProps[];
+	show: boolean;
 };
 
 export const ListComponent: FunctionComponent<ListComponentProps> = ({
-	fileRef,
-	onChangeFile,
+	handleCheckboxChange,
 	finishManageSymbols,
-	icons,
-	theme,
+	onChangeFile,
+	searchValue,
 	onUpdate,
-	onShow,
-	onEdit,
 	onReview,
 	onSubmit,
 	onDelete,
-	searchValue,
-	show,
 	statuses,
-	handleCheckboxChange,
+	fileRef,
+	onShow,
+	onEdit,
+	icons,
+	theme,
+	show,
 }): JSX.Element => {
 	const svgElementsRef = useRef([]);
 
@@ -75,9 +78,6 @@ export const ListComponent: FunctionComponent<ListComponentProps> = ({
 
 	const getChipsStatus = (symbol: SymbolsProps) => {
 		if (isStatusPublished(symbol)) {
-			// Check publish data
-			// dateTimePublished
-
 			return symbol.version;
 		} else {
 			return symbol.status;
@@ -124,15 +124,15 @@ export const ListComponent: FunctionComponent<ListComponentProps> = ({
 						icons.map((symbol: SymbolsProps, id: number) => (
 							<li key={id}>
 								<SymbolElement
-									meny={symbolMeny(symbol)}
-									chipsStatus={getChipsStatus(symbol)}
 									svgElementsRef={svgElementsRef}
-									width={symbol.width}
+									chipsStatus={getChipsStatus(symbol)}
 									height={symbol.height}
 									paths={symbol.geometry}
-									id={symbol.id}
+									width={symbol.width}
 									theme={theme}
 									name={symbol.key}
+									meny={symbolMeny(symbol)}
+									id={symbol.id}
 								/>
 							</li>
 						))}

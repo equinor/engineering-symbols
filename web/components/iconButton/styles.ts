@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 
-export const IconButton = styled.button`
-	border: 1.5px solid ${({ theme }) => theme.backgroundGrey};
+type IconButtonProps = {
+	appearance?: string;
+};
+
+export const IconButton = styled.button<IconButtonProps>`
+	border: 1.5px solid ${({ theme, appearance }) => (appearance ? theme[appearance] : theme.backgroundGrey)};
 	background: ${({ theme }) => theme.body};
 	box-shadow: ${({ theme }) => theme.boxShadow};
 	appearance: none;
@@ -13,6 +17,10 @@ export const IconButton = styled.button`
 	&:disabled {
 		opacity: 0.5;
 		cursor: not-allowed;
+	}
+
+	&:not([disabled]) svg {
+		stroke: ${({ theme, appearance }) => (appearance ? theme[appearance] : theme.fill)};
 	}
 
 	&:hover:not([disabled]) {

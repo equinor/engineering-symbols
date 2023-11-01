@@ -12,7 +12,6 @@ import {
 	ZoomButtonsComponent,
 	IconButtonComponent,
 	ListComponent,
-	LogoComponent,
 	WeatherLoader,
 	useConfirm,
 } from '../../components';
@@ -21,6 +20,8 @@ import { isStatusDraft, isStatusReadyForReview, isStatusRejected, useAdminUserRo
 
 import { EditPageProps, StatusProps, SymbolsProps, FilterStatusProps } from '../../types';
 
+import Cat from '../../svg/cat.svg';
+
 import {
 	PanelPresentationContentStyled,
 	PanelPresentationStyled,
@@ -28,6 +29,7 @@ import {
 	ListActionStyled,
 	LogoWrapperStyled,
 	PanelActionsStyled,
+	PanelFormActionsStyled,
 } from './styles';
 import { ContainerStyled } from '../../styles/styles';
 
@@ -530,7 +532,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	};
 
 	const removeConnector = () => {
-		selectedConnector;
 		if (!selectedSymbol || !selectedConnector) return;
 
 		setEnableReinitialize(true);
@@ -622,7 +623,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 								<SymbolEditor editorEventHandler={onEditorEvent} commands={editorCommands} />
 							) : (
 								<LogoWrapperStyled>
-									<LogoComponent fill="backgroundGrey" />
+									<Cat />
+									{/* <LogoComponent fill="backgroundGrey" /> */}
 									<p>Engineering symbols</p>
 								</LogoWrapperStyled>
 							)}
@@ -639,6 +641,17 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 										onClick={removeConnector}
 										disabled={isReadyForReview(selectedSymbol) || !selectedConnector}
 									/>
+
+									{!isReadyForReview(selectedSymbol) && (
+										<PanelFormActionsStyled>
+											<IconButtonComponent
+												name="floppyDisk"
+												onClick={() => onUpdateDraftSymbol(selectedSymbol)}
+												appearance="backgroundGreen"
+											/>
+											<IconButtonComponent name="xmark" onClick={onPanelReset} appearance="backgroundRed" />
+										</PanelFormActionsStyled>
+									)}
 								</PanelActionsStyled>
 
 								<PanelDetailsComponent
