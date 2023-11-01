@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.2](https://github.com/equinor/engineering-symbols/compare/web-v1.7.1...web-v1.7.2) (2023-11-01)
+
+
+### Miscellaneous Chores
+
+* quick save & cancel button ([#728](https://github.com/equinor/engineering-symbols/issues/728)) ([aafff9d](https://github.com/equinor/engineering-symbols/commit/aafff9d5fbef62ce40da052a99c7d9c0b1a0fbc9))
+
 ## [1.7.1](https://github.com/equinor/engineering-symbols/compare/web-v1.7.0...web-v1.7.1) (2023-11-01)
 
 
