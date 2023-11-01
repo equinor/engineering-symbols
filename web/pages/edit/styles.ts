@@ -32,10 +32,6 @@ export const LogoWrapperStyled = styled.div`
 	opacity: 0.1;
 	user-select: none;
 
-	& > div {
-		width: 350px;
-	}
-
 	p {
 		font-family: 'Equinor';
 		font-size: 75px;
@@ -43,6 +39,20 @@ export const LogoWrapperStyled = styled.div`
 		font-weight: 600;
 		white-space: nowrap;
 		color: ${({ theme }) => theme.text};
+	}
+
+	svg {
+		position: relative;
+		display: flex;
+		align-items: center;
+		margin-right: 5px;
+		width: 350px;
+
+		path {
+			stroke: ${({ theme }) => theme.background};
+			stroke-width: 0.8px;
+			fill: ${({ theme }) => theme.textWhite};
+		}
 	}
 `;
 
@@ -85,6 +95,12 @@ export const PanelSymbolsStyled = styled.div`
 	/* padding: 80px 0 0; */
 	padding: 40px 0 0;
 	border-top: 2px solid ${({ theme }) => theme.backgroundGrey};
+`;
+
+export const PanelFormActionsStyled = styled.div`
+	display: flex;
+	flex-direction: column;
+	padding: 20px 0 0;
 `;
 
 export const PanelActionsStyled = styled.div<PanelActionProps>`
