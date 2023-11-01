@@ -83,7 +83,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [editorCommands, setEditorCommands] = useState<EditorCommandMessage[]>([]);
 	const [searchingValue, setSearchingValue] = useState<string>('');
 
-	const [panelShow, setPanelShow] = useState<boolean>(true);
+	const [panelShow, setPanelShow] = useState<boolean>(false);
 	const [listShow, setListShow] = useState<boolean>(true);
 
 	const connectorsToScroll = useRef<{ [key: string]: HTMLDivElement | null }>({});
