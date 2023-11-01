@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/equinor/engineering-symbols/compare/web-v1.7.0...web-v1.7.1) (2023-11-01)
+
+
+### Bug Fixes
+
+* popup when you browse the page ([#725](https://github.com/equinor/engineering-symbols/issues/725)) ([d07c53b](https://github.com/equinor/engineering-symbols/commit/d07c53b356ede9d9fd584fd91d6a467e1798db1b))
+
 ## [1.7.0](https://github.com/equinor/engineering-symbols/compare/web-v1.6.3...web-v1.7.0) (2023-10-31)
 
 
