@@ -185,7 +185,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	}, [svgContent]);
 
 	useEffect(() => {
-		if (!finishUpdateManageSymbol && updateSymbol) return;
+		if (!finishUpdateManageSymbol && !updateSymbol) return;
 
 		setInformationMessage({
 			title: 'Updated',
