@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.3](https://github.com/equinor/engineering-symbols/compare/web-v1.7.2...web-v1.7.3) (2023-11-01)
+
+
+### Miscellaneous Chores
+
+* setPanelShow = false ([72e93ab](https://github.com/equinor/engineering-symbols/commit/72e93ab29dbad02e1362dad061b41a8f1e500451))
+
 ## [1.7.2](https://github.com/equinor/engineering-symbols/compare/web-v1.7.1...web-v1.7.2) (2023-11-01)
 
 
