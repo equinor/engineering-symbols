@@ -193,6 +193,8 @@ export class World {
 			key: symbolDto.key,
 			size: new Vec2(symbolDto.width, symbolDto.height),
 			pathString: symbolDto.path,
+			description: symbolDto.description,
+			status: symbolDto.status,
 			path: new Path2D(symbolDto.path),
 			centerOfRotation: new Vec2(symbolDto.centerOfRotation.x, symbolDto.centerOfRotation.y),
 			connectors: symbolDto.connectors.map((c) => ({
@@ -257,7 +259,10 @@ export class World {
 			: {
 					id: this.symbol.id,
 					key: this.symbol.key,
-					path: this.symbol.pathString,
+					label: this.symbol.key,
+					geometry: this.symbol.pathString,
+					description: this.symbol.description,
+					status: this.symbol.status,
 					width: this.symbol.size.x,
 					height: this.symbol.size.y,
 					centerOfRotation: this.symbol.centerOfRotation,

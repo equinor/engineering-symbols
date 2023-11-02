@@ -83,7 +83,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [editorCommands, setEditorCommands] = useState<EditorCommandMessage[]>([]);
 	const [searchingValue, setSearchingValue] = useState<string>('');
 
-	const [panelShow, setPanelShow] = useState<boolean>(false);
+	const [panelShow, setPanelShow] = useState<boolean>(true);
 	const [listShow, setListShow] = useState<boolean>(true);
 
 	const connectorsToScroll = useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -110,6 +110,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onPanelReset = () => {
 		setSelectedSymbol(null);
+		setUpdateSymbol(null);
 	};
 
 	const { error, handleFileChange, svgContent, isSvgFileLoading } = useFileUpload();
@@ -138,7 +139,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	// });
 
 	const [finishUpdateSymbolQuery] = updateSymbolAction.useBeckon({
-		svgFile: updateSymbolRevision,
+		symbol: updateSymbolRevision,
 		validationOnly: false,
 		contentType: 'application/json',
 	});
@@ -152,7 +153,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	// const refreshMangeSymbolsQuery = () => setTimeout(() => getManageSymbolsQueryAction.run(), 1000);
 	const refreshMangeSymbolsQuery = () => getManageSymbolsQueryAction.run();
 
-	const loadEditorCommand = ({ id, geometry, width, height, connectors }: SymbolsProps, readOnly = false) => {
+	const loadEditorCommand = ({ id, geometry, width, height, connectors, ...rest }: SymbolsProps, readOnly = false) => {
 		setEditorCommands([
 			{ type: 'Symbol', action: 'Unload', data: undefined },
 			{
@@ -167,6 +168,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				type: 'Symbol',
 				action: 'Load',
 				data: {
+					...rest,
 					id,
 					key: id,
 					path: geometry,
@@ -309,6 +311,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		}
 
 		console.log('⚡️', 'manageSymbolsQuery:', manageSymbolsQuery);
+		console.log('⚡️', 'symbol:', symbol, 'isStatusDraft:', isStatusDraft(symbol));
 	};
 
 	const onSubmitOnReview = async (symbol: SymbolsProps) => {
@@ -474,8 +477,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 					switch (reason) {
 						case 'Added':
 						case 'Updated':
-							setSelectedSymbol({ ...selectedSymbol, connectors: symbolState?.connectors } as SymbolsProps);
 							setEnableReinitialize(true);
+							setSelectedSymbol({ ...symbolState, connectors: symbolState?.connectors } as SymbolsProps);
 
 							const timer = setTimeout(() => setEnableReinitialize(false), 1000);
 

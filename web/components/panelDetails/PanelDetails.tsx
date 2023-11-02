@@ -41,7 +41,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 	symbol,
 	show,
 }): JSX.Element => {
-	const { key, description, geometry, connectors } = symbol;
+	const { key, description, geometry, connectors, ...rest } = symbol;
 
 	const [hasFormError, setHasFormError] = useState<boolean>(false);
 
@@ -83,10 +83,10 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 							// For symbol swithching
 							// Workaround for eble to switch between svgs & keeping name value
 							enableReinitialize={enableReinitialize}
-							initialTouched={{ key: true }}
+							// initialTouched={{ key: true }}
 							innerRef={formRef}
 							initialValues={{
-								...symbol,
+								...rest,
 								key,
 								description,
 								creators: [{ name, email: username }],

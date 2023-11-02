@@ -1,3 +1,4 @@
+import { StatusProps } from '../../../types';
 import { Vec2 } from './Vec2';
 
 // External models
@@ -14,10 +15,17 @@ export type SymbolConnector = {
 export type SymbolData = {
 	id: string;
 	key: string;
-	path: string;
+	path?: string;
 	width: number;
+	label?: string;
+	geometry?: string;
 	height: number;
+	status?: StatusProps;
 	centerOfRotation: Point;
+	version?: number;
+	creators?: string;
+	description?: string;
+	isRevisionOf?: string;
 	connectors: SymbolConnector[];
 };
 
@@ -27,9 +35,13 @@ export type SymbolDataInternal = {
 	id: string;
 	key: string;
 	size: Vec2;
-	pathString: string;
+	pathString: string | undefined;
 	path: Path2D;
 	centerOfRotation: Vec2;
+	label?: string;
+	geometry?: string;
+	description: string | undefined;
+	status: StatusProps | undefined;
 	connectors: SymbolConnectorInternal[];
 };
 
