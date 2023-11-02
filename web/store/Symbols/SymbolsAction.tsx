@@ -3,7 +3,7 @@ import { uploadSvgFile, getSymbolsQuery, getManageSymbolsQuery, deleteSymbol, up
 
 import { IManageSymbolStore, ISymbolStore, ISymbolUploadStore, ManageSymbolsStore, SymbolUploadStore, SymbolsStore } from './SymbolsStore';
 import { ConnectionPoint, concatenateErrorMessages, getApiStructure, jsonLdResponseToDto } from '../../helpers';
-import { ConnectorsProps, SymbolsProps } from '../../types';
+import { SymbolsProps } from '../../types';
 
 const hasSucceededReposnse = (status: number) => status !== undefined && (status === 200 || status === 201 || status === 204);
 
@@ -61,8 +61,8 @@ export const uploadSvgFileAction = createAsyncAction(
 );
 
 export const updateSymbolAction = createAsyncAction(
-	async ({ svgFile, validationOnly, contentType }) => {
-		if (svgFile === null || svgFile === undefined) {
+	async ({ symbol, validationOnly, contentType }) => {
+		if (symbol === null || symbol === undefined) {
 			return errorResult([], 'Missing query');
 		}
 
@@ -70,7 +70,7 @@ export const updateSymbolAction = createAsyncAction(
 			return errorResult([], 'Missing onlyLatestVersion');
 		}
 
-		const validateSvgQuery = await uploadSvgFile(getApiStructure(svgFile), validationOnly, contentType);
+		const validateSvgQuery = await uploadSvgFile(getApiStructure(symbol), validationOnly, contentType);
 
 		return successResult({ validateSvgQuery });
 	},
