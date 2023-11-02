@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.4](https://github.com/equinor/engineering-symbols/compare/web-v1.7.3...web-v1.7.4) (2023-11-02)
+
+
+### Bug Fixes
+
+* symbol picking ([#732](https://github.com/equinor/engineering-symbols/issues/732)) ([2c2c22d](https://github.com/equinor/engineering-symbols/commit/2c2c22d690651a7bf966f63511651421e2a4d605))
+
 ## [1.7.3](https://github.com/equinor/engineering-symbols/compare/web-v1.7.2...web-v1.7.3) (2023-11-01)
 
 
