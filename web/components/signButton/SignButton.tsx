@@ -22,7 +22,7 @@ export const SignButtonComponent = () => {
 				console.error(`logoutPopup failed: ${e}`);
 			});
 		} else {
-			instance.loginPopup(loginRequest).catch((e) => {
+			instance.loginRedirect(loginRequest).catch((e) => {
 				console.error(`loginPopup failed: ${e}`);
 			});
 		}
