@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.6](https://github.com/equinor/engineering-symbols/compare/web-v1.7.5...web-v1.7.6) (2023-11-07)
+
+
+### Bug Fixes
+
+* build ([#749](https://github.com/equinor/engineering-symbols/issues/749)) ([28743a6](https://github.com/equinor/engineering-symbols/commit/28743a65e71f18a212739cecff6428ce9751060c))
+
 ## [1.7.5](https://github.com/equinor/engineering-symbols/compare/web-v1.7.4...web-v1.7.5) (2023-11-07)
 
 
