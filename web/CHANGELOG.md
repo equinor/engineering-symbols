@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.7](https://github.com/equinor/engineering-symbols/compare/web-v1.7.6...web-v1.7.7) (2023-11-07)
+
+
+### Bug Fixes
+
+* bump node version for dockerfile ([#751](https://github.com/equinor/engineering-symbols/issues/751)) ([ccc77fa](https://github.com/equinor/engineering-symbols/commit/ccc77fa11de22d4313eb277a89724f163a21dead))
+
 ## [1.7.6](https://github.com/equinor/engineering-symbols/compare/web-v1.7.5...web-v1.7.6) (2023-11-07)
 
 
