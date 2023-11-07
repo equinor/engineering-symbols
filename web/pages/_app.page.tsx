@@ -128,7 +128,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 													</Link>
 												</li>
 												<li>
-													<Link href="./documentation#figma">Figma plugin</Link>
+													<Link href="https://github.com/equinor/engineering-symbols-tool-figma" target="_blank">
+														Figma plugin
+													</Link>
 												</li>
 												<li>
 													<Link href="./documentation#css">CSS</Link>
