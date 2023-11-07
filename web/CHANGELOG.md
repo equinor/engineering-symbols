@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.7.5](https://github.com/equinor/engineering-symbols/compare/web-v1.7.4...web-v1.7.5) (2023-11-07)
+
+
+### Bug Fixes
+
+* login problem in fullscreen mode ([#748](https://github.com/equinor/engineering-symbols/issues/748)) ([4f95710](https://github.com/equinor/engineering-symbols/commit/4f957101f2b87547331c41d7074f469b46d85e3a))
+
+
+### Miscellaneous Chores
+
+* update contribution *md ([#746](https://github.com/equinor/engineering-symbols/issues/746)) ([9219b70](https://github.com/equinor/engineering-symbols/commit/9219b701abd281c6493c27c0e927b2b94f83bdb3))
+
+
+### Bump package
+
+* **web:** bump @azure/msal-browser from 2.38.2 to 2.38.3 in /web ([#742](https://github.com/equinor/engineering-symbols/issues/742)) ([756c7af](https://github.com/equinor/engineering-symbols/commit/756c7af77a840efba8c02d868c2851e31aee0370))
+* **web:** bump @mdx-js/react from 2.3.0 to 3.0.0 in /web ([#739](https://github.com/equinor/engineering-symbols/issues/739)) ([c93950e](https://github.com/equinor/engineering-symbols/commit/c93950ef89abca583945e41f3172e34e1294edcc))
+* **web:** bump @types/react from 18.2.33 to 18.2.35 in /web ([#741](https://github.com/equinor/engineering-symbols/issues/741)) ([b718ff2](https://github.com/equinor/engineering-symbols/commit/b718ff2b704e84fb994754370ed5280b030936ee))
+* **web:** bump eslint-config-next from 13.5.4 to 14.0.1 in /web ([#738](https://github.com/equinor/engineering-symbols/issues/738)) ([4abd999](https://github.com/equinor/engineering-symbols/commit/4abd99935373f8501034063589750d9a55cc6257))
+* **web:** bump next from 13.5.6 to 14.0.1 in /web ([#740](https://github.com/equinor/engineering-symbols/issues/740)) ([831c1a2](https://github.com/equinor/engineering-symbols/commit/831c1a2ddc710ab11cc5397ce2060c452f7c2d6c))
+
 ## [1.7.4](https://github.com/equinor/engineering-symbols/compare/web-v1.7.3...web-v1.7.4) (2023-11-02)
 
 
