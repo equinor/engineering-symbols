@@ -36,7 +36,7 @@ export const HeaderComponent: NextPage = () => {
 				<NavStyled isOpen={isMobileBurgerOpen}>
 					<ul>
 						<NavStyledListItem isActive={pathname === '/symbols'}>
-							<Link href="/symbols">Symbols</Link>
+							<Link href="/symbols">Symbol library</Link>
 						</NavStyledListItem>
 						<NavStyledListItem isActive={pathname === '/documentation'}>
 							<Link href="/documentation">Documentation</Link>
@@ -45,8 +45,8 @@ export const HeaderComponent: NextPage = () => {
 							<Link href="/contribution">Contribution</Link>
 						</NavStyledListItem>
 						<AuthenticatedTemplate>
-							<NavStyledListItem isActive={pathname === '/edit'}>
-								<Link href="/edit">Edit symbols</Link>
+							<NavStyledListItem isActive={pathname === '/manage'}>
+								<Link href="/manage">Manage symbols</Link>
 							</NavStyledListItem>
 						</AuthenticatedTemplate>
 					</ul>

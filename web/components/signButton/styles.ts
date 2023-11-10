@@ -9,7 +9,7 @@ export const SignButtonStyled = styled.button`
 	background: transparent;
 	border: none;
 	appearance: none;
-	top: -0.7rem;
+	top: -0.5rem;
 	right: 0;
 	border-radius: 5px;
 	padding: 0.2rem;
@@ -23,7 +23,7 @@ export const SignButtonStyled = styled.button`
 
 	svg {
 		display: block;
-		width: 2rem;
+		width: 1.6rem;
 		fill: none;
 		stroke: ${({ theme }) => theme.fill};
 	}

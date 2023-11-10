@@ -2,7 +2,6 @@ import type { NextPage } from 'next';
 import { useEffect, useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import copyToClipboard from 'copy-to-clipboard';
-import Typed from 'typed.js';
 import { saveAs } from 'file-saver';
 import Head from 'next/head';
 
@@ -48,7 +47,6 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 	const [isPreviewShow, setPreviewShow] = useState<boolean>(false);
 	const [appearance, setAppearance] = useState<string>(theme.fill);
 
-	const typedElementRef = useRef<HTMLInputElement>(null);
 	const svgElementsRef = useRef([]);
 
 	// const [icnsByCategory, seIcnsByCategory] = useState<IconByCategoryProps[] | []>([]);
@@ -59,27 +57,6 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 	useEffect(() => {
 		!isColorPicked && setAppearance(theme.fill);
 	}, [theme.fill]);
-
-	useEffect(() => {
-		const typed = new Typed(typedElementRef.current, {
-			strings: [
-				'Aid visualization.',
-				'Simplify communication.',
-				'Enhance technical drawings.',
-				'Standardize representation.',
-				'Improve drafting accuracy.',
-			],
-			typeSpeed: 75,
-			backSpeed: 50,
-			showCursor: false,
-			loop: true,
-		});
-
-		return () => {
-			// Destroy Typed instance during cleanup to stop animation
-			typed.destroy();
-		};
-	}, []);
 
 	const onSearch = (val: string) => {
 		setSearchingValue(val);
@@ -224,15 +201,6 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 				{/* ADD SEO */}
 			</Head>
 			<ContainerStyled>
-				<SymbolsHeaderStyled>
-					<h1 ref={typedElementRef}></h1>
-					<p>
-						{
-							"We're constantly adding new symbols to our library, so be sure to check back regularly for the latest additions. And if you can't find the symbol you're looking for, let us know - we're always happy to take suggestions and feedback from our users."
-						}
-					</p>
-				</SymbolsHeaderStyled>
-
 				<SymbolsContainerStyled>
 					<div>
 						<SymbolSelectWrapperStyled>

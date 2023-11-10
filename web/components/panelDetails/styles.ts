@@ -33,7 +33,7 @@ export const PanelDetailsStyled = styled.div<PanelDetailsStyledProps>`
 	/* z-index: 10; */
 	background: ${({ theme }) => theme.body};
 	border-radius: 12px;
-	padding: 1.5rem 1.5rem;
+	padding: 1.5rem 0.5rem;
 	overflow-x: hidden;
 	overflow-y: hidden;
 `;
@@ -43,7 +43,7 @@ export const PanelDetailsButtons = styled.div`
 	display: flex;
 	/* position: absolute; */
 	/* z-index: 10; */
-	width: 300px;
+	/* width: 300px; */
 	/* bottom: 0.5rem; */
 	/* top: 21.5rem; */
 	/* background-color: ${({ theme }) => theme.body}; */
@@ -101,9 +101,10 @@ export const EditFromStyled = styled.div<EditFromStyledProps>`
 	/* margin: ${({ disabled }) => (disabled ? '0' : '-5rem 0 -2rem')}; */
 	/* margin: -5rem 0 -2rem; */
 	height: 100%;
+	position: relative;
 
 	form {
-		padding: ${({ disabled }) => (disabled ? '0' : '0 0 1rem')};
+		padding: ${({ disabled }) => (disabled ? '0' : '0 0 3rem')};
 		/* padding: 0 0 6rem; */
 	}
 `;

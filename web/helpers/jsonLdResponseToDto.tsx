@@ -80,9 +80,9 @@ function jsonLdSymbolToDto(obj: object): EngineeringSymbolDto {
 		version: parseInt(valueOrDefault<string>(obj, ['pav:version'])),
 		// previousVersion: null,
 		// previousVersionIri: null,
-		// dateTimeCreated: valueOrDefault<string>(obj, ["dc:created"]),
-		// dateTimeModified: valueOrDefault<string>(obj, ["dc:modified"]),
-		// dateTimeIssued: valueOrDefault<string>(obj, ["dc:issued"]),
+		dateTimeCreated: valueOrDefault<string>(obj, ['dc:created']),
+		dateTimeModified: valueOrDefault<string>(obj, ['dc:modified']),
+		dateTimeIssued: valueOrDefault<string>(obj, ['dc:issued']),
 
 		key: valueOrDefault<string>(obj, ['dc:identifier']),
 		name: valueOrDefault<string>(obj, ['rdfs:label']),

@@ -10,7 +10,7 @@ type IconButtonProps = {
 	name: IconName;
 };
 
-export type IconName = 'lensMinus' | 'lensPlus' | 'zoomOut' | 'zoomIn' | 'face3d' | 'wrench' | 'floppyDisk' | 'xmark';
+export type IconName = 'lensMinus' | 'lensPlus' | 'zoomOut' | 'zoomIn' | 'face3d' | 'wrench' | 'floppyDisk' | 'xmark' | 'list' | 'input';
 
 export type SvgBaseProps = SVGAttributes<SVGElement>;
 
@@ -23,6 +23,8 @@ const components: Record<IconName, ComponentType<SvgBaseProps>> = {
 	face3d: Icons.Face3d,
 	wrench: Icons.Wrench,
 	xmark: Icons.Xmark,
+	input: Icons.Input,
+	list: Icons.List,
 };
 
 export const IconButtonComponent = ({ name, onClick, disabled = false, appearance, ...rest }: IconButtonProps): ReactElement | null => {
