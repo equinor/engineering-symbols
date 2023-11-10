@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.8](https://github.com/equinor/engineering-symbols/compare/web-v1.7.7...web-v1.7.8) (2023-11-10)
+
+
+### Miscellaneous Chores
+
+* visual upgrade ([#755](https://github.com/equinor/engineering-symbols/issues/755)) ([78f6b0a](https://github.com/equinor/engineering-symbols/commit/78f6b0a272b46e539dfafbed8a020a48ea54804d))
+
 ## [1.7.7](https://github.com/equinor/engineering-symbols/compare/web-v1.7.6...web-v1.7.7) (2023-11-07)
 
 
