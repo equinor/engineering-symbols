@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.9](https://github.com/equinor/engineering-symbols/compare/web-v1.7.8...web-v1.7.9) (2023-11-10)
+
+
+### Miscellaneous Chores
+
+* implement selected connector scroll ([#758](https://github.com/equinor/engineering-symbols/issues/758)) ([9f673f2](https://github.com/equinor/engineering-symbols/commit/9f673f21143bdd0473087e615aa223b0f2f99f28))
+
 ## [1.7.8](https://github.com/equinor/engineering-symbols/compare/web-v1.7.7...web-v1.7.8) (2023-11-10)
 
 
