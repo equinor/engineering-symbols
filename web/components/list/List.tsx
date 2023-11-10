@@ -28,10 +28,10 @@ type ListComponentProps = {
 	onReview: (symbol: SymbolsProps) => Promise<void>;
 	onSubmit: (symbol: SymbolsProps) => Promise<void>;
 	onDelete: (symbol: SymbolsProps) => Promise<void>;
-	onUpdate: (symbol: SymbolsProps) => () => void;
+	onUpdate: (symbol: SymbolsProps) => Promise<void>;
 	statuses: DefaultStatusesTypes;
-	onShow: (symbol: SymbolsProps) => () => void;
-	onEdit: (symbol: SymbolsProps) => () => void;
+	onShow: (symbol: SymbolsProps) => Promise<void>;
+	onEdit: (symbol: SymbolsProps) => Promise<void>;
 	fileRef: any;
 	theme: ColorThemeProps;
 	icons: SymbolsProps[];
