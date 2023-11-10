@@ -590,6 +590,14 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 			default:
 				break;
 		}
+
+		// @ts-ignore next-line
+		if (data && data.length > 0) {
+			// @ts-ignore next-line
+			const { id } = data[0].data;
+
+			scrollToElement(id);
+		}
 	};
 
 	const addNewConnector = () => {
@@ -675,6 +683,16 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	useEffect(() => {
 		filterSymbolsByStatus();
 	}, [statuses]);
+
+	const scrollToElement = (id: string) => {
+		const elementRef = connectorsToScroll.current[id];
+		if (!elementRef) return;
+		elementRef.scrollIntoView({
+			behavior: 'smooth',
+			block: 'start',
+			inline: 'nearest',
+		});
+	};
 
 	return (
 		<AuthenticatedTemplate>
