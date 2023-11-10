@@ -17,6 +17,7 @@ import {
 	PanelDetailsStyled,
 	PanelDetailsWrapperStyled,
 } from './styles';
+import { SymbolConnector } from '../symbolEditor';
 
 type PanelDetailsComponentProps = {
 	setUpdateDraftSymbol: (symbol: SymbolsProps) => void;
@@ -26,6 +27,7 @@ type PanelDetailsComponentProps = {
 	onClosePanel: () => void;
 	disabledForm: boolean;
 	elementRefs: MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
+	connector: SymbolConnector | null;
 	symbol: SymbolsProps;
 	show: boolean;
 };
@@ -38,6 +40,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 	elementRefs,
 	onClosePanel,
 	disabledForm,
+	connector,
 	symbol,
 	show,
 }): JSX.Element => {
@@ -92,6 +95,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 								creators: [{ name, email: username }],
 								geometry,
 								connectors,
+								dateTimeModified: new Date(new Date().getTime() + 60 * 60 * 1000).toISOString().slice(0, -1) + 'Z',
 							}}
 							validate={({ connectors }) => {
 								const errors: FormikErrors<any> = {};
@@ -125,6 +129,7 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 								}, 400);
 							}}>
 							<EditFormComponent
+								currentConnector={connector}
 								addNewConnector={onAddConnector}
 								updateSymbol={updateCurrentSymbol}
 								hasDisabled={disabledForm}
@@ -136,11 +141,11 @@ export const PanelDetailsComponent: FunctionComponent<PanelDetailsComponentProps
 					<EditFromButtonsWrapper disabled={disabledForm}>
 						{!disabledForm && (
 							<PanelDetailsButtons>
-								<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()} hasError={hasFormError}>
+								<ButtonComponent size="s" type="submit" onClick={() => onSubmitForm()} hasError={hasFormError} appearance="secondary">
 									Save
 								</ButtonComponent>
-								<ButtonComponent size="s" onClick={() => onClosePanel()} appearance="secondary">
-									Cancel
+								<ButtonComponent size="s" onClick={() => onClosePanel()}>
+									Close
 								</ButtonComponent>
 							</PanelDetailsButtons>
 						)}

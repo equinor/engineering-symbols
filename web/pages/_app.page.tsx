@@ -79,7 +79,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 							<Component {...pageProps} theme={theme} />
 						</main>
 					</>
-					{pathname !== '/edit' && (
+					{pathname !== '/manage' && (
 						<FooterStyled>
 							<ContainerStyled>
 								<FooterWrapperStyled>

@@ -284,7 +284,7 @@ export const CustomizeDetailsStyled = styled.div`
 `;
 
 export const CustomizeSliderStyled = styled.div<CustomizeSliderProps>`
-	padding: 0 2rem 0 0;
+	margin: 0 2rem;
 	width: 40%;
 	position: relative;
 

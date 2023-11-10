@@ -11,7 +11,7 @@
 //       "skipFiles": [
 //         "<node_internals>/**"
 //       ],
-//       "program": "${workspaceFolder}/web/pages/edit/index.page.tsx",
+//       "program": "${workspaceFolder}/web/pages/manage/index.page.tsx",
 //       "outFiles": [
 //         "${workspaceFolder}/**/*.js"
 //       ]

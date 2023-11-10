@@ -194,6 +194,9 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 					<Typography variant="h2">{key}</Typography>
 
 					<CustomizeDetailsStyled>
+						<Typography variant="body_short" bold>
+							Rotation
+						</Typography>
 						<CustomizeSliderStyled value={rotate} min={SLIDER_MIN_VALUE} max={SLIDER_MAX_VALUE}>
 							<CustomizeElementStyled>
 								<input

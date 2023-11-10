@@ -18,7 +18,7 @@ import {
 } from './styles';
 
 import { ColorThemeProps, FilterStatusProps, SymbolsProps } from '../../types';
-import { DefaultStatusesTypes } from '../../pages/edit/index.page';
+import { DefaultStatusesTypes } from '../../pages/manage/index.page';
 
 type ListComponentProps = {
 	handleCheckboxChange: (status: FilterStatusProps) => void;

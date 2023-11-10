@@ -18,6 +18,7 @@ export const PanelPresentationStyled = styled.div`
 	min-height: ${MIN_HEIGHT}px;
 	/* height: 100%; */
 	width: 100%;
+	overflow: hidden;
 	position: relative;
 `;
 

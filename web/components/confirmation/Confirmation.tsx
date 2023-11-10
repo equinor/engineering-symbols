@@ -70,10 +70,10 @@ export const useConfirm = ({ symbol, message, buttons }: useConfirmProps) => {
 						{message} <strong>{symbol && symbol.key}</strong>?
 					</ConfirmationContentStyled>
 					<ConfirmationButtonsStyled>
-						<ButtonComponent onClick={() => onHandle(true)}>{buttons?.confirm ?? 'Confirm'}</ButtonComponent>
-						<ButtonComponent appearance="secondary" onClick={() => onHandle(false)}>
-							{buttons?.cancel ?? 'Cancel'}
+						<ButtonComponent appearance="secondary" onClick={() => onHandle(true)}>
+							{buttons?.confirm ?? 'Confirm'}
 						</ButtonComponent>
+						<ButtonComponent onClick={() => onHandle(false)}>{buttons?.cancel ?? 'Cancel'}</ButtonComponent>
 					</ConfirmationButtonsStyled>
 				</ConfirmationWrapStyled>
 			</ConfirmationCustomizeStyled>

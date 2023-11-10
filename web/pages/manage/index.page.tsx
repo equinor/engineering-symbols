@@ -85,6 +85,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const [panelShow, setPanelShow] = useState<boolean>(true);
 	const [listShow, setListShow] = useState<boolean>(true);
+	const [isSymbolEdit, setIsSymbolEdit] = useState<boolean>(false);
 
 	const connectorsToScroll = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
@@ -108,9 +109,29 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		buttons: confirmationButtons,
 	});
 
-	const onPanelReset = () => {
+	const panelReset = () => {
 		setSelectedSymbol(null);
 		setUpdateSymbol(null);
+	};
+
+	const onPanelReset = async () => {
+		if (isSymbolEdit) {
+			setConfirmationMessage('Are you certain you wish to proceed without saving your changes to the symbols');
+			setConfirmationButtons({ confirm: 'Save', cancel: 'Close' });
+			// @ts-ignore next-line
+			const isApproved = await getConfirmation();
+
+			if (isApproved && selectedSymbol) {
+				// TODO: save svg
+				onUpdateDraftSymbol(selectedSymbol);
+				setIsSymbolEdit(false);
+			} else {
+				setIsSymbolEdit(false);
+				panelReset();
+			}
+		} else {
+			panelReset();
+		}
 	};
 
 	const { error, handleFileChange, svgContent, isSvgFileLoading } = useFileUpload();
@@ -241,13 +262,36 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		onPanelReset();
 	};
 
-	const onEditSymbol = (symbol: SymbolsProps) => {
+	const onEditSymbol = async (symbol: SymbolsProps) => {
 		console.log('⚡️', 'onEditSymbol:', symbol);
+		console.log('⚡️', 'isSymbolEdit:', isSymbolEdit);
 
+		if (isSymbolEdit) {
+			setConfirmationMessage('Are you certain you wish to proceed without saving your changes to the symbols');
+			setConfirmationButtons({ confirm: 'Save', cancel: 'Close' });
+			// @ts-ignore next-line
+			const isApproved = await getConfirmation();
+
+			if (isApproved && selectedSymbol) {
+				// TODO: save svg
+				onUpdateDraftSymbol(selectedSymbol);
+				setIsSymbolEdit(false);
+				editSymbol(symbol);
+			} else {
+				setIsSymbolEdit(false);
+				editSymbol(symbol);
+			}
+		} else {
+			editSymbol(symbol);
+		}
+	};
+
+	const editSymbol = (symbol: SymbolsProps) => {
 		setSelectedSymbol(symbol);
 		// Load symbol into editor
 		loadEditorCommand(symbol);
 		setEnableReinitialize(true);
+		setSelectedConnector(null);
 
 		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
 
@@ -256,9 +300,29 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		};
 	};
 
-	const onShowSymbol = (symbol: SymbolsProps) => {
+	const onShowSymbol = async (symbol: SymbolsProps) => {
 		console.log('⚡️', 'onShowSymbol:', symbol);
 
+		if (isSymbolEdit) {
+			setConfirmationMessage('Are you certain you wish to proceed without saving your changes to the symbols');
+			setConfirmationButtons({ confirm: 'Save', cancel: 'Close' });
+			// @ts-ignore next-line
+			const isApproved = await getConfirmation();
+
+			if (isApproved && selectedSymbol) {
+				// TODO: save svg
+				onUpdateDraftSymbol(selectedSymbol);
+				setIsSymbolEdit(false);
+			} else {
+				setIsSymbolEdit(false);
+				showSymbol(symbol);
+			}
+		} else {
+			showSymbol(symbol);
+		}
+	};
+
+	const showSymbol = (symbol: SymbolsProps) => {
 		setSelectedSymbol(symbol);
 		loadEditorCommand(symbol, true);
 
@@ -268,8 +332,29 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		};
 	};
 
-	const onUpdateSymbol = (symbol: SymbolsProps) => {
+	const onUpdateSymbol = async (symbol: SymbolsProps) => {
 		console.log('⚡️', 'onUpdateSymbol:', symbol);
+
+		if (isSymbolEdit) {
+			setConfirmationMessage('Are you certain you wish to proceed without saving your changes to the symbols');
+			setConfirmationButtons({ confirm: 'Save', cancel: 'Close' });
+			// @ts-ignore next-line
+			const isApproved = await getConfirmation();
+
+			if (isApproved && selectedSymbol) {
+				// TODO: save svg
+				onUpdateDraftSymbol(selectedSymbol);
+				setIsSymbolEdit(false);
+			} else {
+				setIsSymbolEdit(false);
+				updtSymbol(symbol);
+			}
+		} else {
+			updtSymbol(symbol);
+		}
+	};
+
+	const updtSymbol = (symbol: SymbolsProps) => {
 		setSelectedSymbol(symbol);
 		loadEditorCommand(symbol);
 		setEnableReinitialize(true);
@@ -285,6 +370,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onChangeSymbolForDetail = (symbol: SymbolsProps) => {
 		setSelectedSymbol(symbol);
+		setIsSymbolEdit(true);
 		setEditorCommands([
 			{
 				type: 'Symbol',
@@ -308,6 +394,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 			setUpdateSymbol(symbol);
 		} else {
 			setUpdateSymbolRevision({ ...symbol, isRevisionOf: symbol.iri });
+			// setUpdateSymbolRevision({ ...symbol, isRevisionOf: symbol.iri, dateTimeModified: });
 		}
 
 		console.log('⚡️', 'manageSymbolsQuery:', manageSymbolsQuery);
@@ -447,16 +534,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	// 	return index !== -1 ? index + 1 : 1;
 	// };
 
-	const scrollToElement = (id: string) => {
-		// const elementRef = connectorsToScroll.current[id];
-		// if (!elementRef) return;
-		// elementRef.scrollIntoView({
-		// 	behavior: 'smooth',
-		// 	block: 'start',
-		// 	inline: 'nearest',
-		// });
-	};
-
 	const onEditorEvent = ({ symbolState, data, reason, type }: SymbolEditorEvent) => {
 		console.log(`EDITOR-EVENT:${type}:${reason}`);
 		console.log('Event data: ', data);
@@ -512,14 +589,6 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 			default:
 				break;
-		}
-
-		// @ts-ignore next-line
-		if (data && data.length > 0) {
-			// @ts-ignore next-line
-			const { id } = data[0].data;
-
-			scrollToElement(id);
 		}
 	};
 
@@ -637,7 +706,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 							<>
 								<PanelActionsStyled isShow={panelShow}>
 									<ZoomButtonsComponent onZoomClick={onZoom} />
-									<IconButtonComponent name="wrench" onClick={() => setPanelShow(!panelShow)} />
+									<IconButtonComponent name="input" onClick={() => setPanelShow(!panelShow)} />
 									<IconButtonComponent name="lensPlus" onClick={addNewConnector} disabled={isReadyForReview(selectedSymbol)} />
 									<IconButtonComponent
 										name="lensMinus"
@@ -667,11 +736,12 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 									onClosePanel={onPanelReset}
 									elementRefs={connectorsToScroll}
 									symbol={{ ...selectedSymbol }}
+									connector={selectedConnector}
 								/>
 							</>
 						)}
 						<ListActionStyled isShow={listShow}>
-							<IconButtonComponent name="face3d" onClick={() => setListShow(!listShow)} />
+							<IconButtonComponent name="list" onClick={() => setListShow(!listShow)} />
 						</ListActionStyled>
 						<ListComponent
 							fileRef={fileInputRef}
