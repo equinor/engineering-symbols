@@ -112,6 +112,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const panelReset = () => {
 		setSelectedSymbol(null);
 		setUpdateSymbol(null);
+		setIsSymbolEdit(false);
 	};
 
 	const onPanelReset = async () => {
@@ -124,9 +125,9 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 			if (isApproved && selectedSymbol) {
 				// TODO: save svg
 				onUpdateDraftSymbol(selectedSymbol);
-				setIsSymbolEdit(false);
+				setTimeout(() => panelReset(), 1);
+				setTimeout(() => refreshMangeSymbolsQuery(), 500);
 			} else {
-				setIsSymbolEdit(false);
 				panelReset();
 			}
 		} else {
@@ -172,9 +173,9 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const isReadyForReview = (symbol: SymbolsProps) => isAdmin && isStatusReadyForReview(symbol);
 
 	// const refreshMangeSymbolsQuery = () => setTimeout(() => getManageSymbolsQueryAction.run(), 1000);
-	const refreshMangeSymbolsQuery = () => getManageSymbolsQueryAction.run();
+	const refreshMangeSymbolsQuery = () => setTimeout(() => getManageSymbolsQueryAction.run(), 500);
 
-	const loadEditorCommand = ({ id, geometry, width, height, connectors, ...rest }: SymbolsProps, readOnly = false) => {
+	const loadEditorCommand = ({ id, key, geometry, width, height, connectors, ...rest }: SymbolsProps, readOnly = false) => {
 		setEditorCommands([
 			{ type: 'Symbol', action: 'Unload', data: undefined },
 			{
@@ -190,8 +191,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				action: 'Load',
 				data: {
 					...rest,
-					id,
-					key: id,
+					id: id || key,
+					key: key || id,
 					path: geometry,
 					width,
 					height,
@@ -209,15 +210,16 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		loadEditorCommand(svgContent);
 	}, [svgContent]);
 
-	useEffect(() => {
-		if (!finishUpdateManageSymbol && !updateSymbol) return;
-
-		setInformationMessage({
-			title: 'Updated',
-			message: `Symbol ${selectedSymbol?.key} was updated`,
-			appearance: 'success',
-		});
-	}, [updateSymbol]);
+	// useEffect(() => {
+	// 	if (!finishUpdateManageSymbol && !updateSymbol) return;
+	// 	forceUpdate();
+	// 	setInformationMessage({
+	// 		title: 'Updated',
+	// 		message: `Symbol ${selectedSymbol?.key} was updated`,
+	// 		appearance: 'success',
+	// 		refresh: update,
+	// 	});
+	// }, [updateSymbol]);
 
 	useEffect(() => {
 		// File upload error
@@ -244,7 +246,11 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				appearance: 'success',
 			});
 
-			onPanelReset();
+			panelReset();
+			refreshMangeSymbolsQuery();
+		}
+
+		if (isUpdateSymbolReposnseSucceeded) {
 			refreshMangeSymbolsQuery();
 		}
 
@@ -259,7 +265,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onChangeFileInput = (e: ChangeEvent<HTMLInputElement>) => {
 		handleFileChange(e);
-		onPanelReset();
+		panelReset();
 	};
 
 	const onEditSymbol = async (symbol: SymbolsProps) => {
@@ -390,10 +396,11 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	};
 
 	const onUpdateDraftSymbol = (symbol: SymbolsProps) => {
+		console.log(4321, symbol);
 		if (isStatusDraft(symbol)) {
 			setUpdateSymbol(symbol);
 		} else {
-			setUpdateSymbolRevision({ ...symbol, isRevisionOf: symbol.iri });
+			setUpdateSymbolRevision({ ...symbol, isRevisionOf: symbol.iri, key: symbol.key || symbol.id });
 			// setUpdateSymbolRevision({ ...symbol, isRevisionOf: symbol.iri, dateTimeModified: });
 		}
 
@@ -504,15 +511,16 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	}, [finishDeleteManageSymbol, manageDeleteSymbolsQuery]);
 
 	useEffect(() => {
-		if (!isUpdateSymbolReposnseSucceeded || !updateSymbol) return;
-
+		if (!isUpdateSymbolReposnseSucceeded && !updateSymbol) return;
+		forceUpdate();
 		refreshMangeSymbolsQuery();
 		// onPanelReset();
 
 		setInformationMessage({
 			title: 'Updated',
-			message: `Symbol ${updateSymbol?.key} was updated`,
+			message: `Symbol ${updateSymbol?.key || ''} was updated`,
 			appearance: 'success',
+			refresh: update,
 		});
 	}, [manageUpdateSymbolsQuery]);
 
@@ -545,6 +553,9 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 					case 'Loaded':
 						// setConnectors(event.symbolState?.connectors ?? []);
 						break;
+					case 'Updated':
+						setIsSymbolEdit(true);
+						break;
 					default:
 						break;
 				}
@@ -555,6 +566,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						case 'Added':
 						case 'Updated':
 							setEnableReinitialize(true);
+							setIsSymbolEdit(true);
 							setSelectedSymbol({ ...symbolState, connectors: symbolState?.connectors } as SymbolsProps);
 
 							const timer = setTimeout(() => setEnableReinitialize(false), 1000);
