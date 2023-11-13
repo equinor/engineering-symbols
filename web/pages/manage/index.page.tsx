@@ -83,7 +83,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const [editorCommands, setEditorCommands] = useState<EditorCommandMessage[]>([]);
 	const [searchingValue, setSearchingValue] = useState<string>('');
 
-	const [panelShow, setPanelShow] = useState<boolean>(true);
+	const [isPanelShow, setPanelShow] = useState<boolean>(true);
 	const [listShow, setListShow] = useState<boolean>(true);
 	const [isSymbolEdit, setIsSymbolEdit] = useState<boolean>(false);
 
@@ -592,13 +592,17 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		}
 
 		// @ts-ignore next-line
-		if (data && data.length > 0) {
-			// @ts-ignore next-line
-			const { id } = data[0].data;
+		// if (data && data.length > 0) {
+		// 	// @ts-ignore next-line
+		// 	const { id } = data[0].data;
 
-			scrollToElement(id);
-		}
+		// 	console.log('====>>>', !isPanelShow)
+
+		// 	scrollToElement(id);
+		// }
 	};
+
+	// console.log(1, '====>>>', !isPanelShow)
 
 	const addNewConnector = () => {
 		setEnableReinitialize(true);
@@ -684,6 +688,12 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		filterSymbolsByStatus();
 	}, [statuses]);
 
+	useEffect(() => {
+		if (selectedConnector && isPanelShow) {
+			scrollToElement(selectedConnector.id);
+		}
+	}, [selectedConnector]);
+
 	const scrollToElement = (id: string) => {
 		const elementRef = connectorsToScroll.current[id];
 		if (!elementRef) return;
@@ -722,9 +732,9 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 						{finishManageSymbolsQuery && selectedSymbol && (
 							<>
-								<PanelActionsStyled isShow={panelShow}>
+								<PanelActionsStyled isShow={isPanelShow}>
 									<ZoomButtonsComponent onZoomClick={onZoom} />
-									<IconButtonComponent name="input" onClick={() => setPanelShow(!panelShow)} />
+									<IconButtonComponent name="input" onClick={() => setPanelShow(!isPanelShow)} />
 									<IconButtonComponent name="lensPlus" onClick={addNewConnector} disabled={isReadyForReview(selectedSymbol)} />
 									<IconButtonComponent
 										name="lensMinus"
@@ -745,7 +755,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 								</PanelActionsStyled>
 
 								<PanelDetailsComponent
-									show={panelShow}
+									show={isPanelShow}
 									setUpdateDraftSymbol={onUpdateDraftSymbol}
 									updateCurrentSymbol={onChangeSymbolForDetail}
 									enableReinitialize={enableReinitialize}
