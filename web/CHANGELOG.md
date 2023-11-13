@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.7.10](https://github.com/equinor/engineering-symbols/compare/web-v1.7.9...web-v1.7.10) (2023-11-13)
+
+
+### Bug Fixes
+
+* "scrollto" when form is close ([#773](https://github.com/equinor/engineering-symbols/issues/773)) ([21a9807](https://github.com/equinor/engineering-symbols/commit/21a9807faebef1825004da0bb12aeac2ffc17a51))
+
+
+### Bump package
+
+* **web:** bump @types/react from 18.2.35 to 18.2.37 in /web ([#766](https://github.com/equinor/engineering-symbols/issues/766)) ([33e8fa9](https://github.com/equinor/engineering-symbols/commit/33e8fa97aae0a50c428331fc8e3b1916b5801bf8))
+* **web:** bump @types/react-dom from 18.2.14 to 18.2.15 in /web ([#765](https://github.com/equinor/engineering-symbols/issues/765)) ([bffebe1](https://github.com/equinor/engineering-symbols/commit/bffebe1590b38d70d7806fd0715ff005c192bd2e))
+* **web:** bump axios from 1.6.0 to 1.6.1 in /web ([#769](https://github.com/equinor/engineering-symbols/issues/769)) ([50f7029](https://github.com/equinor/engineering-symbols/commit/50f7029a7d3f21eaf69df98a8c47033c0531629b))
+* **web:** bump eslint-config-next from 14.0.1 to 14.0.2 in /web ([#768](https://github.com/equinor/engineering-symbols/issues/768)) ([610d095](https://github.com/equinor/engineering-symbols/commit/610d09530a578319f2d30efde2931cd606bf03b7))
+* **web:** bump use-debounce from 9.0.4 to 10.0.0 in /web ([#767](https://github.com/equinor/engineering-symbols/issues/767)) ([2099841](https://github.com/equinor/engineering-symbols/commit/209984187ba53126e23775bbc2a0fe0726541482))
+
 ## [1.7.9](https://github.com/equinor/engineering-symbols/compare/web-v1.7.8...web-v1.7.9) (2023-11-10)
 
 
