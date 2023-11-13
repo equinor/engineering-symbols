@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.11](https://github.com/equinor/engineering-symbols/compare/web-v1.7.10...web-v1.7.11) (2023-11-13)
+
+
+### Bug Fixes
+
+* duplicate when saving in Draft | fix Updated message ([#776](https://github.com/equinor/engineering-symbols/issues/776)) ([ac3f0e9](https://github.com/equinor/engineering-symbols/commit/ac3f0e9fd1b22e0ac5cc43868b6d9cfaf92736d6))
+
 ## [1.7.10](https://github.com/equinor/engineering-symbols/compare/web-v1.7.9...web-v1.7.10) (2023-11-13)
 
 
