@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.12](https://github.com/equinor/engineering-symbols/compare/web-v1.7.11...web-v1.7.12) (2023-11-15)
+
+
+### Miscellaneous Chores
+
+* make filter statuses static ([#779](https://github.com/equinor/engineering-symbols/issues/779)) ([2d9d149](https://github.com/equinor/engineering-symbols/commit/2d9d149b7ca76796360d537c45c664eecf5588db))
+
 ## [1.7.11](https://github.com/equinor/engineering-symbols/compare/web-v1.7.10...web-v1.7.11) (2023-11-13)
 
 
