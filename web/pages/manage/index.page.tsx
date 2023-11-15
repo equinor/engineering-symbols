@@ -649,39 +649,38 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		if (val) {
 			const searchedValue = manageSymbolsQuery.filter(({ key }: any) => key.toLocaleLowerCase().includes(val.toLocaleLowerCase()));
 
-			seIcns(searchedValue);
+			seIcns(getSymbolsQueryWithFilter(searchedValue));
 
 			// window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 		} else {
-			seIcns(manageSymbolsQuery);
+			seIcns(getSymbolsQueryWithFilter(manageSymbolsQuery));
 		}
 	};
 
 	const onZoom = (data: number) => setEditorCommands([{ type: 'Settings', action: 'ZoomInOrOut', data }]);
 
 	useEffect(() => {
-		seIcns(manageSymbolsQuery);
+		seIcns(getSymbolsQueryWithFilter(manageSymbolsQuery));
 	}, [finishManageSymbolsQuery]);
 
 	const debounceSearchValue = useDebouncedCallback((value) => onSearch(value), 1000);
 
+	const getSymbolsQueryWithFilter = (val: any) => {
+		if (statuses.all) return val;
+
+		return val.filter((symbol: any) => {
+			const dr = statuses.draft && isStatusDraft(symbol);
+			const rd = statuses.ready && isStatusReadyForReview(symbol);
+			const rj = statuses.reject && isStatusRejected(symbol);
+
+			return dr || rd || rj;
+		});
+	};
+
 	const filterSymbolsByStatus = () => {
-		if (statuses.all) {
-			seIcns(manageSymbolsQuery);
-		} else if (!statuses.draft && !statuses.ready && !statuses.reject) {
-			seIcns(manageSymbolsQuery);
-			setStatuses(DEFAULT_STATUSES);
-		} else {
-			const filteredValue = manageSymbolsQuery.filter((symbol: any) => {
-				const dr = statuses.draft && isStatusDraft(symbol);
-				const rd = statuses.ready && isStatusReadyForReview(symbol);
-				const rj = statuses.reject && isStatusRejected(symbol);
+		seIcns(getSymbolsQueryWithFilter(manageSymbolsQuery));
 
-				return dr || rd || rj;
-			});
-
-			seIcns(filteredValue);
-		}
+		if (!statuses.draft && !statuses.ready && !statuses.reject) setStatuses(DEFAULT_STATUSES);
 	};
 
 	const handleStatusChange = (status: FilterStatusProps) => {
