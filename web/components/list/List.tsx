@@ -23,7 +23,7 @@ import { DefaultStatusesTypes } from '../../pages/manage/index.page';
 type ListComponentProps = {
 	handleCheckboxChange: (status: FilterStatusProps) => void;
 	finishManageSymbols: boolean;
-	onChangeFile: (e: ChangeEvent<HTMLInputElement>) => void;
+	onChangeFile: (e: ChangeEvent<HTMLInputElement>) => Promise<void>;
 	searchValue: DebouncedState<(value: any) => void>;
 	onReview: (symbol: SymbolsProps) => Promise<void>;
 	onSubmit: (symbol: SymbolsProps) => Promise<void>;

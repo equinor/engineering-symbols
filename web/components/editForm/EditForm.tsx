@@ -13,6 +13,7 @@ import {
 	EditFromElementStyled,
 	EditFromWrapperStyled,
 	ErrorMessageStyled,
+	EditFromVarsStyled,
 } from './styles';
 import { isObjEmpty } from '../../helpers';
 
@@ -25,6 +26,8 @@ type EditFormComponentProps = {
 	formChange: () => void;
 	refs: MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
 };
+
+export const quickRotationOptions = [0, 90, 180, 270];
 
 export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({
 	currentConnector,
@@ -53,6 +56,17 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({
 						const isConnectorsEmpty = isObjEmpty(values.connectors);
 						const filteredConnectors = !isConnectorsEmpty && (values.connectors.filter((x: ConnectorsProps) => x !== undefined) as any);
 
+						const onQuickRotation = (cnct: SymbolConnector, value: number) => {
+							const updatedConnectors = values.connectors.map((connector: SymbolConnector) =>
+								connector.id === cnct.id ? { ...connector, direction: value } : connector
+							);
+
+							const updatedSymbol = { ...values, connectors: updatedConnectors };
+
+							setValues(updatedSymbol);
+							updateSymbol(updatedSymbol);
+						};
+
 						return (
 							<>
 								{isConnectorsEmpty ? (
@@ -60,11 +74,11 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({
 								) : (
 									<>
 										<p>Connectors</p>
-										{filteredConnectors.map(({ id }: SymbolConnector, i: number) => (
+										{filteredConnectors.map((cnct: SymbolConnector, i: number) => (
 											<EditFromElementsStyled
 												key={`connector-${i}`}
-												ref={(ref) => (refs.current[id] = ref)}
-												selected={!!currentConnector && currentConnector.id === id}>
+												ref={(ref) => (refs.current[cnct.id] = ref)}
+												selected={!!currentConnector && currentConnector.id === cnct.id}>
 												{/* ConnectorId */}
 												<EditFromElementStyled>
 													<label htmlFor={`connectors[${i}].id`}>Name</label>
@@ -75,6 +89,28 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({
 														required
 														disabled={hasDisabled}
 													/>
+												</EditFromElementStyled>
+
+												{/* Direction */}
+												<EditFromElementStyled>
+													<label htmlFor={`connectors[${i}].direction`}>Direction</label>
+													<Field
+														type="number"
+														id={`connectors[${i}].direction`}
+														name={`connectors[${i}].direction`}
+														required
+														disabled={hasDisabled}
+													/>
+
+													{!hasDisabled && (
+														<EditFromVarsStyled>
+															{quickRotationOptions.map((nr: number) => (
+																<button onClick={() => onQuickRotation(cnct, nr)} type="button">
+																	{nr}
+																</button>
+															))}
+														</EditFromVarsStyled>
+													)}
 												</EditFromElementStyled>
 
 												{/* RelativePosition X */}
@@ -101,25 +137,13 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({
 													/>
 												</EditFromElementStyled>
 
-												{/* Direction */}
-												<EditFromElementStyled>
-													<label htmlFor={`connectors[${i}].direction`}>Direction</label>
-													<Field
-														type="number"
-														id={`connectors[${i}].direction`}
-														name={`connectors[${i}].direction`}
-														required
-														disabled={hasDisabled}
-													/>
-												</EditFromElementStyled>
-
 												{!hasDisabled && (
 													<EditFromRemoveConnectorStyled
 														type="button"
 														onClick={() => {
 															// if (form.values && isObjEmpty(form.values.connectors)) {
 															const updatedConnectors = values.connectors.filter(
-																(connector: SymbolConnector) => connector.id !== id
+																(connector: SymbolConnector) => connector.id !== cnct.id
 															);
 															const updatedSymbol = { ...values, connectors: updatedConnectors };
 

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 import { SignButtonComponent } from '../signButton/SignButton';
-import { HeaderStyled, LogoWrapStyled, HeaderLogoStyled, NavStyled, BurgerWrapStyled, HeaderNoteStyled, NavStyledListItem } from './styles';
+import { HeaderStyled, LogoWrapStyled, HeaderLogoStyled, NavStyled, BurgerWrapStyled, NavStyledListItem } from './styles';
 import { ContainerStyled } from '../../styles/styles';
 
 import { LogoComponent } from '../logo';
@@ -63,10 +63,6 @@ export const HeaderComponent: NextPage = () => {
 						<path className="line line6" d="M 50,65 H 70"></path>
 					</svg>
 				</BurgerWrapStyled>
-
-				<HeaderNoteStyled>
-					<p>Designed and built with ❤️</p>
-				</HeaderNoteStyled>
 
 				{/* <SignInButton /> */}
 			</HeaderStyled>

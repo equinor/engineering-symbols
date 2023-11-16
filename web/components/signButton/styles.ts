@@ -1,16 +1,19 @@
 import styled from 'styled-components';
 
-interface SignButtonStyledProps {
-	isActive: boolean;
-}
-
-export const SignButtonStyled = styled.button`
-	position: absolute;
-	background: transparent;
-	border: none;
-	appearance: none;
+export const SignButtonWrapperStyled = styled.div`
+	display: flex;
+	align-items: center;
 	top: -0.5rem;
 	right: 0;
+	position: absolute;
+`;
+
+export const SignButtonStyled = styled.button`
+	background: transparent;
+	display: flex;
+	align-items: center;
+	border: none;
+	appearance: none;
 	border-radius: 5px;
 	padding: 0.2rem;
 	background: transparent;
@@ -31,5 +34,15 @@ export const SignButtonStyled = styled.button`
 	p {
 		padding: 0;
 		margin: 0;
+	}
+`;
+
+export const SignButtonNoteStyled = styled.div`
+	font-size: 14px;
+	line-height: 2;
+	padding: 0 0.5rem 0 0;
+
+	@media screen and (max-width: 1024px) {
+		display: none;
 	}
 `;

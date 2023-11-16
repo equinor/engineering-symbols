@@ -44,6 +44,7 @@ import {
 } from '../../store';
 
 import { EditorCommandMessage, SymbolConnector, SymbolEditor, SymbolEditorEvent } from '../../components/symbolEditor';
+import { quickRotationOptions } from '../../components/editForm/EditForm';
 
 // const icons = allSymbols.map(({ key, geometry, ...rest }) => ({
 // 	key,
@@ -242,11 +243,12 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		if (isSymbolUploadReposnseSucceeded && selectedSymbol) {
 			setInformationMessage({
 				title: 'New symbol',
-				message: `Symbol ${selectedSymbol?.key} was added`,
+				message: `Symbol ${selectedSymbol?.key || ''} was added`,
 				appearance: 'success',
 			});
 
-			panelReset();
+			// Commentout for load editor view when you close it by confirmation window
+			// panelReset();
 			refreshMangeSymbolsQuery();
 		}
 
@@ -263,15 +265,36 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		}
 	}, [finishUpdateSymbolQuery, isSymbolUploadReposnseSucceeded]);
 
-	const onChangeFileInput = (e: ChangeEvent<HTMLInputElement>) => {
-		handleFileChange(e);
-		panelReset();
+	const onChangeFileInput = async (e: ChangeEvent<HTMLInputElement>) => {
+		// setIsSymbolEdit(true);
+		if (isSymbolEdit) {
+			setConfirmationMessage('Are you certain you wish to proceed without saving your changes to the symbols');
+			setConfirmationButtons({ confirm: 'Save', cancel: 'Close' });
+			// @ts-ignore next-line
+			const isApproved = await getConfirmation();
+
+			if (isApproved && selectedSymbol) {
+				onUpdateDraftSymbol(selectedSymbol);
+				setIsSymbolEdit(false);
+				handleFileChange(e);
+			} else {
+				handleFileChange(e);
+				panelReset();
+				setIsSymbolEdit(false);
+			}
+		} else {
+			handleFileChange(e);
+			panelReset();
+		}
 	};
+
+	useEffect(() => {
+		if (isSvgFileLoading) setIsSymbolEdit(true);
+	}, [isSvgFileLoading]);
 
 	const onEditSymbol = async (symbol: SymbolsProps) => {
 		console.log('⚡️', 'onEditSymbol:', symbol);
 		console.log('⚡️', 'isSymbolEdit:', isSymbolEdit);
-
 		if (isSymbolEdit) {
 			setConfirmationMessage('Are you certain you wish to proceed without saving your changes to the symbols');
 			setConfirmationButtons({ confirm: 'Save', cancel: 'Close' });
@@ -351,6 +374,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 				// TODO: save svg
 				onUpdateDraftSymbol(selectedSymbol);
 				setIsSymbolEdit(false);
+				updtSymbol(symbol);
 			} else {
 				setIsSymbolEdit(false);
 				updtSymbol(symbol);
@@ -361,8 +385,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	};
 
 	const updtSymbol = (symbol: SymbolsProps) => {
-		setSelectedSymbol(symbol);
 		loadEditorCommand(symbol);
+		setSelectedSymbol(symbol);
 		setEnableReinitialize(true);
 
 		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
@@ -416,7 +440,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 		console.log('⚡️', 'onSubmitOnReview', isApproved);
 
-		setSelectedSymbol(symbol);
+		// setSelectedSymbol(symbol);
 
 		if (isApproved) onSubmitReview(symbol);
 	};
@@ -434,21 +458,21 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		if (symbolStatus === 'Review') {
 			setInformationMessage({
 				title: 'Thank you',
-				message: `Your symbol ${selectedSymbol?.key} has been submited for review`,
+				message: `Your symbol ${selectedSymbol?.key || ''} has been submited for review`,
 				appearance: 'success',
 			});
 		}
 		if (symbolStatus === 'Issued') {
 			setInformationMessage({
 				title: 'Thank you',
-				message: `Your symbol ${selectedSymbol?.key} has been approved`,
+				message: `Your symbol ${selectedSymbol?.key || ''} has been approved`,
 				appearance: 'success',
 			});
 		}
 		if (symbolStatus === 'Rejected') {
 			setInformationMessage({
 				title: 'Thank you',
-				message: `Your symbol ${selectedSymbol?.key} has been rejected`,
+				message: `Your symbol ${selectedSymbol?.key || ''} has been rejected`,
 				appearance: 'error',
 			});
 		}
@@ -456,6 +480,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onDeleteConfirmation = async (symbol: SymbolsProps) => {
 		setSelectedSymbol(symbol);
+		loadEditorCommand(symbol);
 		setConfirmationMessage('Are you sure you want to delete');
 
 		// @ts-ignore next-line
@@ -503,7 +528,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 		setInformationMessage({
 			title: 'Deleted',
-			message: `Symbol ${deleteSymbol?.key} was deleted`,
+			message: `Symbol ${deleteSymbol?.key || ''} was deleted`,
 			appearance: 'success',
 		});
 
@@ -627,7 +652,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		};
 	};
 
-	const removeConnector = () => {
+	const onRemoveConnector = () => {
 		if (!selectedSymbol || !selectedConnector) return;
 
 		setEnableReinitialize(true);
@@ -637,6 +662,33 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 		onChangeSymbolForDetail({ ...selectedSymbol, connectors: updatedConnectors });
 		setSelectedConnector(null);
+
+		return () => {
+			clearTimeout(timer);
+		};
+	};
+
+	const getNextQuickRotationOption = (targetNumber: number): number => {
+		const index = quickRotationOptions.findIndex((val) => val > targetNumber);
+
+		if (index !== -1) {
+			return quickRotationOptions[index];
+		}
+
+		return quickRotationOptions[0];
+	};
+
+	const onRotateConnector = () => {
+		if (!selectedSymbol || !selectedConnector) return;
+
+		setEnableReinitialize(true);
+		const timer = setTimeout(() => setEnableReinitialize(false), 1000);
+
+		const updatedConnectors = selectedSymbol.connectors.map((connector: SymbolConnector) =>
+			connector.id === selectedConnector.id ? { ...connector, direction: getNextQuickRotationOption(connector.direction) } : connector
+		);
+
+		onChangeSymbolForDetail({ ...selectedSymbol, connectors: updatedConnectors });
 
 		return () => {
 			clearTimeout(timer);
@@ -749,7 +801,12 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 									<IconButtonComponent name="lensPlus" onClick={addNewConnector} disabled={isReadyForReview(selectedSymbol)} />
 									<IconButtonComponent
 										name="lensMinus"
-										onClick={removeConnector}
+										onClick={onRemoveConnector}
+										disabled={isReadyForReview(selectedSymbol) || !selectedConnector}
+									/>
+									<IconButtonComponent
+										name="rotateTR"
+										onClick={onRotateConnector}
 										disabled={isReadyForReview(selectedSymbol) || !selectedConnector}
 									/>
 
