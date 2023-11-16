@@ -105,7 +105,7 @@ export const EditFormComponent: FunctionComponent<EditFormComponentProps> = ({
 													{!hasDisabled && (
 														<EditFromVarsStyled>
 															{quickRotationOptions.map((nr: number) => (
-																<button onClick={() => onQuickRotation(cnct, nr)} type="button">
+																<button key={nr} onClick={() => onQuickRotation(cnct, nr)} type="button">
 																	{nr}
 																</button>
 															))}
