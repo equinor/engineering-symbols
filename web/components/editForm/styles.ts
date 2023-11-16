@@ -19,6 +19,7 @@ export const EditFromElementStyled = styled.div`
 	// grid-template-rows: 40px 10px;
 	// grid-template-columns: 110px 1fr;
 	padding-bottom: 1rem;
+	position: relative;
 
 	label {
 		display: flex;
@@ -56,28 +57,50 @@ export const EditFromAddConnectorButton = styled.div`
 	}
 `;
 
+export const EditFromVarsStyled = styled.div`
+	position: absolute;
+	top: 27px;
+	right: 5px;
+
+	button {
+		margin: 0 0 0 6px;
+		cursor: pointer;
+		width: 32px;
+		appearance: none;
+		padding: 5px;
+		background-color: ${({ theme }) => theme.backgroundGrey};
+		color: ${({ theme }) => theme.text};
+		font-size: 13px;
+		border: none;
+		border-radius: 5px;
+		transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+
+		&:hover {
+			transform: translateY(-2px);
+		}
+
+		&:active {
+			background-color: ${({ theme }) => theme.textBlackGrey};
+			color: ${({ theme }) => theme.textWhite};
+		}
+	}
+`;
+
 export const EditFromElementsStyled = styled.div<EditFromElementsProps>`
 	/* padding: 0 0 2rem; */
 	padding: 0.5rem 0;
 	margin: 0.5rem 0;
 	position: relative;
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(2, 1fr);
 	/* grid-template-rows: repeat(4, 1fr); */
 	grid-column-gap: 10px;
 	grid-row-gap: 0;
 
 	& > * {
-		grid-column: span 3;
+		grid-column: span 2;
 
-		&:nth-child(2) {
-			grid-column: span 1;
-		}
-
-		&:nth-child(3) {
-			grid-column: span 1;
-		}
-
+		&:nth-child(3),
 		&:nth-child(4) {
 			grid-column: span 1;
 		}

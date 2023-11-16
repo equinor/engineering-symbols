@@ -5,10 +5,10 @@ import { loginRequest } from '../../utils/authConfig';
 import Add from '../../svg/grid-add.svg';
 import Minus from '../../svg/grid-minus.svg';
 
-import { SignButtonStyled } from './styles';
+import { SignButtonNoteStyled, SignButtonStyled, SignButtonWrapperStyled } from './styles';
 
 export const SignButtonComponent = () => {
-	const { instance, inProgress } = useMsal();
+	const { instance, accounts, inProgress } = useMsal();
 
 	const user = instance.getActiveAccount();
 
@@ -29,9 +29,22 @@ export const SignButtonComponent = () => {
 	};
 
 	return (
-		<SignButtonStyled onClick={() => handleLogin()}>
-			{isAuthenticated ? <Minus /> : <Add />}
-			{/* {isAuthenticated ? <><Cancel /><p>Logout</p></> : <><Flas /><p>Add symbols</p></>} */}
-		</SignButtonStyled>
+		<SignButtonWrapperStyled>
+			{isAuthenticated ? (
+				<>
+					<SignButtonNoteStyled>{accounts.length === 1 && accounts[0].name}</SignButtonNoteStyled>
+					<SignButtonStyled onClick={() => handleLogin()}>
+						<Minus />
+					</SignButtonStyled>
+				</>
+			) : (
+				<SignButtonStyled onClick={() => handleLogin()}>
+					<SignButtonNoteStyled>Login </SignButtonNoteStyled>
+					<>
+						<Add />
+					</>
+				</SignButtonStyled>
+			)}
+		</SignButtonWrapperStyled>
 	);
 };

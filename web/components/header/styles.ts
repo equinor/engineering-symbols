@@ -110,16 +110,6 @@ export const NavStyledListItem = styled.li<NavStyledListItemProps>`
 	}
 `;
 
-export const HeaderNoteStyled = styled.div`
-	font-size: 14px;
-	line-height: 2;
-	padding: 0 3rem 0 0;
-
-	@media screen and (max-width: 1024px) {
-		display: none;
-	}
-`;
-
 export const BurgerWrapStyled = styled.div<MenuStateProps>`
 	cursor: pointer;
 	z-index: 10;

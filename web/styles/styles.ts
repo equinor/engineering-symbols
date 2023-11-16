@@ -417,12 +417,13 @@ export const FooterLicenseStyled = styled.div`
 
 /* Page */
 export const ContainerStyled = styled.div`
-	max-width: 1440px;
+	max-width: 1640px;
 	width: 100%;
+	padding: 0 1rem;
 	margin: 0 auto;
 
 	@media screen and (max-width: 1440px) {
-		padding: 0 3.5rem;
+		padding: 0 1.5rem;
 	}
 `;
 
