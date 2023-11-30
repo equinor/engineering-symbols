@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState, useRef } from 'react';
 
 import {
 	ConfirmationCloseButtonStyled,
@@ -10,20 +10,28 @@ import {
 	ConfirmationStyled,
 } from './styles';
 
+import { useOnClickOutside } from '../../helpers';
+
 import { ButtonComponent } from '../button';
 import { SymbolsProps } from '../../types';
 
 import Close from '../../svg/close.svg';
 
-type useConfirmProps = {
+export interface useConfirmProps extends ConfirmationModuleProps {
 	symbol: SymbolsProps | null | undefined;
+}
+
+export type ConfirmationModuleProps = {
+	title?: string;
 	message: string;
 	buttons?: { confirm: string; cancel: string } | null;
 };
 
-export const useConfirm = ({ symbol, message, buttons }: useConfirmProps) => {
+export const useConfirm = ({ symbol, message, buttons, title }: useConfirmProps) => {
 	const [open, setOpen] = useState(false);
 	const [resolver, setResolver] = useState<any>({ resolve: null });
+
+	const confirmationRef = useRef(null);
 
 	const onHandle = async (status: boolean) => {
 		setOpen(false);
@@ -58,14 +66,16 @@ export const useConfirm = ({ symbol, message, buttons }: useConfirmProps) => {
 		return promise;
 	};
 
+	useOnClickOutside(confirmationRef, () => open && onHandleClose());
+
 	const ConfirmationComponent: FunctionComponent = () => (
-		<ConfirmationStyled isShow={open}>
+		<ConfirmationStyled isShow={open} ref={confirmationRef}>
 			<ConfirmationCustomizeStyled>
 				<ConfirmationCloseButtonStyled onClick={() => onHandleClose()}>
 					<Close />
 				</ConfirmationCloseButtonStyled>
 				<ConfirmationWrapStyled>
-					<ConfirmationTitleStyled>Conformation</ConfirmationTitleStyled>
+					<ConfirmationTitleStyled>{title ?? 'Confirmation'}</ConfirmationTitleStyled>
 					<ConfirmationContentStyled>
 						{message} <strong>{symbol && symbol.key}</strong>?
 					</ConfirmationContentStyled>

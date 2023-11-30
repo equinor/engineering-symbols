@@ -148,7 +148,7 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 				<PreviewCloseButtonStyled onClick={() => setPreviewShow(false)}>
 					<Close />
 				</PreviewCloseButtonStyled>
-				<PreviewWrapStyled>
+				<PreviewWrapStyled hasConnectors={hasConnectors}>
 					<PreviewImageWrapStyled>
 						<PreviewImageStyled ref={svgRef} rotate={rotate}>
 							<SvgComponent
@@ -183,9 +183,11 @@ export const PreviewComponent: React.FunctionComponent<PreviewComponentProps> = 
 										</AnnotationWrapStyled>
 									);
 								})}
-							<ButtonComponent size="s" onClick={() => setPresentConnectors(!presentConnectors)}>
-								Connectors {!presentConnectors ? 'on' : 'off'}
-							</ButtonComponent>
+							{hasConnectors && (
+								<ButtonComponent size="s" onClick={() => setPresentConnectors(!presentConnectors)}>
+									Connectors {!presentConnectors ? 'on' : 'off'}
+								</ButtonComponent>
+							)}
 						</PreviewImageStyled>
 					</PreviewImageWrapStyled>
 				</PreviewWrapStyled>

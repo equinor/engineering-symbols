@@ -10,13 +10,28 @@ type IconButtonProps = {
 	name: IconName;
 };
 
-export type IconName = 'lensMinus' | 'lensPlus' | 'zoomOut' | 'zoomIn' | 'face3d' | 'wrench' | 'floppyDisk' | 'xmark' | 'list' | 'input' | 'rotateTR';
+export type IconName =
+	| 'lensMinus'
+	| 'lensPlus'
+	| 'zoomOut'
+	| 'zoomIn'
+	| 'face3d'
+	| 'wrench'
+	| 'floppyDisk'
+	| 'xmark'
+	| 'list'
+	| 'input'
+	| 'rotateTR'
+	| 'sideRight'
+	| 'sideLeft';
 
 export type SvgBaseProps = SVGAttributes<SVGElement>;
 
 const components: Record<IconName, ComponentType<SvgBaseProps>> = {
 	floppyDisk: Icons.FloppyDisk,
 	lensMinus: Icons.LensMinus,
+	sideRight: Icons.SideRight,
+	sideLeft: Icons.SideLeft,
 	rotateTR: Icons.RotateTR,
 	lensPlus: Icons.LensPlus,
 	zoomOut: Icons.ZoomOut,

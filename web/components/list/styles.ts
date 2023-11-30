@@ -143,7 +143,7 @@ export const SymbolsFilterWrapperStyled = styled.div`
 `;
 
 export const SymbolsFilterLabelStyled = styled.div<SymbolsFilterProps>`
-	margin: 0 0.3rem;
+	margin: 0 0.55rem 0 0;
 	font-family: 'Equinor';
 	appearance: none;
 	border: none;

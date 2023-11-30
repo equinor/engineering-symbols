@@ -91,8 +91,24 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 	// 	seIcnsByCategory(res as IconByCategoryProps[]);
 	// }, [icns]);
 
+	const sortSymbolsQuery = () => {
+		const sortedData = [...symbolsQuery].sort((a, b) => {
+			// First, sort by name
+			if (a.key < b.key) return -1;
+			if (a.key > b.key) return 1;
+
+			// If names are the same, sort by version
+			if (a.version < b.version) return -1;
+			if (a.version > b.version) return 1;
+
+			return 0;
+		});
+
+		seIcns(sortedData);
+	};
+
 	useEffect(() => {
-		seIcns(symbolsQuery);
+		sortSymbolsQuery();
 	}, [symbolsQuery]);
 
 	// const onSelectedCategory = (val: string) => {
