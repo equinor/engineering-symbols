@@ -16,7 +16,7 @@ import {
 	useConfirm,
 } from '../../components';
 
-import { isStatusDraft, isStatusPublished, isStatusReadyForReview, isStatusRejected, useAdminUserRole, useFileUpload } from '../../helpers';
+import { isStatusDraft, isStatusIssued, isStatusReview, isStatusRejected, useAdminUserRole, useFileUpload } from '../../helpers';
 
 import { EditPageProps, StatusProps, SymbolsProps, FilterStatusProps } from '../../types';
 
@@ -57,7 +57,7 @@ import { ConfirmationModuleProps, useConfirmProps } from '../../components/confi
 
 export type DefaultStatusesTypes = {
 	all: boolean;
-	ready: boolean;
+	review: boolean;
 	draft: boolean;
 	reject: boolean;
 	issued: boolean;
@@ -93,7 +93,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const DEFAULT_STATUSES: DefaultStatusesTypes = {
 		all: true,
-		ready: false,
+		review: false,
 		draft: false,
 		reject: false,
 		issued: false,
@@ -175,7 +175,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const isAdmin = useAdminUserRole();
 
-	const isReadyForReview = (symbol: SymbolsProps) => isAdmin && isStatusReadyForReview(symbol);
+	const isReadyForReview = (symbol: SymbolsProps) => isAdmin && isStatusReview(symbol);
 
 	// const refreshMangeSymbolsQuery = () => setTimeout(() => getManageSymbolsQueryAction.run(), 1000);
 	const refreshMangeSymbolsQuery = () => setTimeout(() => getManageSymbolsQueryAction.run(), 500);
@@ -576,7 +576,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	// const getSymbolVersion = ({ key, id }: SymbolsProps) => {
 	// 	if (manageSymbolsQuery.length <= 0) return 1;
 
-	// 	const filteredManageSymbols = manageSymbolsQuery.filter((sbl: SymbolsProps) => sbl.key === key && isStatusPublished(sbl));
+	// 	const filteredManageSymbols = manageSymbolsQuery.filter((sbl: SymbolsProps) => sbl.key === key && isStatusIssued(sbl));
 
 	// 	filteredManageSymbols.sort(
 	// 		// @ts-ignore next-line
@@ -734,7 +734,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const onZoom = (data: number) => setEditorCommands([{ type: 'Settings', action: 'ZoomInOrOut', data }]);
 
 	const sortSymbolsQuery = () => {
-		const sortedData = [...getSymbolsQueryWithStatusFilter()].sort((a, b) => {
+		const sortedData = getSymbolsQueryWithStatusFilter().sort((a: SymbolsProps, b: SymbolsProps) => {
 			// First, sort by status
 			const statusPriority: { [key in StatusProps]: number } = {
 				Draft: 1,
@@ -747,8 +747,8 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 			if (statusPriority[a.status] > statusPriority[b.status]) return 1;
 
 			// If statuses are the same, sort by name
-			if (a.name < b.name) return -1;
-			if (a.name > b.name) return 1;
+			if (a.key < b.key) return -1;
+			if (a.key > b.key) return 1;
 
 			// If names are the same, sort by version
 			if (a.version < b.version) return -1;
@@ -775,11 +775,11 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 		const val = !!searchingValue ? symbolsBySearch : manageSymbolsQuery;
 
-		return val.filter((symbol: any) => {
+		return val.filter((symbol: SymbolsProps) => {
 			const dr = statuses.draft && isStatusDraft(symbol);
-			const rd = statuses.ready && isStatusReadyForReview(symbol);
+			const rd = statuses.review && isStatusReview(symbol);
 			const rj = statuses.reject && isStatusRejected(symbol);
-			const pb = statuses.issued && isStatusPublished(symbol);
+			const pb = statuses.issued && isStatusIssued(symbol);
 
 			return dr || rd || rj || pb;
 		});

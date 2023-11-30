@@ -44,14 +44,14 @@ export type RunEditorCommandProps = {
 	action: 'Update' | 'Load' | 'New';
 };
 
-export type StatusProps = 'Draft' | 'Review' | 'Review' | 'Issued' | 'Rejected' | number;
+export type StatusProps = 'Draft' | 'Review' | 'Issued' | 'Rejected' | number;
 
-export type FilterStatusProps = 'draft' | 'ready' | 'draft' | 'reject' | 'all';
+export type FilterStatusProps = 'draft' | 'review' | 'draft' | 'reject' | 'all' | 'issued';
 
 export interface SymbolsProps extends SymbolsDefaultProps {
 	key: string;
 	iri: string;
-	status?: StatusProps;
+	status: StatusProps;
 	version: number;
 	creators?: string;
 	description?: string;

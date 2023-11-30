@@ -5,7 +5,7 @@ import { DebouncedState } from 'use-debounce';
 import { WeatherLoader } from '../weatherLoader';
 import { SymbolElement } from '../symbolElement';
 
-import { isStatusDraft, isStatusRejected, isStatusPublished, isStatusReadyForReview } from '../../helpers';
+import { isStatusDraft, isStatusRejected, isStatusIssued, isStatusReview } from '../../helpers';
 
 import {
 	SymbolsFilterWrapperStyled,
@@ -59,15 +59,15 @@ export const ListComponent: FunctionComponent<ListComponentProps> = ({
 
 	const symbolMeny = (symbol: SymbolsProps) => [
 		{
-			name: isStatusDraft(symbol) ? 'Edit' : isStatusReadyForReview(symbol) ? 'View' : 'Revise',
-			action: () => (isStatusDraft(symbol) ? onUpdate(symbol) : isStatusReadyForReview(symbol) ? onShow(symbol) : onEdit(symbol)),
-			// isDisabled: !isStatusReadyForReview(symbol) && !isAdmin,
-			// isDisabled: isStatusDraft(symbol) ? false : isStatusReadyForReview(symbol) ? !isAdmin : false,
+			name: isStatusDraft(symbol) ? 'Edit' : isStatusReview(symbol) ? 'View' : 'Revise',
+			action: () => (isStatusDraft(symbol) ? onUpdate(symbol) : isStatusReview(symbol) ? onShow(symbol) : onEdit(symbol)),
+			// isDisabled: !isStatusReview(symbol) && !isAdmin,
+			// isDisabled: isStatusDraft(symbol) ? false : isStatusReview(symbol) ? !isAdmin : false,
 		},
 		{
-			name: isStatusReadyForReview(symbol) ? 'Review' : 'Submit for review',
-			action: () => (isStatusReadyForReview(symbol) ? onReview(symbol) : onSubmit(symbol)),
-			isDisabled: !isStatusDraft(symbol) && !isStatusReadyForReview(symbol),
+			name: isStatusReview(symbol) ? 'Review' : 'Submit for review',
+			action: () => (isStatusReview(symbol) ? onReview(symbol) : onSubmit(symbol)),
+			isDisabled: !isStatusDraft(symbol) && !isStatusReview(symbol),
 		},
 		{
 			name: 'Delete',
@@ -77,7 +77,7 @@ export const ListComponent: FunctionComponent<ListComponentProps> = ({
 	];
 
 	const getChipsStatus = (symbol: SymbolsProps) => {
-		if (isStatusPublished(symbol)) {
+		if (isStatusIssued(symbol)) {
 			return symbol.version;
 		} else {
 			return symbol.status;
@@ -100,8 +100,8 @@ export const ListComponent: FunctionComponent<ListComponentProps> = ({
 						<input type="checkbox" checked={statuses.issued} onChange={() => handleCheckboxChange('issued')} />
 						Issued
 					</SymbolsFilterLabelStyled>
-					<SymbolsFilterLabelStyled checked={statuses.ready}>
-						<input type="checkbox" checked={statuses.ready} onChange={() => handleCheckboxChange('ready')} />
+					<SymbolsFilterLabelStyled checked={statuses.review}>
+						<input type="checkbox" checked={statuses.review} onChange={() => handleCheckboxChange('review')} />
 						Review
 					</SymbolsFilterLabelStyled>
 					<SymbolsFilterLabelStyled checked={statuses.draft}>
