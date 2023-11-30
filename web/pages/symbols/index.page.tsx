@@ -94,8 +94,8 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 	const sortSymbolsQuery = () => {
 		const sortedData = [...symbolsQuery].sort((a, b) => {
 			// First, sort by name
-			if (a.name < b.name) return -1;
-			if (a.name > b.name) return 1;
+			if (a.key < b.key) return -1;
+			if (a.key > b.key) return 1;
 
 			// If names are the same, sort by version
 			if (a.version < b.version) return -1;

@@ -734,7 +734,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const onZoom = (data: number) => setEditorCommands([{ type: 'Settings', action: 'ZoomInOrOut', data }]);
 
 	const sortSymbolsQuery = () => {
-		const sortedData = getSymbolsQueryWithStatusFilter().sort((a: SymbolsProps, b: SymbolsProps) => {
+		const sortedData = [...getSymbolsQueryWithStatusFilter()].sort((a: SymbolsProps, b: SymbolsProps) => {
 			// First, sort by status
 			const statusPriority: { [key in StatusProps]: number } = {
 				Draft: 1,
