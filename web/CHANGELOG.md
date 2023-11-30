@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.7.14](https://github.com/equinor/engineering-symbols/compare/web-v1.7.13...web-v1.7.14) (2023-11-30)
+
+
+### Miscellaneous Chores
+
+* Improvements ([#799](https://github.com/equinor/engineering-symbols/issues/799)) ([de768f3](https://github.com/equinor/engineering-symbols/commit/de768f3168500a9a3c4ea1486f4b31d28afb764e))
+
+
+### Bump package
+
+* **web:** bump @equinor/eds-core-react from 0.33.1 to 0.34.0 in /web ([#791](https://github.com/equinor/engineering-symbols/issues/791)) ([41adf51](https://github.com/equinor/engineering-symbols/commit/41adf51c88df84c86d1707d0a2811875757ca047))
+* **web:** bump @next/mdx from 14.0.1 to 14.0.3 in /web ([#792](https://github.com/equinor/engineering-symbols/issues/792)) ([3a53cf3](https://github.com/equinor/engineering-symbols/commit/3a53cf396ee280c6625652ecb086da0a9b25c9f3))
+* **web:** bump @types/node from 20.8.0 to 20.9.2 in /web ([#784](https://github.com/equinor/engineering-symbols/issues/784)) ([5d2f478](https://github.com/equinor/engineering-symbols/commit/5d2f478c1be81fa2feb0b1654aa596413bf9350c))
+* **web:** bump @types/react-copy-to-clipboard in /web ([#793](https://github.com/equinor/engineering-symbols/issues/793)) ([cec29a8](https://github.com/equinor/engineering-symbols/commit/cec29a836d7e07b94ffc64453a1a135d3b83e480))
+* **web:** bump @types/react-dom from 18.2.15 to 18.2.17 in /web ([#794](https://github.com/equinor/engineering-symbols/issues/794)) ([6a281b6](https://github.com/equinor/engineering-symbols/commit/6a281b6e95a33423804b443757bcefd42a9de586))
+* **web:** bump axios from 1.6.1 to 1.6.2 in /web ([#783](https://github.com/equinor/engineering-symbols/issues/783)) ([cf2b678](https://github.com/equinor/engineering-symbols/commit/cf2b678add9cb44f46a175c1ecea94d2c063d24b))
+* **web:** bump eslint from 8.52.0 to 8.54.0 in /web ([#786](https://github.com/equinor/engineering-symbols/issues/786)) ([b2973ab](https://github.com/equinor/engineering-symbols/commit/b2973ab714c585a85084dda3b4fb9fdd210ff129))
+* **web:** bump eslint-config-next from 14.0.2 to 14.0.3 in /web ([#785](https://github.com/equinor/engineering-symbols/issues/785)) ([975a5b1](https://github.com/equinor/engineering-symbols/commit/975a5b1ccadca97e6dec8f5e7fb3ab634e682c67))
+* **web:** bump next from 14.0.1 to 14.0.3 in /web ([#787](https://github.com/equinor/engineering-symbols/issues/787)) ([5f48232](https://github.com/equinor/engineering-symbols/commit/5f48232f26d399b96b2f28e5c46e87790009d456))
+* **web:** bump styled-components from 6.1.0 to 6.1.1 in /web ([#790](https://github.com/equinor/engineering-symbols/issues/790)) ([6069594](https://github.com/equinor/engineering-symbols/commit/60695948a5d2c9a3775c0266ae405dfcd88228cf))
+
 ## [1.7.13](https://github.com/equinor/engineering-symbols/compare/web-v1.7.12...web-v1.7.13) (2023-11-16)
 
 
