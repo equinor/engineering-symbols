@@ -1,6 +1,7 @@
-import React, { useRef, useState, ChangeEvent, useEffect, useReducer } from 'react';
+import React, { useRef, useState, useEffect, useReducer, useCallback } from 'react';
 import { AuthenticatedTemplate } from '@azure/msal-react';
 import { useDebouncedCallback } from 'use-debounce';
+import { useDropzone } from 'react-dropzone';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
@@ -30,6 +31,8 @@ import {
 	LogoWrapperStyled,
 	PanelActionsStyled,
 	PanelFormActionsStyled,
+	LogoTopTextStyled,
+	OnDropStyled,
 } from './styles';
 import { ContainerStyled } from '../../styles/styles';
 
@@ -269,7 +272,13 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		}
 	}, [finishUpdateSymbolQuery, isSymbolUploadReposnseSucceeded]);
 
-	const onChangeFileInput = async (e: ChangeEvent<HTMLInputElement>) => {
+	const onDrop = useCallback((acceptedFiles: (File | null)[]) => {
+		onChangeFileInput(acceptedFiles[0]);
+	}, []);
+
+	const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+	const onChangeFileInput = async (file: File | null) => {
 		// setIsSymbolEdit(true);
 		if (isSymbolEdit) {
 			setConfirmationModuleDetails({
@@ -282,14 +291,14 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 			if (isApproved && selectedSymbol) {
 				onUpdateDraftSymbol(selectedSymbol);
 				setIsSymbolEdit(false);
-				handleFileChange(e);
+				handleFileChange(file);
 			} else {
-				handleFileChange(e);
+				handleFileChange(file);
 				panelReset();
 				setIsSymbolEdit(false);
 			}
 		} else {
-			handleFileChange(e);
+			handleFileChange(file);
 			panelReset();
 		}
 	};
@@ -838,15 +847,25 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						{isSvgFileLoading && <WeatherLoader />}
 
 						<PanelPresentationContentStyled>
-							{!!selectedSymbol ? (
-								<SymbolEditor editorEventHandler={onEditorEvent} commands={editorCommands} />
-							) : (
-								<LogoWrapperStyled>
-									<Cat />
-									{/* <LogoComponent fill="backgroundGrey" /> */}
-									<p>Engineering symbols</p>
-								</LogoWrapperStyled>
-							)}
+							<OnDropStyled {...getRootProps()}>
+								<input {...getInputProps()} />
+								{isDragActive ? (
+									<LogoWrapperStyled>
+										<i>Drop the files here ...</i>
+									</LogoWrapperStyled>
+								) : !!selectedSymbol ? (
+									<SymbolEditor editorEventHandler={onEditorEvent} commands={editorCommands} />
+								) : (
+									<LogoWrapperStyled>
+										<LogoTopTextStyled>
+											<Cat />
+											{/* <LogoComponent fill="backgroundGrey" /> */}
+											<p>Engineering symbols</p>
+										</LogoTopTextStyled>
+										<i>Drag 'n' drop SVG symbol here, or click to select file</i>
+									</LogoWrapperStyled>
+								)}
+							</OnDropStyled>
 						</PanelPresentationContentStyled>
 
 						{finishManageSymbolsQuery && selectedSymbol && (

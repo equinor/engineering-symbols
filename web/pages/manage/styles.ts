@@ -22,6 +22,20 @@ export const PanelPresentationStyled = styled.div`
 	position: relative;
 `;
 
+export const OnDropStyled = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+`;
+
+export const LogoTopTextStyled = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+`;
+
 export const LogoWrapperStyled = styled.div`
 	display: flex;
 	align-items: center;
@@ -32,10 +46,22 @@ export const LogoWrapperStyled = styled.div`
 	transform: translate(-50%, -50%);
 	opacity: 0.1;
 	user-select: none;
+	flex-direction: column;
 
 	p {
+		display: block;
 		font-family: 'Equinor';
 		font-size: 75px;
+		padding: 0 0 0 0.3rem;
+		font-weight: 600;
+		white-space: nowrap;
+		color: ${({ theme }) => theme.text};
+	}
+
+	i {
+		display: block;
+		font-family: 'Equinor';
+		font-size: 35px;
 		padding: 0 0 0 0.3rem;
 		font-weight: 600;
 		white-space: nowrap;

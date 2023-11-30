@@ -11,28 +11,10 @@ import { NoResultComponent, PreviewComponent, SymbolElement } from '../../compon
 
 import { SymbolsPageProps, IconProps, SymbolsProps } from '../../types';
 
-import { SymbolSelectWrapperStyled, SymbolInputsWrapperStyled, SymbolsContainerStyled, SymbolsHeaderStyled, SymbolsListStyled } from './styles';
+import { SymbolSelectWrapperStyled, SymbolInputsWrapperStyled, SymbolsContainerStyled, SymbolsListStyled } from './styles';
 
-// import symbols from '../../data/symbols.json';
 import { ContainerStyled } from '../../styles/styles';
 import { SymbolsStore, getSymbolsQueryAction } from '../../store';
-
-// From object to array
-// const arrayIcons = Object.entries(lib).map(([name, obj]) => ({ name, ...obj }));
-// Categories
-// ALL WORDS ARE UPPERCASE (temp.)
-const FIXTURE_CATEGORIES = ['Party', 'Superheroes', 'Circulation', 'Pool Party', 'Coachella', 'Isolation', 'Rainbow', 'Pop Art', 'Disco', 'Duck'];
-// Only for list of the names
-// const iconNames = Object.entries(symbols).map(([name]) => ({ name }));
-// const icons = symbols.map(({ key, geometry, ...rest }) => ({
-// 	key,
-// 	// category: FIXTURE_CATEGORIES[Math.floor(Math.random() * (9 - 1))],
-// 	category: FIXTURE_CATEGORIES[Math.floor(Math.random() * (9 + 1))],
-// 	paths: geometry,
-// 	...rest,
-// }));
-// Merge arrays based on same name key to have category value inside
-// const icons = symbols.map((v) => ({ ...v, ...iconNamesWithCategories.find((sp) => sp.name === v.key) }));
 
 const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 	const { symbolsQuery } = SymbolsStore.useState();
@@ -72,25 +54,6 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 		}
 	};
 
-	// useEffect(() => {
-	// 	// if (icns.length <= 0) return;
-	// 	if (icns.length <= 0) seIcnsByCategory([]);
-
-	// 	const res = Object.values(
-	// 		// @ts-ignore
-	// 		icns.reduce((acc: IconByCategoryProps[], { category, ...rest }: IconProps) => {
-	// 			// @ts-ignore
-	// 			acc[category] = acc[category] || { category, icons: [] };
-	// 			// @ts-ignore
-	// 			acc[category].icons.push(rest);
-
-	// 			return acc;
-	// 		}, {})
-	// 	);
-
-	// 	seIcnsByCategory(res as IconByCategoryProps[]);
-	// }, [icns]);
-
 	const sortSymbolsQuery = () => {
 		const sortedData = [...symbolsQuery].sort((a, b) => {
 			// First, sort by name
@@ -110,27 +73,6 @@ const Symbols: NextPage<SymbolsPageProps> = ({ theme }) => {
 	useEffect(() => {
 		sortSymbolsQuery();
 	}, [symbolsQuery]);
-
-	// const onSelectedCategory = (val: string) => {
-	// 	if (!val || val === 'All') {
-	// 		seIcns(icons);
-	// 		setSelectedCategory('All');
-	// 	} else {
-	// 		const searchedValue = icons.filter(({ category }) => category === val);
-
-	// 		setSelectedCategory(val);
-	// 		seIcns(searchedValue);
-	// 	}
-	// };
-
-	const onSelectedCategory = (val: string) => {
-		// if (val) {
-		// 	router.push(`#${val}`);
-		// } else {
-		// 	router.push('');
-		// 	window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-		// }
-	};
 
 	const onSelectSymbol = (selectedName?: string) => {
 		const selected = symbolsQuery.filter(({ key }: any) => key === selectedName)[0];
