@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/equinor/engineering-symbols/compare/web-v1.7.14...web-v1.8.0) (2023-11-30)
+
+
+### Features
+
+* Drag&Drop ([#801](https://github.com/equinor/engineering-symbols/issues/801)) ([5c79c2f](https://github.com/equinor/engineering-symbols/commit/5c79c2f87e5ffa0a068d90f793498203ba47d176))
+
 ## [1.7.14](https://github.com/equinor/engineering-symbols/compare/web-v1.7.13...web-v1.7.14) (2023-11-30)
 
 
