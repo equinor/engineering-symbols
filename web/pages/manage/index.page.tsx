@@ -862,7 +862,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 											{/* <LogoComponent fill="backgroundGrey" /> */}
 											<p>Engineering symbols</p>
 										</LogoTopTextStyled>
-										<i>Drag 'n' drop SVG symbol here, or click to select file</i>
+										<i>Drag & drop SVG symbol here, or click to select file</i>
 									</LogoWrapperStyled>
 								)}
 							</OnDropStyled>
