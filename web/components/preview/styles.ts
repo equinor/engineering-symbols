@@ -15,6 +15,10 @@ interface PreviewStyledProps {
 	isShow: boolean;
 }
 
+interface PreviewWrapStyledProps {
+	hasConnectors: boolean;
+}
+
 interface PreviewImageStyledProps {
 	rotate: number;
 }
@@ -78,12 +82,13 @@ export const PreviewCloseButtonStyled = styled.button`
 	}
 `;
 
-export const PreviewWrapStyled = styled.div`
+export const PreviewWrapStyled = styled.div<PreviewWrapStyledProps>`
 	padding: 2rem;
 	width: 25.5rem;
 	display: flex;
 	flex-direction: column;
 	position: relative;
+	justify-content: ${({ hasConnectors }) => (!hasConnectors ? 'center' : 'normal')};
 
 	button {
 		margin: 2rem auto 0;

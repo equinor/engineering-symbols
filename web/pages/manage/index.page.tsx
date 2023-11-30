@@ -16,7 +16,7 @@ import {
 	useConfirm,
 } from '../../components';
 
-import { isStatusDraft, isStatusReadyForReview, isStatusRejected, useAdminUserRole, useFileUpload } from '../../helpers';
+import { isStatusDraft, isStatusPublished, isStatusReadyForReview, isStatusRejected, useAdminUserRole, useFileUpload } from '../../helpers';
 
 import { EditPageProps, StatusProps, SymbolsProps, FilterStatusProps } from '../../types';
 
@@ -45,6 +45,7 @@ import {
 
 import { EditorCommandMessage, SymbolConnector, SymbolEditor, SymbolEditorEvent } from '../../components/symbolEditor';
 import { quickRotationOptions } from '../../components/editForm/EditForm';
+import { ConfirmationModuleProps, useConfirmProps } from '../../components/confirmation/Confirmation';
 
 // const icons = allSymbols.map(({ key, geometry, ...rest }) => ({
 // 	key,
@@ -59,11 +60,11 @@ export type DefaultStatusesTypes = {
 	ready: boolean;
 	draft: boolean;
 	reject: boolean;
+	issued: boolean;
 };
 
 const Edit: NextPage<EditPageProps> = ({ theme }) => {
-	const [confirmationMessage, setConfirmationMessage] = useState('');
-	const [confirmationButtons, setConfirmationButtons] = useState<{ confirm: string; cancel: string } | null>(null);
+	const [confirmationModuleDetails, setConfirmationModuleDetails] = useState<ConfirmationModuleProps | {}>({});
 
 	const [informationMessage, setInformationMessage] = useState<InformationComponentTypes>();
 
@@ -95,6 +96,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		ready: false,
 		draft: false,
 		reject: false,
+		issued: false,
 	};
 
 	const [statuses, setStatuses] = useState(DEFAULT_STATUSES);
@@ -105,10 +107,9 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const fileInputRef = useRef<HTMLInputElement>();
 
 	const [getConfirmation, ConfirmationComponent] = useConfirm({
+		...confirmationModuleDetails,
 		symbol: selectedSymbol,
-		message: confirmationMessage,
-		buttons: confirmationButtons,
-	});
+	} as useConfirmProps);
 
 	const panelReset = () => {
 		setSelectedSymbol(null);
@@ -118,8 +119,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onPanelReset = async () => {
 		if (isSymbolEdit) {
-			setConfirmationMessage('Are you certain you wish to proceed without saving your changes to the symbols');
-			setConfirmationButtons({ confirm: 'Save', cancel: 'Close' });
+			setConfirmationModuleDetails({
+				message: 'Are you certain you wish to proceed without saving your changes to the symbols',
+				buttons: { confirm: 'Save', cancel: 'Close' },
+			});
 			// @ts-ignore next-line
 			const isApproved = await getConfirmation();
 
@@ -148,6 +151,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	} = ManageSymbolsStore.useState();
 
 	const [icns, seIcns] = useState<SymbolsProps[] | []>([]);
+	const [symbolsBySearch, setSymbolsBySearch] = useState<SymbolsProps[] | []>([]);
 
 	const [finishManageSymbolsQuery] = getManageSymbolsQueryAction.useBeckon();
 	const [finishUpdateManageSymbol] = updateManageSymbolAction.useBeckon({ symbol: updateSymbol });
@@ -268,8 +272,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const onChangeFileInput = async (e: ChangeEvent<HTMLInputElement>) => {
 		// setIsSymbolEdit(true);
 		if (isSymbolEdit) {
-			setConfirmationMessage('Are you certain you wish to proceed without saving your changes to the symbols');
-			setConfirmationButtons({ confirm: 'Save', cancel: 'Close' });
+			setConfirmationModuleDetails({
+				message: 'Are you certain you wish to proceed without saving your changes to the symbols',
+				buttons: { confirm: 'Save', cancel: 'Close' },
+			});
 			// @ts-ignore next-line
 			const isApproved = await getConfirmation();
 
@@ -296,8 +302,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		console.log('⚡️', 'onEditSymbol:', symbol);
 		console.log('⚡️', 'isSymbolEdit:', isSymbolEdit);
 		if (isSymbolEdit) {
-			setConfirmationMessage('Are you certain you wish to proceed without saving your changes to the symbols');
-			setConfirmationButtons({ confirm: 'Save', cancel: 'Close' });
+			setConfirmationModuleDetails({
+				message: 'Are you certain you wish to proceed without saving your changes to the symbols',
+				buttons: { confirm: 'Save', cancel: 'Close' },
+			});
 			// @ts-ignore next-line
 			const isApproved = await getConfirmation();
 
@@ -333,8 +341,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		console.log('⚡️', 'onShowSymbol:', symbol);
 
 		if (isSymbolEdit) {
-			setConfirmationMessage('Are you certain you wish to proceed without saving your changes to the symbols');
-			setConfirmationButtons({ confirm: 'Save', cancel: 'Close' });
+			setConfirmationModuleDetails({
+				message: 'Are you certain you wish to proceed without saving your changes to the symbols',
+				buttons: { confirm: 'Save', cancel: 'Close' },
+			});
 			// @ts-ignore next-line
 			const isApproved = await getConfirmation();
 
@@ -365,8 +375,10 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 		console.log('⚡️', 'onUpdateSymbol:', symbol);
 
 		if (isSymbolEdit) {
-			setConfirmationMessage('Are you certain you wish to proceed without saving your changes to the symbols');
-			setConfirmationButtons({ confirm: 'Save', cancel: 'Close' });
+			setConfirmationModuleDetails({
+				message: 'Are you certain you wish to proceed without saving your changes to the symbols',
+				buttons: { confirm: 'Save', cancel: 'Close' },
+			});
 			// @ts-ignore next-line
 			const isApproved = await getConfirmation();
 
@@ -420,13 +432,13 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	};
 
 	const onUpdateDraftSymbol = (symbol: SymbolsProps) => {
-		console.log(4321, symbol);
 		if (isStatusDraft(symbol)) {
 			setUpdateSymbol(symbol);
 		} else {
 			setUpdateSymbolRevision({ ...symbol, isRevisionOf: symbol.iri, key: symbol.key || symbol.id });
 			// setUpdateSymbolRevision({ ...symbol, isRevisionOf: symbol.iri, dateTimeModified: });
 		}
+		setIsSymbolEdit(false);
 
 		console.log('⚡️', 'manageSymbolsQuery:', manageSymbolsQuery);
 		console.log('⚡️', 'symbol:', symbol, 'isStatusDraft:', isStatusDraft(symbol));
@@ -434,7 +446,11 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 
 	const onSubmitOnReview = async (symbol: SymbolsProps) => {
 		// Clear all Drafts after push
-		setConfirmationMessage('Are you sure you want to submit for review');
+		setConfirmationModuleDetails({
+			title: 'Review',
+			message: 'Would you like to reject or approve',
+			buttons: { confirm: 'Approve', cancel: 'Reject' },
+		});
 		// @ts-ignore next-line
 		const isApproved = await getConfirmation();
 
@@ -481,7 +497,12 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const onDeleteConfirmation = async (symbol: SymbolsProps) => {
 		setSelectedSymbol(symbol);
 		loadEditorCommand(symbol);
-		setConfirmationMessage('Are you sure you want to delete');
+
+		setConfirmationModuleDetails({
+			title: 'Delete',
+			message: 'Are you sure that you want to delete',
+			buttons: { confirm: 'Delete', cancel: 'Cancel' },
+		});
 
 		// @ts-ignore next-line
 		const isApproved = await getConfirmation();
@@ -492,8 +513,11 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const onDelete = (symbol: SymbolsProps) => setDeleteSymbol(symbol);
 
 	const onReview = async (symbol: SymbolsProps) => {
-		setConfirmationMessage('Are you sure you want to review');
-		setConfirmationButtons({ confirm: 'Approve', cancel: 'Rejected' });
+		setConfirmationModuleDetails({
+			title: 'Review',
+			message: 'Are you sure you want to review',
+			buttons: { confirm: 'Approve', cancel: 'Rejected' },
+		});
 		// @ts-ignore next-line
 		const isApproved = (await getConfirmation()) as boolean;
 
@@ -505,7 +529,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	const onSubmitAdminReview = ({ id }: SymbolsProps, isApproved: boolean | null) => {
 		if (isApproved === null) return;
 
-		setConfirmationButtons(null);
+		setConfirmationModuleDetails({});
 		setStatusSymbolId(id);
 		setSymbolStatus(isApproved ? 'Issued' : 'Rejected');
 	};
@@ -696,60 +720,92 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 	};
 
 	const onSearch = (val: string) => {
-		setSearchingValue(val);
-
 		if (val) {
 			const searchedValue = manageSymbolsQuery.filter(({ key }: any) => key.toLocaleLowerCase().includes(val.toLocaleLowerCase()));
 
-			seIcns(getSymbolsQueryWithFilter(searchedValue));
-
-			// window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+			setSymbolsBySearch(searchedValue);
 		} else {
-			seIcns(getSymbolsQueryWithFilter(manageSymbolsQuery));
+			setSymbolsBySearch(manageSymbolsQuery);
 		}
+
+		// getSymbolsQueryWithStatusFilter();
 	};
 
 	const onZoom = (data: number) => setEditorCommands([{ type: 'Settings', action: 'ZoomInOrOut', data }]);
 
+	const sortSymbolsQuery = () => {
+		const sortedData = [...getSymbolsQueryWithStatusFilter()].sort((a, b) => {
+			// First, sort by status
+			const statusPriority: { [key in StatusProps]: number } = {
+				Draft: 1,
+				Review: 2,
+				Rejected: 3,
+				Issued: 4,
+			};
+
+			if (statusPriority[a.status] < statusPriority[b.status]) return -1;
+			if (statusPriority[a.status] > statusPriority[b.status]) return 1;
+
+			// If statuses are the same, sort by name
+			if (a.name < b.name) return -1;
+			if (a.name > b.name) return 1;
+
+			// If names are the same, sort by version
+			if (a.version < b.version) return -1;
+			if (a.version > b.version) return 1;
+
+			return 0;
+		});
+
+		seIcns(sortedData);
+	};
+
 	useEffect(() => {
-		seIcns(getSymbolsQueryWithFilter(manageSymbolsQuery));
+		sortSymbolsQuery();
 	}, [finishManageSymbolsQuery]);
 
-	const debounceSearchValue = useDebouncedCallback((value) => onSearch(value), 1000);
+	const debounceSearchValue = useDebouncedCallback((value) => {
+		setSearchingValue(value);
+		onSearch(value);
+	}, 500);
 
-	const getSymbolsQueryWithFilter = (val: any) => {
-		if (statuses.all) return val;
+	const getSymbolsQueryWithStatusFilter = () => {
+		if (statuses.all && !searchingValue) return manageSymbolsQuery;
+		if (statuses.all && !!searchingValue) return symbolsBySearch;
+
+		const val = !!searchingValue ? symbolsBySearch : manageSymbolsQuery;
 
 		return val.filter((symbol: any) => {
 			const dr = statuses.draft && isStatusDraft(symbol);
 			const rd = statuses.ready && isStatusReadyForReview(symbol);
 			const rj = statuses.reject && isStatusRejected(symbol);
+			const pb = statuses.issued && isStatusPublished(symbol);
 
-			return dr || rd || rj;
+			return dr || rd || rj || pb;
 		});
 	};
 
-	const filterSymbolsByStatus = () => {
-		seIcns(getSymbolsQueryWithFilter(manageSymbolsQuery));
-
-		if (!statuses.draft && !statuses.ready && !statuses.reject) setStatuses(DEFAULT_STATUSES);
-	};
+	useEffect(() => {
+		sortSymbolsQuery();
+	}, [statuses, searchingValue]);
 
 	const handleStatusChange = (status: FilterStatusProps) => {
-		if (status.includes('all')) {
-			setStatuses(DEFAULT_STATUSES);
-		} else {
-			setStatuses({
+		let st = DEFAULT_STATUSES;
+		if (!status.includes('all')) {
+			st = {
 				...statuses,
 				all: false,
 				[status]: !statuses[status],
-			});
+			};
 		}
-	};
 
-	useEffect(() => {
-		filterSymbolsByStatus();
-	}, [statuses]);
+		if (!Object.values(st).some((status) => status)) {
+			st = DEFAULT_STATUSES;
+		}
+
+		setStatuses(st);
+		// filterSymbolsByStatus(st);
+	};
 
 	useEffect(() => {
 		if (selectedConnector && isPanelShow) {
@@ -797,7 +853,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 							<>
 								<PanelActionsStyled isShow={isPanelShow}>
 									<ZoomButtonsComponent onZoomClick={onZoom} />
-									<IconButtonComponent name="input" onClick={() => setPanelShow(!isPanelShow)} />
+									<IconButtonComponent name={isPanelShow ? 'sideLeft' : 'sideRight'} onClick={() => setPanelShow(!isPanelShow)} />
 									<IconButtonComponent name="lensPlus" onClick={addNewConnector} disabled={isReadyForReview(selectedSymbol)} />
 									<IconButtonComponent
 										name="lensMinus"
@@ -837,7 +893,7 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 							</>
 						)}
 						<ListActionStyled isShow={listShow}>
-							<IconButtonComponent name="list" onClick={() => setListShow(!listShow)} />
+							<IconButtonComponent name={listShow ? 'sideRight' : 'sideLeft'} onClick={() => setListShow(!listShow)} />
 						</ListActionStyled>
 						<ListComponent
 							fileRef={fileInputRef}

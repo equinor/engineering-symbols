@@ -92,10 +92,13 @@ export const ListComponent: FunctionComponent<ListComponentProps> = ({
 				</SymbolsSearchWrapperStyled>
 
 				<SymbolsFilterWrapperStyled>
-					<p>Show:</p>
 					<SymbolsFilterLabelStyled checked={statuses.all}>
 						<input type="checkbox" checked={statuses.all} onChange={() => handleCheckboxChange('all')} />
 						All
+					</SymbolsFilterLabelStyled>
+					<SymbolsFilterLabelStyled checked={statuses.issued}>
+						<input type="checkbox" checked={statuses.issued} onChange={() => handleCheckboxChange('issued')} />
+						Issued
 					</SymbolsFilterLabelStyled>
 					<SymbolsFilterLabelStyled checked={statuses.ready}>
 						<input type="checkbox" checked={statuses.ready} onChange={() => handleCheckboxChange('ready')} />

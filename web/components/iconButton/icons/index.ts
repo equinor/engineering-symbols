@@ -1,5 +1,7 @@
 export { FloppyDisk } from './FloppyDisk';
 export { LensMinus } from './LensMinus';
+export { SideRight } from './SideRight';
+export { SideLeft } from './SideLeft';
 export { RotateTR } from './RotateTR';
 export { LensPlus } from './LensPlus';
 export { ZoomOut } from './ZoomOut';
