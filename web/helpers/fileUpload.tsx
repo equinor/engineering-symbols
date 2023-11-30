@@ -9,7 +9,7 @@ export type FileUploadErrorType = {
 };
 
 interface FileUploadHookResultType {
-	handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
+	handleFileChange: (event: File | null) => void;
 	isSvgFileLoading: boolean;
 	autoUploadStatus: string;
 	selectedFile: File | null;
@@ -113,9 +113,7 @@ export const useFileUpload = (): FileUploadHookResultType => {
 		// reader.readAsText(selectedFile);
 	};
 
-	const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-		const file = event.target.files?.[0];
-
+	const handleFileChange = (file: File | null) => {
 		if (file && file.type === 'image/svg+xml') {
 			setSelectedFile(file);
 			uploadFile(file);
@@ -128,7 +126,7 @@ export const useFileUpload = (): FileUploadHookResultType => {
 			setError({ title: 'SVG erorr', message: 'Invalid file format. Please select an SVG file.' });
 		}
 
-		event.target.value = '';
+		// event.target.value = '';
 	};
 
 	useEffect(() => {

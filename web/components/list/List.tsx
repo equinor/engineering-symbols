@@ -23,7 +23,7 @@ import { DefaultStatusesTypes } from '../../pages/manage/index.page';
 type ListComponentProps = {
 	handleCheckboxChange: (status: FilterStatusProps) => void;
 	finishManageSymbols: boolean;
-	onChangeFile: (e: ChangeEvent<HTMLInputElement>) => Promise<void>;
+	onChangeFile: (file: File | null) => Promise<void>;
 	searchValue: DebouncedState<(value: any) => void>;
 	onReview: (symbol: SymbolsProps) => Promise<void>;
 	onSubmit: (symbol: SymbolsProps) => Promise<void>;
@@ -84,6 +84,14 @@ export const ListComponent: FunctionComponent<ListComponentProps> = ({
 		}
 	};
 
+	const onChangeInput = ({ target }: ChangeEvent<HTMLInputElement>) => {
+		const file = target.files?.[0];
+		if (file === undefined) return null;
+
+		onChangeFile(file);
+		target.value = '';
+	};
+
 	return (
 		<ListStyled isShow={show}>
 			<ListWrapperStyled>
@@ -118,7 +126,7 @@ export const ListComponent: FunctionComponent<ListComponentProps> = ({
 					<li>
 						<UploadSvgStyled>
 							<label htmlFor="file">Choose file to upload</label>
-							<input type="file" id="file" ref={fileRef} name="file" accept=".svg" onChange={onChangeFile} />
+							<input type="file" id="file" ref={fileRef} name="file" accept=".svg" onChange={onChangeInput} />
 						</UploadSvgStyled>
 					</li>
 					{!finishManageSymbols && <WeatherLoader />}
