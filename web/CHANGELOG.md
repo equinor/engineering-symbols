@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/equinor/engineering-symbols/compare/web-v1.8.0...web-v1.8.1) (2023-12-01)
+
+
+### Bug Fixes
+
+* click drag&drop area ([#804](https://github.com/equinor/engineering-symbols/issues/804)) ([415dcc7](https://github.com/equinor/engineering-symbols/commit/415dcc7c2c182278cbceebe542d930b54476ffea))
+
 ## [1.8.0](https://github.com/equinor/engineering-symbols/compare/web-v1.7.14...web-v1.8.0) (2023-11-30)
 
 
