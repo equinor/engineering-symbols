@@ -847,25 +847,27 @@ const Edit: NextPage<EditPageProps> = ({ theme }) => {
 						{isSvgFileLoading && <WeatherLoader />}
 
 						<PanelPresentationContentStyled>
-							<OnDropStyled {...getRootProps()}>
-								<input {...getInputProps()} />
-								{isDragActive ? (
-									<LogoWrapperStyled>
-										<i>Drop the files here ...</i>
-									</LogoWrapperStyled>
-								) : !!selectedSymbol ? (
-									<SymbolEditor editorEventHandler={onEditorEvent} commands={editorCommands} />
-								) : (
-									<LogoWrapperStyled>
-										<LogoTopTextStyled>
-											<Cat />
-											{/* <LogoComponent fill="backgroundGrey" /> */}
-											<p>Engineering symbols</p>
-										</LogoTopTextStyled>
-										<i>Drag & drop SVG symbol here, or click to select file</i>
-									</LogoWrapperStyled>
-								)}
-							</OnDropStyled>
+							{!!selectedSymbol ? (
+								<SymbolEditor editorEventHandler={onEditorEvent} commands={editorCommands} />
+							) : (
+								<OnDropStyled {...getRootProps()}>
+									<input {...getInputProps()} />
+									{isDragActive ? (
+										<LogoWrapperStyled>
+											<i>Drop the files here ...</i>
+										</LogoWrapperStyled>
+									) : (
+										<LogoWrapperStyled>
+											<LogoTopTextStyled>
+												<Cat />
+												{/* <LogoComponent fill="backgroundGrey" /> */}
+												<p>Engineering symbols</p>
+											</LogoTopTextStyled>
+											<i>Drag & drop SVG symbol here, or click to select file</i>
+										</LogoWrapperStyled>
+									)}
+								</OnDropStyled>
+							)}
 						</PanelPresentationContentStyled>
 
 						{finishManageSymbolsQuery && selectedSymbol && (
