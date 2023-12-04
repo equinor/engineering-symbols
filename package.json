@@ -69,7 +69,7 @@
 		]
 	},
 	"dependencies": {
-		"lint-staged": "^15.1.0",
+		"lint-staged": "^15.2.0",
 		"typescript": "^5.3.2"
 	},
 	"devDependencies": {
