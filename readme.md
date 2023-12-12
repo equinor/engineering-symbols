@@ -1,5 +1,23 @@
 # Engineering Symbols
 
+## Available Scripts
+
+In the project directory, you can run:
+
+### `npm run prettier:write`
+
+Launches the prettier for format a file in-place<br>
+
+### `npm run checkcode`
+
+Launches the lint checkcode in the interactive watch mode to chek code via lint, ts:test & prettier<br>
+
+# Engineering Symbols Documentation
+
+🍯 [Engineering symbols web](https://github.com/equinor/engineering-symbols/blob/master/web/README.md)
+
+🧸 [Engineering symbols package](https://github.com/equinor/engineering-symbols/blob/master/package/README.md)
+
 This is a repository for the reference implementation of a library for machine readable symbols for use in digital diagrams as well as the drafts for an information model for machine readable engineering symbols.
 
 # Term clarifications
