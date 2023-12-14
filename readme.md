@@ -2,13 +2,13 @@
 
 ## 🦢 Table of Contents
 
--   [⚙️ Purpose](#⚙️-purpose)
--   [💃 Intended Audience](#💃-intended-audience)
+-   [⚙️ Purpose](#-purpose)
+-   [💃 Intended Audience](#-intended-audience)
 -   [Quick Start](#quick-start)
-    -   [📦 Install](#📦-install)
-    -   [🪭 Available Scripts](#🪭-available-scripts)
--   [🧵 Engineering Symbols Documentation](#🧵-engineering-symbols-documentation)
--   [👩‍🏫 Term clarifications](#👩‍🏫-term-clarifications)
+    -   [📦 Install](#-install)
+    -   [🪭 Available Scripts](#-available-scripts)
+-   [🧵 Engineering Symbols Documentation](#-engineering-symbols-documentation)
+-   [👩‍🏫 Term clarifications](#-term-clarifications)
 
 ## ⚙️ Purpose
 
