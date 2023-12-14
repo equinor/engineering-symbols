@@ -1,18 +1,48 @@
 # Engineering Symbols
 
-## Available Scripts
+## 🦢 Table of Contents
 
-In the project directory, you can run:
+-   [⚙️ Purpose](#⚙️-purpose)
+-   [💃 Intended Audience](#💃-intended-audience)
+-   [Quick Start](#quick-start)
+    -   [📦 Install](#📦-install)
+    -   [🪭 Available Scripts](#🪭-available-scripts)
+-   [🧵 Engineering Symbols Documentation](#🧵-engineering-symbols-documentation)
+-   [👩‍🏫 Term clarifications](#👩‍🏫-term-clarifications)
 
-### `npm run prettier:write`
+## ⚙️ Purpose
 
-Launches the prettier for format a file in-place<br>
+SVG engineering symbols serve as scalable and interactive graphical representations of various engineering concepts, components, and processes. The purpose of these symbols is to provide a standardized and versatile format for depicting engineering elements in a visually clear and easily shareable manner. SVG (Scalable Vector Graphics) ensures that these symbols maintain high-quality resolution at any size, making them suitable for diverse applications, from technical documentation to online platforms.
 
-### `npm run checkcode`
+## 💃 Intended Audience
 
-Launches the lint checkcode in the interactive watch mode to chek code via lint, ts:test & prettier<br>
+The intended audience for SVG engineering symbols includes engineers, designers, educators, and anyone involved in conveying or understanding engineering information. These symbols are particularly valuable for technical documentation, schematic diagrams, educational materials, and web applications where dynamic and responsive visualizations are crucial. By catering to a broad audience within the engineering field, SVG engineering symbols aim to enhance communication and comprehension of complex engineering concepts across various platforms and contexts.
 
-# Engineering Symbols Documentation
+# Quick Start
+
+## 📦 Install
+
+```bash
+npm install
+```
+
+## 🪭Available Scripts
+
+_In the project directory, you can run:_
+
+```bash
+npm run prettier:write
+```
+
+_Launches the prettier for format a file in-place<br>_
+
+```bash
+npm run checkcode
+```
+
+_Launches the lint checkcode in the interactive watch mode to chek code via **lint**, **ts:test** & **prettier**<br>_
+
+# 🧵 Engineering Symbols Documentation
 
 🍯 [Engineering symbols web](https://github.com/equinor/engineering-symbols/blob/master/web/README.md)
 
@@ -20,7 +50,7 @@ Launches the lint checkcode in the interactive watch mode to chek code via lint,
 
 This is a repository for the reference implementation of a library for machine readable symbols for use in digital diagrams as well as the drafts for an information model for machine readable engineering symbols.
 
-# Term clarifications
+# 👩‍🏫 Term clarifications
 
 -   **Symbol library (SL)** - A service for management and offering of versioned collections of engineering symbols.
 
