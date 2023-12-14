@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.8.2](https://github.com/equinor/engineering-symbols/compare/web-v1.8.1...web-v1.8.2) (2023-12-14)
+
+
+### Miscellaneous Chores
+
+* docs ([#829](https://github.com/equinor/engineering-symbols/issues/829)) ([6075717](https://github.com/equinor/engineering-symbols/commit/607571799b791fee128f08a02fcf0c2265c41c48))
+* more documentation ([#828](https://github.com/equinor/engineering-symbols/issues/828)) ([57729fe](https://github.com/equinor/engineering-symbols/commit/57729fe0678b22d777f194249e37f5f82df0dd0b))
+
+
+### Bump package
+
+* **web:** bump @types/react from 18.2.37 to 18.2.43 in /web ([#819](https://github.com/equinor/engineering-symbols/issues/819)) ([9b9ef28](https://github.com/equinor/engineering-symbols/commit/9b9ef28472787fb3db51ff76380dd6ee33c8e9cf))
+* **web:** bump @types/styled-components from 5.1.29 to 5.1.34 in /web ([#820](https://github.com/equinor/engineering-symbols/issues/820)) ([2a295c9](https://github.com/equinor/engineering-symbols/commit/2a295c9348b8bcf1edb20b6c46907e9c9539a4f7))
+* **web:** bump eslint from 8.54.0 to 8.55.0 in /web ([#811](https://github.com/equinor/engineering-symbols/issues/811)) ([ec35cef](https://github.com/equinor/engineering-symbols/commit/ec35cef2f913dd620a5c63fee5b515ab14ba0550))
+* **web:** bump nanoid from 5.0.3 to 5.0.4 in /web ([#813](https://github.com/equinor/engineering-symbols/issues/813)) ([bb90bef](https://github.com/equinor/engineering-symbols/commit/bb90bef4333aba4ae9571a7700c6f5f06fa50175))
+* **web:** bump typescript from 5.2.2 to 5.3.3 in /web ([#821](https://github.com/equinor/engineering-symbols/issues/821)) ([360681c](https://github.com/equinor/engineering-symbols/commit/360681c9b5b1ec7c230eb74b22141e29321b7b1f))
+
 ## [1.8.1](https://github.com/equinor/engineering-symbols/compare/web-v1.8.0...web-v1.8.1) (2023-12-01)
 
 
