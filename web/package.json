@@ -1,5 +1,6 @@
 {
 	"name": "web",
+	"private": true,
 	"version": "1.8.2",
 	"author": {
 		"name": "Dzianis Makeichyk",
