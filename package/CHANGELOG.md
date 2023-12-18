@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.2.0](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.1.3...engineering-symbols-v1.2.0) (2023-12-18)
+
+
+### Features
+
+* new look ([#396](https://github.com/equinor/engineering-symbols/issues/396)) ([b2fbcd6](https://github.com/equinor/engineering-symbols/commit/b2fbcd655446f0a6395e01983d5dafd60b75d4c6))
+
+
+### Miscellaneous Chores
+
+* empty commit, trigger release ([#526](https://github.com/equinor/engineering-symbols/issues/526)) ([f7cf8f7](https://github.com/equinor/engineering-symbols/commit/f7cf8f7dcb969bdae26f221d7974bf60bd16422c))
+* more documentation ([#828](https://github.com/equinor/engineering-symbols/issues/828)) ([57729fe](https://github.com/equinor/engineering-symbols/commit/57729fe0678b22d777f194249e37f5f82df0dd0b))
+
+
+### Bump package
+
+* **package:** bump @types/node from 18.15.10 to 18.15.13 in /package ([#417](https://github.com/equinor/engineering-symbols/issues/417)) ([ffacced](https://github.com/equinor/engineering-symbols/commit/ffacced812a24c13963e4e41ee570dc913322f9a))
+
+
+### Code Refactoring
+
+* Semantic Release ([#844](https://github.com/equinor/engineering-symbols/issues/844)) ([ca1f05d](https://github.com/equinor/engineering-symbols/commit/ca1f05dd01e3bd744712944518f897787da35968))
+
 ## [1.1.3](https://github.com/equinor/engineering-symbols/compare/engineering-symbols-v1.1.2...engineering-symbols-v1.1.3) (2023-03-28)
 
 
