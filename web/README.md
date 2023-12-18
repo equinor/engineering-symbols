@@ -76,18 +76,14 @@ The project follows a structured directory layout:
 
 We follow the following release rules to categorize our changes:
 
--   `feat` and `feature`: New features.
--   `fix`: Bug fixes.
--   `perf`: Performance improvements.
--   `revert`: Reverted changes.
--   `docs`: Documentation updates.
--   `style`: Styling changes.
--   `chore`: Miscellaneous chores.
--   `bump(package)`, `bump(iconor)`, `bump(web)`, `bump`: Bump package versions.
--   `refactor`: Code refactoring.
--   `test`: Test-related changes.
--   `build`: Build system changes.
--   `ci`: Continuous integration updates.
+-   `build`: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+-   `ci`: Changes to our CI configuration files and scripts (examples: CircleCi, SauceLabs)
+-   `docs`: Documentation only changes
+-   `feat`: A new feature
+-   `fix`: A bug fix
+-   `perf`: A code change that improves performance
+-   `refactor`: A code change that neither fixes a bug nor adds a feature
+-   `test`: Adding missing tests or correcting existing tests
 
 ## Deployment
 

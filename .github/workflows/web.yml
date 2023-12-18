@@ -2,7 +2,7 @@ name: Web
 
 on:
     pull_request:
-        branches: ['master']
+        branches: [develop]
         paths: ['web/**']
     workflow_dispatch:
     workflow_call:

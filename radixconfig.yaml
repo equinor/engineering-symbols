@@ -7,6 +7,9 @@ spec:
     - name: prod
       build:
         from: master
+    - name: dev
+      build:
+        from: develop
   build:
       secrets:
         - MSAL_CLIENT_ID
@@ -26,6 +29,18 @@ spec:
       src: ./web
       environmentConfig:
         - environment: prod
+      ports:
+        - name: http
+          port: 3000
+      secrets:
+        - NEXT_PUBLIC_MSAL_CLIENT_ID
+        - NEXT_PUBLIC_MSAL_AUTHORITY
+        - NEXT_PUBLIC_API_SCOPE
+    - name: webdev
+      publicPort: http
+      src: ./web
+      environmentConfig:
+        - environment: dev
       ports:
         - name: http
           port: 3000

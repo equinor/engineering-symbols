@@ -1,3 +1,5 @@
+# ❗️❗️❗️ Temporarily not supported ❗️❗️❗️
+
 # @equinor/engineering-symbols
 
 ## Available Scripts

@@ -1,7 +1,7 @@
-name: 🥝 Web Master Release
+name: 🍺 Web Develop Release
 on:
     push:
-        branches: [master]
+        branches: [develop]
         paths: ['web/**']
 
 env:
@@ -27,7 +27,7 @@ jobs:
                   NODE_AUTH_TOKEN: ${{ env.NODE_VERSION }}
 
     release-please:
-        name: 🧇 Semantic Release
+        name: 🥐 Radix deploy
         needs: [build]
         runs-on: ubuntu-latest
         permissions:
@@ -35,22 +35,7 @@ jobs:
             contents: write
             issues: write
             pull-requests: write
-        outputs:
-            releases_created: ${{ steps.release.outputs.releases_created }}
-            result: ${{ toJson(steps.release.outputs) }}
         steps:
-            - uses: actions/checkout@v3
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: ${{ env.NODE_VERSION }}
-            - name: Install dependencies
-              run: npm ci
-
-            - name: Semantic Release
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-              run: npx semantic-release
-
             - uses: actions/checkout@v3
             - name: Az CLI login
               uses: azure/login@v1
@@ -58,15 +43,12 @@ jobs:
                   client-id: ${{ secrets.CLIENT_ID }} #app registration Application ID or user-assigned managed identity Client ID
                   tenant-id: ${{ secrets.TENANT_ID }}
                   allow-no-subscriptions: true
-
             - name: Get Azure principal token for Radix
               run: |
                   token=$(az account get-access-token --resource 6dae42f8-4368-4678-94ff-3960e28e3630 --query=accessToken -otsv)
                   echo "::add-mask::$token"
                   echo "APP_SERVICE_ACCOUNT_TOKEN=$token" >> $GITHUB_ENV
-
             - uses: actions/checkout@v3
-
             - name: Deploy on Radix
               uses: equinor/radix-github-actions@master
               with:
@@ -75,5 +57,6 @@ jobs:
                       build-deploy
                       --context platform
                       --from-config
-                      -b master
+                      -b develop
                       -f
+              if: ${{ steps.release.outputs.releases_created }}
