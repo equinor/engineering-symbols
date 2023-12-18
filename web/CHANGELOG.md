@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.3](https://github.com/equinor/engineering-symbols/compare/web-v1.8.2...web-v1.8.3) (2023-12-18)
+
+
+### Code Refactoring
+
+* Semantic Release ([#844](https://github.com/equinor/engineering-symbols/issues/844)) ([ca1f05d](https://github.com/equinor/engineering-symbols/commit/ca1f05dd01e3bd744712944518f897787da35968))
+
 ## [1.8.2](https://github.com/equinor/engineering-symbols/compare/web-v1.8.1...web-v1.8.2) (2023-12-14)
 
 
