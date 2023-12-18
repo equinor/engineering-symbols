@@ -1,6 +1,6 @@
 {
     "branches": "master",
-    "repositoryUrl": "https://github.com/DzianisMakeichyk/test-rp",
+    "repositoryUrl": "https://github.com/equinor/engineering-symbols",
     "debug": "true",
     "plugins": [
         ["@semantic-release/commit-analyzer",{
