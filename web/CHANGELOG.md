@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/equinor/engineering-symbols/compare/v1.1.1...v1.1.2) (2023-12-19)
+
+
+### Bug Fixes
+
+* window.location ([#849](https://github.com/equinor/engineering-symbols/issues/849)) ([90f5769](https://github.com/equinor/engineering-symbols/commit/90f5769a8e8084af5c34e371e773de7a64cc16b4))
+
 ## [1.1.1](https://github.com/equinor/engineering-symbols/compare/v1.1.0...v1.1.1) (2023-12-19)
 
 
