@@ -59,4 +59,3 @@ jobs:
                       --from-config
                       -b develop
                       -f
-              if: ${{ steps.release.outputs.releases_created }}
