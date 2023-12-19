@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/equinor/engineering-symbols/compare/v1.1.0...v1.1.1) (2023-12-19)
+
+
+### Bug Fixes
+
+* no env ([#848](https://github.com/equinor/engineering-symbols/issues/848)) ([2fdfcfc](https://github.com/equinor/engineering-symbols/commit/2fdfcfc654284c2e334be307dbc9314fe2619716))
+
 ## [1.1.0](https://github.com/equinor/engineering-symbols/compare/v1.0.34...v1.1.0) (2023-12-18)
 
 
