@@ -4,7 +4,6 @@ let environment = 'dev';
 
 if (typeof window !== 'undefined') {
 	const prodUrl = 'engineering-symbols.equinor.com';
-	console.log('window.location', window.location);
 	environment = window.location.origin.includes(prodUrl) ? 'prod' : 'dev';
 }
 
