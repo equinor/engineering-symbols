@@ -4,7 +4,8 @@ let environment = 'dev';
 
 if (typeof window !== 'undefined') {
 	const prodUrl = 'engineering-symbols.equinor.com';
-	environment = !window.location.origin.includes(prodUrl) ? 'prod' : 'dev';
+	console.log('window.location', window.location);
+	environment = window.location.origin.includes(prodUrl) ? 'prod' : 'dev';
 }
 
 export const uploadSvgFile = (svgFile: FormData, validationOnly: boolean, contentType: string) =>
