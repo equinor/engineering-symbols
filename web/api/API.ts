@@ -3,7 +3,7 @@ import { fetchApi, fetchFileApi } from './fetchAPI';
 let environment = 'dev';
 
 if (typeof window !== 'undefined') {
-	const allowedHosts = ['engineering-symbols.equinor.com'];
+	const allowedHosts = ['engineering-symbols.equinor.com', 'web-engineering-symbols-prod.radix.equinor.com'];
 	environment = allowedHosts.includes(window.location.origin) ? 'prod' : 'dev';
 }
 
