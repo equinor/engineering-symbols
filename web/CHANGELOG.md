@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/equinor/engineering-symbols/compare/v1.1.3...v1.1.4) (2023-12-20)
+
+
+### Bug Fixes
+
+* build in Dockerfile ([#858](https://github.com/equinor/engineering-symbols/issues/858)) ([55b344f](https://github.com/equinor/engineering-symbols/commit/55b344f4ceae83e51c14909753014ca8d7fa4f06))
+
 ## [1.1.3](https://github.com/equinor/engineering-symbols/compare/v1.1.2...v1.1.3) (2023-12-20)
 
 
