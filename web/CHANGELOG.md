@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/equinor/engineering-symbols/compare/v1.1.4...v1.1.5) (2023-12-20)
+
+
+### Bug Fixes
+
+* filter by url ([#860](https://github.com/equinor/engineering-symbols/issues/860)) ([8460b35](https://github.com/equinor/engineering-symbols/commit/8460b35869c1ef38a801d39c3c52a4a91b798115))
+
 ## [1.1.4](https://github.com/equinor/engineering-symbols/compare/v1.1.3...v1.1.4) (2023-12-20)
 
 
