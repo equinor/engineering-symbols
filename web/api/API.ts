@@ -4,7 +4,7 @@ let environment = 'dev';
 
 if (typeof window !== 'undefined') {
 	const allowedHosts = ['engineering-symbols.equinor.com', 'web-engineering-symbols-prod.radix.equinor.com'];
-	environment = !allowedHosts.includes(window.location.origin) ? 'prod' : 'dev';
+	environment = allowedHosts.includes(window.location.origin) ? 'prod' : 'dev';
 }
 
 export const uploadSvgFile = (svgFile: FormData, validationOnly: boolean, contentType: string) =>
