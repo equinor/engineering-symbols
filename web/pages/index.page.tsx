@@ -36,9 +36,9 @@ import {
 	HeroStyled,
 } from '../styles/styles';
 
-import { HomePageProps } from '../types';
-
 import symbols from './symbol-library.json';
+
+import { HomePageProps } from '../types';
 
 const parallaxItemsPostion = [
 	{
