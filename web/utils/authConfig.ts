@@ -17,7 +17,9 @@ let applicationID = '7584f051-6987-4c51-861d-77710537bd06';
 
 if (typeof window !== 'undefined') {
 	const allowedHosts = ['engineering-symbols.equinor.com', 'web-engineering-symbols-prod.radix.equinor.com'];
-	applicationID = allowedHosts.includes(window.location.origin) ? 'c3f728ce-8ade-41c3-a757-6c40aebb8af7' : '7584f051-6987-4c51-861d-77710537bd06';
+	applicationID = allowedHosts.some((host) => window.location.hostname.includes(host))
+		? 'c3f728ce-8ade-41c3-a757-6c40aebb8af7'
+		: '7584f051-6987-4c51-861d-77710537bd06';
 }
 
 // Add here scopes for id token to be used at MS Identity Platform endpoints.
