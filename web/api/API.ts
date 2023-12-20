@@ -3,9 +3,8 @@ import { fetchApi, fetchFileApi } from './fetchAPI';
 let environment = 'dev';
 
 if (typeof window !== 'undefined') {
-	const prodUrl = 'engineering-symbols.equinor.com';
-	console.log('window.location', window.location);
-	environment = window.location.origin.includes(prodUrl) ? 'prod' : 'dev';
+	const allowedHosts = ['engineering-symbols.equinor.com', 'web-engineering-symbols-prod.radix.equinor.com'];
+	environment = allowedHosts.includes(window.location.origin) ? 'prod' : 'dev';
 }
 
 export const uploadSvgFile = (svgFile: FormData, validationOnly: boolean, contentType: string) =>

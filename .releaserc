@@ -11,7 +11,8 @@
             {"type": "fix", "release": "patch"},
             {"type": "ci", "release": "patch"},
             {"type": "chore", "release": "patch", "hidden": false},
-            {"type": "perf", "release": "minor", "hidden": false}
+            {"type": "perf", "release": "minor", "hidden": false},
+            {"type": "bump", "release": "minor", "hidden": false}
           ]
         }],
         [

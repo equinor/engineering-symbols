@@ -10,11 +10,6 @@ spec:
     - name: dev
       build:
         from: develop
-  build:
-      secrets:
-        - MSAL_CLIENT_ID
-        - MSAL_AUTHORITY
-        - API_SCOPE
   components:
     - name: storybook
       publicPort: http
@@ -32,10 +27,6 @@ spec:
       ports:
         - name: http
           port: 3000
-      secrets:
-        - NEXT_PUBLIC_MSAL_CLIENT_ID
-        - NEXT_PUBLIC_MSAL_AUTHORITY
-        - NEXT_PUBLIC_API_SCOPE
     - name: webdev
       publicPort: http
       src: ./web
@@ -44,10 +35,6 @@ spec:
       ports:
         - name: http
           port: 3000
-      secrets:
-        - NEXT_PUBLIC_MSAL_CLIENT_ID
-        - NEXT_PUBLIC_MSAL_AUTHORITY
-        - NEXT_PUBLIC_API_SCOPE
   dnsExternalAlias:
     - alias: engineering-symbols.equinor.com
       environment: prod
@@ -55,3 +42,5 @@ spec:
   dnsAppAlias:
     environment: prod
     component: storybook
+    environment: dev
+    component: webdev
