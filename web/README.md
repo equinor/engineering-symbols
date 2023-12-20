@@ -2,7 +2,9 @@
 
 # Preview 🧸
 
-[Engineering symbols web](https://engineering-symbols.equinor.com/)
+[Engineering symbols (prod)](https://engineering-symbols.equinor.com/)
+<br>
+[Engineering symbols (dev)](https://webdev-engineering-symbols-dev.radix.equinor.com/)
 
 ## Available Scripts
 
@@ -34,6 +36,15 @@ Your app is ready to be deployed!
 
 See the section about [deployment](#deployment) for more information.
 
+## Environments
+
+Default branch - `develop`. All PR's are first added to `develop` using **Squash and merge**.
+
+Release is done using PR from `develop` to `master`. The title should include next copy: _Release 20.12.2023_ and only merged only with **Merge pull request** ❗️
+
+[Production](https://engineering-symbols.equinor.com)<br>
+[Development](https://webdev-engineering-symbols-dev.radix.equinor.com/)
+
 ## Supported Browsers
 
 By default, the generated project uses the latest version of React.
@@ -55,7 +66,7 @@ This repository contains the reference implementation of a library for machine-r
 -   **Prettier**: Code formatting.
 -   **ESLint**: JavaScript linting tool.
 -   **GitHub Actions (GHA)**: Used for building and deploying the project.
--   **Release Please**: GitHub Action for automated release management.
+-   **Semantic Release**: GitHub Action for automated release management.
 -   **Radix**: [Deployment platform](https://console.radix.equinor.com/applications/engineering-symbols/envs).
 -   **Docker**: Containerization for deployment.
 
