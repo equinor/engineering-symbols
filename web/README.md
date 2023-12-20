@@ -89,14 +89,6 @@ We follow the following release rules to categorize our changes:
 
 The project is deployed to Radix using Docker configuration. GitHub Actions (GHA) is used for building and deploying the application. We utilize the "release-please" GitHub Action to manage releases automatically.
 
-## ENV's
-
-```
-NEXT_PUBLIC_MSAL_CLIENT_ID
-NEXT_PUBLIC_MSAL_AUTHORITY
-NEXT_PUBLIC_API_SCOPE
-```
-
 ## User roles
 
 ![User roles](./images/user_roles.png 'User roles')
