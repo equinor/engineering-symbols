@@ -1,3 +1,15 @@
+## [1.1.3](https://github.com/equinor/engineering-symbols/compare/v1.1.2...v1.1.3) (2023-12-20)
+
+
+### Bug Fixes
+
+* applicationID & environment ([#851](https://github.com/equinor/engineering-symbols/issues/851)) ([549fa59](https://github.com/equinor/engineering-symbols/commit/549fa59503a034ef200fb2bf4a58df20061c574e))
+* dep ([#853](https://github.com/equinor/engineering-symbols/issues/853)) ([a43e930](https://github.com/equinor/engineering-symbols/commit/a43e9303e50bed75ee5b5f2f6fe29a0e64e279d5))
+* Deploy on Radix GHA ([#852](https://github.com/equinor/engineering-symbols/issues/852)) ([97278ae](https://github.com/equinor/engineering-symbols/commit/97278ae1a07bed58a55a6db4e5e217e61a046be4))
+* no secrets for Radix ([#855](https://github.com/equinor/engineering-symbols/issues/855)) ([d6478f7](https://github.com/equinor/engineering-symbols/commit/d6478f710a9a5b00d3add074b3f7784e6b522ef2))
+* publicRuntimeConfig ([#856](https://github.com/equinor/engineering-symbols/issues/856)) ([d2aa15e](https://github.com/equinor/engineering-symbols/commit/d2aa15e70053cfd44b44408cc83516751037f44f))
+* radix config dnsAppAlias ([#854](https://github.com/equinor/engineering-symbols/issues/854)) ([ca6eb8d](https://github.com/equinor/engineering-symbols/commit/ca6eb8d80cffc72a80e4464f127eae448b454fbb))
+
 ## [1.1.2](https://github.com/equinor/engineering-symbols/compare/v1.1.1...v1.1.2) (2023-12-19)
 
 
