@@ -16,4 +16,5 @@ RUN chown -R 1001 /app && chown -R 1001:0 "/.npm"
 USER 1001
 EXPOSE 3000
 
+RUN npm run build
 CMD ["npm", "start"]
