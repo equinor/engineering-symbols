@@ -131,7 +131,7 @@ To grant a user superadmin privileges in Azure, follow the steps below:
 
     - Click on the **Directory role** tab.
     - In the **Roles** section, click on **Add role assignment**.
-    - Choose **Global administrator** or a custom role that includes the necessary permissions.
+    - Choose **Super users** or a custom role that includes the necessary permissions.
     - Click **Add members** and select the user you want to add.
     - Click **Add** to confirm the assignment.
 
