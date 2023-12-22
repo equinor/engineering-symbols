@@ -108,3 +108,34 @@ The project is deployed to Radix using Docker configuration. GitHub Actions (GHA
 
 ![Uploading SVG workflow](./images/uploading-svg-workflow.png 'SVG workflow')
 ![Uploading SVG workflow](./images/uploading-svg-workflow_2.png 'SVG workflow')
+
+# Azure Superadmin Group Assignment
+
+To grant a user superadmin privileges in Azure, follow the steps below:
+
+1. **Navigate to the Azure Portal:**
+   Open your web browser and go to Azure Portal [Engineering Symbols - authentication](https://portal.azure.com/#view/Microsoft_AAD_IAM/ManagedAppMenuBlade/~/Overview/objectId/ce4e0e3c-0655-4019-a4a1-f60faabeb143/appId/2e4ccc3b-9d87-4a03-af5f-ae1188027d40).
+
+2. **Sign In:**
+   Sign in with your administrator credentials.
+
+3. **Access Azure Active Directory:**
+   In the left-hand navigation pane, click on **Azure Active Directory**.
+
+4. **Select Users and groups**
+
+5. **Locate the User:**
+   Find and select the user to whom you want to grant superadmin access.
+
+6. **Assign User to Superadmin Group:**
+
+    - Click on the **Directory role** tab.
+    - In the **Roles** section, click on **Add role assignment**.
+    - Choose **Super users** or a custom role that includes the necessary permissions.
+    - Click **Add members** and select the user you want to add.
+    - Click **Add** to confirm the assignment.
+
+7. **Save Changes:**
+   Ensure to save your changes by clicking **Save** or **Review + save** depending on the Azure Portal version.
+
+The user is now assigned to the superadmin group and has the necessary permissions to approve symbols.
