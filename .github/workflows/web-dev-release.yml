@@ -38,7 +38,7 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - name: Az CLI login
-              uses: azure/login@v1
+              uses: azure/login@v2
               with:
                   client-id: ${{ secrets.CLIENT_ID }} #app registration Application ID or user-assigned managed identity Client ID
                   tenant-id: ${{ secrets.TENANT_ID }}
