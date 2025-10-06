@@ -12,7 +12,7 @@ jobs:
         runs-on: ubuntu-latest
         name: '🤹‍♀️ Build'
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v5
             - uses: actions/setup-node@v3
               with:
                   node-version: ${{ env.NODE_VERSION }}
@@ -36,7 +36,7 @@ jobs:
             issues: write
             pull-requests: write
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v5
             - name: Az CLI login
               uses: azure/login@v1
               with:
@@ -48,7 +48,7 @@ jobs:
                   token=$(az account get-access-token --resource 6dae42f8-4368-4678-94ff-3960e28e3630 --query=accessToken -otsv)
                   echo "::add-mask::$token"
                   echo "APP_SERVICE_ACCOUNT_TOKEN=$token" >> $GITHUB_ENV
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v5
             - name: Deploy on Radix
               uses: equinor/radix-github-actions@master
               with:
