@@ -27,7 +27,7 @@ jobs:
         name: 👮‍♂️ Code issues
         steps:
             - uses: actions/checkout@v3
-            - uses: actions/setup-node@v3
+            - uses: actions/setup-node@v6
               with:
                   node-version: ${{ env.NODE_VERSION }}
                   registry-url: https://registry.npmjs.org
@@ -43,7 +43,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - uses: actions/setup-node@v2
+            - uses: actions/setup-node@v6
               with:
                   node-version: ${{ env.NODE_VERSION }}
                   cache: 'npm'
