@@ -13,7 +13,7 @@ jobs:
         name: '🤹‍♀️ Build'
         steps:
             - uses: actions/checkout@v3
-            - uses: actions/setup-node@v3
+            - uses: actions/setup-node@v6
               with:
                   node-version: ${{ env.NODE_VERSION }}
                   registry-url: https://registry.npmjs.org
@@ -40,7 +40,7 @@ jobs:
             result: ${{ toJson(steps.release.outputs) }}
         steps:
             - uses: actions/checkout@v3
-            - uses: actions/setup-node@v3
+            - uses: actions/setup-node@v6
               with:
                   node-version: ${{ env.NODE_VERSION }}
             - name: Install dependencies
